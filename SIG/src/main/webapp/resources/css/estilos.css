@@ -1,0 +1,22 @@
+@CHARSET "UTF-8";
+
+.imagemCentralizada {
+	display: block;
+	width: 100%;
+}
+
+.divTopo {
+	padding-bottom: 5px;
+}
+
+.divCabecalho {
+	padding-bottom: 5px;
+}
+
+.ui-widget, .ui-widget .ui-widget {
+	font-size: 95% !important;
+}
+
+.botaoLogout {
+	background: #EA5C5C;
+}

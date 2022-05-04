@@ -1,0 +1,1278 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+
+		<style type="text/css">
+.ui-icon-mail-closed {
+	-ms-transform: scale(1.5); /* IE 9 */
+	-webkit-transform: scale(1.5); /* Chrome, Safari, Opera */
+	transform: scale(1.5);
+}
+
+.ui-icon-pencil {
+	-ms-transform: scale(1.3); /* IE 9 */
+	-webkit-transform: scale(1.3); /* Chrome, Safari, Opera */
+	transform: scale(1.3);
+}
+
+.ui-icon-folder-collapsed {
+	-ms-transform: scale(1.3); /* IE 9 */
+	-webkit-transform: scale(1.3); /* Chrome, Safari, Opera */
+	transform: scale(1.3);
+}
+</style>
+
+
+		<p:tab title="Consulta"
+			rendered="#{autenticacaoBean.temPermissoes([1, 13, 17, 18])}">
+
+
+			<h:form id="formularioConsulta">
+				<p:panel header="Consulta">
+
+					<div align="center">
+
+						<p:outputLabel value="CNPJ: " />
+						<p:inputText id="placa" maxlength="14" size="12"
+							value="#{credenciadoEmpBean.empresa.cnpj}"
+							style="text-transform:uppercase;">
+							<p:keyFilter regEx="/[\d\-\.]/" preventPaste="false" />
+						</p:inputText>
+						<br /> <br />
+
+						<p:commandButton value="Pesquisar" icon="ui-icon-search"
+							actionListener="#{credenciadoEmpBean.buscarCredenciado}"
+							update=":mensagem tabView:formularioEmpresas:painelDados"
+							style="background: #01B50D;">
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+
+						<!-- ALTERAR AQUI -->
+						<p:commandButton value="Novo" type="button"
+							onclick="PF('dlg2').show();"
+							rendered="#{autenticacaoBean.temPermissoes([1])}" />
+
+					</div>
+				</p:panel>
+			</h:form>
+		</p:tab>
+		<p:tabView id="tabView"
+			rendered="#{autenticacaoBean.temPermissoes([1, 13, 17, 18])}">
+			<p:tab title="Dados Credenciado">
+				<h:form id="formularioEmpresas">
+					<h:panelGroup id="painelDados" layout="block">
+
+						<h:panelGrid columns="2"
+							rendered="#{credenciadoEmpBean.exibePainelDados}">
+							<p:panel header="Resultado">
+								<p:panelGrid id="lista" columns="6" style="margin: 0 auto;">
+									<f:facet name="header">
+										<h3>EMPRESARIAL</h3>
+									</f:facet>
+
+									<h:outputText value="CNPJ:" style="font-weight: bold;" />
+									<h:outputText value="#{credenciadoEmpBean.empresa.cnpj}" />
+
+									<h:outputText value="" />
+									<h:outputText value="" />
+									<h:outputText value="" />
+									<h:outputText value="" />
+
+									<h:outputText value="Razão Social:" style="font-weight: bold;" />
+									<h:outputText value="#{credenciadoEmpBean.empresa.razaoSocial}"
+										style="text-transform:uppercase;" />
+
+									<h:outputText value="Nome Fantasia:" style="font-weight: bold;" />
+									<h:outputText
+										value="#{credenciadoEmpBean.empresa.nomeFantasia}"
+										style="text-transform:uppercase;" />
+
+									<h:outputText value="" />
+									<h:outputText value="" />
+
+									<h:outputText value="Endereço:" style="font-weight: bold;" />
+									<h:outputText value="#{credenciadoEmpBean.empresa.endereco}"
+										style="text-transform:uppercase;" />
+
+									<h:outputText value="Complemento:" style="font-weight: bold;" />
+									<h:outputText value="#{credenciadoEmpBean.empresa.complemento}"
+										style="text-transform:uppercase;" />
+
+									<h:outputText value="CEP:" style="font-weight: bold;" />
+									<h:outputText value="#{credenciadoEmpBean.empresa.cep}" />
+
+									<h:outputText value="Estado:" style="font-weight: bold;" />
+									<h:outputText
+										value="#{credenciadoEmpBean.empresa.estadoEndereco.nome}" />
+
+									<h:outputText value="Municipio: " style="font-weight: bold;" />
+									<h:outputText
+										value="#{credenciadoEmpBean.empresa.municipioEndereco.nome}" />
+
+									<h:outputText value="" />
+									<h:outputText value="" />
+
+									<h:outputText value="Telefone: " style="font-weight: bold;" />
+									<h:outputText value="#{credenciadoEmpBean.empresa.telEmp}" />
+
+									<h:outputText value="Celular: " style="font-weight: bold;" />
+									<h:outputText value="#{credenciadoEmpBean.empresa.celEmp}" />
+
+									<h:outputText value="E-mail " style="font-weight: bold;" />
+									<h:outputText value="#{credenciadoEmpBean.empresa.email}" />
+
+									<h:outputText value="Tipo Credencial:"
+										style="font-weight: bold;" />
+									<h:outputText
+										value="#{credenciadoEmpBean.credenciado.credencialTipo.tipocredencial}" />
+
+									<h:outputText value="Status:" style="font-weight: bold;" />
+									<h:outputText
+										value="#{credenciadoEmpBean.credenciado.credencialStatus.tipoStatus}"
+										style="text-transform:uppercase;" />
+
+									<h:outputText value="" />
+									<h:outputText value="" />
+
+									<h:outputText value="Data Cadastro:" style="font-weight: bold;" />
+									<h:outputText
+										value="#{credenciadoEmpBean.credenciado.dataCadastro.date}/#{credenciadoEmpBean.credenciado.dataCadastro.month+1}/#{credenciadoEmpBean.credenciado.dataCadastro.year+1900}" />
+
+									<h:outputText value="Data Vencimento:"
+										style="font-weight: bold;" />
+									<h:outputText
+										value="#{credenciadoEmpBean.credenciado.vencimentoCredencial.date}/#{credenciadoEmpBean.credenciado.vencimentoCredencial.month+1}/#{credenciadoEmpBean.credenciado.vencimentoCredencial.year+1900}" />
+
+									<h:outputText value="" />
+									<h:outputText value="" />
+
+								</p:panelGrid>
+								<br />
+								<br />
+
+
+								<!-- ALTERAR AQUI -->
+								<p:tabView id="tabView"
+									rendered="#{autenticacaoBean.temPermissoes([1])}">
+									<p:tab title="Ativos">
+
+										<p:panelGrid columns="1" layout="grid">
+											<p:dataTable id="listaCorregedoria"
+												emptyMessage="Nenhum registro encontrado."
+												value="#{credenciadoEmpBean.credenciado.veiculo}"
+												var="veiculo">
+
+
+
+
+												<f:facet name="header">
+													<h3>PROCESSOS CORREGEDORIA</h3>
+
+													<p:commandButton value="Adicionar Processo"
+														style="width: 6%; text-align: center; margin:auto; display:block;"
+														oncomplete="PF('dialogoprop').show();" update=":prop:prop"
+														rendered="#{autenticacaoBean.temPermissoes([1, 13])}">
+														<f:actionListener
+															type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+													</p:commandButton>
+
+												</f:facet>
+
+												<p:column headerText="Partes" style="width: 2%;">
+													<p:rowToggler />
+												</p:column>
+
+												<p:column headerText="Cod"
+													style="width: 2%; text-align: center;">
+													<h:outputText value="#{veiculo.veiculo.adaptado}" />
+												</p:column>
+
+												<p:column headerText="Data Entrada"
+													style="width: 9%; text-align: center;">
+													<h:outputText value="#{veiculo.veiculo.adaptado}" />
+												</p:column>
+
+												<p:column headerText="CNPJ"
+													style="width: 9%; text-align: center;">
+													<h:outputText value="#{veiculo.veiculo.adaptado}" />
+												</p:column>
+
+												<p:column headerText="Nome Fantasia"
+													style="width: 9%; text-align: center;">
+													<h:outputText value="#{veiculo.veiculo.adaptado}" />
+												</p:column>
+
+												<p:column headerText="Objeto da ação"
+													style="width: 9%; text-align: center;">
+													<h:outputText value="#{veiculo.veiculo.adaptado}" />
+												</p:column>
+
+												<p:column headerText="SGPE Processo"
+													style="width: 9%; text-align: center;">
+													<h:outputText value="#{veiculo.veiculo.adaptado}" />
+												</p:column>
+
+												<p:column headerText="Situação"
+													style="width: 9%; text-align: center;">
+													<h:outputText value="#{veiculo.veiculo.adaptado}" />
+												</p:column>
+
+												<p:column headerText="Usuário Inclusão"
+													style="width: 9%; text-align: center;">
+													<h:outputText value="#{veiculo.veiculo.adaptado}" />
+												</p:column>
+
+												<p:column headerText="Movimento Por"
+													style="width: 9%; text-align: center;">
+													<h:outputText value="#{veiculo.veiculo.adaptado}" />
+												</p:column>
+
+												<p:column headerText="Observação"
+													style="width: 9%; text-align: center;">
+													<h:outputText value="#{veiculo.veiculo.adaptado}" />
+												</p:column>
+
+												<p:column headerText="Status"
+													style="width: 3%; text-align: center;">
+													<h:outputText value="#{veiculo.veiculo.adaptado}" />
+												</p:column>
+
+												<p:column headerText="Opções"
+													style="width: 6%; text-align: center;"
+													rendered="#{autenticacaoBean.temPermissoes([1, 13])}">
+
+
+
+													<p:commandButton
+														actionListener="#{frotaViagemBean.visualizar}"
+														icon="ui-icon-mail-closed"
+														onclick="PF('dlgEmail').show();" style="align: center;"
+														update=":mensagem tabView:formularioEmpresas:listaProp">
+														<f:attribute name="viagemSelecionado" value="#{viagem}" />
+
+													</p:commandButton>
+
+													<p:commandButton
+														actionListener="#{frotaViagemBean.visualizar}"
+														icon="ui-icon-pencil" onclick="PF('dlgAprovar').show();"
+														style="align: center;"
+														update=":mensagem tabView:formularioEmpresas:listaProp">
+														<f:attribute name="viagemSelecionado" value="#{viagem}" />
+
+													</p:commandButton>
+
+													<p:commandButton
+														actionListener="#{frotaViagemBean.visualizar}"
+														icon="ui-icon-folder-collapsed"
+														onclick="PF('dlgAprovar').show();" style="align: center;"
+														update=":mensagem tabView:formularioEmpresas:listaProp">
+														<f:attribute name="viagemSelecionado" value="#{viagem}" />
+
+													</p:commandButton>
+
+												</p:column>
+
+												<p:rowExpansion>
+
+													<p:commandButton value="Adicionar Partes"
+														style="width: 6%; text-align: center; margin:auto; display:block;"
+														oncomplete="PF('dialogoprop').show();" update=":prop:prop"
+														rendered="#{autenticacaoBean.temPermissoes([1, 13])}">
+														<f:actionListener
+															type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+													</p:commandButton>
+													<br />
+													<p:dataTable id="lista"
+														emptyMessage="Nenhum registro encontrado."
+														value="#{credenciadoEmpBean.credenciado.veiculo}"
+														var="veiculo" style="width: 20%; padding-left: 40%">
+
+
+
+
+
+
+
+														<p:column headerText="Nome Completo"
+															style="width: 9%; text-align: center;">
+															<h:outputText value="#{veiculo.veiculo.adaptado}" />
+														</p:column>
+
+														<p:column headerText="CPF"
+															style="width: 3%; text-align: center;">
+															<h:outputText value="#{veiculo.veiculo.adaptado}" />
+														</p:column>
+
+														<p:column headerText="Data Nascimento"
+															style="width: 3%; text-align: center;">
+															<h:outputText value="#{veiculo.veiculo.adaptado}" />
+														</p:column>
+
+
+
+													</p:dataTable>
+												</p:rowExpansion>
+
+											</p:dataTable>
+
+										</p:panelGrid>
+
+									</p:tab>
+
+									<p:tab title="Arquivados">
+
+									</p:tab>
+
+
+
+								</p:tabView>
+
+								<!-- INICIO PAINEL 2 COLUNAS -->
+								<p:panelGrid columns="2" layout="grid">
+
+
+
+
+
+
+									<p:dataTable id="listaProp"
+										emptyMessage="Nenhum registro encontrado."
+										value="#{credenciadoEmpBean.credenciado.ativioProp}"
+										var="prop">
+
+
+										<f:facet name="header">
+											<h3>RELAÇÃO DE PROPRIETÁRIOS</h3>
+
+											<p:commandButton value="Adicionar"
+												oncomplete="PF('dialogoprop').show();" update=":prop:prop"
+												rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
+												<f:actionListener
+													type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+											</p:commandButton>
+
+										</f:facet>
+
+										<p:column headerText="Nome"
+											style="width: 9%; text-align: center;">
+											<h:outputText value="#{prop.pessoa.nomeCompleto}" />
+										</p:column>
+
+										<p:column headerText="CPF"
+											style="width: 9%; text-align: center;">
+											<h:outputText value="#{prop.pessoa.cpf}" />
+										</p:column>
+
+										<p:column headerText="Data Inclusão"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{prop.dataInclusao.date}/#{prop.dataInclusao.month+1}/#{prop.dataInclusao.year+1900}" />
+										</p:column>
+
+										<p:column headerText="Usuário Inclusão"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{prop.usuarioInclusao.pessoa.nomeCompleto}" />
+										</p:column>
+
+										<p:column headerText="Opções"
+											style="width: 6%; text-align: center;"
+											rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
+											<p:commandButton icon="ui-icon-trash"
+												actionListener="#{credenciadoEmpBean.excluirProprietario}"
+												update=":mensagem tabView:formularioEmpresas:listaProp">
+												<p:confirm header="Confirmação"
+													message="Deseja excluir o Endereço?" icon="ui-icon-alert" />
+												<f:attribute name="ProprietarioSelecionado" value="#{prop}" />
+											</p:commandButton>
+										</p:column>
+
+									</p:dataTable>
+
+									<p:dataTable id="lista3"
+										emptyMessage="Nenhum registro encontrado."
+										value="#{credenciadoEmpBean.credenciado.ativioCredenciado}"
+										var="func">
+
+
+										<f:facet name="header">
+											<h3>RELAÇÃO DE FUNCIONÁRIOS</h3>
+
+											<p:commandButton value="Adicionar"
+												oncomplete="PF('dialogofunc').show();" update=":func:func"
+												rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
+												<f:actionListener
+													type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+											</p:commandButton>
+
+										</f:facet>
+
+										<p:column headerText="Nome"
+											style="width: 9%; text-align: center;">
+											<h:outputText value="#{func.credenciado.pessoa.nomeCompleto}" />
+										</p:column>
+
+										<p:column headerText="CPF"
+											style="width: 9%; text-align: center;">
+											<h:outputText value="#{func.credenciado.pessoa.cpf}" />
+										</p:column>
+
+										<p:column headerText="Tipo Credencial"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{func.credenciado.credencialTipo.tipocredencial}" />
+										</p:column>
+
+										<p:column headerText="Data Inclusão"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{func.dataInclusao.date}/#{func.dataInclusao.month+1}/#{func.dataInclusao.year+1900}" />
+										</p:column>
+
+										<p:column headerText="Usuário Inclusão"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{func.usuarioInclusao.pessoa.nomeCompleto}" />
+										</p:column>
+
+										<p:column headerText="Opções"
+											style="width: 6%; text-align: center;"
+											rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
+											<p:commandButton icon="ui-icon-trash"
+												actionListener="#{credenciadoEmpBean.excluirFuncionario}"
+												update=":mensagem tabView:formularioEmpresas:lista3">
+												<p:confirm header="Confirmação"
+													message="Deseja excluir o Funcionário?"
+													icon="ui-icon-alert" />
+												<f:attribute name="funcionarioSelecionado" value="#{func}" />
+											</p:commandButton>
+										</p:column>
+
+
+									</p:dataTable>
+
+									<p:confirmDialog global="true">
+										<p:commandButton value="Sim" type="button"
+											styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+										<p:commandButton value="Não" type="button"
+											styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+									</p:confirmDialog>
+
+
+
+
+
+
+								</p:panelGrid>
+								<!-- FIM PAINEL 3 COLUNAS -->
+
+								<br />
+								<br />
+
+								<!-- INICIO PAINEL 2 COLUNAS -->
+								<p:panelGrid columns="2" layout="grid">
+
+									<p:dataTable id="lista2"
+										emptyMessage="Nenhum registro encontrado."
+										value="#{credenciadoEmpBean.credenciado.historicoCredencial}"
+										var="empresa">
+
+										<f:facet name="header">
+											<h3>HISTÓRICO CREDENCIAL</h3>
+										</f:facet>
+
+
+										<p:column headerText="Tipo Credencial"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{empresa.credencialTipo.tipocredencial}" />
+										</p:column>
+
+										<p:column headerText="Data Vencimento"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{empresa.vencimentoCredencial.date}/#{empresa.vencimentoCredencial.month+1}/#{empresa.vencimentoCredencial.year+1900}" />
+										</p:column>
+
+										<p:column headerText="Status Credencial"
+											style="width: 9%; text-align: center;">
+											<h:outputText value="#{empresa.credencialStatus.tipoStatus}" />
+										</p:column>
+
+										<p:column headerText="Data Alteração"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{empresa.dataCadastro.date}/#{empresa.dataCadastro.month+1}/#{empresa.dataCadastro.year+1900}" />
+										</p:column>
+
+										<p:column headerText="Usuário Alteração"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{empresa.usuarioCadastro.pessoa.nomeCompleto}" />
+										</p:column>
+
+									</p:dataTable>
+
+
+									<p:dataTable id="listaEndAdc"
+										emptyMessage="Nenhum registro encontrado."
+										value="#{credenciadoEmpBean.credenciado.enderecoAdic}"
+										style="width: 100%" var="empresa">
+
+										<f:facet name="header">
+											<h3>ENDEREÇOS ADICIONAIS</h3>
+											<p:commandButton value="Adicionar"
+												oncomplete="PF('dialogo').show();"
+												update=":endereco:endereco"
+												rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
+												<f:actionListener
+													type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+											</p:commandButton>
+										</f:facet>
+
+
+										<p:column headerText="Tipo Endereço"
+											style="width: 9%; text-align: center;">
+											<h:outputText value="#{empresa.tipoendereco}" />
+										</p:column>
+
+										<p:column headerText="Endereço"
+											style="width: 9%; text-align: center;">
+											<h:outputText value="#{empresa.endereco}" />
+										</p:column>
+
+
+										<p:column headerText="Data Inclusão"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{empresa.dataInclusao.date}/#{empresa.dataInclusao.month+1}/#{empresa.dataInclusao.year+1900}" />
+										</p:column>
+
+										<p:column headerText="Usuário Inclusão"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{empresa.usuarioInclusao.pessoa.nomeCompleto}" />
+										</p:column>
+
+										<p:column headerText="Opções"
+											style="width: 6%; text-align: center;"
+											rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
+											<p:commandButton icon="ui-icon-trash"
+												actionListener="#{credenciadoEmpBean.excluirEnd}"
+												update=":mensagem tabView:formularioEmpresas:listaEndAdc">
+												<p:confirm header="Confirmação"
+													message="Deseja excluir o Endereço?" icon="ui-icon-alert" />
+												<f:attribute name="enderecoSelecionado" value="#{empresa}" />
+											</p:commandButton>
+										</p:column>
+
+
+
+									</p:dataTable>
+
+									<p:confirmDialog global="true">
+										<p:commandButton value="Sim" type="button"
+											styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+										<p:commandButton value="Não" type="button"
+											styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+									</p:confirmDialog>
+
+
+								</p:panelGrid>
+
+								<!-- FIM PAINEL 2 COLUNAS -->
+
+
+
+								<br />
+								<br />
+
+
+
+
+
+								<!-- INICIO PAINEL 4 COLUNAS -->
+								<p:panelGrid columns="2" layout="grid">
+
+									<p:dataTable id="lista5"
+										emptyMessage="Nenhum registro encontrado."
+										value="#{credenciadoEmpBean.credenciado.historicoPortaria}"
+										var="portaria" style="width: 100%">
+
+										<f:facet name="header">
+											<h3>PORTARIA</h3>
+											<p:commandButton value="Adicionar"
+												oncomplete="PF('dialogoportaria').show();"
+												update=":portaria:portaria"
+												rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
+												<f:actionListener
+													type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+											</p:commandButton>
+										</f:facet>
+
+										<p:column headerText="Portaria"
+											style="width: 9%; text-align: center;">
+											<h:outputText value="#{portaria.portaria}" />
+										</p:column>
+
+										<p:column headerText="Data Inicio"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{portaria.dataInicio.date}/#{portaria.dataInicio.month+1}/#{portaria.dataInicio.year+1900}" />
+										</p:column>
+
+										<p:column headerText="Data Fim"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{portaria.dataFim.date}/#{portaria.dataFim.month+1}/#{portaria.dataFim.year+1900}" />
+										</p:column>
+
+										<p:column headerText="Data Inclusão"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{portaria.dataInclusao.date}/#{portaria.dataInclusao.month+1}/#{portaria.dataInclusao.year+1900}" />
+										</p:column>
+
+										<p:column headerText="Usuário Inclusão"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{portaria.usuarioCadastro.pessoa.nomeCompleto}" />
+										</p:column>
+									</p:dataTable>
+
+
+
+									<p:dataTable id="lista6"
+										emptyMessage="Nenhum registro encontrado."
+										value="#{credenciadoEmpBean.credenciado.historicoAlvara}"
+										var="alvara" style="width: 100%">
+
+										<f:facet name="header">
+											<h3>ALVARÁ</h3>
+											<p:commandButton value="Adicionar"
+												oncomplete="PF('dialogoalvara').show();"
+												update=":alvara:alvara"
+												rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
+												<f:actionListener
+													type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+											</p:commandButton>
+										</f:facet>
+
+										<p:column headerText="Alvará"
+											style="width: 9%; text-align: center;">
+											<h:outputText value="#{alvara.alvara}" />
+										</p:column>
+
+										<p:column headerText="Data Inicio"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{alvara.dataInicio.date}/#{alvara.dataInicio.month+1}/#{alvara.dataInicio.year+1900}" />
+										</p:column>
+
+										<p:column headerText="Data Fim"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{alvara.dataFim.date}/#{alvara.dataFim.month+1}/#{alvara.dataFim.year+1900}" />
+										</p:column>
+
+										<p:column headerText="Data Inclusão"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{alvara.dataInclusao.date}/#{alvara.dataInclusao.month+1}/#{alvara.dataInclusao.year+1900}" />
+										</p:column>
+
+										<p:column headerText="Usuário Inclusão"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{alvara.usuarioCadastro.pessoa.nomeCompleto}" />
+										</p:column>
+									</p:dataTable>
+
+
+
+									<p:dataTable id="lista4"
+										emptyMessage="Nenhum registro encontrado."
+										value="#{credenciadoEmpBean.credenciado.historicoObs}"
+										var="obs" style="width: 100%">
+
+										<f:facet name="header">
+											<h3>OBSERVAÇÃO</h3>
+											<p:commandButton value="Adicionar"
+												oncomplete="PF('dialogoobs').show();" update=":obs:obs"
+												rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
+												<f:actionListener
+													type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+											</p:commandButton>
+										</f:facet>
+
+										<p:column headerText="Observação"
+											style="width: 19%; text-align: center;">
+											<h:outputText value="#{obs.observacao}" />
+										</p:column>
+
+										<p:column headerText="Data Inclusão"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{obs.dataInclusao.date}/#{obs.dataInclusao.month+1}/#{obs.dataInclusao.year+1900}" />
+										</p:column>
+
+										<p:column headerText="Usuário Inclusão"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{obs.usuarioCadastro.pessoa.nomeCompleto}" />
+										</p:column>
+									</p:dataTable>
+
+
+
+									<p:dataTable id="lista7"
+										emptyMessage="Nenhum registro encontrado."
+										value="#{credenciadoEmpBean.credenciado.SGPE}" var="sgpe"
+										style="width: 100%">
+
+										<f:facet name="header">
+											<h3>SGP-e</h3>
+											<p:commandButton value="Adicionar"
+												oncomplete="PF('dialogosgpe').show();" update=":sgpe:sgpe"
+												rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
+												<f:actionListener
+													type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+											</p:commandButton>
+										</f:facet>
+
+										<p:column headerText="Número"
+											style="width: 9%; text-align: center;">
+											<h:outputText value="#{sgpe.SGPE}" />
+										</p:column>
+
+										<p:column headerText="Observação"
+											style="width: 9%; text-align: center;">
+											<h:outputText value="#{sgpe.obs}" />
+										</p:column>
+
+										<p:column headerText="Data Inclusão"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{sgpe.dataInclusao.date}/#{sgpe.dataInclusao.month+1}/#{sgpe.dataInclusao.year+1900}" />
+										</p:column>
+
+										<p:column headerText="Usuário Inclusão"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{sgpe.usuarioCadastro.pessoa.nomeCompleto}" />
+										</p:column>
+
+
+
+									</p:dataTable>
+
+								</p:panelGrid>
+								<!-- FIM PAINEL 4 COLUNAS -->
+
+								<br />
+								<br />
+
+								<!-- INICIO PAINEL 1 COLUNAS -->
+								<p:panelGrid columns="1" layout="grid">
+
+									<p:dataTable id="lista8"
+										emptyMessage="Nenhum registro encontrado."
+										value="#{credenciadoEmpBean.credenciado.veiculo}"
+										var="veiculo">
+
+										<f:facet name="header">
+											<h3>RELAÇÃO DE VEÍCULOS</h3>
+											<p:commandButton value="Adicionar"
+												oncomplete="PF('dialogoveic').show();" update=":veic:veic"
+												rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
+												<f:actionListener
+													type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+											</p:commandButton>
+										</f:facet>
+
+
+										<p:column headerText="Placa"
+											style="width: 9%; text-align: center;">
+											<h:outputText value="#{veiculo.veiculo.placa.toUpperCase()}" />
+										</p:column>
+
+										<p:column headerText="RENAVAM"
+											style="width: 9%; text-align: center;">
+											<h:outputText value="#{veiculo.veiculo.renavam}" />
+										</p:column>
+
+										<p:column headerText="Marca/Modelo"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{veiculo.veiculo.marcaModelo.toUpperCase()}" />
+										</p:column>
+
+										<p:column headerText="Categoria"
+											style="width: 9%; text-align: center;">
+											<h:outputText value="#{veiculo.veiculo.categoria}" />
+										</p:column>
+
+										<p:column headerText="Adaptado"
+											style="width: 9%; text-align: center;">
+											<h:outputText value="#{veiculo.veiculo.adaptado}" />
+										</p:column>
+
+										<p:column headerText="Obs."
+											style="width: 9%; text-align: center;">
+											<h:outputText value="#{veiculo.obs}" />
+										</p:column>
+
+										<p:column headerText="Data Inclusão"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{veiculo.dataInclusao.date}/#{veiculo.dataInclusao.month+1}/#{veiculo.dataInclusao.year+1900}" />
+										</p:column>
+
+										<p:column headerText="Usuário Inclusão"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{veiculo.usuarioInclusao.pessoa.nomeCompleto}" />
+										</p:column>
+
+										<p:column headerText="Opções"
+											style="width: 6%; text-align: center;"
+											rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
+											<p:commandButton icon="ui-icon-trash"
+												actionListener="#{credenciadoEmpBean.excluirVeiculo}"
+												update=":mensagem tabView:formularioEmpresas:lista8">
+												<p:confirm header="Confirmação"
+													message="Deseja excluir o Veículo?" icon="ui-icon-alert" />
+												<f:attribute name="VeiculoSelecionado" value="#{veiculo}" />
+											</p:commandButton>
+										</p:column>
+
+										<p:confirmDialog global="true">
+											<p:commandButton value="Sim" type="button"
+												styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+											<p:commandButton value="Não" type="button"
+												styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+										</p:confirmDialog>
+
+
+									</p:dataTable>
+
+
+									<p:confirmDialog global="true">
+										<p:commandButton value="Sim" type="button"
+											styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+										<p:commandButton value="Não" type="button"
+											styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+									</p:confirmDialog>
+
+
+								</p:panelGrid>
+
+								<!-- FIM PAINEL 2 COLUNAS -->
+
+
+							</p:panel>
+						</h:panelGrid>
+
+					</h:panelGroup>
+
+
+
+
+
+
+				</h:form>
+
+
+			</p:tab>
+
+
+
+
+
+
+
+
+		</p:tabView>
+
+		<p:dialog header="Observação" widgetVar="dialogoobs" draggable="false"
+			resizable="false" modal="true" closable="false">
+			<h:form id="obs">
+				<h:panelGrid id="obs" columns="2">
+
+					<p:outputLabel value="Observação: " />
+					<p:inputTextarea maxlength="255"
+						value="#{credenciadoEmpBean.obs.observacao}" counter="display"
+						counterTemplate="Restam {0} Caracteres." />
+					<h:outputText />
+					<h:outputText id="display" />
+
+				</h:panelGrid>
+
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{credenciadoEmpBean.adicionaObs}"
+						update=":mensagem tabView:formularioEmpresas:lista4"
+						oncomplete="PF('dialogoobs').hide();" />
+					<p:commandButton value="Fechar"
+						oncomplete="PF('dialogoobs').hide();" />
+				</h:panelGrid>
+
+			</h:form>
+
+		</p:dialog>
+
+		<p:dialog header="Portaria" widgetVar="dialogoportaria"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="portaria">
+				<h:panelGrid id="portaria" columns="2">
+
+					<p:outputLabel value="Portaria:" />
+					<p:inputText maxlength="50" size="60"
+						value="#{credenciadoEmpBean.portaria.portaria}" required="true"
+						requiredMessage="O campo Portaria é obritarório"
+						style="text-transform:uppercase;" />
+
+					<p:outputLabel value="Data Inicio:" />
+					<p:calendar id="dataInicio" maxlength="8" size="6"
+						value="#{credenciadoEmpBean.portaria.dataInicio}" required="true"
+						requiredMessage="O campo Data Inicio é obrigatório" locale="pt_BR"
+						pattern="dd/MM/yyyy" mask="true" />
+
+					<p:outputLabel value="Data Fim:" />
+					<p:calendar id="dataFim" maxlength="8" size="6"
+						value="#{credenciadoEmpBean.portaria.dataFim}" required="true"
+						requiredMessage="O campo Data Fim é obrigatório" locale="pt_BR"
+						pattern="dd/MM/yyyy" mask="true" />
+
+				</h:panelGrid>
+
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{credenciadoEmpBean.adicionaPortaria}"
+						update=":mensagem tabView:formularioEmpresas:lista5"
+						oncomplete="PF('dialogoportaria').hide();" />
+					<p:commandButton value="Fechar"
+						oncomplete="PF('dialogoportaria').hide();" />
+				</h:panelGrid>
+
+			</h:form>
+
+		</p:dialog>
+
+		<p:dialog header="Alvará" widgetVar="dialogoalvara" draggable="false"
+			resizable="false" modal="true" closable="false">
+			<h:form id="alvara">
+				<h:panelGrid id="alvara" columns="2">
+
+					<p:outputLabel value="Alvará:" />
+					<p:inputText maxlength="50" size="60"
+						value="#{credenciadoEmpBean.alvara.alvara}" required="true"
+						requiredMessage="O campo Alvará é obritarório"
+						style="text-transform:uppercase;" />
+
+					<p:outputLabel value="Data Inicio:" />
+					<p:calendar id="dataInicio" maxlength="8" size="6"
+						value="#{credenciadoEmpBean.alvara.dataInicio}" required="true"
+						requiredMessage="O campo Data Inicio é obrigatório" locale="pt_BR"
+						pattern="dd/MM/yyyy" mask="true" />
+
+					<p:outputLabel value="Data Fim:" />
+					<p:calendar id="dataFim" maxlength="8" size="6"
+						value="#{credenciadoEmpBean.alvara.dataFim}" required="true"
+						requiredMessage="O campo Data Fim é obrigatório" locale="pt_BR"
+						pattern="dd/MM/yyyy" mask="true" />
+
+				</h:panelGrid>
+
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{credenciadoEmpBean.adicionaAlvara}"
+						update=":mensagem tabView:formularioEmpresas:lista6"
+						oncomplete="PF('dialogoalvara').hide();" />
+					<p:commandButton value="Fechar"
+						oncomplete="PF('dialogoalvara').hide();" />
+				</h:panelGrid>
+
+			</h:form>
+
+		</p:dialog>
+
+		<p:dialog header="SGP-e" widgetVar="dialogosgpe" draggable="false"
+			resizable="false" modal="true" closable="false">
+			<h:form id="sgpe">
+				<h:panelGrid id="sgpe" columns="2">
+
+
+
+
+					<p:outputLabel value="SGP-e:" />
+					<p:inputText maxlength="60" size="50"
+						value="#{credenciadoEmpBean.SGPE.SGPE}" required="true"
+						requiredMessage="O campo SGP-e é obritarório"
+						style="text-transform:uppercase;" />
+
+					<p:outputLabel value="Descrição: " />
+					<p:inputTextarea maxlength="60"
+						value="#{credenciadoEmpBean.SGPE.obs}" counter="display"
+						counterTemplate="Restam {0} Caracteres." />
+					<h:outputText />
+					<h:outputText id="display" />
+
+				</h:panelGrid>
+
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{credenciadoEmpBean.adicionaSGPE}"
+						update=":mensagem tabView:formularioEmpresas:lista7"
+						oncomplete="PF('dialogosgpe').hide();" />
+					<p:commandButton value="Fechar"
+						oncomplete="PF('dialogosgpe').hide();" />
+				</h:panelGrid>
+
+			</h:form>
+
+		</p:dialog>
+
+		<p:dialog header="Endereço Adicional" widgetVar="dialogo"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="endereco">
+				<h:panelGrid id="endereco" columns="2">
+
+					<p:outputLabel value="Tipo Endereço: " />
+					<p:selectOneMenu id="tipodoc"
+						value="#{credenciadoEmpBean.endAdic.tipoendereco}"
+						requiredMessage="O campo Tipo Endereço é obritarório">
+						<f:selectItem itemValue="Pista Moto" itemLabel="Pista Moto" />
+						<f:selectItem itemValue="Treinamento" itemLabel="Treinamento" />
+						<f:selectItem itemValue="Sala de aula" itemLabel="Sala de aula" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Endereço: " />
+					<p:inputTextarea maxlength="100"
+						value="#{credenciadoEmpBean.endAdic.endereco}" counter="display"
+						counterTemplate="Restam {0} Caracteres." />
+					<h:outputText />
+					<h:outputText id="display" />
+
+				</h:panelGrid>
+
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{credenciadoEmpBean.adicionaEnd}"
+						update=":mensagem tabView:formularioEmpresas:listaEndAdc"
+						oncomplete="PF('dialogo').hide();" />
+					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+				</h:panelGrid>
+
+			</h:form>
+
+		</p:dialog>
+
+		<p:dialog header="Funcionário" widgetVar="dialogofunc"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="func">
+				<h:panelGrid id="func" columns="2">
+
+					<p:outputLabel value="CPF: " />
+					<p:inputText id="cpf" maxlength="11" size="10"
+						value="#{credenciadoEmpBean.pessoa.cpf}" required="true"
+						requiredMessage="O campo CPF é obrigatório">
+						<f:validator validatorId="CpfValidator" />
+						<p:ajax event="blur" update="func:func"
+							listener="#{credenciadoEmpBean.buscarFuncionario}" />
+						<p:keyFilter regEx="/[\d\-\.]/" preventPaste="false" />
+					</p:inputText>
+
+					<p:outputLabel value="Nome Completo:" />
+					<p:inputText maxlength="50" size="30"
+						disabled="#{credenciadoEmpBean.funcionario.pessoa.nomeCompleto != null}"
+						value="#{credenciadoEmpBean.funcionario.pessoa.nomeCompleto}"
+						required="true"
+						requiredMessage="O campo Nome Completo é obrigatório"
+						style="text-transform:uppercase;" />
+
+				</h:panelGrid>
+
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{credenciadoEmpBean.adicionaFuncionario}"
+						update=":mensagem tabView:formularioEmpresas:lista3"
+						oncomplete="PF('dialogofunc').hide();" />
+					<p:commandButton value="Fechar"
+						oncomplete="PF('dialogofunc').hide();" />
+				</h:panelGrid>
+
+			</h:form>
+
+		</p:dialog>
+
+		<p:dialog header="Proprietário" widgetVar="dialogoprop"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="prop">
+				<h:panelGrid id="prop" columns="2">
+
+
+					<p:outputLabel value="CPF: " />
+					<p:inputText id="cpf" maxlength="11" size="10"
+						value="#{credenciadoEmpBean.pessoa.cpf}" required="true"
+						requiredMessage="O campo CPF é obrigatório">
+						<f:validator validatorId="CpfValidator" />
+						<p:ajax event="blur" update="prop:prop"
+							listener="#{credenciadoEmpBean.buscarProprietario}" />
+						<p:keyFilter regEx="/[\d\-\.]/" preventPaste="false" />
+					</p:inputText>
+
+					<p:outputLabel value="Nome Completo:" />
+					<p:inputText maxlength="50" size="30"
+						disabled="#{credenciadoEmpBean.proprietario.cpf != null}"
+						value="#{credenciadoEmpBean.proprietario.nomeCompleto}"
+						required="true"
+						requiredMessage="O campo Nome Completo é obrigatório"
+						style="text-transform:uppercase;" />
+
+				</h:panelGrid>
+
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{credenciadoEmpBean.adicionaProprietario}"
+						update=":mensagem tabView:formularioEmpresas:listaProp"
+						oncomplete="PF('dialogoprop').hide();" />
+					<p:commandButton value="Fechar"
+						oncomplete="PF('dialogoprop').hide();" />
+				</h:panelGrid>
+
+			</h:form>
+
+		</p:dialog>
+
+		<p:dialog header="Veículo" widgetVar="dialogoveic" draggable="false"
+			resizable="false" modal="true" closable="false">
+			<h:form id="veic">
+				<h:panelGrid id="veic" columns="2">
+
+					<p:outputLabel value="Placa: " />
+					<p:inputMask id="placa" mask="aaa9*99" maxlength="7" size="10"
+						value="#{credenciadoEmpBean.veiculo.placa}" required="true"
+						requiredMessage="O campo Placa é obrigatório"
+						style="text-transform:uppercase;">
+						<p:ajax event="blur" update="veic:veic"
+							listener="#{credenciadoEmpBean.buscarVeiculo()}" />
+					</p:inputMask>
+
+					<p:outputLabel value="RENAVAM" />
+					<p:inputText maxlength="11" size="15" disabled="true"
+						value="#{credenciadoEmpBean.veiculo.renavam}" required="true"
+						requiredMessage="O campo RENAVAM é obrigatório"
+						style="text-transform:uppercase;" />
+
+					<p:outputLabel value="Marca/Modelo" />
+					<p:inputText maxlength="20" size="25" disabled="true"
+						value="#{credenciadoEmpBean.veiculo.marcaModelo}" required="true"
+						requiredMessage="O campo Marca/Modelo é obrigatório"
+						style="text-transform:uppercase;" />
+
+					<p:outputLabel value="Categoria" />
+					<p:inputText maxlength="11" size="15" disabled="true"
+						value="#{credenciadoEmpBean.veiculo.categoria}" required="true"
+						requiredMessage="O campo Categoria é obrigatório"
+						style="text-transform:uppercase;" />
+
+					<p:outputLabel value="Adaptado" />
+					<p:inputText maxlength="5" size="5" disabled="true"
+						value="#{credenciadoEmpBean.veiculo.adaptado}" required="true"
+						requiredMessage="O campo Adaptado é obrigatório"
+						style="text-transform:uppercase;" />
+
+					<p:outputLabel value="Observação" />
+					<p:inputTextarea maxlength="60"
+						value="#{credenciadoEmpBean.relacaoVeic.obs}" counter="display"
+						counterTemplate="Restam {0} Caracteres." />
+					<h:outputText />
+					<h:outputText id="display" />
+
+				</h:panelGrid>
+
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{credenciadoEmpBean.adicionaVeiculo()}"
+						update=":mensagem tabView:formularioEmpresas:lista8"
+						oncomplete="PF('dialogoveic').hide();" />
+					<p:commandButton value="Fechar"
+						oncomplete="PF('dialogoveic').hide();" />
+				</h:panelGrid>
+
+			</h:form>
+
+		</p:dialog>
+
+
+		<p:dialog header="Comunicação Interna" widgetVar="dlgEmail"
+			minHeight="40">
+
+			<h:form id="formularioAprovar">
+
+
+				<p:selectOneMenu id="console" value="#{selectOneMenuView.console}"
+					style="margin:auto; display:block;">
+					<f:selectItem itemLabel="Selecione um modelo de e-mail"
+						itemValue="" />
+					<f:selectItem itemLabel="Caltelatória" itemValue="Caltelatória" />
+
+
+
+				</p:selectOneMenu>
+
+				<br />
+
+
+
+				<center>
+					<h:panelGrid columns="2">
+						<p:commandButton value="Enviar e-mail"
+							actionListener="#{frotaViagemBean.aprovarViagem}"
+							update=":mensagem tabView:formularioEmpresas:listaProp"
+							oncomplete="PF('dlgEmail').hide();" />
+					</h:panelGrid>
+
+				</center>
+
+
+
+
+
+			</h:form>
+
+
+
+
+		</p:dialog>
+
+
+
+
+
+	</ui:define>
+</ui:composition>
+
+
+
+
+
+
+

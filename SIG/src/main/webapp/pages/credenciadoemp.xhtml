@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+
+	<ui:define name="conteudo">
+
+		<h:form id="formularioConsulta"
+			rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
+			
+			
+			
+			<p:panel header="Cadastro">
+
+
+				<div align="center">
+				
+				
+
+					<p:outputLabel value="CNPJ: *" />
+
+					<p:spacer width="20" height="10" />
+
+					<p:inputText id="cnpj" maxlength="14"
+						disabled="#{credenciadoEmpBean.empresa.razaoSocial != null}"
+						size="12" value="#{credenciadoEmpBean.empresa.cnpj}"
+						required="true" requiredMessage="O campo CNPJ é obrigatório">
+						<f:validator validatorId="ValidatorCNPJ" />
+						<p:keyFilter regEx="/[\d\-\.]/" preventPaste="false" />
+					</p:inputText>
+
+					<p:spacer width="20" height="10" />
+
+					<p:commandButton icon="ui-icon-search"
+						actionListener="#{credenciadoEmpBean.buscar()}"
+						update=":mensagem :formulario:cadastro"
+						style="background: #01B50D;">
+						<f:actionListener
+							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+					</p:commandButton>
+
+				</div>
+				
+				
+			</p:panel>
+			
+			
+		</h:form>
+
+		<h:form id="formulario">
+			<h:panelGroup id="cadastro" layout="block"
+				rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
+
+<div align="center">
+				<p:outputPanel style="display:block">
+
+					<h:panelGrid columns="6"
+						rendered="#{credenciadoEmpBean.exibePainelDados}">
+
+						<p:outputLabel value="Razão Social: *" />
+						<p:inputText maxlength="50" size="30"
+							
+							value="#{credenciadoEmpBean.empresa.razaoSocial}" required="true"
+							requiredMessage="O campo Razão Social é obrigatório"
+							style="text-transform:uppercase;" />
+
+						<p:outputLabel value="Nome Fantasia:" />
+						<p:inputText maxlength="50" size="30"
+						
+							value="#{credenciadoEmpBean.empresa.nomeFantasia}"
+							style="text-transform:uppercase;" />
+
+						<p:outputLabel value="" />
+						<p:outputLabel value="" />
+
+						<p:separator />
+						<p:separator />
+						<p:separator />
+						<p:separator />
+						<p:separator />
+						<p:separator />
+
+
+
+						<p:outputLabel value="Endereço: *" />
+						<p:inputText maxlength="50" size="30"
+							value="#{credenciadoEmpBean.empresa.endereco}" required="true"
+							requiredMessage="O campo Endereço Residência é obrigatório"
+							style="text-transform:uppercase;" />
+
+						<p:outputLabel value="Complemento:" />
+						<p:inputText maxlength="50" size="30"
+							value="#{credenciadoEmpBean.empresa.complemento}"
+							style="text-transform:uppercase;" />
+
+						<p:outputLabel value="CEP: *" />
+						<p:inputMask id="cep_endereco" mask="99.999-999" maxlength="11"
+							size="11" value="#{credenciadoEmpBean.empresa.cep}"
+							required="true" requiredMessage="O campo CEP é obrigatório">
+						</p:inputMask>
+
+						<p:outputLabel for="estado" value="UF: *" />
+						<p:selectOneMenu id="estado" filter="true"
+							converter="omnifaces.SelectItemsConverter"
+							value="#{credenciadoEmpBean.empresa.estadoEndereco}">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione um estado" />
+							<f:selectItems value="#{credenciadoEmpBean.estados}" var="estado"
+								itemValue="#{estado}" itemLabel="#{estado.sigla}" />
+							<p:ajax listener="#{credenciadoEmpBean.popular}"
+								update=":formulario:cidade" />
+						</p:selectOneMenu>
+
+						<p:outputLabel for="cidade" value="Municipio:" />
+						<p:selectOneMenu id="cidade" filter="true" required="true"
+							requiredMessage="O campo Municipio é obrigatório"
+							converter="omnifaces.SelectItemsConverter"
+							value="#{credenciadoEmpBean.empresa.municipioEndereco}">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione uma cidade" />
+							<f:selectItems value="#{credenciadoEmpBean.cidades}" var="cidade"
+								itemValue="#{cidade}" itemLabel="#{cidade.nome}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="" />
+						<p:outputLabel value="" />
+
+
+
+						<p:outputLabel value="Telefone Empresa:" />
+						<p:inputMask id="telemp" mask="(99) 9999-9999" maxlength="11"
+							size="11" value="#{credenciadoEmpBean.empresa.telEmp}">
+						</p:inputMask>
+
+						<p:outputLabel value="Celular Empresa:" />
+						<p:inputMask id="celemp" mask="(99) 99999-9999" maxlength="11"
+							size="11" value="#{credenciadoEmpBean.empresa.celEmp}">
+						</p:inputMask>
+
+						<p:outputLabel value="E-mail Empresa:" />
+						<p:inputText maxlength="50" size="30"
+							value="#{credenciadoEmpBean.empresa.email}"
+							style="text-transform:uppercase;" />
+
+						<p:separator />
+						<p:separator />
+						<p:separator />
+						<p:separator />
+						<p:separator />
+						<p:separator />
+
+
+						<p:outputLabel value="Status: *" />
+						<p:selectOneMenu filter="true"
+							value="#{credenciadoEmpBean.credenciado.credencialStatus}"
+							converter="omnifaces.SelectItemsConverter" required="true"
+							requiredMessage="O campo Status é obrigatório">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione um Status" />
+							<f:selectItems value="#{credenciadoEmpBean.credencialStatus}"
+								var="status" itemValue="#{status}"
+								itemLabel="#{status.tipoStatus}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Tipo Credencial: *" />
+						<p:selectOneMenu filter="true"
+							value="#{credenciadoEmpBean.credenciado.credencialTipo}"
+							converter="omnifaces.SelectItemsConverter" required="true"
+							requiredMessage="O campo Tipo Credencial é obrigatório">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione o Tipo" />
+							<f:selectItems value="#{credenciadoEmpBean.credencialEmpTipos}"
+								var="tipo" itemValue="#{tipo}"
+								itemLabel="#{tipo.tipocredencial}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Validade: *" />
+						<p:calendar id="credval" maxlength="8" size="6"
+							value="#{credenciadoEmpBean.credenciado.vencimentoCredencial}"
+							locale="pt_BR" required="true" pattern="dd/MM/yyyy" mask="true"
+							requiredMessage="O campo Validade é obrigatório" />
+
+
+						<p:outputLabel value="" />
+						<p:outputLabel value="" />
+						<p:outputLabel value="" />
+
+
+
+						<h:panelGrid columns="3">
+							<p:commandButton value="Salvar"
+								actionListener="#{credenciadoEmpBean.salvar()}"
+								update=":mensagem :formulario:cadastro"
+								style="background: #01B50D;" />
+
+						</h:panelGrid>
+
+					</h:panelGrid>
+
+					<div align="center">
+						<h3>(*) Campos obrigatórios para cadastro de Empresa
+							Credenciada.</h3>
+					</div>
+
+				</p:outputPanel>
+				</div>
+			</h:panelGroup>
+		</h:form>
+	</ui:define>
+</ui:composition>

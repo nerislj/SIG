@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+		<p:tab title="Consulta"
+			rendered="#{autenticacaoBean.temPermissoes([1, 13, 17, 18])}">
+			<h:form id="formularioConsulta">
+				<p:panel header="Consulta">
+					<div align="center">
+
+						<p:outputLabel value="CPF: " />
+						<p:inputText id="placa" maxlength="11" size="10"
+							value="#{credenciadoBean.pessoa.cpf}"
+							style="text-transform:uppercase;">
+							<p:keyFilter regEx="/[\d\-\.]/" preventPaste="false" />
+						</p:inputText>
+						<br /> <br />
+
+						<p:commandButton value="Pesquisar" icon="ui-icon-search"
+							actionListener="#{credenciadoBean.buscarCredenciado}"
+							update=":mensagem tabView:formularioPessoais:painelDados"
+							style="background: #01B50D;">
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+						
+						
+						
+						 
+						 
+						
+
+					</div>
+				</p:panel>
+			</h:form>
+		</p:tab>
+		
+		<p:tabView id="tabView"
+			rendered="#{autenticacaoBean.temPermissoes([1, 13, 17, 18])}">
+			<p:tab title="Dados Credenciado">
+				<h:form id="formularioPessoais">
+					<h:panelGroup id="painelDados" layout="block">
+						<h:panelGrid columns="2"
+							rendered="#{credenciadoBean.exibePainelDados}">
+							<p:panel header="Resultado">
+								<p:panelGrid id="lista" columns="6" style="margin: 0 auto;">
+									<f:facet name="header">
+
+										<p:graphicImage style="height: 150px;width: 120px;"
+											value="#{credenciadoBean.patchFoto}" />
+										<br />
+
+										<p:graphicImage style="height: 80px;width: 80px;"
+											value="#{credenciadoBean.patchAss}" />
+									</f:facet>
+
+
+
+
+									<h:outputText value="CPF:" style="font-weight: bold;" />
+									<h:outputText value="#{credenciadoBean.pessoa.cpf}" />
+
+									<h:outputText value="" />
+									<h:outputText value="" />
+									<h:outputText value="" />
+									<h:outputText value="" />
+
+
+
+									<h:outputText value="RG:" style="font-weight: bold;" />
+									<h:outputText value="#{credenciadoBean.pessoa.rg}" />
+
+									<h:outputText value="Órgão Emissor:" style="font-weight: bold;" />
+									<h:outputText value="#{credenciadoBean.pessoa.rgOrgaoEmissor}"
+										style="text-transform:uppercase;" />
+
+									<h:outputText value="UF RG:" style="font-weight: bold;" />
+									<h:outputText
+										value="#{credenciadoBean.pessoa.rgEstadoEmissao.sigla}" />
+
+									<h:outputText value="Nome Completo:" style="font-weight: bold;" />
+									<h:outputText value="#{credenciadoBean.pessoa.nomeCompleto}"
+										style="text-transform:uppercase;" />
+
+									<h:outputText value="Nome da Mãe:" style="font-weight: bold;" />
+									<h:outputText value="#{credenciadoBean.pessoa.nomeMae}"
+										style="text-transform:uppercase;" />
+
+									<h:outputText value="Nome do Pai:" style="font-weight: bold;" />
+									<h:outputText value="#{credenciadoBean.pessoa.nomePai}"
+										style="text-transform:uppercase;" />
+
+									<h:outputText value="Data Nascimento:"
+										style="font-weight: bold;" />
+									<h:outputText
+										value="#{credenciadoBean.pessoa.dataNascimento.date}/#{credenciadoBean.pessoa.dataNascimento.month+1}/#{credenciadoBean.pessoa.dataNascimento.year+1900}" />
+
+									<h:outputText value="Sexo:" style="font-weight: bold;" />
+									<h:outputText value="#{credenciadoBean.pessoa.sexo}"
+										style="text-transform:uppercase;" />
+
+									<h:outputText value="" />
+									<h:outputText value="" />
+
+									<h:outputText value="Endereço:" style="font-weight: bold;" />
+									<h:outputText value="#{credenciadoBean.pessoa.endereco}"
+										style="text-transform:uppercase;" />
+
+									<h:outputText value="Complemento:" style="font-weight: bold;" />
+									<h:outputText value="#{credenciadoBean.pessoa.complemento}"
+										style="text-transform:uppercase;" />
+
+									<h:outputText value="CEP:" style="font-weight: bold;" />
+									<h:outputText value="#{credenciadoBean.pessoa.cep}" />
+
+									<h:outputText value="Estado:" style="font-weight: bold;" />
+									<h:outputText
+										value="#{credenciadoBean.pessoa.estadoEndereco.nome}" />
+
+									<h:outputText value="Município:" style="font-weight: bold;" />
+									<h:outputText
+										value="#{credenciadoBean.pessoa.municipioEndereco.nome}" />
+
+									<h:outputText value="" />
+									<h:outputText value="" />
+
+									<h:outputText value="E-mail:" style="font-weight: bold;" />
+									<h:outputText value="#{credenciadoBean.pessoa.email}" />
+
+									<h:outputText value="Telefone Residencial:"
+										style="font-weight: bold;" />
+									<h:outputText value="#{credenciadoBean.pessoa.telRes}" />
+
+									<h:outputText value="Telefone Empresarial:"
+										style="font-weight: bold;" />
+									<h:outputText value="#{credenciadoBean.pessoa.telEmp}" />
+
+									<h:outputText value="Telefone Celular:"
+										style="font-weight: bold;" />
+									<h:outputText value="#{credenciadoBean.pessoa.cel}" />
+
+
+									<h:outputText value="" />
+									<h:outputText value="" />
+									<h:outputText value="" />
+									<h:outputText value="" />
+
+
+
+									<h:outputText value="CNH:" style="font-weight: bold;" />
+									<h:outputText value="#{credenciadoBean.credenciado.cnh}" />
+
+									<h:outputText value="Categoria:" style="font-weight: bold;" />
+									<h:outputText
+										value="#{credenciadoBean.credenciado.cnhCategoria.toUpperCase()}" />
+
+									<h:outputText value="Validade:" style="font-weight: bold;" />
+									<h:outputText
+										rendered="#{credenciadoBean.credenciado.cnhDataValidade != null}"
+										value="#{credenciadoBean.credenciado.cnhDataValidade.date}/#{credenciadoBean.credenciado.cnhDataValidade.month+1}/#{credenciadoBean.credenciado.cnhDataValidade.year+1900}" />
+									<h:outputText
+										rendered="#{credenciadoBean.credenciado.cnhDataValidade == null}"
+										value="Não Informado" />
+
+									<h:outputText value="Número Credencial:"
+										style="font-weight: bold;" />
+									<h:outputText
+										value="#{credenciadoBean.credenciado.numeroRegistro}" />
+
+									<h:outputText value="Tipo Credencial:"
+										style="font-weight: bold;" />
+									<h:outputText
+										value="#{credenciadoBean.credenciado.credencialTipo.tipocredencial}"
+										style="text-transform:uppercase;" />
+
+									<h:outputText value="Status:" style="font-weight: bold;" />
+									<h:outputText
+										value="#{credenciadoBean.credenciado.credencialStatus.tipoStatus}"
+										style="text-transform:uppercase;" />
+
+									<h:outputText value="Data Cadastro:" style="font-weight: bold;" />
+									<h:outputText
+										value="#{credenciadoBean.credenciado.dataCadastro.date}/#{credenciadoBean.credenciado.dataCadastro.month+1}/#{credenciadoBean.credenciado.dataCadastro.year+1900}" />
+
+									<h:outputText value="Data Vencimento:"
+										style="font-weight: bold;" />
+									<h:outputText
+										rendered="#{credenciadoBean.credenciado.vencimentoCredencial != null}"
+										value="#{credenciadoBean.credenciado.vencimentoCredencial.date}/#{credenciadoBean.credenciado.vencimentoCredencial.month+1}/#{credenciadoBean.credenciado.vencimentoCredencial.year+1900}" />
+									<h:outputText
+										rendered="#{credenciadoBean.credenciado.vencimentoCredencial == null}"
+										value="Não Informado" />
+
+									<h:outputText value="" />
+									<h:outputText value="" />
+
+
+
+
+
+								</p:panelGrid>
+								<br />
+								<br />
+
+								<!-- INICIO PAINEL CARTEIRINHA -->
+								<p:panelGrid columns="1" layout="grid" width="100%"
+									style="text-align:center"
+									rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
+
+									<p:outputLabel for="foto" value="Foto: "
+										style="font-weight:bold" />
+									<p:fileUpload id="foto" skinSimple="true"
+										label="Selecione a imagem" value="#{credenciadoBean.imagem}"
+										mode="advanced"
+										fileUploadListener="#{credenciadoBean.carregarImagemFoto}"
+										uploadLabel="Enviar" cancelLabel="Cancelar"
+										allowTypes="/(\.|\/)(jpeg|jpg|png)$/" sizeLimit="2097152"
+										invalidSizeMessage="Tamanho do arquivo inválido, máximo 2MB!" />
+
+									<p:outputLabel for="ass" value="Assinatura: "
+										style="font-weight:bold" />
+									<p:fileUpload id="ass" skinSimple="true"
+										label="Selecione a imagem" value="#{credenciadoBean.imagem}"
+										mode="advanced"
+										fileUploadListener="#{credenciadoBean.carregarImagemAss}"
+										uploadLabel="Enviar" cancelLabel="Cancelar"
+										allowTypes="/(\.|\/)(jpeg|jpg|png)$/" sizeLimit="2097152"
+										invalidSizeMessage="Tamanho do arquivo inválido, máximo 2MB!" />
+
+									<p:commandButton value="Gerar Carteira" icon="ui-icon-play"
+										oncomplete="PF('dialogoCart').show();" update=":cart:cart"
+										rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}" />
+
+								</p:panelGrid>
+								<br />
+								<br />
+
+
+								<!-- onclick="this.form.target='_blank'" -->
+								<p:panelGrid columns="2" layout="grid">
+
+									<p:dataTable id="lista2"
+										emptyMessage="Nenhum registro encontrado."
+										value="#{credenciadoBean.credenciado.historicocredencial}"
+										style="width: 100%" var="credenciado">
+
+										<f:facet name="header">
+											<h3>HISTÓRICO CREDENCIAL</h3>
+										</f:facet>
+
+										<p:column headerText="Tipo Credencial"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{credenciado.credencialTipo.tipocredencial}" />
+										</p:column>
+
+
+										<p:column headerText="Data Vencimento"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{credenciado.vencimentoCredencial.date}/#{credenciado.vencimentoCredencial.month+1}/#{credenciado.vencimentoCredencial.year+1900}" />
+										</p:column>
+
+										<p:column headerText="Status Credencial"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{credenciado.credencialStatus.tipoStatus}" />
+										</p:column>
+
+
+										<p:column headerText="Data Alteração"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{credenciado.dataCadastro.date}/#{credenciado.dataCadastro.month+1}/#{credenciado.dataCadastro.year+1900}" />
+										</p:column>
+
+										<p:column headerText="Usuário Alteração"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{credenciado.usuarioCadastro.pessoa.nomeCompleto}" />
+										</p:column>
+
+									</p:dataTable>
+
+
+									<p:dataTable id="lista3"
+										emptyMessage="Nenhum registro encontrado."
+										value="#{credenciadoBean.credenciado.documentoAdicional}"
+										style="width: 100%" var="doc">
+
+										<f:facet name="header">
+											<h3>DOCUMENTOS ADICIONAIS</h3>
+
+											<p:commandButton value="Adicionar"
+												oncomplete="PF('dialogoDoc').show();" update=":doc:doc"
+												rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
+												<f:actionListener
+													type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+											</p:commandButton>
+
+
+
+										</f:facet>
+
+										<p:column headerText="Tipo"
+											style="width: 9%; text-align: center;">
+											<h:outputText value="#{doc.tipoDocumento}" />
+										</p:column>
+
+										<p:column headerText="Número"
+											style="width: 9%; text-align: center;">
+											<h:outputText value="#{doc.numeroDocumento}" />
+										</p:column>
+
+										<p:column headerText="Validade"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{doc.dataValidade.date}/#{doc.dataValidade.month+1}/#{doc.dataValidade.year+1900}" />
+										</p:column>
+
+										<p:column headerText="Inclusão"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{doc.dataInclusao.date}/#{doc.dataInclusao.month+1}/#{doc.dataInclusao.year+1900}" />
+										</p:column>
+
+										<p:column headerText="Usuário Inclusão"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{doc.usuarioCadastro.pessoa.nomeCompleto}" />
+										</p:column>
+
+
+
+									</p:dataTable>
+
+								</p:panelGrid>
+
+								<!-- INICIO PAINEL 2 COLUNAS -->
+								<p:panelGrid columns="2" layout="grid">
+
+									<p:dataTable id="lista4"
+										emptyMessage="Nenhum registro encontrado."
+										value="#{credenciadoBean.credenciado.historicoCredenciado}"
+										style="width: 100%" var="historico">
+
+										<f:facet name="header">
+											<h3>HISTÓRICO DE VÍNCULOS EMPREGATÍCIOS</h3>
+										</f:facet>
+
+										<p:column headerText="Ação"
+											style="width: 9%; text-align: center;">
+											<h:outputText value="#{historico.acaoFormatado}" />
+										</p:column>
+
+										<p:column headerText="Data"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{historico.dataInclusao.date}/#{historico.dataInclusao.month+1}/#{historico.dataInclusao.year+1900}" />
+										</p:column>
+
+										<p:column headerText="Empresa"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{historico.credenciadoEmp.pessoaJuridica.nomeFantasia.toUpperCase()}" />
+										</p:column>
+
+										<p:column headerText="Usuário"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{historico.usuarioAlteracao.pessoa.nomeCompleto}" />
+										</p:column>
+
+									</p:dataTable>
+
+
+
+									<p:dataTable id="lista5"
+										emptyMessage="Nenhum registro encontrado."
+										value="#{credenciadoBean.credenciado.SGPE}" var="sgpe"
+										style="width: 100%">
+
+										<f:facet name="header">
+											<h3>SGP-e</h3>
+											<p:commandButton value="Adicionar"
+												oncomplete="PF('dialogosgpe').show();" update=":sgpe:sgpe"
+												rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
+												<f:actionListener
+													type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+											</p:commandButton>
+										</f:facet>
+
+										<p:column headerText="Número"
+											style="width: 9%; text-align: center;">
+											<h:outputText value="#{sgpe.SGPE}" />
+										</p:column>
+
+										<p:column headerText="Descrição"
+											style="width: 9%; text-align: center;">
+											<h:outputText value="#{sgpe.obs}" />
+										</p:column>
+
+
+										<p:column headerText="Data Inclusão"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{sgpe.dataInclusao.date}/#{sgpe.dataInclusao.month+1}/#{sgpe.dataInclusao.year+1900}" />
+										</p:column>
+
+										<p:column headerText="Usuário Inclusão"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{sgpe.usuarioCadastro.pessoa.nomeCompleto}" />
+										</p:column>
+
+
+
+									</p:dataTable>
+
+								</p:panelGrid>
+
+
+							</p:panel>
+
+
+
+
+						</h:panelGrid>
+
+					</h:panelGroup>
+
+
+
+
+
+				</h:form>
+
+
+			</p:tab>
+
+
+
+
+
+
+
+
+		</p:tabView>
+
+		<p:dialog header="SGP-e" widgetVar="dialogosgpe" draggable="false"
+			resizable="false" modal="true" closable="false">
+			<h:form id="sgpe">
+				<h:panelGrid id="sgpe" columns="2">
+
+
+
+
+					<p:outputLabel value="SGP-e:" />
+					<p:inputText maxlength="60" size="50"
+						value="#{credenciadoBean.SGPE.SGPE}" required="true"
+						requiredMessage="O campo SGP-e é obritarório"
+						style="text-transform:uppercase;" />
+
+					<p:outputLabel value="Descrição: " />
+					<p:inputTextarea maxlength="60" value="#{credenciadoBean.SGPE.obs}"
+						counter="display" counterTemplate="Restam {0} Caracteres." />
+					<h:outputText />
+					<h:outputText id="display" />
+
+				</h:panelGrid>
+
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{credenciadoBean.adicionaSGPE}"
+						update=":mensagem tabView:formularioPessoais:lista5"
+						oncomplete="PF('dialogosgpe').hide();" />
+					<p:commandButton value="Fechar"
+						oncomplete="PF('dialogosgpe').hide();" />
+				</h:panelGrid>
+
+			</h:form>
+
+		</p:dialog>
+
+
+		<p:dialog header="Documentos Adicionais" widgetVar="dialogoDoc"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="doc">
+				<h:panelGrid id="doc" columns="2">
+
+					<p:outputLabel value="Tipo Documento: " />
+					<p:selectOneMenu id="tipodoc"
+						value="#{credenciadoBean.doc.tipoDocumento}"
+						requiredMessage="O campo Tipo Documento é obritarório">
+						<f:selectItem itemValue="CRM" itemLabel="CRM" />
+						<f:selectItem itemValue="CRP" itemLabel="CRP" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Número Documento: " />
+					<p:inputText maxlength="15" size="20"
+						value="#{credenciadoBean.doc.numeroDocumento}" required="true"
+						requiredMessage="O campo Número Documento é obritarório"
+						style="text-transform:uppercase;" />
+
+					<p:outputLabel value="Validade: " />
+					<p:calendar id="dataValidade" maxlength="8" size="6"
+						value="#{credenciadoBean.doc.dataValidade}" required="true"
+						requiredMessage="O campo Data de Nascimento é obrigatório"
+						locale="pt_BR" pattern="dd/MM/yyyy" mask="true" />
+
+				</h:panelGrid>
+
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{credenciadoBean.adicionaDoc}"
+						update=":mensagem tabView:formularioPessoais:lista3"
+						oncomplete="PF('dialogoDoc').hide();" />
+					<p:commandButton value="Fechar"
+						oncomplete="PF('dialogoDoc').hide();" />
+				</h:panelGrid>
+
+			</h:form>
+
+		</p:dialog>
+
+		<p:dialog header="Gerar Carteirinha" widgetVar="dialogoCart"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="cart">
+				<h:panelGrid id="cart" columns="2">
+
+					<p:outputLabel value="SGP-e" />
+					<p:selectOneMenu id="sgpe" required="true"
+						value="#{credenciadoBean.credenciado.carteirinhaSGPE}"
+						requiredMessage="O campo SGP-e é obritarório">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione um SGP-e" />
+						<f:selectItems value="#{credenciadoBean.credenciado.SGPE}"
+							var="sgpe" itemValue="#{sgpe.SGPE}"
+							itemLabel="#{sgpe.SGPE} - #{sgpe.obs}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Observação " />
+					<p:inputTextarea maxlength="60"
+						value="#{credenciadoBean.credenciado.carteirinhaObs}"
+						counter="display" counterTemplate="Restam {0} Caracteres." />
+					<h:outputText />
+					<h:outputText id="display" />
+
+
+				</h:panelGrid>
+
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener='#{credenciadoBean.gerarCarteira()}'
+						update=":mensagem" oncomplete="PF('dialogoCart').hide();" />
+					<p:commandButton value="Fechar"
+						oncomplete="PF('dialogoCart').hide();" />
+				</h:panelGrid>
+
+			</h:form>
+
+		</p:dialog>
+		
+		
+
+
+
+
+	</ui:define>
+</ui:composition>
+

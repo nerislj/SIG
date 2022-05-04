@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="formlista" rendered="#{autenticacaoBean.temPermissoes([1, 19, 21])}">
+			<p:panel header="Material - Listagem">
+				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+					paginator="true" value="#{materialBean.listaMateriais}"
+					var="material" rows="10" style="width: 40%; padding-left: 25%; ">
+					<f:facet name="header">
+						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
+							actionListener="#{materialBean.novo()}"
+							update=":formcadastro:cadastro">
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+					</f:facet>
+					
+					<p:column headerText="Material Tipo" sortBy="#{material.materialTipo.tipomaterial}"
+						filterBy="#{material.materialTipo.tipomaterial}" style="width: 70px; text-align: center;">
+						<h:outputText value="#{material.materialTipo.tipomaterial}" />
+					</p:column>
+
+					<p:column headerText="Material" sortBy="#{material.material}"
+						filterBy="#{material.material}" style="width: 70px; text-align: center;">
+						<h:outputText value="#{material.material}" />
+					</p:column>
+					
+					<p:column headerText="Patrimonio" sortBy="#{material.patrimonio}"
+						filterBy="#{material.patrimonio}" style="width: 70px; text-align: center;">
+						<h:outputText value="#{material.patrimonio}" />
+					</p:column>
+					
+					
+					
+					
+
+					
+				</p:dataTable>
+
+				<p:confirmDialog global="true">
+					<p:commandButton value="Sim" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="Não" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+			</p:panel>
+		</h:form>
+
+		<p:dialog header="Material - Cadastro" widgetVar="dialogo"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="formcadastro">
+				<h:panelGrid id="cadastro" columns="2">
+				
+				<p:outputLabel value="Material Tipo: *" />
+					<p:selectOneMenu filter="true" value="#{materialBean.material.materialTipo}"
+						converter="omnifaces.SelectItemsConverter" required="true"
+						requiredMessage="O campo Material Tipo é obrigatório">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione um Tipo" />
+						<f:selectItems value="#{materialBean.listaTipos}" var="tipo"
+							itemValue="#{tipo}"
+							itemLabel="#{tipo.tipomaterial}" />
+					</p:selectOneMenu>
+				
+				
+					<p:outputLabel value="Material: *" />
+					<p:inputText maxlength="90" size="12"
+						value="#{materialBean.material.material}" required="true"
+						style="text-transform: uppercase"
+						requiredMessage="O campo Material é obrigatório" />
+						
+						
+					<p:outputLabel value="Patrimonio" />
+					<p:inputText maxlength="10" size="12"
+						value="#{materialBean.material.patrimonio}"
+						requiredMessage="O campo Patrimonio é obrigatório" />
+
+				</h:panelGrid>
+				<br/>
+				<p:outputLabel value="Campos com (*) são obrigatórios" /> <br/> <br/>
+				<p:outputLabel value="Antes de salvar verifique se os campos foram preenchidos" style="background: #db8a8a; color: #000000" /> <br/>
+				<p:outputLabel value="corretamente." style="background: #db8a8a; color: #000000" /><br/><br/>
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{materialBean.salvar}"
+						update=":mensagem :formcadastro:cadastro :formlista:lista"
+						oncomplete="PF('dialogo').hide();" />
+					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

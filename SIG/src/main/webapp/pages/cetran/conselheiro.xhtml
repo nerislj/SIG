@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="formlista"
+			rendered="#{autenticacaoBean.temPermissoes([1, 27])}">
+			<p:panel header="Conselheiro - Listagem">
+				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+					paginator="true" value="#{conselheiroBean.listaConselheiros}"
+					var="conselheiro" rows="10">
+
+					<f:facet name="header">
+						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
+							actionListener="#{conselheiroBean.novo()}"
+							update=":formcadastro:cadastro">
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+					</f:facet>
+
+
+					<p:column headerText="CPF" sortBy="#{conselheiro.cpf}"
+						filterBy="#{conselheiro.cpf}"
+						style="width: 90px; text-align: center;">
+						<h:outputText value="#{conselheiro.cpf}" />
+					</p:column>
+
+					<p:column headerText="Nome" sortBy="#{conselheiro.nome}"
+						filterBy="#{conselheiro.nome}"
+						style="width: 270px; text-align: center;">
+						<h:outputText value="#{conselheiro.nome}" />
+					</p:column>
+
+					<p:column headerText="Representação"
+						sortBy="#{conselheiro.representacao.descricao}"
+						filterBy="#{conselheiro.representacao.descricao}"
+						style="width: 70px; text-align: center;">
+						<h:outputText value="#{conselheiro.representacao.descricao}" />
+					</p:column>
+
+					<p:column headerText="Status" sortBy="#{conselheiro.ativo}"
+						filterBy="#{conselheiro.ativo}"
+						style="width: 70px; text-align: center;">
+
+						<h:outputText rendered="#{conselheiro.ativo == 1}" value="Ativo" />
+						<h:outputText rendered="#{conselheiro.ativo == 0}" value="Inativo" />
+					</p:column>
+
+
+
+					<p:column headerText="Alterado Por"
+						sortBy="#{conselheiro.usuarioCadastro.pessoa.nomeCompleto}"
+						filterBy="#{conselheiro.usuarioCadastro.pessoa.nomeCompleto}"
+						style="width: 15%; text-align: center;">
+
+						<h:outputText
+							rendered="#{conselheiro.usuarioCadastro.pessoa.nomeCompleto != null}"
+							value="#{conselheiro.usuarioCadastro.pessoa.nomeCompleto}" />
+						<h:outputText
+							rendered="#{conselheiro.usuarioCadastro.pessoa.nomeCompleto == null}"
+							value="Sem alteração" />
+					</p:column>
+					
+					
+					<p:column headerText="Opções" style="width: 70px; text-align: center;">
+						<p:commandButton icon="ui-icon-trash"
+							actionListener="#{conselheiroBean.excluir}"
+							update=":mensagem :formlista:lista">
+							<p:confirm header="Confirmação"
+								message="Deseja excluir o Conselheiro?" icon="ui-icon-alert" />
+							<f:attribute name="conselheiroSelecionado" value="#{conselheiro}" />
+						</p:commandButton>
+
+						<p:commandButton icon="ui-icon-pencil"
+							actionListener="#{conselheiroBean.editar}"
+							update=":formcadastro:cadastro"
+							oncomplete="PF('dialogo').show();">
+							<f:attribute name="conselheiroSelecionado" value="#{conselheiro}" />
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+
+					</p:column>
+
+
+
+
+				</p:dataTable>
+
+				<p:confirmDialog global="true">
+					<p:commandButton value="Sim" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="Não" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+			</p:panel>
+		</h:form>
+
+		<p:dialog header="Conselheiro - Cadastro" widgetVar="dialogo"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="formcadastro">
+				<h:panelGrid id="cadastro" columns="2">
+					<p:outputLabel value="CPF: " />
+					<p:inputMask id="cpf" mask="99999999999" maxlength="11" size="10"
+						value="#{conselheiroBean.conselheiro.cpf}" required="true"
+						requiredMessage="O campo CPF é obrigatório">
+						<f:validator validatorId="CpfValidator" />
+					</p:inputMask>
+						
+						<p:outputLabel value="Nome:" />
+					<p:inputText maxlength="255" size="25"
+						value="#{conselheiroBean.conselheiro.nome}" required="true"
+						style="text-transform:uppercase;"
+						requiredMessage="O campo Nome é obrigatório" />
+						
+						<p:outputLabel value="Representação: " />
+					<p:selectOneMenu filter="true"
+						value="#{conselheiroBean.conselheiro.representacao}"
+						converter="omnifaces.SelectItemsConverter" required="true"
+						requiredMessage="O campo Representacao é obrigatório">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma Representação" />
+						<f:selectItems value="#{conselheiroBean.listaRepresentacoes}" var="repre"
+							itemValue="#{repre}" itemLabel="#{repre.descricao}" />
+					</p:selectOneMenu>
+					
+						<h:outputLabel value="Ativo" />
+					<p:selectOneRadio id="pessoa" value="#{conselheiroBean.conselheiro.ativo}"
+						required="true" requiredMessage="Campo Ativo é obrigatório.">
+
+						<f:selectItem itemLabel="Ativo" itemValue="1" />
+						<f:selectItem itemLabel="Inativo" itemValue="0" />
+						
+
+
+					</p:selectOneRadio>
+						
+
+
+
+
+				</h:panelGrid>
+				
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{conselheiroBean.salvar()}"
+						update=":mensagem :formcadastro:cadastro :formlista:lista" oncomplete="PF('dialogo').hide();" />
+					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+				</h:panelGrid>
+				
+			</h:form>
+		</p:dialog>
+
+
+	</ui:define>
+</ui:composition>

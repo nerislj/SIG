@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:viewAction action="#{rastreioBean.listar}" />
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="conteudo">
+		<h:form id="formlista">
+			<p:panel header="Consulta Rastreio - Listagem">
+				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+					paginator="true" value="#{rastreioBean.listaRelacao}" var="rastreio"
+					rows="10">
+
+
+
+
+					<p:column headerText="Rastreio"
+						sortBy="#{rastreio.rastreio.rastreio}"
+						filterBy="#{rastreio.rastreio.rastreio}">
+						<h:outputText value="#{rastreio.rastreio.rastreio}" />
+					</p:column>
+
+					<p:column headerText="Oficio" sortBy="#{rastreio.oficio.oficio}"
+						filterBy="#{rastreio.oficio.oficio}" style="width: 20%;">
+						<h:outputText value="#{rastreio.oficio.oficio}" />
+					</p:column>
+
+					<p:column headerText="Destino"
+						sortBy="#{rastreio.rastreio.destino}"
+						filterBy="#{rastreio.rastreio.destino}">
+						<h:outputText value="#{rastreio.rastreio.destino}" />
+					</p:column>
+
+					<p:column headerText="Data Saida"
+						sortBy="#{rastreio.rastreio.dataSaida}"
+						filterBy="#{rastreio.rastreio.dataSaida}">
+						<h:outputText
+							value="#{rastreio.rastreio.dataSaida.date}/#{rastreio.rastreio.dataSaida.month+1}/#{rastreio.rastreio.dataSaida.year+1900}" />
+					</p:column>
+
+					<p:column headerText="Usuário Saida"
+						sortBy="#{rastreio.rastreio.usuario}"
+						filterBy="#{rastreio.rastreio.usuario}">
+						<h:outputText
+							value="#{rastreio.rastreio.usuario.pessoa.nomeCompleto}" />
+					</p:column>
+
+
+
+
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

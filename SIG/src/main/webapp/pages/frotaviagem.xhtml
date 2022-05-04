@@ -1,0 +1,963 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+
+	<ui:define name="conteudo">
+
+		<script>
+			PrimeFacesExt.locales.TimePicker['pt_BR'] = {
+				hourText : 'Horas',
+				minuteText : 'Minutos',
+				amPmText : [ 'AM', 'PM' ],
+				closeButtonText : 'Fechar',
+				nowButtonText : 'Agora',
+				deselectButtonText : 'Limpar seleção'
+			};
+		</script>
+
+		<style type="text/css">
+.ui-panelgrid.showcase-text-align-center .ui-grid-responsive .ui-panelgrid-cell
+	{
+	text-align: center;
+}
+
+.customPanelGrid .ui-panelgrid-content {
+	align-items: center;
+}
+
+/* reset on the showcase style*/
+body .ui-panelgrid .ui-panelgrid-cell {
+	background-color: transparent;
+}
+
+/* example use of styles for your form */
+.my-heading-row {
+	background-color: var(- -surface-c);
+	font-weight: bold;
+}
+</style>
+
+
+		<p:tabView id="tabView">
+			<p:tab title="Solicitações">
+
+
+
+
+				<h:form id="formlista"
+					rendered="#{autenticacaoBean.temPermissoes([1,25])}">
+					<p:panel header="Solicitações">
+						<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+							paginator="true" value="#{frotaViagemBean.viagensSolicitadas}"
+							var="viagem" rows="10">
+							<f:facet name="header">
+
+
+
+
+							</f:facet>
+
+
+							<p:column headerText="COD" sortBy="#{viagem.codigo}"
+								filterBy="#{viagem.codigo}"
+								style="text-align: center; text-transform:uppercase;width: 30px">
+								<h:outputText value="#{viagem.codigo}" />
+							</p:column>
+
+
+							<p:column headerText="Data/Hora Inicial"
+								sortBy="#{viagem.dataInicial}" filterBy="#{viagem.dataInicial}"
+								style="text-align: center; text-transform:uppercase;">
+								<h:outputText
+									value="#{viagem.dataInicial.date}/#{viagem.dataInicial.month+1}/#{viagem.dataInicial.year+1900} - #{viagem.horaInicial}" />
+							</p:column>
+
+							<p:column headerText="Data Entrega (Prevista)"
+								sortBy="#{viagem.dataPrevista}"
+								filterBy="#{viagem.dataPrevista}"
+								style="text-align: center; text-transform:uppercase;">
+								<h:outputText
+									value="#{viagem.dataPrevista.date}/#{viagem.dataPrevista.month+1}/#{viagem.dataPrevista.year+1900}" />
+							</p:column>
+
+
+							<p:column headerText="Destino" sortBy="#{viagem.destino}"
+								filterBy="#{viagem.destino}"
+								style="text-align: center; text-transform:uppercase;">
+								<h:outputText value="#{viagem.destino}" />
+							</p:column>
+
+
+							<p:column headerText="Veículo"
+								sortBy="#{viagem.frotaVeiculo.placa}"
+								filterBy="#{viagem.frotaVeiculo.placa}"
+								style="text-align: center; text-transform:uppercase;">
+								<h:outputText
+									value="#{viagem.frotaVeiculo.placa} - #{viagem.frotaVeiculo.modelo}" />
+							</p:column>
+
+							<p:column headerText="Condutor"
+								sortBy="#{viagem.frotaCondutor.pessoa.nomeCompleto}"
+								filterBy="#{viagem.frotaCondutor.pessoa.nomeCompleto}"
+								style="text-align: center; text-transform:uppercase;">
+								<h:outputText
+									value="#{viagem.frotaCondutor.pessoa.nomeCompleto} - #{viagem.usuarioCadastro.setor.setorNome}" />
+							</p:column>
+
+
+
+
+
+
+							<p:column headerText="Status" sortBy="#{viagem.statusFormatado}"
+								filterBy="#{viagem.statusFormatado}"
+								style="text-align: center; text-transform:uppercase;">
+								<h:outputText value="#{viagem.statusFormatado}" />
+							</p:column>
+
+
+							<p:column headerText="Opções">
+
+
+								<p:commandButton value="Recusar" icon="ui-icon-trash"
+									actionListener="#{frotaViagemBean.recusar}"
+									onclick="PF('dlg2').show();" update="formularioCancelar:lista"
+									disabled="#{viagem.statusFormatado eq 'Baixada' or viagem.statusFormatado eq 'Reprovada' or viagem.statusFormatado eq 'Cancelada'}"
+									style="width: 100%; align: center;">
+									<f:attribute name="viagemSelecionado" value="#{viagem}" />
+									<f:actionListener
+										type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+								</p:commandButton>
+
+
+
+
+
+
+
+
+
+								<p:commandButton value="Visualizar" icon="ui-icon-zoomin"
+									actionListener="#{frotaViagemBean.visualizar}"
+									onclick="PF('dlgVisualizar').show();"
+									update="formularioVisualizar:lista"
+									disabled="#{viagem.statusFormatado eq 'Solicitada' or viagem.statusFormatado eq 'Aprovada'}"
+									style="width: 100%; align: center;">
+									<f:attribute name="viagemSelecionado" value="#{viagem}" />
+
+								</p:commandButton>
+
+								<p:commandButton value="Aprovar"
+									actionListener="#{frotaViagemBean.visualizar}"
+									icon=" ui-icon-transferthick-e-w"
+									onclick="PF('dlgAprovar').show();"
+									style="background: #90EE90;width: 100%; align: center;"
+									update="formularioAprovar:lista"
+									disabled="#{viagem.statusFormatado eq 'Baixada' or viagem.statusFormatado eq 'Reprovada' or viagem.statusFormatado eq 'Cancelada' or viagem.statusFormatado eq 'Aprovada'}">
+									<f:attribute name="viagemSelecionado" value="#{viagem}" />
+
+								</p:commandButton>
+
+
+								<p:commandButton value="Baixa veículo"
+									actionListener="#{frotaViagemBean.editar}"
+									icon=" ui-icon-transferthick-e-w" onclick="PF('dlg1').show();"
+									style="background: #90EE90;width: 100%; align: center;"
+									update="formularioEntrega:lista"
+									disabled="#{viagem.statusFormatado eq 'Reprovada' or viagem.statusFormatado eq 'Baixada' or viagem.statusFormatado eq 'Cancelada' or viagem.statusFormatado eq 'Solicitada'}">
+									<f:attribute name="viagemSelecionado" value="#{viagem}" />
+									<f:actionListener
+										type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+								</p:commandButton>
+
+
+
+
+							</p:column>
+
+						</p:dataTable>
+
+						<p:confirmDialog global="true">
+							<p:commandButton value="Sim" type="button"
+								styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+							<p:commandButton value="Não" type="button"
+								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						</p:confirmDialog>
+
+
+
+					</p:panel>
+				</h:form>
+
+
+			</p:tab>
+			
+			<p:tab title="Aprovadas">
+
+				<h:form id="formlistaAprovadas">
+
+					<p:dataTable id="listaAprovadas"
+						emptyMessage="Nenhum registro encontrado." paginator="true"
+						value="#{frotaViagemBean.viagensAprovadas}" var="viagem"
+						rows="10">
+						<f:facet name="header">
+
+
+
+
+						</f:facet>
+
+
+						<p:column headerText="COD" sortBy="#{viagem.codigo}"
+							filterBy="#{viagem.codigo}"
+							style="text-align: center; text-transform:uppercase;width: 30px">
+							<h:outputText value="#{viagem.codigo}" />
+						</p:column>
+
+
+						<p:column headerText="Data/Hora Inicial"
+							sortBy="#{viagem.dataInicial}" filterBy="#{viagem.dataInicial}"
+							style="text-align: center; text-transform:uppercase;">
+							<h:outputText
+								value="#{viagem.dataInicial.date}/#{viagem.dataInicial.month+1}/#{viagem.dataInicial.year+1900} - #{viagem.horaInicial}" />
+						</p:column>
+
+						<p:column headerText="Data Entrega (Prevista)"
+							sortBy="#{viagem.dataPrevista}" filterBy="#{viagem.dataPrevista}"
+							style="text-align: center; text-transform:uppercase;">
+							<h:outputText
+								value="#{viagem.dataPrevista.date}/#{viagem.dataPrevista.month+1}/#{viagem.dataPrevista.year+1900}" />
+						</p:column>
+
+
+						<p:column headerText="Destino" sortBy="#{viagem.destino}"
+							filterBy="#{viagem.destino}"
+							style="text-align: center; text-transform:uppercase;">
+							<h:outputText value="#{viagem.destino}" />
+						</p:column>
+
+
+						<p:column headerText="Veículo"
+							sortBy="#{viagem.frotaVeiculo.placa}"
+							filterBy="#{viagem.frotaVeiculo.placa}"
+							style="text-align: center; text-transform:uppercase;">
+							<h:outputText
+								value="#{viagem.frotaVeiculo.placa} - #{viagem.frotaVeiculo.modelo}" />
+						</p:column>
+
+						<p:column headerText="Condutor"
+							sortBy="#{viagem.frotaCondutor.pessoa.nomeCompleto}"
+							filterBy="#{viagem.frotaCondutor.pessoa.nomeCompleto}"
+							style="text-align: center; text-transform:uppercase;">
+							<h:outputText
+								value="#{viagem.frotaCondutor.pessoa.nomeCompleto} - #{viagem.usuarioCadastro.setor.setorNome}" />
+						</p:column>
+
+
+
+
+
+
+						<p:column headerText="Status" sortBy="#{viagem.statusFormatado}"
+							filterBy="#{viagem.statusFormatado}"
+							style="text-align: center; text-transform:uppercase;">
+							<h:outputText value="#{viagem.statusFormatado}" />
+						</p:column>
+
+						<p:column headerText="Opções">
+
+
+
+
+						<p:commandButton value="Visualizar" icon="ui-icon-zoomin"
+								actionListener="#{frotaViagemBean.visualizar}"
+								onclick="PF('dlgVisualizar').show();"
+								update="formularioVisualizar"
+								disabled="#{viagem.statusFormatado eq 'Solicitada' or viagem.statusFormatado eq 'Aprovada'}"
+								style="width: 100%; align: center;">
+								<f:attribute name="viagemSelecionado" value="#{viagem}" />
+
+							</p:commandButton>
+							
+							
+								<p:commandButton value="Baixa veículo"
+									actionListener="#{frotaViagemBean.editar}"
+									icon=" ui-icon-transferthick-e-w" onclick="PF('dlg1').show();"
+									style="background: #90EE90;width: 100%; align: center;"
+									update="formularioEntrega:lista"
+									disabled="#{viagem.statusFormatado eq 'Reprovada' or viagem.statusFormatado eq 'Baixada' or viagem.statusFormatado eq 'Cancelada' or viagem.statusFormatado eq 'Solicitada'}">
+									<f:attribute name="viagemSelecionado" value="#{viagem}" />
+									<f:actionListener
+										type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+								</p:commandButton>
+
+
+
+
+
+						</p:column>
+
+
+
+					</p:dataTable>
+				</h:form>
+
+
+
+
+
+
+
+			</p:tab>
+
+			<p:tab title="Baixadas">
+
+				<h:form id="formlistaBaixadas">
+					<p:dataTable id="listaBaixadas"
+						emptyMessage="Nenhum registro encontrado." paginator="true"
+						value="#{frotaViagemBean.viagensBaixadas}" var="viagem" rows="10">
+						<f:facet name="header">
+
+
+
+
+						</f:facet>
+
+
+						<p:column headerText="COD" sortBy="#{viagem.codigo}"
+							filterBy="#{viagem.codigo}"
+							style="text-align: center; text-transform:uppercase;width: 30px">
+							<h:outputText value="#{viagem.codigo}" />
+						</p:column>
+
+
+						<p:column headerText="Data/Hora Inicial"
+							sortBy="#{viagem.dataInicial}" filterBy="#{viagem.dataInicial}"
+							style="text-align: center; text-transform:uppercase;">
+							<h:outputText
+								value="#{viagem.dataInicial.date}/#{viagem.dataInicial.month+1}/#{viagem.dataInicial.year+1900} - #{viagem.horaInicial}" />
+						</p:column>
+
+						<p:column headerText="Data Entrega (Prevista)"
+							sortBy="#{viagem.dataPrevista}" filterBy="#{viagem.dataPrevista}"
+							style="text-align: center; text-transform:uppercase;">
+							<h:outputText
+								value="#{viagem.dataPrevista.date}/#{viagem.dataPrevista.month+1}/#{viagem.dataPrevista.year+1900}" />
+						</p:column>
+
+
+						<p:column headerText="Destino" sortBy="#{viagem.destino}"
+							filterBy="#{viagem.destino}"
+							style="text-align: center; text-transform:uppercase;">
+							<h:outputText value="#{viagem.destino}" />
+						</p:column>
+
+
+						<p:column headerText="Veículo"
+							sortBy="#{viagem.frotaVeiculo.placa}"
+							filterBy="#{viagem.frotaVeiculo.placa}"
+							style="text-align: center; text-transform:uppercase;">
+							<h:outputText
+								value="#{viagem.frotaVeiculo.placa} - #{viagem.frotaVeiculo.modelo}" />
+						</p:column>
+
+						<p:column headerText="Condutor"
+							sortBy="#{viagem.frotaCondutor.pessoa.nomeCompleto}"
+							filterBy="#{viagem.frotaCondutor.pessoa.nomeCompleto}"
+							style="text-align: center; text-transform:uppercase;">
+							<h:outputText
+								value="#{viagem.frotaCondutor.pessoa.nomeCompleto} - #{viagem.usuarioCadastro.setor.setorNome}" />
+						</p:column>
+
+
+
+
+
+
+						<p:column headerText="Status" sortBy="#{viagem.statusFormatado}"
+							filterBy="#{viagem.statusFormatado}"
+							style="text-align: center; text-transform:uppercase;">
+							<h:outputText value="#{viagem.statusFormatado}" />
+						</p:column>
+
+						<p:column headerText="Opções">
+
+
+
+
+							<p:commandButton value="Visualizar" icon="ui-icon-zoomin"
+								actionListener="#{frotaViagemBean.visualizar}"
+								onclick="PF('dlgVisualizar').show();"
+								update="formularioVisualizar"
+								disabled="#{viagem.statusFormatado eq 'Solicitada' or viagem.statusFormatado eq 'Aprovada'}"
+								style="width: 100%; align: center;">
+								<f:attribute name="viagemSelecionado" value="#{viagem}" />
+
+							</p:commandButton>
+
+
+
+
+
+						</p:column>
+
+
+
+
+
+					</p:dataTable>
+				</h:form>
+
+
+
+
+
+			</p:tab>
+
+			<p:tab title="Reprovadas">
+
+				<h:form id="formlistaReprovadas">
+					<p:dataTable id="listaReprovadas"
+						emptyMessage="Nenhum registro encontrado." paginator="true"
+						value="#{frotaViagemBean.viagensReprovadas}" var="viagem"
+						rows="10">
+						<f:facet name="header">
+
+
+
+
+						</f:facet>
+
+
+						<p:column headerText="COD" sortBy="#{viagem.codigo}"
+							filterBy="#{viagem.codigo}"
+							style="text-align: center; text-transform:uppercase;width: 30px">
+							<h:outputText value="#{viagem.codigo}" />
+						</p:column>
+
+
+						<p:column headerText="Data/Hora Inicial"
+							sortBy="#{viagem.dataInicial}" filterBy="#{viagem.dataInicial}"
+							style="text-align: center; text-transform:uppercase;">
+							<h:outputText
+								value="#{viagem.dataInicial.date}/#{viagem.dataInicial.month+1}/#{viagem.dataInicial.year+1900} - #{viagem.horaInicial}" />
+						</p:column>
+
+						<p:column headerText="Data Entrega (Prevista)"
+							sortBy="#{viagem.dataPrevista}" filterBy="#{viagem.dataPrevista}"
+							style="text-align: center; text-transform:uppercase;">
+							<h:outputText
+								value="#{viagem.dataPrevista.date}/#{viagem.dataPrevista.month+1}/#{viagem.dataPrevista.year+1900}" />
+						</p:column>
+
+
+						<p:column headerText="Destino" sortBy="#{viagem.destino}"
+							filterBy="#{viagem.destino}"
+							style="text-align: center; text-transform:uppercase;">
+							<h:outputText value="#{viagem.destino}" />
+						</p:column>
+
+
+						<p:column headerText="Veículo"
+							sortBy="#{viagem.frotaVeiculo.placa}"
+							filterBy="#{viagem.frotaVeiculo.placa}"
+							style="text-align: center; text-transform:uppercase;">
+							<h:outputText
+								value="#{viagem.frotaVeiculo.placa} - #{viagem.frotaVeiculo.modelo}" />
+						</p:column>
+
+						<p:column headerText="Condutor"
+							sortBy="#{viagem.frotaCondutor.pessoa.nomeCompleto}"
+							filterBy="#{viagem.frotaCondutor.pessoa.nomeCompleto}"
+							style="text-align: center; text-transform:uppercase;">
+							<h:outputText
+								value="#{viagem.frotaCondutor.pessoa.nomeCompleto} - #{viagem.usuarioCadastro.setor.setorNome}" />
+						</p:column>
+
+
+
+
+
+
+						<p:column headerText="Status" sortBy="#{viagem.statusFormatado}"
+							filterBy="#{viagem.statusFormatado}"
+							style="text-align: center; text-transform:uppercase;">
+							<h:outputText value="#{viagem.statusFormatado}" />
+						</p:column>
+
+						<p:column headerText="Opções">
+
+
+
+
+							<p:commandButton value="Visualizar" icon="ui-icon-zoomin"
+								actionListener="#{frotaViagemBean.visualizar}"
+								onclick="PF('dlgVisualizar').show();"
+								update="formularioVisualizar"
+								disabled="#{viagem.statusFormatado eq 'Solicitada' or viagem.statusFormatado eq 'Aprovada'}"
+								style="width: 100%; align: center;">
+								<f:attribute name="viagemSelecionado" value="#{viagem}" />
+
+							</p:commandButton>
+
+
+
+
+
+						</p:column>
+
+
+
+					</p:dataTable>
+				</h:form>
+
+
+
+
+
+
+
+			</p:tab>
+
+			<p:tab title="Canceladas">
+
+				<h:form id="formlistaCanceladas">
+
+					<p:dataTable id="listaCanceladas"
+						emptyMessage="Nenhum registro encontrado." paginator="true"
+						value="#{frotaViagemBean.viagensCanceladas}" var="viagem"
+						rows="10">
+						<f:facet name="header">
+
+
+
+
+						</f:facet>
+
+
+						<p:column headerText="COD" sortBy="#{viagem.codigo}"
+							filterBy="#{viagem.codigo}"
+							style="text-align: center; text-transform:uppercase;width: 30px">
+							<h:outputText value="#{viagem.codigo}" />
+						</p:column>
+
+
+						<p:column headerText="Data/Hora Inicial"
+							sortBy="#{viagem.dataInicial}" filterBy="#{viagem.dataInicial}"
+							style="text-align: center; text-transform:uppercase;">
+							<h:outputText
+								value="#{viagem.dataInicial.date}/#{viagem.dataInicial.month+1}/#{viagem.dataInicial.year+1900} - #{viagem.horaInicial}" />
+						</p:column>
+
+						<p:column headerText="Data Entrega (Prevista)"
+							sortBy="#{viagem.dataPrevista}" filterBy="#{viagem.dataPrevista}"
+							style="text-align: center; text-transform:uppercase;">
+							<h:outputText
+								value="#{viagem.dataPrevista.date}/#{viagem.dataPrevista.month+1}/#{viagem.dataPrevista.year+1900}" />
+						</p:column>
+
+
+						<p:column headerText="Destino" sortBy="#{viagem.destino}"
+							filterBy="#{viagem.destino}"
+							style="text-align: center; text-transform:uppercase;">
+							<h:outputText value="#{viagem.destino}" />
+						</p:column>
+
+
+						<p:column headerText="Veículo"
+							sortBy="#{viagem.frotaVeiculo.placa}"
+							filterBy="#{viagem.frotaVeiculo.placa}"
+							style="text-align: center; text-transform:uppercase;">
+							<h:outputText
+								value="#{viagem.frotaVeiculo.placa} - #{viagem.frotaVeiculo.modelo}" />
+						</p:column>
+
+						<p:column headerText="Condutor"
+							sortBy="#{viagem.frotaCondutor.pessoa.nomeCompleto}"
+							filterBy="#{viagem.frotaCondutor.pessoa.nomeCompleto}"
+							style="text-align: center; text-transform:uppercase;">
+							<h:outputText
+								value="#{viagem.frotaCondutor.pessoa.nomeCompleto} - #{viagem.usuarioCadastro.setor.setorNome}" />
+						</p:column>
+
+
+
+
+
+
+						<p:column headerText="Status" sortBy="#{viagem.statusFormatado}"
+							filterBy="#{viagem.statusFormatado}"
+							style="text-align: center; text-transform:uppercase;">
+							<h:outputText value="#{viagem.statusFormatado}" />
+						</p:column>
+
+						<p:column headerText="Opções">
+
+
+
+
+						<p:commandButton value="Visualizar" icon="ui-icon-zoomin"
+								actionListener="#{frotaViagemBean.visualizar}"
+								onclick="PF('dlgVisualizar').show();"
+								update="formularioVisualizar"
+								disabled="#{viagem.statusFormatado eq 'Solicitada' or viagem.statusFormatado eq 'Aprovada'}"
+								style="width: 100%; align: center;">
+								<f:attribute name="viagemSelecionado" value="#{viagem}" />
+
+							</p:commandButton>
+
+
+
+
+
+						</p:column>
+
+
+
+					</p:dataTable>
+				</h:form>
+
+
+
+
+
+
+
+			</p:tab>
+		</p:tabView>
+
+
+		<p:dialog header="Aprovar viatura" widgetVar="dlgAprovar"
+			minHeight="40">
+
+			<h:form id="formularioAprovar">
+
+
+
+
+				<p:panelGrid id="lista" columns="2"
+					styleClass="showcase-text-align-center">
+
+
+
+					<h:outputText value="Data Inicio:" style="font-weight: bold;" />
+					<h:outputText
+						value="#{frotaViagemBean.viagem.dataInicial.date}/#{frotaViagemBean.viagem.dataInicial.month+1}/#{frotaViagemBean.viagem.dataInicial.year+1900}" />
+
+
+
+					<h:outputText value="Hora Inicio:" style="font-weight: bold;" />
+					<h:outputText value="#{frotaViagemBean.viagem.horaInicial}" />
+
+					<h:outputText value="Destino:" style="font-weight: bold;" />
+					<h:outputText value="#{frotaViagemBean.viagem.destino}" />
+
+
+					<h:outputText value="Solicitante:" style="font-weight: bold;" />
+					<h:outputText
+						value="#{frotaViagemBean.viagem.usuarioCadastro.pessoa.nomeCompleto}" />
+
+					<h:outputText value="Unidade:" style="font-weight: bold;" />
+					<h:outputText
+						value="#{frotaViagemBean.viagem.frotaUnidade.frotaUnidade}" />
+
+					<h:outputText value="Viatura:" style="font-weight: bold;" />
+					<h:outputText
+						value="#{frotaViagemBean.viagem.frotaVeiculo.placa} - #{frotaViagemBean.viagem.frotaVeiculo.modelo}" />
+
+					<h:outputText value="Condutor:" style="font-weight: bold;" />
+					<h:outputText
+						value="#{frotaViagemBean.viagem.frotaCondutor.pessoa.nomeCompleto}" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				</p:panelGrid>
+
+
+				<center>
+					<h:panelGrid columns="2">
+						<p:commandButton value="Confirmar"
+							actionListener="#{frotaViagemBean.aprovarViagem}"
+							update=":mensagem tabView:formlista:lista"
+							oncomplete="PF('dlgAprovar').hide();" />
+					</h:panelGrid>
+
+				</center>
+
+
+
+
+
+			</h:form>
+
+
+
+
+		</p:dialog>
+
+
+		<p:dialog header="Cancelar" widgetVar="dlg2" minHeight="40">
+
+			<h:form id="formularioCancelar">
+
+
+
+
+
+				<p:panelGrid id="lista" columns="2"
+					styleClass="showcase-text-align-center">
+
+
+
+					<p:outputLabel value="Informe o motivo do cancelamento: "
+						style="font-weight: bold;" />
+					<p:inputTextarea maxlength="255"
+						value="#{frotaViagemBean.viagem.observacaoViagem}"
+						readonly="false" required="true"
+						requiredMessage="O Campo motivo cancelamento é obrigatório" />
+
+
+
+				</p:panelGrid>
+
+
+				<center>
+					<h:panelGrid columns="2">
+						<p:commandButton value="Salvar"
+							actionListener="#{frotaViagemBean.salvarExcluir}"
+							update=":mensagem tabView:formlista:lista"
+							oncomplete="PF('dlg2').hide();" />
+						<p:commandButton value="Cancelar" oncomplete="PF('dlg2').hide();" />
+					</h:panelGrid>
+
+				</center>
+
+
+
+
+
+			</h:form>
+
+		</p:dialog>
+
+
+		<p:dialog header="Entrega de viatura" widgetVar="dlg1" minHeight="40">
+
+			<h:form id="formularioEntrega">
+
+
+
+
+
+				<p:panelGrid id="lista" columns="2"
+					styleClass="showcase-text-align-center">
+
+
+
+					<h:outputText value="Data Inicio:" style="font-weight: bold;" />
+					<h:outputText
+						value="#{frotaViagemBean.viagem.dataInicial.date}/#{frotaViagemBean.viagem.dataInicial.month+1}/#{frotaViagemBean.viagem.dataInicial.year+1900}" />
+
+
+					<h:outputText value="Hora Inicio:" style="font-weight: bold;" />
+					<h:outputText value="#{frotaViagemBean.viagem.horaInicial}" />
+
+					<h:outputText value="Destino:" style="font-weight: bold;" />
+					<h:outputText value="#{frotaViagemBean.viagem.destino}" />
+
+
+					<h:outputText value="Solicitante:" style="font-weight: bold;" />
+					<h:outputText
+						value="#{frotaViagemBean.viagem.usuarioCadastro.pessoa.nomeCompleto}" />
+
+					<h:outputText value="Unidade:" style="font-weight: bold;" />
+					<h:outputText
+						value="#{frotaViagemBean.viagem.frotaUnidade.frotaUnidade}" />
+
+					<h:outputText value="Viatura:" style="font-weight: bold;" />
+					<h:outputText
+						value="#{frotaViagemBean.viagem.frotaVeiculo.placa} - #{frotaViagemBean.viagem.frotaVeiculo.modelo}" />
+
+					<h:outputText value="Condutor:" style="font-weight: bold;" />
+					<h:outputText
+						value="#{frotaViagemBean.viagem.frotaCondutor.pessoa.nomeCompleto}" />
+
+
+
+
+
+
+
+
+
+					<p:outputLabel value="Observações sobre a viagem: "
+						style="font-weight: bold;" />
+					<p:inputTextarea maxlength="255"
+						value="#{frotaViagemBean.viagem.observacaoViagem}"
+						readonly="false" required="true"
+						requiredMessage="O Campo Observações é obrigatório" />
+
+
+
+
+
+					<p:outputLabel for="button" value="Data Final:"
+						style="font-weight: bold;" />
+					<p:calendar id="button" value="#{frotaViagemBean.viagem.dataFinal}"
+						showIcon="true" required="true"
+						requiredMessage="O Campo Data Final é obrigatório" />
+
+
+					<p:outputLabel for="timeonly" value="Hora Final:"
+						style="font-weight: bold;" />
+					<p:datePicker id="timeonly"
+						value="#{frotaViagemBean.viagem.horaFinal}" timeOnly="true"
+						pattern="HH:mm" required="true"
+						requiredMessage="O Campo Hora Final é obrigatório" />
+
+					<p:outputLabel value="Km Final: " style="font-weight: bold;" />
+					<p:inputText maxlength="30"
+						value="#{frotaViagemBean.viagem.frotaVeiculo.km}" required="true"
+						requiredMessage="O campo Km Final é obrigatório"
+						converterMessage="Informe um valor numerico para o campo 'KM'" />
+
+
+
+
+
+				</p:panelGrid>
+
+
+				<center>
+					<h:panelGrid columns="2">
+						<p:commandButton value="Salvar"
+							actionListener="#{frotaViagemBean.baixaViagem}"
+							update=":mensagem tabView:formlista:lista"
+							oncomplete="PF('dlg1').hide(); window.location.reload();" />
+						<p:commandButton value="Cancelar" oncomplete="PF('dlg1').hide();" />
+					</h:panelGrid>
+
+				</center>
+
+
+
+
+
+			</h:form>
+
+		</p:dialog>
+
+
+		<p:dialog header="Visualizar" widgetVar="dlgVisualizar" minHeight="40">
+
+			<h:form id="formularioVisualizar">
+
+
+
+
+
+				<p:panelGrid id="lista" columns="2"
+					styleClass="showcase-text-align-center">
+
+
+
+					<h:outputText value="Data Inicio:" style="font-weight: bold;" />
+					<h:outputText
+						value="#{frotaViagemBean.viagem.dataInicial.date}/#{frotaViagemBean.viagem.dataInicial.month+1}/#{frotaViagemBean.viagem.dataInicial.year+1900}" />
+
+					<h:outputText value="Hora Inicio:" style="font-weight: bold;" />
+					<h:outputText value="#{frotaViagemBean.viagem.horaInicial}" />
+
+					<h:outputText value="Destino:" style="font-weight: bold;" />
+					<h:outputText value="#{frotaViagemBean.viagem.destino}" />
+
+
+					<h:outputText value="Solicitante:" style="font-weight: bold;" />
+					<h:outputText
+						value="#{frotaViagemBean.viagem.usuarioCadastro.pessoa.nomeCompleto}" />
+
+					<h:outputText value="Unidade:" style="font-weight: bold;" />
+					<h:outputText
+						value="#{frotaViagemBean.viagem.frotaUnidade.frotaUnidade}" />
+
+					<h:outputText value="Viatura:" style="font-weight: bold;" />
+					<h:outputText
+						value="#{frotaViagemBean.viagem.frotaVeiculo.placa} - #{frotaViagemBean.viagem.frotaVeiculo.modelo}" />
+
+					<h:outputText value="Condutor:" style="font-weight: bold;" />
+					<h:outputText
+						value="#{frotaViagemBean.viagem.frotaCondutor.pessoa.nomeCompleto}" />
+
+
+					<p:outputLabel value="Observações sobre a viagem: "
+						style="font-weight: bold;" />
+					<h:outputText value="#{frotaViagemBean.viagem.observacaoViagem}" />
+
+
+					<p:outputLabel for="button" value="Data Final:"
+						style="font-weight: bold;" />
+					<h:outputText id="button"
+						value="#{frotaViagemBean.viagem.dataFinal.date}/#{frotaViagemBean.viagem.dataFinal.month}/#{frotaViagemBean.viagem.dataFinal.year != null ? frotaViagemBean.viagem.dataFinal : 'Sem Data Final'}"
+						showIcon="true" />
+
+
+					<p:outputLabel for="timeonly" value="Hora Final:"
+						style="font-weight: bold;" />
+					<h:outputText id="timeonly"
+						value="#{frotaViagemBean.viagem.horaFinal != null ? frotaViagemBean.viagem.horaFinal : 'Sem Hora Final'}"
+						timeOnly="true" pattern="HH:mm" />
+
+					<p:outputLabel value="Km Final: " style="font-weight: bold;" />
+					<h:outputText maxlength="30"
+						value="#{frotaViagemBean.viagem.frotaVeiculo.km}" required="true"
+						requiredMessage="O campo Km é obrigatório" />
+
+					<h:outputText value="Última alteração por: "
+						style="font-weight: bold;" />
+					<h:outputText
+						value="#{frotaViagemBean.viagem.ultimoUsuario.pessoa.nomeCompleto}" />
+
+
+
+
+
+				</p:panelGrid>
+
+
+
+
+
+
+
+
+			</h:form>
+
+		</p:dialog>
+
+
+
+
+
+
+
+
+	</ui:define>
+</ui:composition>

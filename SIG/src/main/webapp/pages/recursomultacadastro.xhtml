@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+		<p:tabView id="tabView">
+			<p:tab title="Recursos">
+
+				<h:form id="formlista">
+				
+					<p:panel header="Recurso de Multa - Cadastro"
+						rendered="#{autenticacaoBean.temPermissoes([1, 2, 7])}">
+						
+								<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
+									actionListener="#{recursoMultaBean.novo()}"
+									update=":formcadastro:cadastro" style="background: #01B50D;">
+									<f:actionListener
+										type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+								</p:commandButton>
+								
+								
+					</p:panel>
+					
+					<h1>Último cadastrado</h1>
+					<h:outputText value="Placa: " style="font-weight: bold" />
+					<h:outputText value="#{recursoMultaBean.recursoMultaUltimoCadastrado.placa} " style="text-transform: uppercase" />
+					
+					<h:outputText value="Auto infração: " style="font-weight: bold" />
+					<h:outputText value="#{recursoMultaBean.recursoMultaUltimoCadastrado.autoInfracao} " style="text-transform: uppercase" />
+					
+					<h:outputText value="Tipo processo: " style="font-weight: bold" />
+					<h:outputText value="#{recursoMultaBean.recursoMultaUltimoCadastrado.tipoProcesso.tipoProcesso} " style="text-transform: uppercase"  />
+				<br /><br />
+
+					<a href = "recursomulta.xhtml">Ver todos</a> 
+					
+				<br /><br />
+					<b>Obs:</b> Ao clicar em "Ver todos" a página pode demorar carregar, por se tratar de 10000 registros.
+					
+				</h:form>
+				
+			</p:tab>
+			
+		</p:tabView>
+
+		<p:dialog header="Recurso de Multa - Cadastro" widgetVar="dialogo"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="formcadastro">
+				<h:panelGrid id="cadastro" columns="2">
+
+					<p:outputLabel value="Placa:" />
+					<p:inputMask id="placa" maxlength="7" size="10" mask="aaa9*99"
+						value="#{recursoMultaBean.recursomulta.placa}" required="true"
+						requiredMessage="O campo Placa é obrigatório"
+						style="text-transform:uppercase;" />
+
+					<p:outputLabel value="Auto Infração:" />
+					<p:inputText maxlength="15" size="15"
+						value="#{recursoMultaBean.recursomulta.autoInfracao}"
+						required="true"
+						requiredMessage="O campo Auto Infração é obrigatório"
+						style="text-transform:uppercase;" />
+
+					<p:outputLabel value="Tipo processo: " />
+					<p:selectOneRadio
+						value="#{recursoMultaBean.recursomulta.tipoProcesso}"
+						converter="omnifaces.SelectItemsConverter" required="true"
+						requiredMessage="O campo Tipo Processo é obrigatório"
+						layout="grid" columns="3">
+						<f:selectItems value="#{recursoMultaBean.recursosmultastipos}"
+							var="tipoprocesso" itemValue="#{tipoprocesso}"
+							itemLabel="#{tipoprocesso.tipoProcesso}" />
+					</p:selectOneRadio>
+
+					<p:outputLabel value="Observação:" />
+					<p:inputTextarea maxlength="60"
+						value="#{recursoMultaBean.recursomulta.observacao}"
+						counter="display" counterTemplate="Restam {0} Caracteres." />
+					<h:outputText />
+					<h:outputText id="display" />
+
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{recursoMultaBean.salvar()}"
+						update=":mensagem :formcadastro:cadastro :tabView:formlista" 
+						oncomplete="PF('dialogo').hide();" />
+					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+
+
+
+	</ui:define>
+</ui:composition>

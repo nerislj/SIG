@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+		<p:tabView id="tabView">
+			<p:tab title="Recursos">
+
+				<h:form id="formlista">
+					<p:panel header="Recurso de Multa - Listagem"
+						rendered="#{autenticacaoBean.temPermissoes([1, 2, 7])}">
+						<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+							paginator="true" value="#{recursoMultaBean.recursosmultas}"
+							var="recurso" rows="10">
+							<f:facet name="header">
+								<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
+									actionListener="#{recursoMultaBean.novo()}"
+									update=":formcadastro:cadastro" style="background: #01B50D;">
+									<f:actionListener
+										type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+								</p:commandButton>
+								
+								
+								<p:spacer width="300" height="10" />
+
+								<p:outputLabel value="Ano: " />
+								<p:selectOneMenu id="ano"
+									converter="omnifaces.SelectItemsConverter"
+									value="#{recursoMultaBean.ano}">
+									<f:selectItems value="#{recursoMultaBean.anos}" var="ano"
+										itemValue="#{ano}" itemLabel="#{ano.recursoMultaAno}" />
+								</p:selectOneMenu>
+								
+								<p:spacer width="15" height="10" />
+
+								<p:commandButton value="Consultar"
+									actionListener="#{recursoMultaBean.consultaPorAno}"
+									update=":mensagem :tabView:formlista:lista"
+									style="background: #01B50D;">
+									<f:actionListener
+										type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+								</p:commandButton>
+							</f:facet>
+
+							<p:column headerText="Placa" sortBy="#{recurso.placa}"
+								filterBy="#{recurso.placa}"
+								style="width: 9%; text-align: center; text-transform:uppercase;">
+								<h:outputText value="#{recurso.placa}" />
+							</p:column>
+
+							<p:column headerText="Auto infração"
+								sortBy="#{recurso.autoInfracao}"
+								filterBy="#{recurso.autoInfracao}" filterMatchMode="contains"
+								style="width: 12%; text-align: center; text-transform:uppercase;">
+								<h:outputText value="#{recurso.autoInfracao}" />
+							</p:column>
+
+							<p:column headerText="Tipo"
+								sortBy="#{recurso.tipoProcesso.tipoProcesso}"
+								filterBy="#{recurso.tipoProcesso.tipoProcesso}">
+								<h:outputText value="#{recurso.tipoProcesso.tipoProcesso}" />
+							</p:column>
+
+							<p:column headerText="Observação" sortBy="#{recurso.observacao}"
+								filterBy="#{recurso.observacao}">
+								<h:outputText value="#{recurso.observacao}" />
+							</p:column>
+
+							<p:column headerText="Data Recebimento"
+								sortBy="#{recurso.dataCadastro}"
+								filterBy="#{recurso.dataCadastro}"
+								style="width: 12%; text-align: center;">
+								<h:outputText
+									value="#{recurso.dataCadastro.date}/#{recurso.dataCadastro.month+1}/#{recurso.dataCadastro.year+1900}" />
+							</p:column>
+
+							<p:column headerText="Setor Abertura"
+								sortBy="#{recurso.unidadeAbertura.unidade}/#{recurso.setorAbertura.setor}"
+								filterBy="#{recurso.unidadeAbertura.unidade}/#{recurso.setorAbertura.setor}"
+								filterMatchMode="contains"
+								style="width: 10%; text-align: center;">
+								<h:outputText
+									value="#{recurso.unidadeAbertura.unidade}/#{recurso.setorAbertura.setor}" />
+							</p:column>
+
+							<p:column headerText="Usuário Cadastro"
+								sortBy="#{recurso.usuarioCadastro.pessoa.nomeCompleto}"
+								filterBy="#{recurso.usuarioCadastro.pessoa.nomeCompleto}"
+								filterMatchMode="contains">
+								<h:outputText
+									value="#{recurso.usuarioCadastro.pessoa.nomeCompleto}" />
+							</p:column>
+
+							<p:column headerText="Status" sortBy="#{recurso.status}"
+								filterBy="#{recurso.status}"
+								style="width: 9%; text-align: center;">
+								<h:outputText value="#{recurso.status}" />
+							</p:column>
+
+							<p:column headerText="Opções"
+								style="width: 9%; text-align: center;">
+
+								<p:commandButton value="Cancelar" icon="ui-icon-cancel"
+									actionListener="#{recursoMultaBean.editar}"
+									update=":formExclusao:exclusao"
+									oncomplete="PF('dialogoExclusao').show();">
+									<f:attribute name="recursomultaSelecionado" value="#{recurso}" />
+
+								</p:commandButton>
+
+							</p:column>
+						</p:dataTable>
+					</p:panel>
+				</h:form>
+			</p:tab>
+			<p:tab title="Cancelados">
+
+				<h:form id="formlistaInativos">
+					<p:panel header="Recurso de Multa Cancelados- Listagem"
+						rendered="#{autenticacaoBean.temPermissoes([1, 2, 7])}">
+						<p:dataTable id="listaInativos"
+							emptyMessage="Nenhum registro encontrado." paginator="true"
+							value="#{recursoMultaBean.recursosmultasCancelados}"
+							var="recurso" rows="10">
+
+							<p:column headerText="Placa" sortBy="#{recurso.placa}"
+								filterBy="#{recurso.placa}"
+								style="width: 9%; text-align: center; text-transform:uppercase;">
+								<h:outputText value="#{recurso.placa}" />
+							</p:column>
+
+							<p:column headerText="Auto infração"
+								sortBy="#{recurso.autoInfracao}"
+								filterBy="#{recurso.autoInfracao}"
+								style="width: 12%; text-align: center; text-transform:uppercase;">
+								<h:outputText value="#{recurso.autoInfracao}" />
+							</p:column>
+
+							<p:column headerText="Tipo"
+								sortBy="#{recurso.tipoProcesso.tipoProcesso}"
+								filterBy="#{recurso.tipoProcesso.tipoProcesso}">
+								<h:outputText value="#{recurso.tipoProcesso.tipoProcesso}" />
+							</p:column>
+
+							<p:column headerText="Data Recebimento"
+								sortBy="#{recurso.dataCadastro}"
+								filterBy="#{recurso.dataCadastro}"
+								style="width: 12%; text-align: center;">
+								<h:outputText
+									value="#{recurso.dataCadastro.date}/#{recurso.dataCadastro.month+1}/#{recurso.dataCadastro.year+1900}" />
+							</p:column>
+
+							<p:column headerText="Data Cancelamento"
+								sortBy="#{recurso.dataCancelamento}"
+								filterBy="#{recurso.dataCancelamento}"
+								style="width: 12%; text-align: center;">
+								<h:outputText
+									value="#{recurso.dataCancelamento.date}/#{recurso.dataCancelamento.month+1}/#{recurso.dataCancelamento.year+1900}" />
+							</p:column>
+
+							<p:column headerText="Usuário Cancelamento"
+								sortBy="#{recurso.usuarioCancelamento.pessoa.nomeCompleto}"
+								filterBy="#{recurso.usuarioCancelamento.pessoa.nomeCompleto}">
+								<h:outputText
+									value="#{recurso.usuarioCancelamento.pessoa.nomeCompleto}" />
+							</p:column>
+
+							<p:column headerText="Status" sortBy="#{recurso.status}"
+								filterBy="#{recurso.status}"
+								style="width: 9%; text-align: center;">
+								<h:outputText value="#{recurso.status}" />
+							</p:column>
+
+
+							<p:column headerText="Motivo Cancelamento"
+								style="width: 8%; text-align: center;">
+								<p:commandButton icon="ui-icon-info"
+									actionListener="#{recursoMultaBean.editar}"
+									update=":formmotivo:motivo"
+									oncomplete="PF('dialogoMotivo').show();">
+									<f:attribute name="recursomultaSelecionado" value="#{recurso}" />
+									<f:actionListener
+										type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+								</p:commandButton>
+							</p:column>
+
+						</p:dataTable>
+					</p:panel>
+				</h:form>
+
+			</p:tab>
+		</p:tabView>
+
+		<p:dialog header="Recurso de Multa - Cadastro" widgetVar="dialogo"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="formcadastro">
+				<h:panelGrid id="cadastro" columns="2">
+
+					<p:outputLabel value="Placa:" />
+					<p:inputMask id="placa" maxlength="7" size="10" mask="aaa9*99"
+						value="#{recursoMultaBean.recursomulta.placa}" required="true"
+						requiredMessage="O campo Placa é obrigatório"
+						style="text-transform:uppercase;" />
+
+					<p:outputLabel value="Auto Infração:" />
+					<p:inputText maxlength="15" size="15"
+						value="#{recursoMultaBean.recursomulta.autoInfracao}"
+						required="true"
+						requiredMessage="O campo Auto Infração é obrigatório"
+						style="text-transform:uppercase;" />
+
+					<p:outputLabel value="Tipo processo: " />
+					<p:selectOneRadio
+						value="#{recursoMultaBean.recursomulta.tipoProcesso}"
+						converter="omnifaces.SelectItemsConverter" required="true"
+						requiredMessage="O campo Tipo Processo é obrigatório"
+						layout="grid" columns="3">
+						<f:selectItems value="#{recursoMultaBean.recursosmultastipos}"
+							var="tipoprocesso" itemValue="#{tipoprocesso}"
+							itemLabel="#{tipoprocesso.tipoProcesso}" />
+					</p:selectOneRadio>
+
+					<p:outputLabel value="Observação:" />
+					<p:inputTextarea maxlength="60"
+						value="#{recursoMultaBean.recursomulta.observacao}"
+						counter="display" counterTemplate="Restam {0} Caracteres." />
+					<h:outputText />
+					<h:outputText id="display" />
+
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{recursoMultaBean.salvar()}"
+						update=":mensagem :formcadastro:cadastro :tabView:formlista:lista" />
+					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="Recurso - Cancelamento" widgetVar="dialogoExclusao"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="formExclusao">
+				<h:panelGrid id="exclusao" columns="2">
+
+					<p:outputLabel value="Motivo: " />
+					<p:inputTextarea maxlength="60"
+						value="#{recursoMultaBean.recursomulta.motivoCancelamento}"
+						required="true" requiredMessage="Campo Motivo é obrigatório."
+						counter="display" counterTemplate="Restam {0} Caracteres." />
+					<h:outputText />
+					<h:outputText id="display" />
+
+				</h:panelGrid>
+				<h:panelGrid columns="4">
+					<p:commandButton value="Confirmar"
+						actionListener="#{recursoMultaBean.cancelaRecurso}"
+						update=":mensagem :tabView:formlista:lista"
+						oncomplete="PF('dialogoExclusao').hide();">
+					</p:commandButton>
+					<p:commandButton value="Fechar"
+						oncomplete="PF('dialogoExclusao').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="Motivo Cancelamento" widgetVar="dialogoMotivo"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="formmotivo">
+				<h:panelGrid id="motivo" columns="2">
+
+					<p:outputLabel value="Motivo: " />
+					<br />
+					<h:outputText
+						value="#{recursoMultaBean.recursomulta.motivoCancelamento}"></h:outputText>
+
+				</h:panelGrid>
+				<h:panelGrid columns="2">
+
+					<p:commandButton value="Fechar"
+						oncomplete="PF('dialogoMotivo').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

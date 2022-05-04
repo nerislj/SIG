@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="formlista"
+			rendered="#{autenticacaoBean.temPermissoes([1, 2, 7])}">
+			<p:panel header="Recurso de Multa - Listagem">
+				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+					paginator="true" value="#{recursoMultaTramitaBean.recursosMulta}"
+					var="recurso" rows="10">
+					<f:facet name="header">
+						<p:commandButton value="Finalizar"
+							actionListener="#{recursoMultaTramitaBean.finalizar}"
+							update=":mensagem :formularioFinalizar:painelFinalizar"
+							oncomplete="PF('dialogo').show();" style="background: #01B50D;" />
+					</f:facet>
+
+					<p:column headerText="Opções"
+						style="width: 6%; text-align: center;">
+						<p:commandButton icon="ui-icon-plus"
+							actionListener="#{recursoMultaTramitaBean.adicionar}"
+							update=":formlista:listaSelecionados"
+							style="background: #18B5ED;">
+							<f:attribute name="recursomultaSelecionado" value="#{recurso}" />
+						</p:commandButton>
+					</p:column>
+
+					<p:column headerText="Placa" sortBy="#{recurso.placa}"
+						filterBy="#{recurso.placa}"
+						style="width: 9%; text-align: center; text-transform:uppercase;">
+						<h:outputText value="#{recurso.placa}" />
+					</p:column>
+
+					<p:column headerText="Auto infração"
+						sortBy="#{recurso.autoInfracao}"
+						filterBy="#{recurso.autoInfracao}"
+						style="width: 12%; text-align: center; text-transform:uppercase;">
+						<h:outputText value="#{recurso.autoInfracao}" />
+					</p:column>
+
+					<p:column headerText="Tipo"
+						sortBy="#{recurso.tipoProcesso.tipoProcesso}"
+						filterBy="#{recurso.tipoProcesso.tipoProcesso}">
+						<h:outputText value="#{recurso.tipoProcesso.tipoProcesso}" />
+					</p:column>
+
+					<p:column headerText="Data Recebimento"
+						sortBy="#{recurso.dataCadastro}"
+						filterBy="#{recurso.dataCadastro}"
+						style="width: 12%; text-align: center;">
+						<h:outputText
+							value="#{recurso.dataCadastro.date}/#{recurso.dataCadastro.month+1}/#{recurso.dataCadastro.year+1900}" />
+					</p:column>
+
+					<p:column headerText="Setor Abertura"
+						sortBy="#{recurso.unidadeAbertura.unidade}/#{recurso.setorAbertura.setor}"
+						filterBy="#{recurso.unidadeAbertura.unidade}/#{recurso.setorAbertura.setor}"
+						filterMatchMode="contains" style="width: 10%; text-align: center;">
+						<h:outputText
+							value="#{recurso.unidadeAbertura.unidade}/#{recurso.setorAbertura.setor}" />
+					</p:column>
+
+					<p:column headerText="Usuário Cadastro"
+						sortBy="#{recurso.usuarioCadastro.pessoa.nomeCompleto}"
+						filterBy="#{recurso.usuarioCadastro.pessoa.nomeCompleto}"
+						filterMatchMode="contains">
+						<h:outputText
+							value="#{recurso.usuarioCadastro.pessoa.nomeCompleto}" />
+					</p:column>
+
+					<p:column headerText="Status" sortBy="#{recurso.status}"
+						filterBy="#{recurso.status}"
+						style="width: 9%; text-align: center;">
+						<h:outputText value="#{recurso.status}" />
+					</p:column>
+
+
+				</p:dataTable>
+			</p:panel>
+			<p:panel header="Recursos Selecionados - Listagem">
+				<p:dataTable id="listaSelecionados"
+					emptyMessage="Adicione um recurso" paginator="true"
+					value="#{recursoMultaTramitaBean.listaRecursoSaida}" var="saida"
+					rows="50" rowsPerPageTemplate="50, 100">
+
+					<p:column headerText="Opções"
+						style="width: 6%; text-align: center;">
+						<p:commandButton icon="ui-icon-minus"
+							actionListener="#{recursoMultaTramitaBean.remover}"
+							update=":formlista:listaSelecionados"
+							style="background: #ED9818;">
+							<f:attribute name="listaselecionado" value="#{saida}" />
+						</p:commandButton>
+					</p:column>
+
+					<p:column headerText="Placa" sortBy="#{saida.placa}"
+						filterBy="#{saida.placa}"
+						style="width: 9%; text-align: center; text-transform:uppercase;">
+						<h:outputText value="#{saida.placa}" />
+					</p:column>
+
+					<p:column headerText="Auto infração" sortBy="#{saida.autoInfracao}"
+						filterBy="#{saida.autoInfracao}"
+						style="width: 12%; text-align: center; text-transform:uppercase;">
+						<h:outputText value="#{saida.autoInfracao}" />
+					</p:column>
+
+					<p:column headerText="Tipo"
+						sortBy="#{saida.tipoProcesso.tipoProcesso}"
+						filterBy="#{saida.tipoProcesso.tipoProcesso}">
+						<h:outputText value="#{saida.tipoProcesso.tipoProcesso}" />
+					</p:column>
+
+					<p:column headerText="Data Recebimento"
+						sortBy="#{saida.dataCadastro}" filterBy="#{saida.dataCadastro}"
+						style="width: 12%; text-align: center;">
+						<h:outputText
+							value="#{saida.dataCadastro.date}/#{saida.dataCadastro.month+1}/#{saida.dataCadastro.year+1900}" />
+					</p:column>
+
+					<p:column headerText="Setor Abertura"
+						sortBy="#{saida.unidadeAbertura.unidade}/#{saida.setorAbertura.setor}"
+						filterBy="#{saida.unidadeAbertura.unidade}/#{saida.setorAbertura.setor}"
+						filterMatchMode="contains" style="width: 10%; text-align: center;">
+						<h:outputText
+							value="#{saida.unidadeAbertura.unidade}/#{saida.setorAbertura.setor}" />
+					</p:column>
+
+					<p:column headerText="Usuário Cadastro"
+						sortBy="#{saida.usuarioCadastro.pessoa.nomeCompleto}"
+						filterBy="#{saida.usuarioCadastro.pessoa.nomeCompleto}"
+						filterMatchMode="contains">
+						<h:outputText value="#{saida.usuarioCadastro.pessoa.nomeCompleto}" />
+					</p:column>
+
+					<p:column headerText="Status" sortBy="#{saida.status}"
+						filterBy="#{saida.status}" style="width: 9%; text-align: center;">
+						<h:outputText value="#{saida.status}" />
+					</p:column>
+
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+
+		<p:dialog header="Tramitação" widgetVar="dialogo" draggable="false"
+			resizable="false" modal="true" closable="false">
+			<h:form id="formularioFinalizar">
+				<h:panelGrid id="painelFinalizar" columns="2">
+
+
+
+					<p:commandButton value="Interno" icon="ui-icon-copy"
+						update=":formularioInterno:painelInterno"
+						onclick="PF('tramitacaoInterna').show();"
+						style="width:100px;height:50px;">
+					</p:commandButton>
+
+					<p:commandButton value="Externo" icon="ui-icon-copy"
+						update=":formularioExterno:painelExterno"
+						onclick="PF('tramitacaoExterna').show();"
+						style="width:100px;height:50px;">
+					</p:commandButton>
+
+
+
+				</h:panelGrid>
+
+				<p:separator />
+
+				<h:panelGrid columns="1" style="display: block;margin-left:30%;">
+
+					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+
+		<p:dialog header="Tramitação Interna" widgetVar="tramitacaoInterna"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="formularioInterno">
+				<h:panelGrid id="painelInterno" columns="2">
+
+					<p:outputLabel for="unidade" value="Unidade " />
+					<p:selectOneMenu id="unidade" filter="true"
+						requiredMessage="O campo Unidade é obrigatório"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{recursoMultaTramitaBean.unidade}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma unidade" />
+						<f:selectItems value="#{recursoMultaTramitaBean.unidades}"
+							var="unidade" itemValue="#{unidade}"
+							itemLabel="#{unidade.unidadeNome}" />
+						<p:ajax listener="#{recursoMultaTramitaBean.popular}"
+							update=":formularioInterno:setor" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="setor" value="Setor: " />
+					<p:selectOneMenu id="setor" filter="true"
+						value="#{recursoMultaTramitaBean.setor}"
+						converter="omnifaces.SelectItemsConverter" required="true"
+						requiredMessage="O campo Ofício é obrigatório">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione o Setor" />
+						<f:selectItems value="#{recursoMultaTramitaBean.setores}"
+							var="setores" itemValue="#{setores}" itemLabel="#{setores.setor}" />
+					</p:selectOneMenu>
+
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{recursoMultaTramitaBean.salvarInterno}"
+						update=":mensagem :formlista:listaSelecionados :formlista:lista :formularioInterno:painelInterno"
+						oncomplete="PF('tramitacaoInterna').hide(); PF('dialogo').hide();">
+					</p:commandButton>
+
+					<p:commandButton value="Fechar"
+						oncomplete="PF('tramitacaoInterna').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="Tramitação Externa" widgetVar="tramitacaoExterna"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="formularioExterno">
+				<h:panelGrid id="painelExterno" columns="2">
+
+					<p:outputLabel value="Destino Ofício/SGPE: " />
+					<p:inputText maxlength="50" size="30"
+						value="#{recursoMultaTramitaBean.recursoTramita.destino}"
+						required="true" requiredMessage="O campo destino é obrigatório" />
+
+
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{recursoMultaTramitaBean.salvarExterno}"
+						update=":mensagem :formlista:listaSelecionados :formularioInterno:painelInterno :formlista:lista"
+						oncomplete="PF('tramitacaoExterna').hide(); PF('dialogo').hide();">
+					</p:commandButton>
+
+					<p:commandButton value="Fechar"
+						oncomplete="PF('tramitacaoExterna').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+
+	</ui:define>
+</ui:composition>
+

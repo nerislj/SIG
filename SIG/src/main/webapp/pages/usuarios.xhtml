@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="formlista">
+			<p:panel header="Usuario - Listagem"
+				rendered="#{autenticacaoBean.temPermissoes([1])}">
+				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+					paginator="true" value="#{usuarioBean.usuarios}" var="usuario"
+					rows="10">
+					<f:facet name="header">
+						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
+							actionListener="#{usuarioBean.novo()}"
+							update=":formcadastro:cadastro">
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+					</f:facet>
+
+					<p:column headerText="CPF" sortBy="#{usuario.pessoa.cpf}"
+						filterBy="#{usuario.pessoa.cpf}"
+						style="width: 15%; text-align: center;">
+						<h:outputText value="#{usuario.pessoa.cpf}" />
+					</p:column>
+
+					<p:column headerText="Nome" sortBy="#{usuario.pessoa.nomeCompleto}"
+						filterBy="#{usuario.pessoa.nomeCompleto}">
+						<h:outputText value="#{usuario.pessoa.nomeCompleto}" />
+					</p:column>
+
+					<p:column headerText="Status" sortBy="#{usuario.status.status}"
+						filterBy="#{usuario.status.status}"
+						style="width: 8%; text-align: center;">
+						<h:outputText value="#{usuario.status.status}" />
+					</p:column>
+
+					<p:column headerText="Unidade" sortBy="#{usuario.unidade.unidade}"
+						filterBy="#{usuario.unidade.unidade}"
+						style="width: 10%; text-align: center;">
+						<h:outputText value="#{usuario.unidade.unidade}" />
+					</p:column>
+
+					<p:column headerText="Setor" sortBy="#{usuario.setor.setor}"
+						filterBy="#{usuario.setor.setor}"
+						style="width: 10%; text-align: center;">
+						<h:outputText value="#{usuario.setor.setor}" />
+					</p:column>
+
+					<p:column headerText="Perfil" sortBy="#{usuario.nivelAcesso.nivel}"
+						filterBy="#{usuario.nivelAcesso.nivel}"
+						style="width: 15%; text-align: center;">
+						<h:outputText value="#{usuario.nivelAcesso.nivel}" />
+					</p:column>
+
+					<p:column headerText="Opções"
+						style="width: 6%; text-align: center;">
+						<p:commandButton icon="ui-icon-trash"
+							actionListener="#{usuarioBean.excluir}"
+							update=":mensagem :formlista:lista"
+							rendered="#{autenticacaoBean.temPermissoes([1, 2])}">
+							<p:confirm header="Confirmação"
+								message="Deseja excluir o Usuário?" icon="ui-icon-alert" />
+							<f:attribute name="usuarioSelecionado" value="#{usuario}" />
+						</p:commandButton>
+
+						<p:commandButton icon="ui-icon-pencil"
+							actionListener="#{usuarioBean.editar}"
+							update=":formcadastro:cadastro"
+							oncomplete="PF('dialogo').show();">
+							<f:attribute name="usuarioSelecionado" value="#{usuario}" />
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+
+					</p:column>
+				</p:dataTable>
+
+				<p:confirmDialog global="true">
+					<p:commandButton value="Sim" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="Não" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+			</p:panel>
+		</h:form>
+
+		<p:dialog header="Usuario - Cadastro" widgetVar="dialogo"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="formcadastro">
+				<h:panelGrid id="cadastro" columns="2">
+
+					<p:outputLabel value="Pessoa: " />
+					<p:selectOneMenu filter="true"
+						value="#{usuarioBean.usuario.pessoa}"
+						converter="omnifaces.SelectItemsConverter" required="true"
+						requiredMessage="O campo Pessoa é obrigatório">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma Pessoa" />
+						<f:selectItems value="#{usuarioBean.pessoas}" var="pessoas"
+							itemValue="#{pessoas}"
+							itemLabel="#{pessoas.cpf} - #{pessoas.nomeCompleto}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Status: " />
+					<p:selectOneMenu filter="true"
+						value="#{usuarioBean.usuario.status}"
+						converter="omnifaces.SelectItemsConverter" required="true"
+						requiredMessage="O campo Status é obrigatório">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione um Status" />
+						<f:selectItems value="#{usuarioBean.usuarioStatus}" var="status"
+							itemValue="#{status}" itemLabel="#{status.status}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="unidade" value="Unidade " />
+					<p:selectOneMenu id="unidade" filter="true"
+						requiredMessage="O campo Unidade é obrigatório"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{usuarioBean.usuario.unidade}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma unidade" />
+						<f:selectItems value="#{usuarioBean.unidades}"
+							var="unidade" itemValue="#{unidade}"
+							itemLabel="#{unidade.unidadeNome}" />
+						<p:ajax listener="#{usuarioBean.popular}"
+							update=":formcadastro:setor" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="setor" value="Setor: " />
+					<p:selectOneMenu id="setor" filter="true"
+						requiredMessage="O campo Setor é obrigatório"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{usuarioBean.usuario.setor}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione um setor" />
+						<f:selectItems value="#{usuarioBean.setores}" var="setor"
+							itemValue="#{setor}" itemLabel="#{setor.setor}" />
+						<p:ajax listener="#{usuarioBean.popularNivel}"
+							update=":formcadastro:perfil" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="perfil" value="Perfil: " />
+					<p:selectOneMenu id="perfil" filter="true" required="true"
+						requiredMessage="O campo Perfil é obrigatório"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{usuarioBean.usuario.nivelAcesso}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma perfil" />
+						<f:selectItems value="#{usuarioBean.usuarioNivel}" var="nivel"
+							itemValue="#{nivel}" itemLabel="#{nivel.nivel}" />
+					</p:selectOneMenu>
+
+
+
+
+					<p:outputLabel for="senha" value="Senha:" />
+					<p:password id="senha" maxlength="15" size="15"
+						value="#{usuarioBean.usuario.senha}" required="true"
+						requiredMessage="O campo Senha é obrigatório."
+						validatorMessage="Informe uma senha de 4 a 10 caracteres.">
+						<f:validateLength minimum="4" maximum="10" />
+					</p:password>
+
+					<p:outputLabel value="Data de Cadastro:" />
+					<p:calendar id="dataCadastro" maxlength="8" size="5"
+						value="#{usuarioBean.usuario.dataCadastro}" required="true"
+						requiredMessage="O campo Data de Cadastro é obrigatório"
+						locale="pt_BR" />
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{usuarioBean.salvar()}"
+						update=":mensagem :formcadastro:cadastro :formlista:lista" />
+					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+		<style type="text/css">
+.vencida {
+	background-color: #FF4040 !important;
+	background-image: none !important;
+	color: #000000 !important;
+}
+
+.dezdias {
+	background-color: #FFFF00 !important;
+	background-image: none !important;
+	color: #000000 !important;
+}
+
+.ok {
+	background-color: #43CD80 !important;
+	background-image: none !important;
+	color: #000000 !important;
+}
+</style>
+
+		<h:form id="formlista"
+			rendered="#{autenticacaoBean.temPermissoes([1, 13, 17, 18])}">
+			<p:panel header="Relatório Credenciados">
+
+
+				<p:panelGrid columns="2" style="margin: 0 auto;">
+
+					<h:outputLabel style="color: #FF4040">▇</h:outputLabel>
+					<h:outputLabel>Vencida</h:outputLabel>
+
+
+					<h:outputLabel style="color: #FFFF00">▇</h:outputLabel>
+					<h:outputLabel>À vencer</h:outputLabel>
+
+					<h:outputLabel style="color: #43CD80">▇</h:outputLabel>
+					<h:outputLabel>Em dia</h:outputLabel>
+
+				</p:panelGrid>
+
+				<br />
+
+
+
+
+				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+					paginator="true"
+					value="#{credenciadoBean.credenciadosValidadeDesc}"
+					var="credenciado" rows="10" style="width: 100%;" 
+					rowStyleClass="#{(credenciado.vencimentoCredencial le credenciadoBean.convertTime(credenciadoBean.dataHoje)? 'vencida': (credenciado.vencimentoCredencial le credenciadoBean.convert10Dias(credenciadoBean.data10Dias) ? 'dezdias':'ok'))}">
+
+					<p:column headerText="Nº Credencial"
+						sortBy="#{credenciado.numeroRegistro}"
+						filterBy="#{credenciado.numeroRegistro}"
+						style="width: 50px; text-align: center;">
+						<h:outputText value="#{credenciado.numeroRegistro}" />
+					</p:column>
+
+					<p:column headerText="Nome Completo"
+						sortBy="#{credenciado.pessoa.nomeCompleto}"
+						filterBy="#{credenciado.pessoa.nomeCompleto}"
+						style="width: 170px; text-align: center;">
+						<h:outputText value="#{credenciado.pessoa.nomeCompleto}" />
+					</p:column>
+
+					<p:column headerText="CPF" sortBy="#{credenciado.pessoa.cpf}"
+						filterBy="#{credenciado.pessoa.cpf}"
+						style="width: 70px; text-align: center;">
+						<h:outputText value="#{credenciado.pessoa.cpf}" />
+					</p:column>
+
+					<p:column headerText="Tipo Credencial"
+						sortBy="#{credenciado.credencialTipo.tipocredencial}"
+						filterBy="#{credenciado.credencialTipo.tipocredencial}"
+						style="width: 70px; text-align: center;">
+						<h:outputText value="#{credenciado.credencialTipo.tipocredencial}" />
+					</p:column>
+
+					<p:column headerText="Data Cadastro"
+						sortBy="#{credenciado.dataCadastro}"
+						style="width: 70px; text-align: center;">
+						<h:outputText
+							value="#{credenciado.dataCadastro.date}/#{credenciado.dataCadastro.month+1}/#{credenciado.dataCadastro.year+1900}" />
+					</p:column>
+
+					<p:column headerText="Data Vencimento"
+						sortBy="#{credenciado.vencimentoCredencial}"
+						style="width: 70px; text-align: center;">
+						<h:outputText
+							rendered="#{credenciado.vencimentoCredencial != null}"
+							value="#{credenciado.vencimentoCredencial.date}/#{credenciado.vencimentoCredencial.month+1}/#{credenciado.vencimentoCredencial.year+1900}" />
+						<h:outputText
+							rendered="#{credenciado.vencimentoCredencial == null}"
+							value="Não Informado" />
+					</p:column>
+
+					<p:column headerText="Status"
+						sortBy="#{credenciado.credencialStatus.tipoStatus}"
+						filterBy="#{credenciado.credencialStatus.tipoStatus}"
+						style="width: 70px; text-align: center;">
+						<h:outputText value="#{credenciado.credencialStatus.tipoStatus}" />
+					</p:column>
+
+				</p:dataTable>
+
+			</p:panel>
+		</h:form>
+
+
+	</ui:define>
+</ui:composition>
+
+

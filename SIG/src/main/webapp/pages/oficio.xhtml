@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<ui:define name="conteudo">
+
+		<p:tabView id="tabView">
+
+			<p:tab title="Ofícios">
+				<h:form id="formlista">
+					<p:panel header="Ofícios">
+						<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+							paginator="true" value="#{oficioBean.oficios}" var="oficio"
+							rows="10">
+
+							<f:facet name="header">
+
+								<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
+									actionListener="#{oficioBean.novo}"
+									update=":formcadastro:cadastro" style="background: #01B50D;">
+									<f:actionListener
+										type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+								</p:commandButton>
+
+								<p:spacer width="300" height="10" />
+
+								<p:outputLabel value="Ano: " />
+								<p:selectOneMenu id="ano"
+									converter="omnifaces.SelectItemsConverter"
+									value="#{oficioBean.ano}">
+									<f:selectItems value="#{oficioBean.anos}" var="ano"
+										itemValue="#{ano}" itemLabel="#{ano.oficioAno}" />
+								</p:selectOneMenu>
+
+								<p:spacer width="15" height="10" />
+
+								<p:commandButton value="Consultar"
+									actionListener="#{oficioBean.consultaPorAno}"
+									update=":mensagem :tabView:formlista:lista"
+									style="background: #01B50D;">
+									<f:actionListener
+										type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+								</p:commandButton>
+
+
+
+
+
+							</f:facet>
+
+							<p:column headerText="Oficio" sortBy="#{oficio.oficio}"
+								filterBy="#{oficio.oficio}" filterMatchMode="contains">
+								<h:outputText value="#{oficio.oficio}" />
+
+							</p:column>
+
+							<p:column headerText="Assunto" sortBy="#{oficio.assunto}"
+								filterBy="#{oficio.assunto}" filterMatchMode="contains">
+								<h:outputText value="#{oficio.assunto}" />
+							</p:column>
+
+							<p:column headerText="Destino" sortBy="#{oficio.destino}"
+								filterBy="#{oficio.destino}" filterMatchMode="contains">
+								<h:outputText value="#{oficio.destino}" />
+							</p:column>
+
+							<p:column headerText="Palavras-Chave"
+								sortBy="#{oficio.palavraChave}"
+								filterBy="#{oficio.palavraChave}" filterMatchMode="contains">
+								<h:outputText value="#{oficio.palavraChave}" />
+							</p:column>
+
+							<p:column headerText="Status" sortBy="#{oficio.status}"
+								filterBy="#{oficio.status}"
+								style="width: 7%; text-align: center;">
+								<h:outputText value="#{oficio.status}" />
+							</p:column>
+
+							<p:column headerText="Usuário Abertura"
+								sortBy="#{oficio.usuario.pessoa.nomeCompleto}"
+								filterBy="#{oficio.usuario.pessoa.nomeCompleto}"
+								style="width: 15%; text-align: center;"
+								filterMatchMode="contains">
+								<h:outputText value="#{oficio.usuario.pessoa.nomeCompleto}" />
+							</p:column>
+
+							<p:column headerText="Data Abertura"
+								sortBy="#{oficio.dataOficio}" filterBy="#{oficio.dataOficio}"
+								style="width: 9%; text-align: center;">
+								<h:outputText
+									value="#{oficio.dataOficio.date}/#{oficio.dataOficio.month+1}/#{oficio.dataOficio.year+1900}" />
+							</p:column>
+
+							<p:column headerText="Opções">
+
+								<p:commandButton value="Copiar" icon="ui-icon-copy"
+									actionListener="#{oficioBean.editar}"
+									update=":dlgConfirmar:cadastroDialogo"
+									onclick="PF('dlg').show();" style="background: #18B5ED;">
+									<f:attribute name="oficioSelecionado" value="#{oficio}" />
+									<f:actionListener
+										type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+								</p:commandButton>
+
+								<p:commandButton value="Cancelar" icon="ui-icon-cancel"
+									actionListener="#{oficioBean.editar}"
+									update=":formExclusao:exclusao"
+									oncomplete="PF('dialogoExclusao').show();">
+									<f:attribute name="oficioSelecionado" value="#{oficio}" />
+									<f:actionListener
+										type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+								</p:commandButton>
+
+							</p:column>
+						</p:dataTable>
+						<p:confirmDialog global="true">
+							<p:commandButton value="Sim" type="button"
+								styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+							<p:commandButton value="Não" type="button"
+								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						</p:confirmDialog>
+					</p:panel>
+				</h:form>
+
+			</p:tab>
+			<p:tab title="Cancelados">
+
+				<h:form id="formlistaInativos">
+					<p:panel header="Ofícios">
+						<p:dataTable id="listaInativos"
+							emptyMessage="Nenhum registro encontrado." paginator="true"
+							value="#{oficioBean.oficiosInativos}" var="oficio" rows="10">
+
+
+
+							<p:column headerText="Oficio" sortBy="#{oficio.oficio}"
+								filterBy="#{oficio.oficio}"
+								style="width: 10%; text-align: center;">
+								<h:outputText value="#{oficio.oficio}" />
+
+							</p:column>
+
+							<p:column headerText="Assunto" sortBy="#{oficio.assunto}"
+								filterBy="#{oficio.assunto}">
+								<h:outputText value="#{oficio.assunto}" />
+							</p:column>
+
+							<p:column headerText="Destino" sortBy="#{oficio.destino}"
+								filterBy="#{oficio.destino}">
+								<h:outputText value="#{oficio.destino}" />
+							</p:column>
+
+							<p:column headerText="Palavras-Chave"
+								sortBy="#{oficio.palavraChave}"
+								filterBy="#{oficio.palavraChave}" filterMatchMode="contains">
+								<h:outputText value="#{oficio.palavraChave}" />
+							</p:column>
+
+							<p:column headerText="Status" sortBy="#{oficio.status}"
+								filterBy="#{oficio.status}"
+								style="width: 7%; text-align: center;">
+								<h:outputText value="#{oficio.status}" />
+							</p:column>
+
+							<p:column headerText="Usuário Cancelamento"
+								sortBy="#{oficio.usuarioCancelamento}"
+								filterBy="#{oficio.usuarioCancelamento}"
+								style="width: 15%; text-align: center;">
+								<h:outputText
+									value="#{oficio.usuarioCancelamento.pessoa.nomeCompleto}" />
+							</p:column>
+
+							<p:column headerText="Data Cancelamento"
+								sortBy="#{oficio.dataCancelamento}"
+								filterBy="#{oficio.dataCancelamento}"
+								style="width: 9%; text-align: center;">
+								<h:outputText
+									value="#{oficio.dataCancelamento.date}/#{oficio.dataCancelamento.month+1}/#{oficio.dataCancelamento.year+1900}" />
+							</p:column>
+
+							<p:column headerText="Motivo Cancelamento"
+								style="width: 8%; text-align: center;">
+								<p:commandButton icon="ui-icon-info"
+									actionListener="#{oficioBean.editar}"
+									update=":formmotivo:motivo"
+									oncomplete="PF('dialogoMotivo').show();">
+									<f:attribute name="oficioSelecionado" value="#{oficio}" />
+									<f:actionListener
+										type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+								</p:commandButton>
+							</p:column>
+
+
+
+						</p:dataTable>
+
+					</p:panel>
+				</h:form>
+			</p:tab>
+
+
+		</p:tabView>
+
+		<p:dialog header="Motivo Cancelamento" widgetVar="dialogoMotivo"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="formmotivo">
+				<h:panelGrid id="motivo" columns="2">
+
+					<p:outputLabel value="Motivo: " />
+					<br />
+					<h:outputText value="#{oficioBean.oficio.motivoCancelamento}"></h:outputText>
+
+				</h:panelGrid>
+				<h:panelGrid columns="2">
+
+					<p:commandButton value="Fechar"
+						oncomplete="PF('dialogoMotivo').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+
+
+		<p:dialog header="Ofício - Edição" widgetVar="dialogoEdicao"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="formedicao">
+				<h:panelGrid id="edicao" columns="2">
+
+					<p:outputLabel value="Setor Abertura: " />
+					<p:selectOneMenu filter="true"
+						value="#{oficioBean.oficio.setorAbertura}"
+						converter="omnifaces.SelectItemsConverter" required="true"
+						requiredMessage="O campo Setor Abertura é obrigatório">
+						<f:selectItem
+							itemLabel="#{autenticacaoBean.usuarioLogado.setor.setor}"
+							itemValue="#{autenticacaoBean.usuarioLogado.setor}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Destino: " />
+					<p:inputText maxlength="30" size="30"
+						value="#{oficioBean.oficio.destino}" required="true"
+						requiredMessage="O campo Destino é obrigatório" />
+
+					<p:outputLabel value="Assunto: " />
+					<p:inputText maxlength="30" size="30"
+						value="#{oficioBean.oficio.assunto}" required="true"
+						requiredMessage="O campo Assunto é obrigatório" />
+
+					<p:outputLabel value="Palavras-Chave: " />
+					<p:inputTextarea maxlength="255"
+						value="#{oficioBean.oficio.palavraChave}" counter="display"
+						counterTemplate="Restam {0} Caracteres." />
+					<h:outputText />
+					<h:outputText id="display" />
+
+				</h:panelGrid>
+				<h:panelGrid columns="4">
+					<p:commandButton value="Salvar"
+						actionListener="#{oficioBean.salvarEditar}"
+						update=":mensagem :tabView:formlista:lista">
+					</p:commandButton>
+					<p:commandButton value="Fechar"
+						oncomplete="PF('dialogoEdicao').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+
+
+		<p:dialog header="Ofício - Cadastro" widgetVar="dialogo"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="formcadastro">
+				<h:panelGrid id="cadastro" columns="2">
+
+					<p:outputLabel value="Setor Abertura: " />
+					<p:selectOneMenu value="#{oficioBean.oficio.setorAbertura}"
+						converter="omnifaces.SelectItemsConverter" required="true"
+						requiredMessage="O campo Setor Abertura é obrigatório">
+						<f:selectItem
+							itemLabel="#{autenticacaoBean.usuarioLogado.setor.setor}"
+							itemValue="#{autenticacaoBean.usuarioLogado.setor}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Destino: " />
+					<p:inputText id="destinoSalvar" maxlength="30" size="30"
+						value="#{oficioBean.oficio.destino}" required="true"
+						requiredMessage="O campo Destino é obrigatório" />
+
+					<p:outputLabel value="Assunto: " />
+					<p:inputText maxlength="30" size="30"
+						value="#{oficioBean.oficio.assunto}" required="true"
+						requiredMessage="O campo Assunto é obrigatório" />
+
+
+					<p:outputLabel value="Palavras-Chave: " />
+					<p:inputTextarea maxlength="255"
+						value="#{oficioBean.oficio.palavraChave}" counter="display"
+						counterTemplate="Restam {0} Caracteres." />
+					<h:outputText />
+					<h:outputText id="display" />
+
+
+				</h:panelGrid>
+				<h:panelGrid columns="4">
+					<p:commandButton value="Salvar"
+						actionListener="#{oficioBean.salvar}"
+						update=":mensagem :tabView:formlista:lista :formcopie:copie"
+						oncomplete="(!args.validationFailed) ? PF('dlgSalvar').show() : PF('dlgSalvar').hide()">
+					</p:commandButton>
+					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="Ofício - Número Lista" widgetVar="dlg"
+			dynamic="true" draggable="false" resizable="false" modal="true"
+			closable="true">
+			<h:form id="dlgConfirmar">
+				<h:panelGrid id="cadastroDialogo" columns="2">
+					<h:outputLabel value="Ofício gerado: " />
+					<h:outputText
+						style="font-family:Times New Roman, Times, serif; font-size:16px;"
+						id="oficioNumber"
+						value="#{oficioBean.oficio.numeroOficio}/#{oficioBean.oficio.setorAbertura.setor}/#{oficioBean.oficio.dataOficio.year+1900}" />
+
+					<p:commandButton id="btnCopy" value="Copiar" icon="ui-icon-copy" />
+					<pe:clipboard id="clipCopy" trigger="btnCopy" action="copy"
+						target="oficioNumber">
+						<p:ajax event="success" listener="#{oficioBean.successListener}" />
+					</pe:clipboard>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		<p:dialog header="Ofício - Gerado" widgetVar="dlgSalvar"
+			dynamic="true" width="500" height="200" draggable="false"
+			resizable="false" modal="true" closable="true">
+			<h:form id="formcopie">
+
+				<p:dataTable id="copie" value="#{oficioBean.oficioDialogo}"
+					var="oficio" rows="1">
+
+					<p:column>
+						<br />
+						<br />
+					Ofício gerado com sucesso!
+					<br />
+						<br />
+						Número: <h:outputText id="txtCopy"
+							style="font-family:Times New Roman, Times, serif; font-size:16px;"
+							value="#{oficio.oficio}" />
+						<br />
+						<br />
+					Para copiar o ofício, clique no botão abaixo.
+					<br />
+						<br />
+						<p:commandButton id="btnCopy" value="Copiar" icon="ui-icon-copy" />
+						<pe:clipboard id="clipCopy" trigger="btnCopy" action="copy"
+							target="txtCopy">
+							<p:ajax event="success" listener="#{oficioBean.successListener}" />
+						</pe:clipboard>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="Ofício - Cancelamento" widgetVar="dialogoExclusao"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="formExclusao">
+				<h:panelGrid id="exclusao" columns="2">
+
+					<p:outputLabel value="Motivo: " />
+					<p:inputTextarea maxlength="60"
+						value="#{oficioBean.oficio.motivoCancelamento}" required="true"
+						requiredMessage="Campo Motivo é obrigatório." counter="display"
+						counterTemplate="Restam {0} Caracteres." />
+					<h:outputText />
+					<h:outputText id="display" />
+
+				</h:panelGrid>
+				<h:panelGrid columns="4">
+					<p:commandButton value="Confirmar"
+						actionListener="#{oficioBean.cancelaOficio}"
+						update=":mensagem :tabView:formlista:lista">
+					</p:commandButton>
+					<p:commandButton value="Fechar"
+						oncomplete="PF('dialogoExclusao').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

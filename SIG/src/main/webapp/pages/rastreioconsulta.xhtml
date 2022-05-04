@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:viewAction action="#{rastreioBean.listar}" />
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="conteudo">
+		<h:form id="formlista">
+			<p:panel header="Consulta Rastreio - Listagem">
+				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+					paginator="true" value="#{rastreioBean.recursosmultarastreio}"
+					var="rastreio" rows="10">
+
+					<p:column style="width: 16px;">
+						<p:rowToggler />
+					</p:column>
+
+					<p:column headerText="Rastreio" sortBy="#{rastreio.rastreio}"
+						filterBy="#{rastreio.rastreio}">
+						<h:outputText value="#{rastreio.rastreio}" />
+					</p:column>
+
+					<p:column headerText="Destino" sortBy="#{rastreio.destino}"
+						filterBy="#{rastreio.destino}">
+						<h:outputText value="#{rastreio.destino}" />
+					</p:column>
+
+					<p:column headerText="Data Saida" sortBy="#{rastreio.dataSaida}"
+						filterBy="#{rastreio.dataSaida}">
+						<h:outputText
+							value="#{rastreio.dataSaida.date}/#{rastreio.dataSaida.month+1}/#{rastreio.dataSaida.year+1900}" />
+					</p:column>
+
+					<p:column headerText="Usuário Saida" sortBy="#{rastreio.usuario}"
+						filterBy="#{rastreio.usuario}">
+						<h:outputText value="#{rastreio.usuario.pessoa.nomeCompleto}" />
+					</p:column>
+
+					<p:rowExpansion>
+						<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+							value="#{rastreio.rastreioRelacao}" var="oficio" style="width: 20%; padding-left: 40%">
+
+							<p:column headerText="Oficio"
+								sortBy="#{oficio.oficio.numeroOficio}"
+								filterBy="#{oficio.oficio.numeroOficio}"
+								style="width: 20%;">
+								<h:outputText
+									value="#{oficio.oficio.oficio}" />
+							</p:column>
+
+						</p:dataTable>
+					</p:rowExpansion>
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

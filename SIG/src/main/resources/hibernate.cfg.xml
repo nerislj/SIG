@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd"
+		
+		>
+
+
+<hibernate-configuration>
+
+	<session-factory>
+
+		<!-- Database connection settings -->
+		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="connection.url">jdbc:mysql://localhost:3306/detran</property> 
+		<!-- <property name="connection.url">jdbc:mysql://127.0.0.1:3306/detran</property> -->
+		<property name="connection.username">root</property>
+		<property name="connection.password">root</property>
+
+		<!-- JDBC connection pool (use the built-in) -->
+		<property name="connection.pool_size">1</property>
+
+		<!-- SQL dialect -->
+		<property name="dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+
+		<!-- Enable Hibernate's automatic session context management -->
+		<property name="current_session_context_class">thread</property>
+
+		<!-- Disable the second-level cache -->
+		<property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property>
+
+		<!-- Echo all executed SQL to stdout -->
+		<property name="show_sql">true</property>
+		<property name="format_sql">true</property>
+		
+
+	
+	
+		<!-- Drop and re-create the database schema on startup -->
+		<!-- create (limpa tudo e cria do zero)- update (tenta manter os dados 
+			e atualizar) - validate (valida os dados e se estiver fora, da erro) -->
+		<property name="hbm2ddl.auto">update</property>
+		
+		
+
+		<!-- Mapeamento das Entidades -->
+		<mapping class="br.gov.sc.sgi.domain.Cidade" />
+		<mapping class="br.gov.sc.sgi.domain.Credenciado" />
+		<mapping class="br.gov.sc.sgi.domain.CredenciadoAlvara" />
+		<mapping class="br.gov.sc.sgi.domain.CredenciadoDocAdic" />
+		<mapping class="br.gov.sc.sgi.domain.CredenciadoEmp" />
+		<mapping class="br.gov.sc.sgi.domain.CredenciadoEmpHist" />
+		<mapping class="br.gov.sc.sgi.domain.CredenciadoEmpObs" />
+		<mapping class="br.gov.sc.sgi.domain.CredenciadoHist" />
+		<mapping class="br.gov.sc.sgi.domain.CredenciadoPortaria" />
+		<mapping class="br.gov.sc.sgi.domain.CredenciadoSGPE" />
+		<mapping class="br.gov.sc.sgi.domain.CredencialEmpTipo" />
+		<mapping class="br.gov.sc.sgi.domain.CredencialEndAdic" />
+		<mapping class="br.gov.sc.sgi.domain.CredencialEndAdicHist" />
+		<mapping class="br.gov.sc.sgi.domain.CredencialRelacaoCred" />
+		<mapping
+			class="br.gov.sc.sgi.domain.CredencialRelacaoCredHist" />
+		<mapping class="br.gov.sc.sgi.domain.CredencialRelacaoProp" />
+		<mapping
+			class="br.gov.sc.sgi.domain.CredencialRelacaoPropHist" />
+		<mapping class="br.gov.sc.sgi.domain.CredencialRelacaoVeic" />
+		<mapping
+			class="br.gov.sc.sgi.domain.CredencialRelacaoVeicHist" />
+		<mapping class="br.gov.sc.sgi.domain.CredencialStatus" />
+		<mapping class="br.gov.sc.sgi.domain.CredencialTipo" />
+		<mapping class="br.gov.sc.sgi.domain.CredencialVeiculo" />
+		<mapping class="br.gov.sc.sgi.domain.DocSGPE" />
+		<mapping class="br.gov.sc.sgi.domain.DocSGPEHist" />
+		<mapping class="br.gov.sc.sgi.domain.Estado" />
+		<mapping class="br.gov.sc.sgi.domain.FrotaVeiculo" />
+		<mapping class="br.gov.sc.sgi.domain.FrotaViagem" />
+		<mapping class="br.gov.sc.sgi.domain.FrotaUnidade" />
+		<mapping class="br.gov.sc.sgi.domain.FrotaCondutor" />
+		<mapping class="br.gov.sc.sgi.domain.Oficio" />
+		<mapping class="br.gov.sc.sgi.domain.OficioAno" />
+		<mapping class="br.gov.sc.sgi.domain.PessoaFisica" />
+		<mapping class="br.gov.sc.sgi.domain.PessoaJuridica" />
+		<mapping class="br.gov.sc.sgi.domain.Rastreio" />
+		<mapping class="br.gov.sc.sgi.domain.RastreioRelacao" />
+		<mapping class="br.gov.sc.sgi.domain.RecursoMulta" />
+		<mapping class="br.gov.sc.sgi.domain.RecursoMultaAno" />
+		<mapping class="br.gov.sc.sgi.domain.RecursoMultaTipos" />
+		<mapping class="br.gov.sc.sgi.domain.RecursoMultaTramita" />
+		<mapping class="br.gov.sc.sgi.domain.Setor" />
+		<mapping class="br.gov.sc.sgi.domain.Unidade" />
+		<mapping class="br.gov.sc.sgi.domain.Usuario" />
+		<mapping class="br.gov.sc.sgi.domain.UsuarioNivelAcesso" />
+		<mapping class="br.gov.sc.sgi.domain.UsuarioStatus" />
+
+		<mapping class="br.gov.sc.geapo.domain.Material" />
+		<mapping class="br.gov.sc.geapo.domain.MaterialEntrada" />
+		<mapping class="br.gov.sc.geapo.domain.MaterialEntradaHist" />
+		<mapping class="br.gov.sc.geapo.domain.MaterialSaida" />
+		<mapping class="br.gov.sc.geapo.domain.MaterialSaidaHist" />
+		<mapping class="br.gov.sc.geapo.domain.MaterialStatus" />
+		<mapping class="br.gov.sc.geapo.domain.MaterialTipo" />
+		<mapping class="br.gov.sc.geapo.domain.MaterialSaidaRelacao" />
+		
+		<mapping class="br.gov.sc.cetran.domain.ProcessoAno" /> 
+
+		<mapping class="br.gov.sc.cetran.domain.Situacao" /> <!-- IMPORT WIZARD DIRETO-->
+		<mapping class="br.gov.sc.cetran.domain.Representacao" /> <!-- IMPORT WIZARD DIRETO-->
+		<mapping class="br.gov.sc.cetran.domain.TipoRequerente" /> <!-- IMPORT WIZARD DIRETO-->
+		<mapping class="br.gov.sc.cetran.domain.Conselheiro" /> <!-- IMPORT WIZARD DIRETO-->
+		
+		<mapping class="br.gov.sc.cetran.domain.Requerente" /> <!-- IMPORT WIZARD PRA CRIAR TABELA > TRUCANTE > SQL> DEPOIS PRECISA DATA EXPORT-->
+		<mapping class="br.gov.sc.cetran.domain.ProcessoCetran" /> <!-- IMPORT WIZARD PRA CRIAR TABELA > TRUCANTE > SQL> DEPOIS PRECISA DATA EXPORT-->
+		<mapping class="br.gov.sc.cetran.domain.HistoricoProcesso" /> <!-- IMPORT WIZARD DIRETO -->
+
+
+	</session-factory>
+</hibernate-configuration>

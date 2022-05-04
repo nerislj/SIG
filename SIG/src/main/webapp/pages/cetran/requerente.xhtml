@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+	
+	<h:outputStylesheet name="primeicons/primeicons.css" library="primefaces"/>
+
+
+
+
+		<p:panel header="Cadastro">
+
+
+
+
+			<h:form id="formcadastro">
+
+
+				<h:panelGrid id="cadastro" columns="2" cellpadding="2"
+					style="margin: 0 auto;">
+
+
+
+
+
+					<p:outputLabel value="" />
+					<p:outputLabel value="" />
+					<p:outputLabel value="" />
+					<p:outputLabel value="" />
+					<p:outputLabel value="" />
+					<p:outputLabel value="" />
+
+					<span>
+					
+						
+							<i class="pi pi-user"></i><b style="color: #518e2e">REQUERENTE</b>
+						
+					</span>
+					<p:outputLabel value="" />
+					<p:outputLabel value="" />
+					<p:outputLabel value="" />
+
+
+
+					<h:outputLabel id="lbPessoa" value="Pessoa: * " for="pessoa" />
+					<p:selectOneRadio id="pessoa" value="#{requerenteBean.filtro}"
+						required="true" requiredMessage="Campo [Pessoa] é obrigatório.">
+
+						<f:selectItem itemLabel="Física" itemValue="2" />
+						<f:selectItem itemLabel="Jurídica" itemValue="1" />
+						<f:selectItem itemLabel="Organização" itemValue="3" />
+						<p:ajax event="change"
+							update="pnlPessoa, pnlCpfOUCnpj, :formcadastro:nome, :formlista:lista"
+							process="@this" listener="#{requerenteBean.habilitar()}" />
+
+
+					</p:selectOneRadio>
+
+
+
+					<p:outputPanel id="pnlPessoa">
+
+						<p:outputLabel id="lbCpf" value="CPF:" for="cpf"
+							rendered="#{requerenteBean.mostrarCpf}" />
+						<p:outputLabel id="lbCnpj" value="CNPJ:" for="cnpj"
+							rendered="#{requerenteBean.mostrarCnpj}" />
+						<p:outputLabel id="lbOrg" value=""
+							rendered="#{requerenteBean.mostrarOrg}" />
+
+					</p:outputPanel>
+
+					<p:outputPanel id="pnlCpfOUCnpj">
+
+						<p:inputMask mask="99999999999" id="cpf" size="25"
+							rendered="#{requerenteBean.mostrarCpf}"
+							value="#{requerenteBean.requerente.cpf}">
+							<p:ajax event="blur" listener="#{requerenteBean.buscarCPFCNPJ}"
+								update="formcadastro:nome, :formlista:lista" />
+							<f:validator validatorId="CpfValidator" />
+						</p:inputMask>
+
+						<p:inputMask mask="99999999999999" id="cnpj" size="25"
+							rendered="#{requerenteBean.mostrarCnpj}"
+							value="#{requerenteBean.requerente.cnpj}">
+							<p:ajax event="blur" listener="#{requerenteBean.buscarCPFCNPJ}"
+								update="formcadastro:nome, :formlista:lista" />
+							<f:validator validatorId="ValidatorCNPJ" />
+						</p:inputMask>
+
+
+
+					</p:outputPanel>
+
+
+
+					<p:outputLabel value="Nome: *" />
+					<p:inputText id="nome" value="#{requerenteBean.requerente.nome}"
+						style="text-transform:uppercase;margin: 0 auto;" required="true"
+						requiredMessage="O campo Nome é obrigatório" />
+
+
+					<p:outputLabel value="" />
+					<p:outputLabel value="" />
+					<p:outputLabel value="" />
+					<p:outputLabel value="" />
+					<p:outputLabel value="" />
+					<p:outputLabel value="" />
+
+					<span>
+					
+					
+							<i class="pi pi-file"></i><b style="color: #518e2e">PROCESSO</b>
+						
+					</span>
+					<p:outputLabel value="" />
+					<p:outputLabel value="" />
+					<p:outputLabel value="" />
+
+
+
+
+					<p:outputLabel value="Recorrido:" />
+					<p:inputText id="recorrido"
+						value="#{requerenteBean.processoCetran.recorrido}"
+						style="text-transform:uppercase;margin: 0 auto;"
+						requiredMessage="O campo Recorrido é obrigatório" />
+
+					<p:outputLabel value="Número:" />
+					<p:inputText id="numero"
+						value="#{requerenteBean.processoCetran.numero}"
+						style="text-transform:uppercase;margin: 0 auto;"
+						requiredMessage="O campo Número é obrigatório" />
+
+					<p:outputLabel value="Placa:" />
+					<p:inputText id="placa"
+						value="#{requerenteBean.processoCetran.placa}"
+						style="text-transform:uppercase;margin: 0 auto;"
+						requiredMessage="O campo Placa é obrigatório" />
+
+
+
+					<p:outputLabel for="dtEntrada" value="Data Entrada:" />
+					<p:calendar id="dtEntrada" readonlyInput="true"
+						yearRange="c-120:c-14"
+						value="#{requerenteBean.processoCetran.dataEntrada}"
+						showIcon="true" />
+
+
+
+
+
+
+				</h:panelGrid>
+
+
+				<h:panelGrid columns="2" style="margin: 0 auto;">
+					<p:commandButton value="Salvar"
+						actionListener="#{requerenteBean.salvar()}"
+						update=":mensagem :formcadastro:cadastro :formlista:lista" />
+						
+						<p:commandButton value="Limpar" actionListener="#{requerenteBean.novo()}"
+						
+						update=":mensagem :formcadastro:cadastro :formlista:lista"
+						/>
+
+				</h:panelGrid>
+
+
+
+				<h:panelGroup style="display:block; text-align:center">
+					<p>
+						<b>(*)</b> Campos obrigatórios.
+					</p>
+				</h:panelGroup>
+
+
+
+
+
+			</h:form>
+
+
+
+
+
+		</p:panel>
+
+		<h:form id="formlista"
+			rendered="#{autenticacaoBean.temPermissoes([1, 27])}">
+
+
+
+			<p:panel header="Requerente - Listagem">
+				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+					paginator="true" value="#{requerenteBean.listaProcessos}"
+					var="processo" rows="10" style="margin: 0 auto;">
+					<f:facet name="header">
+						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
+							actionListener="#{requerenteBean.novo()}"
+							update=":formcadastro:cadastro">
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+					</f:facet>
+
+
+
+
+
+					<p:column headerText="Recorrido" sortBy="#{processo.recorrido}"
+						filterBy="#{processo.recorrido}">
+						<h:outputText value="#{processo.recorrido}" />
+					</p:column>
+
+					<p:column headerText="Número" sortBy="#{processo.numero}"
+						filterBy="#{processo.numero}">
+						<h:outputText value="#{processo.numero}" />
+					</p:column>
+
+
+					<p:column headerText="Placa" sortBy="#{processo.placa}"
+						filterBy="#{processo.placa}">
+						<h:outputText value="#{processo.placa}" />
+					</p:column>
+
+					<p:column headerText="Data Entrada"
+						sortBy="#{processo.dataEntrada.date}/#{processo.dataEntrada.month+1}/#{processo.dataEntrada.year+1900}"
+						filterBy="#{processo.dataEntrada.date}/#{processo.dataEntrada.month+1}/#{processo.dataEntrada.year+1900}">
+						<h:outputText
+							value="#{processo.dataEntrada.date}/#{processo.dataEntrada.month+1}/#{processo.dataEntrada.year+1900}" />
+					</p:column>
+
+					<p:column headerText="Requerente"
+						sortBy="#{processo.requerente.nome}"
+						filterBy="#{processo.requerente.nome}">
+						<h:outputText value="#{processo.requerente.nome}" />
+					</p:column>
+
+
+
+					<p:column headerText="Alterado Por"
+						sortBy="#{processo.usuarioCadastro.pessoa.nomeCompleto}"
+						filterBy="#{processo.usuarioCadastro.pessoa.nomeCompleto}">
+
+						<h:outputText
+							rendered="#{processo.usuarioCadastro.pessoa.nomeCompleto != null}"
+							value="#{processo.usuarioCadastro.pessoa.nomeCompleto}" />
+						<h:outputText
+							rendered="#{processo.usuarioCadastro.pessoa.nomeCompleto == null}"
+							value="Sem alteração" />
+					</p:column>
+					
+
+
+
+
+
+					<p:column headerText="Opções"
+						style="width: 70px; text-align: center;">
+						<p:commandButton icon="ui-icon-trash"
+							actionListener="#{requerenteBean.excluir}"
+							update=":mensagem :formlista:lista">
+							<p:confirm header="Confirmação"
+								message="Deseja excluir o Processo?" icon="ui-icon-alert" />
+							<f:attribute name="processoSelecionado" value="#{processo}" />
+						</p:commandButton>
+
+						<p:commandButton icon="ui-icon-pencil"
+							actionListener="#{requerenteBean.editar}"
+							update=":formcadastro:cadastro"
+							>
+							<f:attribute name="processoSelecionado" value="#{processo}" />
+							
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+
+					</p:column>
+				</p:dataTable>
+
+				<p:confirmDialog global="true">
+					<p:commandButton value="Sim" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="Não" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+			</p:panel>
+		</h:form>
+
+
+	</ui:define>
+</ui:composition>

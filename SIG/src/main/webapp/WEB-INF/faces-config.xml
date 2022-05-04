@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config
+    xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
+    version="2.2">
+    
+    
+   <validator>
+  <validator-id>CpfValidator</validator-id>
+  <validator-class>validator.CpfValidator</validator-class>
+ 	</validator>
+ 	
+ 	
+ 	<validator>
+  <validator-id>ValidatorCNPJ</validator-id>
+  <validator-class>validator.ValidatorCNPJ</validator-class>
+ 	</validator>
+ 	
+ 	
+ 	<!-- Definição do PhaseListener da Autenticação -->
+	<lifecycle>
+		<phase-listener>br.gov.sc.sgi.util.AutenticacaoListener</phase-listener>
+	</lifecycle>
+	
+
+</faces-config>
+
+
+	
+
+

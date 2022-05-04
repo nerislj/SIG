@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	id="WebApp_ID" version="3.1">
+
+	<!-- Nome da Aplicação -->
+	<display-name>Sistema Integrado de Gestão</display-name>
+
+	<!-- Página Principal -->
+	<welcome-file-list>
+		<welcome-file>pages/principal.xhtml</welcome-file>
+	</welcome-file-list>
+
+	<!-- Estágio do projeto -->
+	<context-param>
+		<param-name>javax.faces.PROJECT_STAGE</param-name>
+		<param-value>Development</param-value>
+	</context-param>
+
+	<!-- Tema do PrimeFaces -->
+	<context-param>
+		<param-name>primefaces.THEME</param-name>
+		<param-value>bootstrap</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>credenciado</param-name>
+		<param-value>C:/detran-resource/Credenciados</param-value>
+	</context-param>
+
+	<!-- Configuração JSF -->
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.xhtml</url-pattern>
+	</servlet-mapping>
+
+	<!-- Tempo de Sessão em Minutos-->
+	<session-config>
+		<session-timeout>60</session-timeout>
+	</session-config>
+
+
+	<!-- Carregamento do Hibernate -->
+	<listener>
+		<listener-class>br.gov.sc.sgi.util.HibernateContexto</listener-class>
+	</listener>
+</web-app>

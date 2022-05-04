@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+
+
+		<p:tab title="Consulta">
+
+
+			<h:form id="formularioConsulta">
+				<p:panel header="Consulta">
+
+
+					<div align="left">
+
+						<p:outputLabel value="Número: " />
+						<p:inputText maxlength="15" size="10"
+							value="#{docSGPEBean.sgpe.sgpe}" required="true"
+							requiredMessage="O campo SGP-e é obritarório"
+							style="text-transform:uppercase;">
+							<p:keyFilter regEx="/[a-z_]/i" />
+						</p:inputText>
+
+						<p:spacer width="20" height="10" />
+
+						<p:inputText maxlength="8" size="8"
+							value="#{docSGPEBean.sgpe.sgpeNumero}" required="true"
+							requiredMessage="O campo Número é obritarório">
+							<p:keyFilter regEx="/[\d\-\.]/" />
+							
+						</p:inputText>
+
+						<p:outputLabel value=" / " />
+
+						<p:inputMask id="ano" maxlength="4" size="3" mask="9999"
+							value="#{docSGPEBean.sgpe.sgpeAno}" required="true"
+							requiredMessage="O campo Ano é obritarório" />
+
+						<p:spacer width="30" height="10" />
+
+						<p:commandButton value="Consultar" icon="ui-icon-search"
+							actionListener="#{docSGPEBean.buscar()}"
+							update=":mensagem :formulario:painelDados"
+							style="background: #01B50D;">
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+
+					</div>
+				</p:panel>
+			</h:form>
+			<h:form id="formulario">
+				<h:panelGroup id="painelDados" layout="block">
+
+					<p:outputPanel style="display:block"
+						rendered="#{docSGPEBean.exibePainelDados}">
+
+						<div align="center">
+							<br />
+							<p:commandButton value="Receber" icon="ui-icon-circle-arrow-s"
+								actionListener="#{docSGPEBean.receber()}"
+								update=":mensagem formulario:painelDados"
+								style="background: #01B50D;"
+								rendered="#{docSGPEBean.sgpe.status == 2}">
+							</p:commandButton>
+
+							<p:commandButton value="Reabrir" icon="ui-icon-folder-open"
+								actionListener="#{docSGPEBean.reabrir()}"
+								update=":mensagem formulario:painelDados"
+								style="background: #01B50D;"
+								rendered="#{docSGPEBean.sgpe.status == 3}">
+							</p:commandButton>
+
+							<p:commandButton value="Encaminhar" icon="ui-icon-play"
+								oncomplete="PF('dialogoenc').show();" update=":formenc:enc"
+								style="background: #01B50D;"
+								rendered="#{docSGPEBean.sgpe.status == 1}">
+							</p:commandButton>
+
+							<p:commandButton value="Arquivar" icon="ui-icon-folder-collapsed"
+								oncomplete="PF('dialogoarq').show();" update=":formarq:arq"
+								style="background: #01B50D;"
+								rendered="#{docSGPEBean.sgpe.status == 1}">
+							</p:commandButton>
+							<br /> <br />
+						</div>
+
+						<p:separator rendered="#{docSGPEBean.sgpe == null}" />
+
+						<div align="center">
+
+							<p:outputLabel value="Origem: " />
+							<p:inputText maxlength="30" size="30"
+								value="#{docSGPEBean.sgpe.origem}" required="true"
+								requiredMessage="O campo Origem é obritarório"
+								style="text-transform:uppercase;"
+								disabled="#{docSGPEBean.sgpe.origem != null}" />
+
+							<p:spacer width="50" height="10" />
+
+							<p:outputLabel value="Data Recebido: " />
+							<p:calendar id="credval" maxlength="8" size="6"
+								value="#{docSGPEBean.sgpe.dataRecebido.date}/#{docSGPEBean.sgpe.dataRecebido.month+1}/#{docSGPEBean.sgpe.dataRecebido.year+1900}"
+								disabled="true" locale="pt_BR" />
+
+
+							<br /> <br />
+							<h:panelGrid columns="2">
+								<p:outputLabel value="Descrição: " />
+								<p:inputTextarea maxlength="255" rows="5" cols="50"
+									value="#{docSGPEBean.sgpe.descricao}" counter="display"
+									counterTemplate="Restam {0} Caracteres."
+									disabled="#{docSGPEBean.sgpe.descricao != null}"
+									style="text-transform:uppercase;" />
+								<h:outputText />
+								<h:outputText id="display" />
+							</h:panelGrid>
+
+							<br /> <br />
+
+							<p:outputLabel value="Palavras-Chave: " />
+							<p:inputText maxlength="60" size="40"
+								value="#{docSGPEBean.sgpe.palavrachave}"
+								style="text-transform:uppercase;"
+								disabled="#{docSGPEBean.sgpe.palavrachave != null}" />
+
+							<br /> <br />
+
+							<p:commandButton value="Salvar" icon="ui-icon-disk"
+								actionListener="#{docSGPEBean.salvar()}"
+								update=":mensagem formulario:painelDados"
+								style="background: #01B50D;"
+								rendered="#{docSGPEBean.sgpe.codigo == null}">
+								<f:actionListener
+									type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+							</p:commandButton>
+
+							<br /> <br />
+
+							<p:panelGrid columns="1" layout="grid">
+
+								<p:dataTable id="lista1"
+									emptyMessage="Nenhum registro encontrado."
+									value="#{docSGPEBean.sgpe.historico}" style="width: 100%"
+									var="sgpehist">
+
+									<f:facet name="header">
+										<h2>HISTÓRICO SGP-E</h2>
+									</f:facet>
+
+									<p:column headerText="Ação"
+										style="width: 9%; text-align: center;">
+										<h:outputText value="#{sgpehist.acaoFormatado}" />
+									</p:column>
+
+									<p:column headerText="Data Ação"
+										style="width: 9%; text-align: center;">
+										<h:outputText
+											value="#{sgpehist.dataAcao.date}/#{sgpehist.dataAcao.month+1}/#{sgpehist.dataAcao.year+1900}" />
+									</p:column>
+
+									<p:column headerText="Usuário"
+										style="width: 9%; text-align: center;">
+										<h:outputText value="#{sgpehist.usuario.pessoa.nomeCompleto}" />
+									</p:column>
+
+									<p:column headerText="Destino"
+										style="width: 9%; text-align: center;">
+										<h:outputText value="#{sgpehist.destino}" />
+									</p:column>
+
+									<p:column headerText="Obs."
+										style="width: 9%; text-align: center;">
+										<h:outputText value="#{sgpehist.obsArquivo}" />
+									</p:column>
+
+								</p:dataTable>
+							</p:panelGrid>
+
+
+						</div>
+					</p:outputPanel>
+
+
+
+
+
+				</h:panelGroup>
+			</h:form>
+
+			<p:dialog header="Encaminhar Processo" widgetVar="dialogoenc"
+				draggable="false" resizable="false" modal="true" closable="false">
+				<h:form id="formenc">
+					<h:panelGrid id="enc" columns="2">
+
+						<p:outputLabel value="Destino:" />
+						<p:inputText maxlength="30" size="25"
+							value="#{docSGPEBean.sgpehist.destino}" required="true"
+							requiredMessage="O campo Destino é obrigatório"
+							style="text-transform:uppercase;" />
+
+
+					</h:panelGrid>
+
+					<h:panelGrid columns="2">
+						<p:commandButton value="Encaminhar"
+							actionListener="#{docSGPEBean.encaminhar}"
+							update=":mensagem :formenc:enc formulario:painelDados"
+							oncomplete="PF('dialogoenc').hide();" />
+						<p:commandButton value="Fechar"
+							oncomplete="PF('dialogoenc').hide();" />
+					</h:panelGrid>
+				</h:form>
+			</p:dialog>
+
+			<p:dialog header="Arquivar Processo" widgetVar="dialogoarq"
+				draggable="false" resizable="false" modal="true" closable="false">
+				<h:form id="formarq">
+					<h:panelGrid id="arq" columns="2">
+
+						<p:outputLabel value="Observação " />
+						<p:inputTextarea maxlength="60" rows="3" cols="20"
+							value="#{docSGPEBean.sgpehist.obsArquivo}" counter="display"
+							counterTemplate="Restam {0} Caracteres." required="true"
+							requiredMessage="O campo Observação é obrigatório"
+							style="text-transform:uppercase;" />
+						<h:outputText />
+						<h:outputText id="display" />
+
+					</h:panelGrid>
+
+					<h:panelGrid columns="2">
+						<p:commandButton value="Arquivar"
+							actionListener="#{docSGPEBean.arquivar()}"
+							update=":mensagem :formarq:arq formulario:painelDados"
+							oncomplete="PF('dialogoarq').hide();" />
+						<p:commandButton value="Fechar"
+							oncomplete="PF('dialogoarq').hide();" />
+					</h:panelGrid>
+				</h:form>
+			</p:dialog>
+
+		</p:tab>
+	</ui:define>
+</ui:composition>
+
+
+
+
+
+
+

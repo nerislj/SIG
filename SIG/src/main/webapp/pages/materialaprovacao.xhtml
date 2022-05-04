@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="formlista" rendered="#{autenticacaoBean.temPermissoes([1, 21])}">
+
+			<p:panel header="Materiais - Estoque">
+				<center>
+					<p>OBS: Para consultar o Total/Estoque digite o nome do <b>Tipo Material</b> ou <b>Material</b></p>
+				</center>
+				<br />
+				<p:dataTable id="listaEstoque"
+					emptyMessage="Nenhum registro encontrado."
+					value="#{materialSaidaBean.listaEstoqueMateriais}" var="material"
+					rows="1">
+
+					<p:column headerText="Tipo Material"
+						sortBy="#{material.material.materialTipo.tipomaterial}"
+						filterBy="#{material.material.materialTipo.tipomaterial}"
+						style="width: 15%; text-align: center;">
+						<h:outputText
+							value="#{material.material.materialTipo.tipomaterial}" />
+					</p:column>
+
+					<p:column headerText="Material"
+						sortBy="#{material.material.material}"
+						filterBy="#{material.material.material}"
+						style="width: 15%; text-align: center;">
+						<h:outputText value="#{material.material.material}" />
+					</p:column>
+
+					<p:column headerText="Total/Estoque" sortBy="#{material.quantidade}"
+						style="width: 15%; text-align: center;">
+						<h:outputText value="#{material.quantidade}" />
+					</p:column>
+
+				</p:dataTable>
+			</p:panel>
+
+			<p:panel header="Materiais - Pedidos">
+				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+					paginator="true"
+					value="#{materialSaidaBean.listaSaidaMateriaisPendentes}"
+					var="material" rows="10">
+					<f:facet name="header">
+						<p:commandButton value="Aprovar saída" icon="ui-icon-document"
+							actionListener="#{materialSaidaBean.finalizar}"
+							update=":mensagem :formularioFinalizar:painelFinalizar"
+							oncomplete="PF('dialogo').show();" style="background: #00FF7F; color: #000000" />
+					</f:facet>
+					
+					<p:column headerText="Nº"
+						sortBy="#{material.codigo}"
+						filterBy="#{material.codigo}"
+						style="width: 5%; text-align: center;">
+						<h:outputText
+							value="#{material.codigo}" />
+					</p:column>
+
+					<p:column headerText="Tipo Material"
+						sortBy="#{material.material.materialTipo.tipomaterial}"
+						filterBy="#{material.material.materialTipo.tipomaterial}"
+						style="width: 15%; text-align: center;">
+						<h:outputText
+							value="#{material.material.materialTipo.tipomaterial}" />
+					</p:column>
+
+					<p:column headerText="Material"
+						sortBy="#{material.material.material}"
+						filterBy="#{material.material.material}"
+						style="width: 15%; text-align: center;">
+						<h:outputText value="#{material.material.material}" />
+					</p:column>
+					
+					<p:column headerText="Setor"
+						sortBy="#{material.setorAbertura.setorNome}"
+						filterBy="#{material.setorAbertura.setorNome}"
+						style="width: 15%; text-align: center;">
+						<h:outputText value="#{material.setorAbertura.setorNome}/#{material.setorAbertura.setor}" />
+					</p:column>
+
+					<p:column headerText="Qtd" sortBy="#{material.quantidade}"
+						filterBy="#{material.quantidade}"
+						style="width: 5%; text-align: center;">
+						<h:outputText value="#{material.quantidade}" />
+					</p:column>
+					
+					<p:column headerText="Data" sortBy="#{material.dataCadastro}"
+						filterBy="#{material.dataCadastro}"
+						style="width: 15%; text-align: center;">
+						<h:outputText value="#{material.dataCadastro}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Pedido Por"
+						sortBy="#{material.usuarioCadastro.pessoa.nomeCompleto}"
+						filterBy="#{material.usuarioCadastro.pessoa.nomeCompleto}"
+						style="width: 15%; text-align: center;">
+						<h:outputText
+							value="#{material.usuarioCadastro.pessoa.nomeCompleto}" />
+					</p:column>
+
+
+					<p:column headerText="Ações"
+						style="width: 10% !important ; text-align: center;">
+						<p:commandButton icon="ui-icon-check"
+							actionListener="#{materialSaidaBean.adicionar}"
+							update=":formlista:listaSelecionados"
+							style="background: #18B5ED;">
+							<f:attribute name="materialSelecionado" value="#{material}" />
+						</p:commandButton>
+
+						<p:commandButton icon="ui-icon-pencil"
+							actionListener="#{materialSaidaBean.ressalva}"
+							update=":formlista:listaSelecionados :formlista:lista :formularioFinalizarRessalva:painelFinalizarRessalva"
+							style="background: #CD5C5C; color: #000000"
+							oncomplete="PF('dialogoRessalva').show();">
+							<f:attribute name="materialSelecionado" value="#{material}" />
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+
+					</p:column>
+
+
+				</p:dataTable>
+			</p:panel>
+			<p:panel header="Materiais - Selecionados">
+				<p:dataTable id="listaSelecionados"
+					emptyMessage="Adicione um Material" paginator="true"
+					value="#{materialSaidaBean.listaSaida}" var="saida" rows="10">
+
+					
+					
+					<p:column headerText="Nº"
+						sortBy="#{saida.materialSaida.codigo}"
+						filterBy="#{saida.materialSaida.codigo}"
+						style="width: 15%; text-align: center;">
+						<h:outputText
+							value="#{saida.materialSaida.codigo}" />
+					</p:column>
+					
+					<p:column headerText="Tipo Material"
+						sortBy="#{saida.materialSaida.materialTipo.tipomaterial}"
+						filterBy="#{saida.materialSaida.materialTipo.tipomaterial}"
+						style="width: 15%; text-align: center;">
+						<h:outputText
+							value="#{saida.materialSaida.materialTipo.tipomaterial}" />
+					</p:column>
+
+					<p:column headerText="Material"
+						sortBy="#{saida.materialSaida.material.material}"
+						filterBy="#{saida.materialSaida.material.material}"
+						style="width: 15%; text-align: center;">
+						<h:outputText value="#{saida.materialSaida.material.material}" />
+					</p:column>
+					
+					<p:column headerText="Setor"
+						sortBy="#{saida.materialSaida.setorAbertura.setorNome}/#{saida.materialSaida.setorAbertura.setor}"
+						filterBy="#{saida.materialSaida.setorAbertura.setorNome}/#{saida.materialSaida.setorAbertura.setor}"
+						style="width: 15%; text-align: center;">
+						<h:outputText value="#{saida.materialSaida.setorAbertura.setorNome}/#{saida.materialSaida.setorAbertura.setor}" />
+					</p:column>
+					
+					<p:column headerText="Ações"
+						style="width: 6%; text-align: center;">
+						<p:commandButton icon="ui-icon-minus"
+							actionListener="#{materialSaidaBean.remover}"
+							update=":formlista:listaSelecionados"
+							style="background: #ED9818;">
+							<f:attribute name="materialSelecionado" value="#{saida}" />
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+
+		<p:dialog header="Aprovação saída materiais" widgetVar="dialogo"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="formularioFinalizar">
+				<h:panelGrid id="painelFinalizar" columns="2">
+
+					<p:outputLabel value="Aprovado por: " />
+					<p:selectOneMenu value="#{materialSaidaBean.usuarioLogado}"
+						converter="omnifaces.SelectItemsConverter" required="true"
+						requiredMessage="O campo Setor Abertura é obrigatório">
+						<f:selectItem
+							itemLabel="#{autenticacaoBean.usuarioLogado.pessoa.nomeCompleto}"
+							itemValue="#{autenticacaoBean.usuarioLogado}" />
+					</p:selectOneMenu>
+
+
+
+				</h:panelGrid>
+<br/><br/>
+				<h:panelGrid columns="2">
+					<p:commandButton value="Aprovar todos selecionados"
+						actionListener="#{materialSaidaBean.salvarAprovado}"
+						update=":mensagem :formlista:listaSelecionados :formlista:lista :formularioFinalizar :formlista:listaEstoque"
+						oncomplete="PF('dialogo').hide();">
+					</p:commandButton>
+
+					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="Material Ressalva" widgetVar="dialogoRessalva"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="formularioFinalizarRessalva">
+				<h:panelGrid id="painelFinalizarRessalva" columns="2">
+
+					<p:outputLabel value="Usuário Ressalva: " />
+					<p:selectOneMenu value="#{materialSaidaBean.usuarioLogado}"
+						converter="omnifaces.SelectItemsConverter" required="true"
+						requiredMessage="O campo Setor Abertura é obrigatório">
+						<f:selectItem
+							itemLabel="#{autenticacaoBean.usuarioLogado.pessoa.nomeCompleto}"
+							itemValue="#{autenticacaoBean.usuarioLogado}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Solicitado" />
+
+					<p:spinner id="quantidade"
+						value="#{materialSaidaBean.materialSaida.quantidade}"
+						requiredMessage="O campo Quantidade é obrigatório" />
+
+					<p:outputLabel value="Ressalva" />
+
+					<p:inputTextarea
+						value="#{materialSaidaBean.materialSaida.ressalva}" rows="5"
+						cols="30" counter="display" maxlength="255"
+						counterTemplate="{0} caracters restantes." autoResize="false" />
+					<br />
+					<h:outputText id="display" />
+
+
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{materialSaidaBean.salvarRessalva}"
+						update=":mensagem :formlista:listaSelecionados :formlista:lista :formularioFinalizarRessalva"
+						oncomplete="PF('dialogoRessalva').hide();">
+					</p:commandButton>
+
+					<p:commandButton value="Fechar"
+						oncomplete="PF('dialogoRessalva').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

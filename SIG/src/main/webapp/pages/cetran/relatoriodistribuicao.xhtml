@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+
+	
+
+		<p:panel header="Relatório Distribuição">
+
+
+			<h:form id="formcadastro">
+				<h:panelGrid id="cadastro" columns="2" style="margin: 0 auto;">
+
+					<p:outputLabel for="conselheiro" value="Conselheiro: " />
+					<p:selectOneMenu id="conselheiro" filter="true" required="true"
+						requiredMessage="O campo conselheiro é obrigatório"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{historicoProcessoBean.historicoProcesso.conselheiro}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione um conselheiro" />
+						<f:selectItems value="#{historicoProcessoBean.listaConselheiros}"
+							var="conselheiro" itemValue="#{conselheiro}"
+							itemLabel="#{conselheiro.nome}" />
+
+						<p:ajax event="change"
+							listener="#{historicoProcessoBean.blurConselheiro}"
+							update="formcadastro:cadastro, :formlista:lista" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="dataDis" value="Data Distribuição:" />
+					<p:calendar id="dataDis" readonlyInput="false"
+						yearRange="c-120:c-14"
+						value="#{historicoProcessoBean.historicoProcesso.dataDistribuicao}"
+						showIcon="true" />
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" style="margin: 0 auto;">
+					<p:commandButton value="Gerar Relatório"
+						actionListener="#{historicoProcessoBean.gerarRelatorio}"
+						update=":mensagem :formcadastro:cadastro"
+						 />
+
+				</h:panelGrid>
+			</h:form>
+
+
+		</p:panel>
+
+		<h:form id="formlista"
+			rendered="#{autenticacaoBean.temPermissoes([1, 27])}">
+
+
+
+			<p:panel header="Processos">
+				<p:dataTable id="lista"
+					emptyMessage="Nenhum registro encontrado, selecione um conselheiro para exibir o histórico completo do mesmo."
+					paginator="true"
+					value="#{historicoProcessoBean.listaHistoricoProcessos}" var="hist"
+					rows="10">
+
+
+					<p:column headerText="Recorrido"
+						sortBy="#{hist.processoCetran.recorrido}"
+						filterBy="#{hist.processoCetran.recorrido}"
+						style="width: 15%; text-align: center;">
+						<h:outputText value="#{hist.processoCetran.recorrido}" />
+					</p:column>
+
+					<p:column headerText="Nº Processo"
+						sortBy="#{hist.processoCetran.numero}"
+						filterBy="#{hist.processoCetran.numero}"
+						style="width: 15%; text-align: center;">
+						<h:outputText value="#{hist.processoCetran.numero}" />
+					</p:column>
+
+					<p:column headerText="Placa" sortBy="#{hist.processoCetran.placa}"
+						filterBy="#{hist.processoCetran.placa}"
+						style="width: 15%; text-align: center;">
+						<h:outputText value="#{hist.processoCetran.placa}" />
+					</p:column>
+
+					<p:column headerText="Data entrada"
+						sortBy="#{hist.processoCetran.dataEntrada.date}/#{hist.processoCetran.dataEntrada.month+1}/#{hist.processoCetran.dataEntrada.year+1900}"
+						filterBy="#{hist.processoCetran.dataEntrada.date}/#{hist.processoCetran.dataEntrada.month+1}/#{hist.processoCetran.dataEntrada.year+1900}"
+						style="width: 15%; text-align: center;">
+						<h:outputText
+							value="#{hist.processoCetran.dataEntrada.date}/#{hist.processoCetran.dataEntrada.month+1}/#{hist.processoCetran.dataEntrada.year+1900}" />
+					</p:column>
+
+					<p:column headerText="Data Distribuição"
+						sortBy="#{hist.dataDistribuicao.date}/#{hist.dataDistribuicao.month+1}/#{hist.dataDistribuicao.year+1900}"
+						filterBy="#{hist.dataDistribuicao.date}/#{hist.dataDistribuicao.month+1}/#{hist.dataDistribuicao.year+1900}"
+						style="width: 15%; text-align: center;">
+						<h:outputText
+							value="#{hist.dataDistribuicao.date}/#{hist.dataDistribuicao.month+1}/#{hist.dataDistribuicao.year+1900}" />
+					</p:column>
+
+					<p:column headerText="Data Julgamento"
+						sortBy="#{hist.dataJulgamento.date}/#{hist.dataJulgamento.month+1}/#{hist.dataJulgamento.year+1900}"
+						filterBy="#{hist.dataJulgamento.date}/#{hist.dataJulgamento.month+1}/#{hist.dataJulgamento.year+1900}"
+						style="width: 15%; text-align: center;">
+						<h:outputText
+							value="#{hist.dataJulgamento.date}/#{hist.dataJulgamento.month+1}/#{hist.dataJulgamento.year+1900}" />
+					</p:column>
+
+
+
+					<p:column headerText="Requerente"
+						sortBy="#{hist.processoCetran.requerente.nome}"
+						filterBy="#{hist.processoCetran.requerente.nome}"
+						style="width: 15%; text-align: center;">
+						<h:outputText value="#{hist.processoCetran.requerente.nome}" />
+					</p:column>
+
+					<p:column headerText="Conselheiro"
+						sortBy="#{hist.conselheiro.nome}"
+						filterBy="#{hist.conselheiro.nome}"
+						style="width: 15%; text-align: center;">
+						<h:outputText value="#{hist.conselheiro.nome}" />
+					</p:column>
+
+					<p:column headerText="Situação" sortBy="#{hist.situacao.descricao}"
+						filterBy="#{hist.situacao.descricao}"
+						style="width: 15%; text-align: center;">
+						<h:outputText value="#{hist.situacao.descricao}" />
+					</p:column>
+
+
+					<p:column headerText="Opções"
+						style="width: 70px; text-align: center;">
+						<p:commandButton icon="ui-icon-trash"
+							actionListener="#{historicoProcessoBean.excluir}"
+							update=":mensagem :formlista:lista">
+							<p:confirm header="Confirmação"
+								message="Deseja excluir o Histórico?" icon="ui-icon-alert" />
+							<f:attribute name="histSelecionado" value="#{hist}" />
+						</p:commandButton>
+
+
+
+					</p:column>
+
+
+
+
+
+
+
+				</p:dataTable>
+
+				<p:confirmDialog global="true">
+					<p:commandButton value="Sim" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="Não" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+
+			</p:panel>
+
+		</h:form>
+
+
+
+
+
+
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+		<style type="text/css">
+.vencida {
+	background-color: #FF4040 !important;
+	background-image: none !important;
+	color: #000000 !important;
+}
+
+.dezdias {
+	background-color: #FFFF00 !important;
+	background-image: none !important;
+	color: #000000 !important;
+}
+
+.ok {
+	background-color: #43CD80 !important;
+	background-image: none !important;
+	color: #000000 !important;
+}
+</style>
+
+		<h:form id="formlista"
+			rendered="#{autenticacaoBean.temPermissoes([1, 13, 17, 18])}">
+			<p:panel header="Relatório Empresas Credenciadas">
+
+
+				<p:panelGrid columns="2" style="margin: 0 auto;">
+
+					<h:outputLabel style="color: #FF4040">▇</h:outputLabel>
+					<h:outputLabel>Vencida</h:outputLabel>
+
+
+					<h:outputLabel style="color: #FFFF00">▇</h:outputLabel>
+					<h:outputLabel>À vencer</h:outputLabel>
+
+					<h:outputLabel style="color: #43CD80">▇</h:outputLabel>
+					<h:outputLabel>Em dia</h:outputLabel>
+
+				</p:panelGrid>
+
+				<br />
+
+				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+					paginator="true"
+					value="#{credenciadoEmpBean.credenciadosValidadeDesc}"
+					var="credenciado" rows="10" style="width: 100%;"
+					rowStyleClass="#{(credenciado.vencimentoCredencial le credenciadoEmpBean.convertTime(credenciadoEmpBean.dataHoje) ? 'vencida': (credenciado.vencimentoCredencial le credenciadoEmpBean.convert10Dias(credenciadoEmpBean.data10Dias) ? 'dezdias':'ok'))}">
+
+					<p:column style="width: 1px; text-align: center;">
+						<p:rowToggler />
+					</p:column>
+
+
+
+
+					<p:column headerText="CNPJ"
+						sortBy="#{credenciado.pessoaJuridica.cnpj}"
+						filterBy="#{credenciado.pessoaJuridica.cnpj}"
+						style="width: 25px; text-align: center;">
+						<h:outputText value="#{credenciado.pessoaJuridica.cnpj}" />
+					</p:column>
+
+					<p:column headerText="Nome Fantasia"
+						sortBy="#{credenciado.pessoaJuridica.nomeFantasia}"
+						filterBy="#{credenciado.pessoaJuridica.nomeFantasia}"
+						style="width: 70px; text-align: center;">
+						<h:outputText
+							value="#{credenciado.pessoaJuridica.nomeFantasia.toUpperCase()}" />
+					</p:column>
+
+					<p:column headerText="Razão Social"
+						sortBy="#{credenciado.pessoaJuridica.razaoSocial}"
+						filterBy="#{credenciado.pessoaJuridica.razaoSocial}"
+						style="width: 80px; text-align: center;">
+						<h:outputText
+							value="#{credenciado.pessoaJuridica.razaoSocial.toUpperCase()}" />
+					</p:column>
+
+					<p:column headerText="Tipo"
+						sortBy="#{credenciado.credencialTipo.tipocredencial}"
+						filterBy="#{credenciado.credencialTipo.tipocredencial}"
+						style="width: 30px; text-align: center;">
+						<h:outputText value="#{credenciado.credencialTipo.tipocredencial}" />
+					</p:column>
+
+					<p:column headerText="Município"
+						sortBy="#{credenciado.pessoaJuridica.municipioEndereco.nome}"
+						filterBy="#{credenciado.pessoaJuridica.municipioEndereco.nome}"
+						style="width: 20px; text-align: center;">
+						<h:outputText
+							value="#{credenciado.pessoaJuridica.municipioEndereco.nome}" />
+					</p:column>
+
+					<p:column headerText="Data Cadastro"
+						sortBy="#{credenciado.dataCadastro}"
+						style="width: 25px; text-align: center;">
+						<h:outputText
+							value="#{credenciado.dataCadastro.date}/#{credenciado.dataCadastro.month+1}/#{credenciado.dataCadastro.year+1900}" />
+					</p:column>
+
+					<p:column headerText="Data Vencimento"
+						sortBy="#{credenciado.vencimentoCredencial}"
+						style="width: 28px; text-align: center;">
+						<h:outputText
+							value="#{credenciado.vencimentoCredencial.date}/#{credenciado.vencimentoCredencial.month+1}/#{credenciado.vencimentoCredencial.year+1900}" />
+					</p:column>
+
+					<p:column headerText="Status"
+						sortBy="#{credenciado.credencialStatus.tipoStatus}"
+						filterBy="#{credenciado.credencialStatus.tipoStatus}"
+						style="width: 20px; text-align: center;">
+						<h:outputText value="#{credenciado.credencialStatus.tipoStatus}" />
+					</p:column>
+
+					<p:rowExpansion>
+						<p:dataTable id="listaAlvara"
+							emptyMessage="Nenhum alvará encontrado."
+							value="#{credenciado.historicoAlvara}" var="alvara"
+							style="width: 80%; padding-left: 10%">
+
+							<p:column headerText="Alvará" style="width: 22%;">
+								<h:outputText value="#{alvara.alvara}" />
+							</p:column>
+
+							<p:column headerText="Data Inicio" style="width: 22%;">
+								<h:outputText
+									value="#{alvara.dataInicio.date}/#{alvara.dataInicio.month+1}/#{alvara.dataInicio.year+1900}" />
+							</p:column>
+
+							<p:column headerText="Data Fim" style="width: 22%;">
+								<h:outputText
+									value="#{alvara.dataFim.date}/#{alvara.dataFim.month+1}/#{alvara.dataFim.year+1900}" />
+							</p:column>
+
+							<p:column headerText="Data Inclusão" style="width: 22%;">
+								<h:outputText
+									value="#{alvara.dataInclusao.date}/#{alvara.dataInclusao.month+1}/#{alvara.dataInclusao.year+1900}" />
+							</p:column>
+
+							<p:column headerText="Usuário Inclusão" style="width: 22%;">
+								<h:outputText
+									value="#{alvara.usuarioCadastro.pessoa.nomeCompleto}" />
+							</p:column>
+						</p:dataTable>
+						<p:dataTable id="listaPortaria"
+							emptyMessage="Nenhuma portaria encontrado."
+							value="#{credenciado.historicoPortaria}" var="portaria"
+							style="width: 80%; padding-left: 10%">
+
+							<p:column headerText="Portaria" style="width: 22%;">
+								<h:outputText value="#{portaria.portaria}" />
+							</p:column>
+
+							<p:column headerText="Data Inicio" style="width: 22%;">
+								<h:outputText
+									value="#{portaria.dataInicio.date}/#{portaria.dataInicio.month+1}/#{portaria.dataInicio.year+1900}" />
+							</p:column>
+
+							<p:column headerText="Data Fim" style="width: 22%;">
+								<h:outputText
+									value="#{portaria.dataFim.date}/#{portaria.dataFim.month+1}/#{portaria.dataFim.year+1900}" />
+							</p:column>
+
+							<p:column headerText="Data Inclusão" style="width: 22%;">
+								<h:outputText
+									value="#{portaria.dataInclusao.date}/#{portaria.dataInclusao.month+1}/#{portaria.dataInclusao.year+1900}" />
+							</p:column>
+
+							<p:column headerText="Usuário Inclusão" style="width: 22%;">
+								<h:outputText
+									value="#{portaria.usuarioCadastro.pessoa.nomeCompleto}" />
+							</p:column>
+						</p:dataTable>
+					</p:rowExpansion>
+
+
+				</p:dataTable>
+
+			</p:panel>
+		</h:form>
+
+
+	</ui:define>
+</ui:composition>
+
+
+

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="formlista">
+			<p:panel header="Usuario - Listagem"
+				rendered="#{autenticacaoBean.temPermissoes([1,25])}">
+				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+					paginator="true" value="#{frotaCondutorBean.frotaCondutores}"
+					var="condutor" rows="10">
+					<f:facet name="header">
+						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
+							actionListener="#{frotaCondutorBean.novo()}"
+							update=":formcadastro:cadastro">
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+					</f:facet>
+
+					<p:column headerText="CPF" sortBy="#{condutor.pessoa.cpf}"
+						filterBy="#{condutor.pessoa.cpf}" filterMatchMode="contains"
+						style="width: 15%; text-align: center;">
+						<h:outputText value="#{condutor.pessoa.cpf}" />
+					</p:column>
+
+					<p:column headerText="Nome"
+						sortBy="#{condutor.pessoa.nomeCompleto}"
+						filterBy="#{condutor.pessoa.nomeCompleto}">
+						<h:outputText value="#{condutor.pessoa.nomeCompleto}" />
+					</p:column>
+
+					<p:column headerText="Opções"
+						style="width: 6%; text-align: center;">
+						<p:commandButton icon="ui-icon-trash"
+							actionListener="#{frotaCondutorBean.excluir}"
+							update=":mensagem :formlista:lista"
+							rendered="#{autenticacaoBean.temPermissoes([1, 2])}">
+							<p:confirm header="Confirmação"
+								message="Deseja excluir o Condutor?" icon="ui-icon-alert" />
+							<f:attribute name="CondutorSelecionado" value="#{condutor}" />
+						</p:commandButton>
+
+						<p:commandButton icon="ui-icon-pencil"
+							actionListener="#{frotaCondutorBean.editar}"
+							update=":formcadastro:cadastro"
+							oncomplete="PF('dialogo').show();">
+							<f:attribute name="CondutorSelecionado" value="#{condutor}" />
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+
+					</p:column>
+				</p:dataTable>
+
+				<p:confirmDialog global="true">
+					<p:commandButton value="Sim" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="Não" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+			</p:panel>
+		</h:form>
+
+		<p:dialog header="Condutor - Cadastro" widgetVar="dialogo"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="formcadastro">
+				<h:panelGrid id="cadastro" columns="2">
+
+					<p:outputLabel value="Pessoa: " />
+					<p:selectOneMenu filter="true"
+						value="#{frotaCondutorBean.frotacondutor.pessoa}"
+						converter="omnifaces.SelectItemsConverter" required="true"
+						requiredMessage="O campo Pessoa é obrigatório">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma Pessoa" />
+						<f:selectItems value="#{frotaCondutorBean.pessoas}" var="pessoas"
+							itemValue="#{pessoas}"
+							itemLabel="#{pessoas.cpf} - #{pessoas.nomeCompleto}" />
+					</p:selectOneMenu>
+
+				
+					
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{frotaCondutorBean.salvar()}"
+						update=":mensagem :formcadastro:cadastro :formlista:lista" oncomplete="PF('dialogo').hide();" />
+					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

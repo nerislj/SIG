@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="formlista">
+			<p:panel header="Consulta Ofícios - Listagem">
+				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+					paginator="true" value="#{rastreioBean.oficios}" var="oficio"
+					rows="10">
+					<f:facet name="header">
+						<p:commandButton value="Finalizar"
+							actionListener="#{rastreioBean.finalizar}"
+							update=":mensagem :formularioFinalizar:painelFinalizar"
+							oncomplete="PF('dialogo').show();" style="background: #01B50D;" />
+					</f:facet>
+
+					<p:column headerText="Opções"
+						style="width: 6% !important ; text-align: center;">
+						<p:commandButton icon="ui-icon-plus"
+							actionListener="#{rastreioBean.adicionar}"
+							update=":formlista:listaSelecionados"
+							style="background: #18B5ED;">
+							<f:attribute name="oficioSelecionado" value="#{oficio}" />
+						</p:commandButton>
+					</p:column>
+
+					<p:column headerText="Oficio" sortBy="#{oficio.oficio}"
+						filterBy="#{oficio.oficio}"
+						style="width: 15%; text-align: center;">
+						<h:outputText value="#{oficio.oficio}" />
+					</p:column>
+
+					<p:column headerText="Assunto" sortBy="#{oficio.assunto}"
+						filterBy="#{oficio.assunto}">
+						<h:outputText value="#{oficio.assunto}" />
+					</p:column>
+
+					<p:column headerText="Destino" sortBy="#{oficio.destino}"
+						filterBy="#{oficio.destino}">
+						<h:outputText value="#{oficio.destino}" />
+					</p:column>
+
+					<p:column headerText="Palavras-Chave"
+						sortBy="#{oficio.palavraChave}" filterBy="#{oficio.palavraChave}">
+						<h:outputText value="#{oficio.palavraChave}" />
+					</p:column>
+
+					<p:column headerText="Usuário Abertura"
+						sortBy="#{oficio.usuario.pessoa.nomeCompleto}"
+						filterBy="#{oficio.usuario.pessoa.nomeCompleto}"
+						style="width: 15%; text-align: center;">
+						<h:outputText value="#{oficio.usuario.pessoa.nomeCompleto}" />
+					</p:column>
+
+					<p:column headerText="Data Abertura" sortBy="#{oficio.dataOficio}"
+						filterBy="#{oficio.dataOficio}"
+						style="width: 9%; text-align: center;">
+						<h:outputText
+							value="#{oficio.dataOficio.date}/#{oficio.dataOficio.month+1}/#{oficio.dataOficio.year+1900}" />
+					</p:column>
+
+
+				</p:dataTable>
+			</p:panel>
+			<p:panel header="Ofícios Selecionados - Listagem">
+				<p:dataTable id="listaSelecionados"
+					emptyMessage="Adicione um Oficío" paginator="true"
+					value="#{rastreioBean.listaSaida}" var="saida" rows="10">
+
+					<p:column headerText="Opções"
+						style="width: 6%; text-align: center;">
+						<p:commandButton icon="ui-icon-minus"
+							actionListener="#{rastreioBean.remover}"
+							update=":formlista:listaSelecionados"
+							style="background: #ED9818;">
+							<f:attribute name="oficioSelecionado" value="#{saida}" />
+						</p:commandButton>
+					</p:column>
+
+					<p:column headerText="Oficio" sortBy="#{saida.oficio.oficio}"
+						filterBy="#{saida.oficio.oficio}"
+						style="width: 15%; text-align: center;">
+						<h:outputText value="#{saida.oficio.oficio}" />
+					</p:column>
+
+					<p:column headerText="Assunto" sortBy="#{saida.oficio.assunto}"
+						filterBy="#{saida.oficio.assunto}">
+						<h:outputText value="#{saida.oficio.assunto}" />
+					</p:column>
+
+					<p:column headerText="Destino" sortBy="#{saida.oficio.destino}"
+						filterBy="#{saida.oficio.destino}">
+						<h:outputText value="#{saida.oficio.destino}" />
+					</p:column>
+
+					<p:column headerText="Palavras-Chave"
+						sortBy="#{saida.oficio.palavraChave}"
+						filterBy="#{saida.oficio.palavraChave}">
+						<h:outputText value="#{saida.oficio.palavraChave}" />
+					</p:column>
+
+
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+
+		<p:dialog header="Ofício saida" widgetVar="dialogo" draggable="false"
+			resizable="false" modal="true" closable="false">
+			<h:form id="formularioFinalizar">
+				<h:panelGrid id="painelFinalizar" columns="2">
+
+					<p:outputLabel value="Usuário: " />
+					<p:selectOneMenu value="#{rastreioBean.usuario}"
+						converter="omnifaces.SelectItemsConverter" required="true"
+						requiredMessage="O campo Setor Abertura é obrigatório">
+						<f:selectItem
+							itemLabel="#{autenticacaoBean.usuarioLogado.pessoa.nomeCompleto}"
+							itemValue="#{autenticacaoBean.usuarioLogado}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Rastreio/SGPE: " />
+					<p:inputText maxlength="50" size="30"
+						value="#{rastreioBean.recursomultarastreio.rastreio}"
+						required="true" requiredMessage="O campo rastreio é obrigatório" />
+
+					<p:outputLabel value="Destino: " />
+					<p:inputText maxlength="50" size="30"
+						value="#{rastreioBean.recursomultarastreio.destino}"
+						required="true" requiredMessage="O campo Destino é obrigatório" />
+
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{rastreioBean.salvar}"
+						update=":mensagem :formlista:listaSelecionados :formlista:lista :formularioFinalizar"
+						oncomplete="PF('dialogo').hide();">
+					</p:commandButton>
+
+					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

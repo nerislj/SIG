@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="formlista">
+			<p:panel header="Empresas - Listagem"
+				rendered="#{autenticacaoBean.temPermissoes([1])}">
+				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+					paginator="true" value="#{pessoaJuridicaBean.empresas}"
+					var="pessoaJuridica" rows="10">
+					<f:facet name="header">
+						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
+							actionListener="#{pessoaJuridicaBean.novo()}"
+							update=":formcadastro:cadastro">
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+					</f:facet>
+
+					<p:column headerText="CNPJ" sortBy="#{pessoaJuridica.cnpj}"
+						filterBy="#{pessoaJuridica.cnpj}"
+						style="width: 15%; text-align: center;">
+						<h:outputText value="#{pessoaJuridica.cnpj}" />
+					</p:column>
+
+					<p:column headerText="Razão Social"
+						sortBy="#{pessoaJuridica.razaoSocial}"
+						filterBy="#{pessoaJuridica.razaoSocial}"
+						style="text-transform:uppercase;">
+						<h:outputText value="#{pessoaJuridica.razaoSocial}" />
+					</p:column>
+
+					<p:column headerText="Nome Fantasia"
+						sortBy="#{pessoaJuridica.nomeFantasia}"
+						filterBy="#{pessoaJuridica.nomeFantasia}"
+						style="text-transform:uppercase;">
+						<h:outputText value="#{pessoaJuridica.nomeFantasia}" />
+					</p:column>
+
+					<p:column headerText="Telefone" sortBy="#{pessoaJuridica.telEmp}"
+						filterBy="#{pessoaJuridica.telEmp}"
+						style="text-transform:uppercase;">
+						<h:outputText value="#{pessoaJuridica.telEmp}" />
+					</p:column>
+
+					<p:column headerText="E-mail" sortBy="#{pessoaJuridica.email}"
+						filterBy="#{pessoaJuridica.email}"
+						style="text-transform:uppercase;">
+						<h:outputText value="#{pessoaJuridica.email}" />
+					</p:column>
+
+					<p:column headerText="Opções"
+						style="width: 6%; text-align: center;">
+						<p:commandButton icon="ui-icon-trash"
+							actionListener="#{pessoaJuridicaBean.excluir}"
+							update=":mensagem :formlista:lista">
+							<p:confirm header="Confirmação"
+								message="Deseja excluir a Pessoa?" icon="ui-icon-alert" />
+							<f:attribute name="empresaSelecionada" value="#{pessoaJuridica}" />
+						</p:commandButton>
+
+						<p:commandButton icon="ui-icon-pencil"
+							actionListener="#{pessoaJuridicaBean.editar}"
+							update=":formcadastro:cadastro"
+							oncomplete="PF('dialogo').show();">
+							<f:attribute name="empresaSelecionada" value="#{pessoaJuridica}" />
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+
+					</p:column>
+				</p:dataTable>
+
+				<p:confirmDialog global="true">
+					<p:commandButton value="Sim" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="Não" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+			</p:panel>
+		</h:form>
+
+		<p:dialog header="Empresas - Cadastro" widgetVar="dialogo"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="formcadastro">
+				<h:panelGrid id="cadastro" columns="2">
+
+					<p:outputLabel value="CNPJ: " />
+					<p:inputMask id="cnpj" mask="99999999999999" maxlength="14"
+						size="12" value="#{pessoaJuridicaBean.empresa.cnpj}"
+						required="true" requiredMessage="O campo CNPJ é obrigatório">
+						<f:validator validatorId="ValidatorCNPJ" />
+					</p:inputMask>
+
+					<p:outputLabel value="Razão Social:" />
+					<p:inputText maxlength="50" size="30"
+						value="#{pessoaJuridicaBean.empresa.razaoSocial}" required="true"
+						requiredMessage="O campo Razão Social é obrigatório"
+						style="text-transform:uppercase;" />
+
+					<p:outputLabel value="Nome Fantasia:" />
+					<p:inputText maxlength="50" size="30"
+						value="#{pessoaJuridicaBean.empresa.nomeFantasia}"
+						style="text-transform:uppercase;" />
+
+					<p:outputLabel value="Telefone Empresa:" />
+					<p:inputMask id="telemp" mask="(99) 9999-9999" maxlength="11"
+						size="11" value="#{pessoaJuridicaBean.empresa.telEmp}"
+						required="true" requiredMessage="O campo Telefone é obrigatório">
+					</p:inputMask>
+
+					<p:outputLabel value="Celular Empresa:" />
+					<p:inputMask id="celemp" mask="(99) 99999-9999" maxlength="11"
+						size="11" value="#{pessoaJuridicaBean.empresa.celEmp}"
+						required="true" requiredMessage="O campo Celular é obrigatório">
+					</p:inputMask>
+
+					<p:outputLabel value="E-mail Empresa:" />
+					<p:inputText maxlength="50" size="30"
+						value="#{pessoaJuridicaBean.empresa.email}" required="true"
+						requiredMessage="O campo Telefone é obrigatório"
+						style="text-transform:uppercase;" />
+
+
+
+					<p:outputLabel value="Endereço: " />
+					<p:inputText maxlength="50" size="30"
+						value="#{pessoaJuridicaBean.empresa.endereco}" required="true"
+						requiredMessage="O campo Endereço Residência é obrigatório"
+						style="text-transform:uppercase;" />
+
+					<p:outputLabel value="Complemento:" />
+					<p:inputText maxlength="50" size="30"
+						value="#{pessoaJuridicaBean.empresa.complemento}"
+						style="text-transform:uppercase;" />
+
+					<p:outputLabel for="estado" value="UF: " />
+					<p:selectOneMenu id="estado" filter="true"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{pessoaJuridicaBean.empresa.estadoEndereco}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione um estado" />
+						<f:selectItems value="#{pessoaJuridicaBean.estados}" var="estado"
+							itemValue="#{estado}" itemLabel="#{estado.sigla}" />
+						<p:ajax listener="#{pessoaJuridicaBean.popular}"
+							update=":formcadastro:cidade" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="cidade" value="Municipio" />
+					<p:selectOneMenu id="cidade" filter="true" required="true"
+						requiredMessage="O campo Municipio é obrigatório"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{pessoaJuridicaBean.empresa.municipioEndereco}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma cidade" />
+						<f:selectItems value="#{pessoaJuridicaBean.cidades}" var="cidade"
+							itemValue="#{cidade}" itemLabel="#{cidade.nome}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="CEP:" />
+					<p:inputMask id="cep_endereco" mask="99.999-999" maxlength="11"
+						size="11" value="#{pessoaJuridicaBean.empresa.cep}"
+						required="true" requiredMessage="O campo CEP é obrigatório">
+					</p:inputMask>
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{pessoaJuridicaBean.salvar()}"
+						update=":mensagem :formcadastro:cadastro :formlista:lista" />
+					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+
+

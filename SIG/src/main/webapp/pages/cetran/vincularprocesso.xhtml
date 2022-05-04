@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+	
+	<style type="text/css">
+.ui-panelgrid.showcase-text-align-center .ui-grid-responsive .ui-panelgrid-cell
+	{
+	text-align: center;
+}
+
+.customPanelGrid .ui-panelgrid-content {
+	align-items: center;
+}
+
+/* reset on the showcase style*/
+body .ui-panelgrid .ui-panelgrid-cell {
+	background-color: transparent;
+}
+
+/* example use of styles for your form */
+.my-heading-row {
+	background-color: var(- -surface-c);
+	font-weight: bold;
+}
+</style>
+	
+		<h:form id="formlista"
+			rendered="#{autenticacaoBean.temPermissoes([1, 27])}">
+
+
+
+			<p:panel header="Processos">
+				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+					paginator="true" value="#{processoCetranBean.listaProcessosCetran}"
+					var="processo" rows="10">
+					<f:facet name="header">
+						<p:commandButton value="Víncular ao Conselheiro"
+							icon="ui-icon-document"
+							actionListener="#{processoCetranBean.finalizar}"
+							update=":mensagem :formularioFinalizar:painelFinalizar"
+							oncomplete="PF('dialogo').show();"
+							style="background: #00FF7F; color: #000000" />
+							
+							<p:spacer width="300" height="10" />
+
+								<p:outputLabel value="Ano: " />
+								<p:selectOneMenu id="ano"
+									converter="omnifaces.SelectItemsConverter"
+									value="#{processoCetranBean.ano}">
+									<f:selectItems value="#{processoCetranBean.anos}" var="ano"
+										itemValue="#{ano}" itemLabel="#{ano.processoAno}" />
+								</p:selectOneMenu>
+								
+								<p:commandButton value="Consultar"
+									actionListener="#{processoCetranBean.consultaPorAno}"
+									update=":mensagem :formlista:lista"
+									style="background: #01B50D;"
+									onclick="jQuery(this).addClass('ui-state-disabled')">
+									<f:actionListener
+										type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+								</p:commandButton>
+								
+					</f:facet>
+
+					<p:column headerText="Recorrido" sortBy="#{processo.recorrido}"
+						filterBy="#{processo.recorrido}"
+						style="width: 15%; text-align: center;">
+						<h:outputText value="#{processo.recorrido}" />
+						
+						
+					</p:column>
+
+					<p:column headerText="Nº Processo" sortBy="#{processo.numero}"
+						filterBy="#{processo.numero}"
+						style="width: 15%; text-align: center;">
+						<h:outputText value="#{processo.numero}" />
+					</p:column>
+
+					<p:column headerText="Placa" sortBy="#{processo.placa}"
+						filterBy="#{processo.placa}"
+						style="width: 15%; text-align: center;">
+						<h:outputText value="#{processo.placa}" />
+					</p:column>
+
+					<p:column headerText="Data entrada"
+						sortBy="#{processo.dataEntrada.date}/#{processo.dataEntrada.month+1}/#{processo.dataEntrada.year+1900}"
+						filterBy="#{processo.dataEntrada.date}/#{processo.dataEntrada.month+1}/#{processo.dataEntrada.year+1900}"
+						style="width: 15%; text-align: center;">
+						<h:outputText value="#{processo.dataEntrada.date}/#{processo.dataEntrada.month+1}/#{processo.dataEntrada.year+1900}" />
+					</p:column>
+
+					<p:column headerText="Requerente"
+						sortBy="#{processo.requerente.nome}"
+						filterBy="#{processo.requerente.nome}"
+						style="width: 15%; text-align: center;">
+						<h:outputText value="#{processo.requerente.nome}" />
+					</p:column>
+
+
+
+					<p:column headerText="Ações"
+						style="width: 10% !important ; text-align: center;">
+						<p:commandButton value="Selecionar" icon="ui-icon-check"
+							actionListener="#{processoCetranBean.adicionar}"
+							update=":formlista:listaSelecionados"
+							style="background: #18B5ED;">
+							<f:attribute name="processoSelecionado" value="#{processo}" />
+						</p:commandButton>
+
+						<p:commandButton icon="ui-icon-pencil" action="requerente.xhtml">
+
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+
+					</p:column>
+
+
+				</p:dataTable>
+			</p:panel>
+			<p:panel header="Processos - Selecionados">
+				<p:dataTable id="listaSelecionados"
+					emptyMessage="Adicione um Processo" paginator="true"
+					value="#{processoCetranBean.listaHistoricoProcesso}" var="saida"
+					rows="10">
+
+
+					<p:column headerText="Recorrido"
+						sortBy="#{saida.processoCetran.recorrido}"
+						filterBy="#{saida.processoCetran.recorrido}"
+						style="width: 15%; text-align: center;">
+						<h:outputText value="#{saida.processoCetran.recorrido}" />
+					</p:column>
+
+
+					<p:column headerText="Nº" sortBy="#{saida.processoCetran.numero}"
+						filterBy="#{saida.processoCetran.numero}"
+						style="width: 15%; text-align: center;">
+						<h:outputText value="#{saida.processoCetran.numero}" />
+					</p:column>
+
+					<p:column headerText="Placa" sortBy="#{saida.processoCetran.placa}"
+						filterBy="#{saida.processoCetran.placa}"
+						style="width: 15%; text-align: center;">
+						<h:outputText value="#{saida.processoCetran.placa}" />
+					</p:column>
+
+					<p:column headerText="Data Entrada"
+						style="width: 5%; text-align: center;"
+						sortBy="#{saida.processoCetran.dataEntrada}"
+						filterBy="#{saida.processoCetran.dataEntrada}">
+						<h:outputText
+							value="#{saida.processoCetran.dataEntrada.date}/#{saida.processoCetran.dataEntrada.month+1}/#{saida.processoCetran.dataEntrada.year+1900}" />
+					</p:column>
+
+					<p:column headerText="Requerente"
+						sortBy="#{saida.processoCetran.requerente.nome}"
+						filterBy="#{saida.processoCetran.requerente.nome}"
+						style="width: 15%; text-align: center;">
+						<h:outputText value="#{saida.processoCetran.requerente.nome}" />
+					</p:column>
+
+
+
+					<p:column headerText="Ações" style="width: 6%; text-align: center;">
+						<p:commandButton icon="ui-icon-minus"
+							actionListener="#{materialSaidaBean.remover}"
+							update=":formlista:listaSelecionados"
+							style="background: #ED9818;">
+							<f:attribute name="materialSelecionado" value="#{saida}" />
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+
+		<p:dialog header="Vincular conselheiro" widgetVar="dialogo"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="formularioFinalizar">
+				<h:panelGrid id="painelFinalizar" columns="2">
+
+					<p:outputLabel for="conselheiro" value="Conselheiro: " />
+					<p:selectOneMenu id="conselheiro" filter="true" required="true"
+						requiredMessage="O campo conselheiro é obrigatório"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{processoCetranBean.historicoProcesso.conselheiro}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione um conselheiro" />
+						<f:selectItems value="#{processoCetranBean.listaConselheiros}"
+							var="conselheiro" itemValue="#{conselheiro}"
+							itemLabel="#{conselheiro.nome}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="dataDis" value="Data Distribuição:" />
+					<p:calendar id="dataDis" readonlyInput="true"
+						yearRange="c-120:c-14"
+						value="#{processoCetranBean.historicoProcesso.dataDistribuicao}"
+						showIcon="true" />
+
+					<p:outputLabel for="dataJul" value="Data Julgamento:" />
+					<p:calendar id="dataJul" readonlyInput="true"
+						yearRange="c-120:c-14"
+						value="#{processoCetranBean.historicoProcesso.dataJulgamento}"
+						showIcon="true" />
+
+					<p:outputLabel for="situacao" value="Situação: " />
+					<p:selectOneMenu id="situacao" filter="true" required="true"
+						requiredMessage="O campo situação é obrigatório"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{processoCetranBean.historicoProcesso.situacao}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione um situação" />
+						<f:selectItems value="#{processoCetranBean.listaSituacoes}"
+							var="situacao" itemValue="#{situacao}"
+							itemLabel="#{situacao.descricao}" />
+					</p:selectOneMenu>
+
+					<p:column headerText="Descrição"
+						sortBy="#{processoCetranBean.historicoProcesso.descricao}"
+						filterBy="#{processoCetranBean.historicoProcesso.descricao}"
+						filterMatchMode="contains">
+						<h:outputText
+							value="#{processoCetranBean.historicoProcesso.descricao}" />
+					</p:column>
+
+
+
+
+				</h:panelGrid>
+				<br />
+				<br />
+				<h:panelGrid columns="2">
+					<p:commandButton value="Aprovar todos selecionados"
+						actionListener="#{processoCetranBean.vincularConselheiro}"
+						update=":mensagem :formlista:listaSelecionados :formlista:lista :formularioFinalizar:painelFinalizar"
+						oncomplete="PF('dialogo').hide();">
+					</p:commandButton>
+
+					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+	</ui:define>
+</ui:composition>

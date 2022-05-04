@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="formlista"
+			rendered="#{autenticacaoBean.temPermissoes([1, 13, 17, 18])}">
+			<p:panel header="Veículo - Listagem">
+				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+					paginator="true" value="#{credencialVeiculoBean.veiculos}"
+					var="veiculo" rows="10">
+					<f:facet name="header">
+						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
+							actionListener="#{credencialVeiculoBean.novo()}"
+							update=":formcadastro:cadastro">
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+					</f:facet>
+
+					<p:column headerText="Placa" sortBy="#{veiculo.placa}"
+						filterBy="#{veiculo.placa}">
+						<h:outputText value="#{veiculo.placa.toUpperCase()}" />
+					</p:column>
+
+					<p:column headerText="RENAVAM" sortBy="#{veiculo.renavam}"
+						filterBy="#{veiculo.renavam}">
+						<h:outputText value="#{veiculo.renavam}" />
+					</p:column>
+
+					<p:column headerText="Marca/Modelo" sortBy="#{veiculo.marcaModelo}"
+						filterBy="#{veiculo.marcaModelo}">
+						<h:outputText value="#{veiculo.marcaModelo.toUpperCase()}" />
+					</p:column>
+
+					<p:column headerText="Categoria" sortBy="#{veiculo.categoria}"
+						filterBy="#{veiculo.categoria}">
+						<h:outputText value="#{veiculo.categoria}" />
+					</p:column>
+
+					<p:column headerText="Adaptado" sortBy="#{veiculo.adaptado}"
+						filterBy="#{veiculo.adaptado}">
+						<h:outputText value="#{veiculo.adaptado}" />
+					</p:column>
+
+
+					<p:column headerText="Opções">
+						<p:commandButton icon="ui-icon-trash"
+							actionListener="#{credencialVeiculoBean.excluir}"
+							update=":mensagem :formlista:lista">
+							<p:confirm header="Confirmação"
+								message="Deseja excluir o Veículo?" icon="ui-icon-alert" />
+							<f:attribute name="veiculoSelecionado" value="#{veiculo}" />
+						</p:commandButton>
+
+						<p:commandButton icon="ui-icon-pencil"
+							actionListener="#{credencialVeiculoBean.editar}"
+							update=":formcadastro:cadastro"
+							oncomplete="PF('dialogo').show();">
+							<f:attribute name="veiculoSelecionado" value="#{veiculo}" />
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+
+					</p:column>
+				</p:dataTable>
+
+				<p:confirmDialog global="true">
+					<p:commandButton value="Sim" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="Não" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+			</p:panel>
+		</h:form>
+
+		<p:dialog header="Veículo - Cadastro" widgetVar="dialogo"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="formcadastro">
+				<h:panelGrid id="cadastro" columns="2">
+
+					<p:outputLabel value="Placa:" />
+					<p:inputMask id="placa" maxlength="7" size="10" mask="aaa9*99"
+						value="#{credencialVeiculoBean.veiculo.placa}" required="true"
+						requiredMessage="O campo Placa é obrigatório"
+						style="text-transform:uppercase;" />
+
+					<p:outputLabel value="RENAVAM:" />
+					<p:inputMask id="renavam" maxlength="11" size="11"
+						mask="99999999999"
+						value="#{credencialVeiculoBean.veiculo.renavam}" required="true"
+						requiredMessage="O campo RENAVAM é obrigatório"
+						style="text-transform:uppercase;" />
+
+					<p:outputLabel value="Marca/Modelo:" />
+					<p:inputText maxlength="20" size="25"
+						value="#{credencialVeiculoBean.veiculo.marcaModelo}"
+						required="true"
+						requiredMessage="O campo Marca/Modelo é obrigatório"
+						style="text-transform:uppercase;" />
+
+					<p:outputLabel value="Categoria" />
+					<p:selectOneMenu id="categoria"
+						value="#{credencialVeiculoBean.veiculo.categoria}"
+						requiredMessage="O campo Categoria é obrigatório">
+						<f:selectItem itemValue="Motocicleta" itemLabel="Motocicleta" />
+						<f:selectItem itemValue="Carro" itemLabel="Carro" />
+						<f:selectItem itemValue="Caminhão" itemLabel="Caminhão" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Adaptado" />
+					<p:selectOneMenu id="adaptado"
+						value="#{credencialVeiculoBean.veiculo.adaptado}"
+						requiredMessage="O campo Adaptado é obrigatório">
+						<f:selectItem itemValue="Sim" itemLabel="Sim" />
+						<f:selectItem itemValue="Não" itemLabel="Não" />
+					</p:selectOneMenu>
+
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{credencialVeiculoBean.salvar()}"
+						update=":mensagem :formcadastro:cadastro :formlista:lista"
+						oncomplete="PF('dialogo').hide();" />
+					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

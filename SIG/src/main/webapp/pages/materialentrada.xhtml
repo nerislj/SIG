@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="formlista" rendered="#{autenticacaoBean.temPermissoes([1, 19, 21])}">
+			<p:panel header="Material - Listagem">
+				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+					paginator="true" value="#{materialEntradaBean.listaEntradaMateriais}"
+					var="material" rows="10" style="width: 40%; padding-left: 25%; ">
+					<f:facet name="header">
+					Clique no botão abaixo para inserir mais materiais ao estoque.
+					<p><h3>OBS: A quantidade fornecida irá somar com o Total/Estoque.</h3></p>
+						<p:commandButton icon="ui-icon-plus" value="Inserir" oncomplete="PF('dialogo').show();"
+							actionListener="#{materialEntradaBean.novo()}"
+							update=":formcadastro:cadastro">
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+					</f:facet>
+					
+					<p:column headerText="Material Tipo" sortBy="#{material.materialTipo.tipomaterial}"
+						filterBy="#{material.materialTipo.tipomaterial}" style="width: 70px; text-align: center;">
+						<h:outputText value="#{material.materialTipo.tipomaterial}" />
+					</p:column>
+
+					<p:column headerText="Material" sortBy="#{material.material.material}"
+						filterBy="#{material.material.material}" style="width: 70px; text-align: center;">
+						<h:outputText value="#{material.material.material}" />
+					</p:column>
+					
+					<p:column headerText="Total/Estoque" sortBy="#{material.quantidade}"
+						filterBy="#{material.quantidade}" style="width: 70px; text-align: center;">
+						<h:outputText value="#{material.quantidade}" />
+					</p:column>
+					
+					
+					
+
+					<p:column headerText="Opções" style="width: 70px; text-align: center;" 
+					rendered="#{autenticacaoBean.temPermissoes([1, 21])}">
+						
+
+						<p:commandButton icon="ui-icon-pencil" value="Total/Estoque"
+							actionListener="#{materialEntradaBean.editar}"
+							update=":formedicao:edicao"
+							oncomplete="PF('dialogoEdicao').show();" 
+							>
+							<f:attribute name="materialSelecionado" value="#{material}" />
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+
+					</p:column>
+				</p:dataTable>
+
+				<p:confirmDialog global="true">
+					<p:commandButton value="Sim" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="Não" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+			</p:panel>
+		</h:form>
+
+		<p:dialog header="Material - Cadastro" widgetVar="dialogo"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="formcadastro">
+				<h:panelGrid id="cadastro" columns="2">
+				
+				<p:outputLabel for="tipo" value="Tipo" />
+					<p:selectOneMenu id="tipo" filter="true" required="true"
+						requiredMessage="O campo Tipo é obrigatório"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{materialEntradaBean.materialEntradaFront.materialTipo}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione um tipo" />
+						<f:selectItems value="#{materialEntradaBean.listaTipos}" var="tipo"
+							itemValue="#{tipo}" itemLabel="#{tipo.tipomaterial}" />
+						<p:ajax listener="#{materialEntradaBean.popular}"
+							update=":formcadastro:material" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="material" value="Material" />
+					<p:selectOneMenu id="material" filter="true" required="true"
+						requiredMessage="O campo Material é obrigatório"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{materialEntradaBean.materialEntradaFront.material}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma Material" />
+						<f:selectItems value="#{materialEntradaBean.listaMateriais}" var="material"
+							itemValue="#{material}" itemLabel="#{material.material}" />
+					</p:selectOneMenu>
+						
+						
+					<p:outputLabel value="Quantidade *" />
+					
+					<p:spinner id="quantidade" value="#{materialEntradaBean.materialEntradaFront.quantidade}" required="true"
+						requiredMessage="O campo Quantidade é obrigatório" />
+					
+
+			</h:panelGrid>
+				
+				<br/>
+				<p:outputLabel value="Campos com (*) são obrigatórios" />	<br/>	<br/>
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{materialEntradaBean.salvar()}"
+						update=":mensagem :formcadastro:cadastro :formlista:lista"
+						oncomplete="PF('dialogo').hide();" />
+					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		
+		
+		<p:dialog header="Material Material - Edição" widgetVar="dialogoEdicao"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="formedicao">
+				<h:panelGrid id="edicao" columns="2">
+				
+				<p:outputLabel for="tipo" value="Tipo: " />
+					<p:selectOneMenu id="tipo" filter="true"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{materialEntradaBean.materialEntradaFront.materialTipo}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione um tipo" />
+						<f:selectItems value="#{materialEntradaBean.listaTipos}" var="tipo"
+							itemValue="#{tipo}" itemLabel="#{tipo.tipomaterial}" />
+						<p:ajax listener="#{materialEntradaBean.popular}"
+							update=":formedicao:material" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="material" value="Material" />
+					<p:selectOneMenu id="material" filter="true" required="true"
+						requiredMessage="O campo Material é obrigatório"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{materialEntradaBean.materialEntradaFront.material}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma Material" />
+						<f:selectItems value="#{materialEntradaBean.listaMateriais}" var="material"
+							itemValue="#{material}" itemLabel="#{material.material}" />
+					</p:selectOneMenu>
+						
+						
+					<p:outputLabel value="Quantidade" />
+					
+					<p:spinner id="quantidade" value="#{materialEntradaBean.materialEntradaFront.quantidade}" />
+					
+
+			</h:panelGrid>
+				
+				<p:outputLabel value="Campos com (*) são obrigatórios" />
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{materialEntradaBean.salvarEdicao()}"
+						update=":mensagem :formedicao:edicao :formlista:lista" />
+					<p:commandButton value="Fechar" oncomplete="PF('dialogoEdicao').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		
+		
+	</ui:define>
+</ui:composition>
