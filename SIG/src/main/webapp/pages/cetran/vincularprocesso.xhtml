@@ -48,24 +48,9 @@ body .ui-panelgrid .ui-panelgrid-cell {
 							oncomplete="PF('dialogo').show();"
 							style="background: #00FF7F; color: #000000" />
 							
-							<p:spacer width="300" height="10" />
+							
 
-								<p:outputLabel value="Ano: " />
-								<p:selectOneMenu id="ano"
-									converter="omnifaces.SelectItemsConverter"
-									value="#{processoCetranBean.ano}">
-									<f:selectItems value="#{processoCetranBean.anos}" var="ano"
-										itemValue="#{ano}" itemLabel="#{ano.processoAno}" />
-								</p:selectOneMenu>
-								
-								<p:commandButton value="Consultar"
-									actionListener="#{processoCetranBean.consultaPorAno}"
-									update=":mensagem :formlista:lista"
-									style="background: #01B50D;"
-									onclick="jQuery(this).addClass('ui-state-disabled')">
-									<f:actionListener
-										type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
-								</p:commandButton>
+							
 								
 					</f:facet>
 
@@ -102,7 +87,20 @@ body .ui-panelgrid .ui-panelgrid-cell {
 						style="width: 15%; text-align: center;">
 						<h:outputText value="#{processo.requerente.nome}" />
 					</p:column>
+					
+					<p:column headerText="Alterado Por"
+					style="width: 25%; text-align: center;"
+						sortBy="#{processo.usuarioCadastro.pessoa.nomeCompleto}"
+						filterBy="#{processo.usuarioCadastro.pessoa.nomeCompleto}">
 
+						<h:outputText
+							rendered="#{processo.usuarioCadastro.pessoa.nomeCompleto != null}"
+							value="#{processo.usuarioCadastro.pessoa.nomeCompleto}" />
+						<h:outputText
+							rendered="#{processo.usuarioCadastro.pessoa.nomeCompleto == null}"
+							value="Sem alteração" />
+					</p:column>
+					
 
 
 					<p:column headerText="Ações"

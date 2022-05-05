@@ -76,7 +76,7 @@ public class ProcessoCetranBean implements Serializable {
 			
 			ProcessoCetranDAO ProcessoCetranDAO = new ProcessoCetranDAO();
 			
-			//listaProcessosCetran = ProcessoCetranDAO.listarParaVincular(anoHoje);
+			listaProcessosCetran = ProcessoCetranDAO.listaroOrdemCadastro();
 			
 			//listaProcessosCetran = ProcessoCetranDAO.listarParaVincular(anoHoje);
 			
@@ -232,19 +232,6 @@ public class ProcessoCetranBean implements Serializable {
 		}
 	}
 	
-	public void consultaPorAno() {
-		try {
-			ProcessoCetranDAO processoCetranDAO = new ProcessoCetranDAO();
-
-			
-			
-			listaProcessosCetran = processoCetranDAO.listarParaVincular(ano.getProcessoAno());
-
-		} catch (Exception erro) {
-			Messages.addGlobalError("Ocorreu um erro ao tentar listar os Ofícios.");
-			erro.printStackTrace();
-		}
-	}
 	
 
 

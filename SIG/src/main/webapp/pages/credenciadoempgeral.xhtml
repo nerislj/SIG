@@ -159,12 +159,12 @@
 								<br />
 
 
-								<!-- ALTERAR AQUI -->
+								<!-- ALTERAR AQUI #{autenticacaoBean.temPermissoes([0])} -->
 								<p:tabView id="tabView"
-									rendered="#{autenticacaoBean.temPermissoes([1])}">
+									rendered="#{autenticacaoBean.temPermissoes([0])}">
 									<p:tab title="Ativos">
 
-										<p:panelGrid columns="1" layout="grid">
+										<p:panelGrid columns="1" layout="grid" >
 											<p:dataTable id="listaCorregedoria"
 												emptyMessage="Nenhum registro encontrado."
 												value="#{credenciadoEmpBean.credenciado.veiculo}"

@@ -34,6 +34,7 @@ public class ProcessoCetranDAO extends GenericDAO<ProcessoCetran> {
 			Criteria consulta = sessao.createCriteria(ProcessoCetran.class);
 			
 			consulta.add(Restrictions.eq("requerente", requerente));
+			
 		
 
 			List<ProcessoCetran> resultado = consulta.list();
@@ -52,6 +53,36 @@ public class ProcessoCetranDAO extends GenericDAO<ProcessoCetran> {
 		}
 	}
 
+	
+	@SuppressWarnings("unchecked")
+	public List<ProcessoCetran> listaroOrdemCadastro() {
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+		try {
+			
+			
+			
+			Criteria consulta = sessao.createCriteria(ProcessoCetran.class);
+			
+			
+			consulta.addOrder(Order.desc("dataCadastro"));
+		
+
+			List<ProcessoCetran> resultado = consulta.list();
+
+			return resultado;
+			/*
+			 * List<ProcessoCetran> list = sessao
+			 * .createQuery("from ProcessoCetran where requerente_codigo = '" +
+			 * requerente.getCodigo() + "' order by dataCadastro desc")
+			 * .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list(); return list;
+			 */
+		} catch (RuntimeException erro) {
+			throw erro;
+		} finally {
+			sessao.close();
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<ProcessoCetran> listarParaVincular(int anoHoje) throws ParseException {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
