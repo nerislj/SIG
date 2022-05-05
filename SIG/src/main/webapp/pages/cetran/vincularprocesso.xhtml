@@ -171,10 +171,10 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 					<p:column headerText="Ações" style="width: 6%; text-align: center;">
 						<p:commandButton icon="ui-icon-minus"
-							actionListener="#{materialSaidaBean.remover}"
+							actionListener="#{processoCetranBean.remover}"
 							update=":formlista:listaSelecionados"
 							style="background: #ED9818;">
-							<f:attribute name="materialSelecionado" value="#{saida}" />
+							<f:attribute name="processoSelecionado" value="#{saida}" />
 						</p:commandButton>
 					</p:column>
 

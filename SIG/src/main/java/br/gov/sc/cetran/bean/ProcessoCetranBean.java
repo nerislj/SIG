@@ -27,6 +27,7 @@ import br.gov.sc.cetran.domain.HistoricoProcesso;
 import br.gov.sc.cetran.domain.ProcessoAno;
 import br.gov.sc.cetran.domain.ProcessoCetran;
 import br.gov.sc.cetran.domain.Situacao;
+import br.gov.sc.geapo.domain.MaterialSaidaRelacao;
 import br.gov.sc.sgi.dao.OficioAnoDAO;
 import br.gov.sc.sgi.dao.OficioDAO;
 import br.gov.sc.sgi.domain.OficioAno;
@@ -172,6 +173,25 @@ public class ProcessoCetranBean implements Serializable {
 	    });
 		
 		
+	}
+	
+	public void remover(ActionEvent evento) {
+		HistoricoProcesso historicoSaida = (HistoricoProcesso) evento.getComponent().getAttributes()
+				.get("processoSelecionado");
+
+		int achou = -1;
+		for (int posicao = 0; posicao < listaHistoricoProcesso.size(); posicao++) {
+			if (listaHistoricoProcesso.get(posicao).getProcessoCetran().equals(historicoSaida.getProcessoCetran())) {
+				achou = posicao;
+			}
+		}
+		if (achou > -1) {
+			listaHistoricoProcesso.remove(achou);
+			
+			System.out.println(listaHistoricoProcesso.size());
+			
+		}
+
 	}
 	
 	public void finalizar() {
