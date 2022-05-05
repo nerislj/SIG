@@ -189,7 +189,6 @@ public class ProcessoCetranBean implements Serializable {
 			listaHistoricoProcesso.remove(achou);
 			
 			System.out.println(listaHistoricoProcesso.size());
-			
 		}
 
 	}
