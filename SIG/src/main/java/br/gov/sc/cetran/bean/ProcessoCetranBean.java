@@ -76,7 +76,6 @@ public class ProcessoCetranBean implements Serializable {
 			ProcessoCetranDAO ProcessoCetranDAO = new ProcessoCetranDAO();
 			
 			//listaProcessosCetran = ProcessoCetranDAO.listarParaVincular(anoHoje);
-
 			//listaProcessosCetran = ProcessoCetranDAO.listarParaVincular(anoHoje);
 			
 			processoCetran = new ProcessoCetran();
