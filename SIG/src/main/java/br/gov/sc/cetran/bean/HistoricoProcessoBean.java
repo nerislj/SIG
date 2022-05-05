@@ -42,7 +42,7 @@ public class HistoricoProcessoBean implements Serializable {
 			
 			historicoProcesso = new HistoricoProcesso();
 			
-			
+			//EDIÇÃO HISTORICO BEAN
 			
 			
 		} catch (RuntimeException erro) {
