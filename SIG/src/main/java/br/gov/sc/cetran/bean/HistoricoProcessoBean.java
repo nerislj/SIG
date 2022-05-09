@@ -3,6 +3,7 @@ package br.gov.sc.cetran.bean;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -101,6 +102,9 @@ public class HistoricoProcessoBean implements Serializable {
 			HistoricoProcessoDAO histDAO = new HistoricoProcessoDAO();
 			histDAO.excluir(historicoProcesso);
 
+			
+			
+			listaHistoricoProcessos = new ArrayList<>();
 			HistoricoProcessoBean.this.listar();
 		
 
