@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
@@ -45,6 +46,7 @@ public class ProcessoCetranBean implements Serializable {
 	private List<HistoricoProcesso> listaHistoricoProcesso;
 	
 	private List<ProcessoCetran> listaProcessosCetran;
+	
 	private List<Conselheiro> listaConselheiros;
 	private List<Situacao> listaSituacoes;
 	
@@ -54,6 +56,11 @@ public class ProcessoCetranBean implements Serializable {
 	
 	private Usuario usuarioLogado;
 	
+	private Integer progresso;
+	long totalTime;
+	private String mensagem;
+	
+   
 
 	@PostConstruct
 	public void listar() {
@@ -75,8 +82,11 @@ public class ProcessoCetranBean implements Serializable {
 			listaSituacoes = situacaoDAO.listarTudo();
 			
 			ProcessoCetranDAO ProcessoCetranDAO = new ProcessoCetranDAO();
+		
+
+			listaProcessosCetran = ProcessoCetranDAO.listar();
+		
 			
-			listaProcessosCetran = ProcessoCetranDAO.listaroOrdemCadastro();
 			
 			//listaProcessosCetran = ProcessoCetranDAO.listarParaVincular(anoHoje);
 			
@@ -88,8 +98,15 @@ public class ProcessoCetranBean implements Serializable {
 		
 			
 			
-			System.out.println("TAMANHO DA listaSaida "+ listaHistoricoProcesso.size());
+			System.out.println("TAMANHO DA listaSaida "+ listaProcessosCetran.size() + usuarioLogado);
 			
+		
+		
+			
+				
+				
+				
+				
 			
 			
 		} catch (Exception erro) {
@@ -97,6 +114,12 @@ public class ProcessoCetranBean implements Serializable {
 			erro.printStackTrace();
 		}
 	}
+	
+	
+
+	
+
+
 
 	public void novo() {
 		processoCetran = new ProcessoCetran();
@@ -312,6 +335,22 @@ public class ProcessoCetranBean implements Serializable {
 
 	public void setAnos(List<ProcessoAno> anos) {
 		this.anos = anos;
+	}
+
+	public Integer getProgresso() {
+		return progresso;
+	}
+
+	public void setProgresso(Integer progresso) {
+		this.progresso = progresso;
+	}
+
+	public String getMensagem() {
+		return mensagem;
+	}
+
+	public void setMensagem(String mensagem) {
+		this.mensagem = mensagem;
 	}
 
 	

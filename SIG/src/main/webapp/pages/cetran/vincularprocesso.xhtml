@@ -6,36 +6,25 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	template="/templates/modelo.xhtml">
+	
+
 
 	<ui:define name="conteudo">
 	
-	<style type="text/css">
-.ui-panelgrid.showcase-text-align-center .ui-grid-responsive .ui-panelgrid-cell
-	{
-	text-align: center;
-}
-
-.customPanelGrid .ui-panelgrid-content {
-	align-items: center;
-}
-
-/* reset on the showcase style*/
-body .ui-panelgrid .ui-panelgrid-cell {
-	background-color: transparent;
-}
-
-/* example use of styles for your form */
-.my-heading-row {
-	background-color: var(- -surface-c);
-	font-weight: bold;
-}
-</style>
 	
-		<h:form id="formlista"
-			rendered="#{autenticacaoBean.temPermissoes([1, 27])}">
+ 
+
+	
+	
 
 
+ 
+	
+		<h:form id="formlista">
 
+                         
+                        
+                         
 			<p:panel header="Processos">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{processoCetranBean.listaProcessosCetran}"
@@ -50,7 +39,7 @@ body .ui-panelgrid .ui-panelgrid-cell {
 							
 							
 
-							
+						
 								
 					</f:facet>
 

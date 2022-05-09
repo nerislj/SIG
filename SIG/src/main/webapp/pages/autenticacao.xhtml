@@ -3,37 +3,67 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Autenticação</title>
+	<h:outputStylesheet library="css" name="autenticacao.css" />
+	<h:outputStylesheet name="primeicons/primeicons.css"
+		library="primefaces" />
+
 </h:head>
 <h:body>
+
+
+
+
 	<p:growl id="mensagem" />
 
-	<p:dialog closable="false"
-		draggable="false" resizable="false" modal="true" visible="true">
-		<p:graphicImage library="images" name="sig4.png"
-			style=" width: 170px; height: 170px; margin-top: -35px" />
-		<h:form>
-			<h:panelGrid columns="2" >
-				<p:outputLabel for="cpf" value="CPF:" />
-				<p:inputMask id="cpf" mask="99999999999" maxlength="9" size="9"
-					required="true" requiredMessage="O campo CPF é obrigatório"
-					value="#{autenticacaoBean.usuario.pessoa.cpf}" />
 
-				<p:outputLabel for="senha" value="Senha:" />
-				<p:password id="senha" maxlength="30" size="9" required="true"
-					requiredMessage="O campo Senha é obrigatório"
-					value="#{autenticacaoBean.usuario.senha}" />
-			</h:panelGrid>
+	<p:graphicImage library="images" name="sig4.png" styleClass="divLogo" />
+	<h:form>
+		<h:panelGrid columns="2" styleClass="divCPFeSenha">
 
-			<h:panelGrid columns="1"  style="padding-left: 29.5%;">
-				<p:commandButton value="Entrar" update=":mensagem"
-					actionListener="#{autenticacaoBean.autenticar}" />
-			</h:panelGrid>
-		</h:form>
-	</p:dialog>
+
+
+
+
+			<p:button icon="pi pi-user"
+				onclick="jQuery(this).addClass('ui-state-disabled')">
+
+			</p:button>
+
+
+
+
+
+			<p:inputText id="cpf" maxlength="11" size="20" placeholder="CPF"
+				required="true" requiredMessage="O campo CPF é obrigatório"
+				value="#{autenticacaoBean.usuario.pessoa.cpf}" />
+
+
+
+			<p:button icon="pi pi-lock"
+				onclick="jQuery(this).addClass('ui-state-disabled')">
+
+			</p:button>
+			<p:password id="senha" maxlength="30" size="20" required="true"
+				placeholder="Senha" requiredMessage="O campo Senha é obrigatório"
+				value="#{autenticacaoBean.usuario.senha}" />
+		</h:panelGrid>
+
+		<h:panelGrid columns="1" styleClass="divEntrar">
+			<p:commandButton value="ENTRAR" update=":mensagem"
+				styleClass="divEntrarButton"
+				actionListener="#{autenticacaoBean.autenticar}" />
+		</h:panelGrid>
+
+	
+		
+	</h:form>
+
+
 
 </h:body>
 </html>
