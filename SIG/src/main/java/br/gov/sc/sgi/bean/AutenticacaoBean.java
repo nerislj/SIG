@@ -52,7 +52,7 @@ public class AutenticacaoBean {
 			
 			HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 			sessao.setAttribute("usuario", usuarioLogado);
-			System.out.println(usuarioLogado);
+			
 			
 			if (usuarioLogado == null) {
 				Messages.addGlobalError("CPF e/ou senha incorretos");
@@ -78,13 +78,13 @@ public class AutenticacaoBean {
 		sessao.invalidate();
 
 		try {
-			System.out.println(usuarioLogado);
+		
 			Faces.redirect("./pages/principal.xhtml");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println(usuarioLogado);
+		
 		return null;
 		
 	
@@ -94,7 +94,7 @@ public class AutenticacaoBean {
 	public boolean temPermissoes(List<Long> permissoes) {
 		for (Long permissao : permissoes) {
 			
-			System.out.println(usuarioLogado);
+		
 			if (usuarioLogado.getNivelAcesso().getCodigo() == permissao.longValue()) {
 				return true;
 			}

@@ -25,20 +25,22 @@ public class CredenciadoEmp extends GenericDomain {
 	private PessoaJuridica pessoaJuridica;
 
 	@ManyToOne
-	@JoinColumn(nullable = false)
+	@JoinColumn(nullable = true)
 	private CredencialStatus credencialStatus;
 
 	@ManyToOne
-	@JoinColumn(nullable = false)
+	@JoinColumn(nullable = true)
 	private CredencialEmpTipo credencialTipo;
 
 	@Temporal(TemporalType.DATE)
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private Date dataCadastro;
 
 	@Temporal(TemporalType.DATE)
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private Date vencimentoCredencial;
+	
+	
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "empresa")
 	@Fetch(FetchMode.SUBSELECT)
@@ -235,6 +237,10 @@ public class CredenciadoEmp extends GenericDomain {
 	public void setVeiculoHist(List<CredencialRelacaoVeicHist> veiculoHist) {
 		this.veiculoHist = veiculoHist;
 	}
+
+
+	
+	
 
 }
 

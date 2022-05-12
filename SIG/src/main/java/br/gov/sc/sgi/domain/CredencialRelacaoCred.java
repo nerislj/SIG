@@ -14,8 +14,12 @@ import javax.persistence.TemporalType;
 public class CredencialRelacaoCred extends GenericDomain {
 
 	@ManyToOne
-	@JoinColumn(nullable = false)
+	@JoinColumn
 	private CredenciadoEmp credenciadoEmp;
+	
+	@ManyToOne
+	@JoinColumn
+	private PessoaJuridica empresaPJ;
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
@@ -28,6 +32,16 @@ public class CredencialRelacaoCred extends GenericDomain {
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Usuario usuarioInclusao;
+	
+	
+
+	public PessoaJuridica getEmpresaPJ() {
+		return empresaPJ;
+	}
+
+	public void setEmpresaPJ(PessoaJuridica empresaPJ) {
+		this.empresaPJ = empresaPJ;
+	}
 
 	public CredenciadoEmp getCredenciadoEmp() {
 		return credenciadoEmp;

@@ -15,8 +15,12 @@ import javax.persistence.TemporalType;
 public class CredenciadoEmpObs extends GenericDomain {
 
 	@OneToOne
-	@JoinColumn(nullable = false)
+	@JoinColumn(nullable = true)
 	private CredenciadoEmp empresa;
+	
+	@OneToOne
+	@JoinColumn(nullable = true)
+	private PessoaJuridica empresaPJ;
 
 	@Temporal(TemporalType.DATE)
 	@Column(nullable = false)
@@ -60,6 +64,16 @@ public class CredenciadoEmpObs extends GenericDomain {
 	public void setUsuarioCadastro(Usuario usuarioCadastro) {
 		this.usuarioCadastro = usuarioCadastro;
 	}
+
+	public PessoaJuridica getEmpresaPJ() {
+		return empresaPJ;
+	}
+
+	public void setEmpresaPJ(PessoaJuridica empresaPJ) {
+		this.empresaPJ = empresaPJ;
+	}
+	
+	
 
 }
 

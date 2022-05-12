@@ -1,9 +1,19 @@
 package br.gov.sc.sgi.domain;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 @SuppressWarnings("serial")
 @Entity
@@ -21,6 +31,7 @@ public class PessoaJuridica extends GenericDomain {
 	@Column(length = 10, nullable = false)
 	private String cep;
 
+	@SerializedName("logradouro")
 	@Column(length = 50, nullable = false)
 	private String endereco;
 
@@ -30,6 +41,7 @@ public class PessoaJuridica extends GenericDomain {
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Cidade municipioEndereco;
+
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
@@ -43,6 +55,89 @@ public class PessoaJuridica extends GenericDomain {
 
 	@Column(length = 50)
 	private String email;
+	
+	@SerializedName("uf")
+	private String uf;
+
+	@SerializedName("localidade")
+	private String localidade;
+	
+	@SerializedName("bairro")
+	private String bairro;
+
+	
+	@Column(nullable = true)
+	private String credenciadoEmpVirtual;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "empresaPJ")
+	@Fetch(FetchMode.SUBSELECT)
+	private List<CredenciadoEmpObs> historicoObs;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "empresaPJ")
+	@Fetch(FetchMode.SUBSELECT)
+	private List<CredencialRelacaoCred> ativioCredenciado;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "empresaPJ")
+	@Fetch(FetchMode.SUBSELECT)
+	private List<CredenciadoSGPE> SGPE;
+	
+	
+	
+	public List<CredenciadoSGPE> getSGPE() {
+		return SGPE;
+	}
+
+	public void setSGPE(List<CredenciadoSGPE> sGPE) {
+		SGPE = sGPE;
+	}
+
+	public List<CredencialRelacaoCred> getAtivioCredenciado() {
+		return ativioCredenciado;
+	}
+
+	public void setAtivioCredenciado(List<CredencialRelacaoCred> ativioCredenciado) {
+		this.ativioCredenciado = ativioCredenciado;
+	}
+
+	public List<CredenciadoEmpObs> getHistoricoObs() {
+		return historicoObs;
+	}
+
+	public void setHistoricoObs(List<CredenciadoEmpObs> historicoObs) {
+		this.historicoObs = historicoObs;
+	}
+
+	public String getCredenciadoEmpVirtual() {
+		return credenciadoEmpVirtual;
+	}
+
+	public void setCredenciadoEmpVirtual(String credenciadoEmpVirtual) {
+		this.credenciadoEmpVirtual = credenciadoEmpVirtual;
+	}
+
+	public String getBairro() {
+		return bairro;
+	}
+
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+
+	public String getUf() {
+		return uf;
+	}
+
+	public void setUf(String uf) {
+		this.uf = uf;
+	}
+	
+	public String getLocalidade() {
+		return localidade;
+	}
+
+	public void setLocalidade(String localidade) {
+		this.localidade = localidade;
+	}
 
 	public String getCnpj() {
 		return cnpj;

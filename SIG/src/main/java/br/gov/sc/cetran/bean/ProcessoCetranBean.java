@@ -98,7 +98,7 @@ public class ProcessoCetranBean implements Serializable {
 		
 			
 			
-			System.out.println("TAMANHO DA listaSaida "+ listaProcessosCetran.size() + usuarioLogado);
+			
 			
 		
 		

@@ -17,6 +17,10 @@ public class CredenciadoSGPE extends GenericDomain {
 	@OneToOne
 	@JoinColumn
 	private CredenciadoEmp empresa;
+	
+	@OneToOne
+	@JoinColumn
+	private PessoaJuridica empresaPJ;
 
 	@OneToOne
 	@JoinColumn
@@ -35,6 +39,16 @@ public class CredenciadoSGPE extends GenericDomain {
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Usuario usuarioCadastro;
+	
+	
+
+	public PessoaJuridica getEmpresaPJ() {
+		return empresaPJ;
+	}
+
+	public void setEmpresaPJ(PessoaJuridica empresaPJ) {
+		this.empresaPJ = empresaPJ;
+	}
 
 	public CredenciadoEmp getEmpresa() {
 		return empresa;

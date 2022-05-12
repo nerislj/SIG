@@ -134,6 +134,7 @@ public class FrotaViagemBean implements Serializable {
 	public Date getHj() {
 		   Calendar c = Calendar.getInstance(); 
 		   c.add(Calendar.DATE, -1);
+		   System.out.println(c.getTime());
 		   return c.getTime();
 		}
 	

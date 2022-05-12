@@ -1,6 +1,11 @@
 package br.gov.sc.sgi.bean;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,11 +16,16 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.servlet.http.HttpSession;
 
 import org.omnifaces.util.Messages;
 import org.primefaces.event.FlowEvent;
 
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
+
+import br.gov.sc.cetran.domain.ProcessoCetran;
 import br.gov.sc.sgi.dao.CidadeDAO;
 import br.gov.sc.sgi.dao.CredenciadoAlvaraDAO;
 import br.gov.sc.sgi.dao.CredenciadoDAO;
@@ -68,6 +78,7 @@ public class CredenciadoEmpBean implements Serializable {
 
 	private PessoaJuridica empresa;
 	private PessoaFisica pessoa;
+	private PessoaJuridica empresaDaBusca;
 
 	private CredenciadoEmp credenciado;
 	private CredenciadoEmp credenciadoDaBusca;
@@ -101,6 +112,7 @@ public class CredenciadoEmpBean implements Serializable {
 	private List<PessoaJuridica> empresas;
 	private List<CredencialStatus> credencialStatus;
 	private List<CredencialEmpTipo> CredencialEmpTipos;
+	
 
 	private List<Cidade> Cidades;
 	private Estado estado;
@@ -114,6 +126,51 @@ public class CredenciadoEmpBean implements Serializable {
 	private Date data10Dias;
 
 	private Usuario usuario;
+
+	private int filtro;
+	private boolean mostrarVirtual;
+	private boolean mostrarNãoVirtual;
+
+	public void habilitar() {
+
+		if (filtro == 1) {
+
+			mostrarVirtual = true;
+			mostrarNãoVirtual = false;
+
+		}
+		if (filtro == 2) {
+
+			mostrarVirtual = false;
+			mostrarNãoVirtual = true;
+
+		}
+
+	}
+
+	public int getFiltro() {
+		return filtro;
+	}
+
+	public void setFiltro(int filtro) {
+		this.filtro = filtro;
+	}
+
+	public boolean isMostrarVirtual() {
+		return mostrarVirtual;
+	}
+
+	public void setMostrarVirtual(boolean mostrarVirtual) {
+		this.mostrarVirtual = mostrarVirtual;
+	}
+
+	public boolean isMostrarNãoVirtual() {
+		return mostrarNãoVirtual;
+	}
+
+	public void setMostrarNãoVirtual(boolean mostrarNãoVirtual) {
+		this.mostrarNãoVirtual = mostrarNãoVirtual;
+	}
 
 	public PessoaFisica getPessoa() {
 		return pessoa;
@@ -402,6 +459,8 @@ public class CredenciadoEmpBean implements Serializable {
 
 			CredencialEmpTipoDAO tipoDAO = new CredencialEmpTipoDAO();
 			CredencialEmpTipos = tipoDAO.listar("tipocredencial");
+			
+			
 
 			SGPE = new CredenciadoSGPE();
 			obs = new CredenciadoEmpObs();
@@ -427,6 +486,8 @@ public class CredenciadoEmpBean implements Serializable {
 
 			EstadoDAO estadoDAO = new EstadoDAO();
 			Estados = estadoDAO.listar("sigla");
+
+			mostrarNãoVirtual = false;
 
 			Cidades = new ArrayList<>();
 
@@ -472,20 +533,28 @@ public class CredenciadoEmpBean implements Serializable {
 		try {
 
 			PessoaJuridicaDAO pessoaJuridicaDAO = new PessoaJuridicaDAO();
+			
+			empresa.setCredenciadoEmpVirtual("Sim");
+			
 			pessoaJuridicaDAO.merge(empresa);
 
 			empresa = PessoaJuridicaDAO.carregarCnpj(empresa.getCnpj());
 
 			CredenciadoEmpDAO credenciadoDAO = new CredenciadoEmpDAO();
+			
+			
 
 			credenciado.setPessoaJuridica(empresa);
 			credenciado.setDataCadastro(new Date());
 
-			credenciadoDAO.merge(credenciado);
-
-			credenciado = CredenciadoEmpDAO.consultaporCnpj(empresa);
-
-			credenciadoDAO.salvarCredenciado(credenciado, empresa, credenciadoEmpHist, usuarioLogado);
+			if (filtro == 2) {
+				credenciadoDAO.merge(credenciado);
+				credenciado = CredenciadoEmpDAO.consultaporCnpj(empresa);
+				
+				empresa.setCredenciadoEmpVirtual("Não");
+				pessoaJuridicaDAO.merge(empresa);
+				credenciadoDAO.salvarCredenciado(credenciado, empresa, credenciadoEmpHist, usuarioLogado);
+			}
 
 			CredenciadoEmpBean.this.listar();
 
@@ -540,7 +609,12 @@ public class CredenciadoEmpBean implements Serializable {
 		try {
 
 			empresa = PessoaJuridicaDAO.carregarCnpj(empresa.getCnpj());
+			
+			
+			if(empresa.getCredenciadoEmpVirtual() == null || 
+					empresa.getCredenciadoEmpVirtual() == "Não"){
 			credenciado = CredenciadoEmpDAO.consultaporCnpj(empresa);
+			}
 			if (empresa.getEstadoEndereco() != null) {
 				Cidades = municipioDAO.buscarPorEstado(empresa.getEstadoEndereco().getCodigo());
 			}
@@ -561,26 +635,33 @@ public class CredenciadoEmpBean implements Serializable {
 		try {
 			empresa = PessoaJuridicaDAO.carregarCnpj(empresa.getCnpj());
 
-			credenciadoDaBusca = CredenciadoEmpDAO.consultaporCnpj(empresa);
+			System.out.println(empresa);
+			if(empresa.getCredenciadoEmpVirtual() == null || 
+					empresa.getCredenciadoEmpVirtual().equals("Não")){
+				credenciadoDaBusca = CredenciadoEmpDAO.consultaporCnpj(empresa);
+				System.out.println("AQUI");
+				
+				credenciado = CredenciadoEmpDAO.consultaporCnpj(empresa);
+				mostrarNãoVirtual = true;
 
-			if (empresa == null) {
+			if (credenciado == null) {
 				CredenciadoEmpBean.this.listar();
 				exibePainelDados = false;
 
-			} else if (empresa != null) {
-				credenciado = CredenciadoEmpDAO.consultaporCnpj(empresa);
-
-				if (credenciado == null) {
-					CredenciadoEmpBean.this.listar();
-					exibePainelDados = false;
-
-				} else if (credenciado != null) {
-					CidadeDAO municipioDAO = new CidadeDAO();
-					Cidades = municipioDAO.buscarPorEstado(empresa.getEstadoEndereco().getCodigo());
-					exibePainelDados = true;
-				}
+			} else if (credenciado != null) {
+				CidadeDAO municipioDAO = new CidadeDAO();
+				Cidades = municipioDAO.buscarPorEstado(empresa.getEstadoEndereco().getCodigo());
+				exibePainelDados = true;
 			}
-		} catch (NullPointerException e) {
+			} else {
+				
+				empresaDaBusca = empresa;
+				exibePainelDados = true;
+				mostrarNãoVirtual = false;
+			}
+
+			
+			}catch (NullPointerException e) {
 			Messages.addGlobalError("Empresa não credenciada.");
 
 			CredenciadoEmpBean.this.listar();
@@ -692,6 +773,9 @@ public class CredenciadoEmpBean implements Serializable {
 		try {
 
 			CredenciadoEmpBean.this.buscarFuncionario();
+			
+			if(empresa.getCredenciadoEmpVirtual() == null || 
+					empresa.getCredenciadoEmpVirtual() == "Não"){
 
 			relacaoFuncionario.setCredenciado(funcionario);
 			relacaoFuncionario.setCredenciadoEmp(credenciadoDaBusca);
@@ -713,6 +797,23 @@ public class CredenciadoEmpBean implements Serializable {
 			relacaoFuncionario = new CredencialRelacaoCred();
 
 			CredenciadoEmpBean.this.buscar();
+			
+			} else {
+				
+				relacaoFuncionario.setCredenciado(funcionario);
+				relacaoFuncionario.setEmpresaPJ(empresa);
+				relacaoFuncionario.setDataInclusao(new Date());
+				relacaoFuncionario.setUsuarioInclusao(usuarioLogado);
+
+				CredencialRelacaoCredDAO funcionarioDAO = new CredencialRelacaoCredDAO();
+				funcionarioDAO.merge(relacaoFuncionario);
+				
+				Messages.addGlobalInfo("Funcionário incluído com sucesso!");
+
+				relacaoFuncionario = new CredencialRelacaoCred();
+				
+				CredenciadoEmpBean.this.buscar();
+			}
 
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar incluir Funcionário.");
@@ -724,6 +825,11 @@ public class CredenciadoEmpBean implements Serializable {
 	public void excluirFuncionario(ActionEvent evento) {
 
 		try {
+			
+
+			if(empresa.getCredenciadoEmpVirtual() == null || 
+					empresa.getCredenciadoEmpVirtual() == "Não"){
+
 			relacaoFuncionario = (CredencialRelacaoCred) evento.getComponent().getAttributes()
 					.get("funcionarioSelecionado");
 
@@ -740,6 +846,22 @@ public class CredenciadoEmpBean implements Serializable {
 			relacaoFuncionario = new CredencialRelacaoCred();
 
 			CredenciadoEmpBean.this.buscar();
+			
+			} else {
+				relacaoFuncionario = (CredencialRelacaoCred) evento.getComponent().getAttributes()
+						.get("funcionarioSelecionado");
+
+			
+
+				CredencialRelacaoCredDAO funcionarioDAO = new CredencialRelacaoCredDAO();
+				funcionarioDAO.excluir(relacaoFuncionario);
+
+				
+				relacaoFuncionario = new CredencialRelacaoCred();
+
+				CredenciadoEmpBean.this.buscar();
+			}
+			
 
 			Messages.addGlobalInfo("Funcionário removido com sucesso.");
 		} catch (RuntimeException erro) {
@@ -810,6 +932,10 @@ public class CredenciadoEmpBean implements Serializable {
 	public void adicionaSGPE() {
 		try {
 
+			
+
+			if(empresa.getCredenciadoEmpVirtual() == null || 
+					empresa.getCredenciadoEmpVirtual() == "Não"){
 			SGPE.setUsuarioCadastro(usuarioLogado);
 			SGPE.setDataInclusao(new Date());
 			SGPE.setEmpresa(credenciadoDaBusca);
@@ -822,6 +948,24 @@ public class CredenciadoEmpBean implements Serializable {
 			SGPE = new CredenciadoSGPE();
 
 			CredenciadoEmpBean.this.buscar();
+			
+			} else {
+				
+				SGPE.setUsuarioCadastro(usuarioLogado);
+				SGPE.setDataInclusao(new Date());
+				SGPE.setEmpresaPJ(empresa);
+
+				CredenciadoSGPEDAO sgpeDAO = new CredenciadoSGPEDAO();
+				sgpeDAO.merge(SGPE);
+
+				Messages.addGlobalInfo("SGP-e incluído com sucesso!");
+
+				SGPE = new CredenciadoSGPE();
+
+				CredenciadoEmpBean.this.buscar();
+				
+			}
+			
 
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar incluir o SGP-e.");
@@ -835,7 +979,13 @@ public class CredenciadoEmpBean implements Serializable {
 
 			obs.setUsuarioCadastro(usuarioLogado);
 			obs.setDataInclusao(new Date());
+			
+			if(empresa.getCredenciadoEmpVirtual() == null || 
+					empresa.getCredenciadoEmpVirtual() == "Não"){
 			obs.setEmpresa(credenciadoDaBusca);
+			} else {
+				obs.setEmpresaPJ(empresaDaBusca);
+			}
 
 			CredenciadoEmpObsDAO obsDAO = new CredenciadoEmpObsDAO();
 			obsDAO.merge(obs);
@@ -991,7 +1141,62 @@ public class CredenciadoEmpBean implements Serializable {
 			return event.getNewStep();
 		}
 	}
-	
+
+	public void pesquisaCep(AjaxBehaviorEvent event) {
+		try {
+
+			String newcep = empresa.getCep().replace(".", "");
+			newcep = newcep.replace("-", "");
+
+			URL url = new URL("http://viacep.com.br/ws/" + newcep + "/json");
+			URLConnection urlConnection = url.openConnection();
+			InputStream is = urlConnection.getInputStream();
+			BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+
+			StringBuilder jsonCep = new StringBuilder();
+
+			String cep = "";
+
+			while ((cep = br.readLine()) != null) {
+
+				jsonCep.append(cep);
+
+			}
+
+			System.out.println(jsonCep);
+
+			PessoaJuridica cepEmpresa = new Gson().fromJson(jsonCep.toString(), PessoaJuridica.class);
+
+			System.out.println(cepEmpresa.getCep());
+			System.out.println(cepEmpresa.getEndereco());
+
+			empresa.setCep(cepEmpresa.getCep());
+
+			empresa.setEndereco(cepEmpresa.getEndereco() + ", " + cepEmpresa.getBairro());
+
+			CidadeDAO municipioDAO = new CidadeDAO();
+			EstadoDAO estadoDAO = new EstadoDAO();
+
+			empresa.setEstadoEndereco(estadoDAO.loadSigla(cepEmpresa.getUf()));
+
+			Cidades = municipioDAO.buscarPorEstado(empresa.getEstadoEndereco().getCodigo());
+
+			empresa.setMunicipioEndereco(municipioDAO.loadNome(cepEmpresa.getLocalidade()));
+
+			System.out.println(municipioDAO.loadNome(cepEmpresa.getLocalidade()));
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public PessoaJuridica getEmpresaDaBusca() {
+		return empresaDaBusca;
+	}
+
+	public void setEmpresaDaBusca(PessoaJuridica empresaDaBusca) {
+		this.empresaDaBusca = empresaDaBusca;
+	}
 
 
 }

@@ -8,6 +8,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import br.gov.sc.sgi.domain.Cidade;
+import br.gov.sc.sgi.domain.Estado;
 import br.gov.sc.sgi.util.HibernateUtil;
 
 public class CidadeDAO extends GenericDAO<Cidade>{
@@ -26,5 +27,16 @@ public class CidadeDAO extends GenericDAO<Cidade>{
 			} finally {
 				sessao.close();
 			}
+		}
+		
+		
+		public Cidade loadNome(String nome) throws Exception {
+			Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+			Criteria criteria = sessao.createCriteria(Cidade.class);
+			criteria.addOrder(Order.desc("codigo"));
+			criteria.add(Restrictions.eq("nome", nome));
+			
+
+			return (Cidade) criteria.setMaxResults(1).uniqueResult();
 		}
 }
