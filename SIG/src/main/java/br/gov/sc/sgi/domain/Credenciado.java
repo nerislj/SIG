@@ -92,6 +92,32 @@ public class Credenciado extends GenericDomain {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pessoa")
 	@Fetch(FetchMode.SUBSELECT)
 	private List<CredenciadoHist> historicocredencial;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "empresaPF")
+	@Fetch(FetchMode.SUBSELECT)
+	private List<CredenciadoAlvara> historicoAlvara;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "empresaPF")
+	@Fetch(FetchMode.SUBSELECT)
+	private List<CredenciadoPortaria> historicoPortaria;
+	
+	
+
+	public List<CredenciadoAlvara> getHistoricoAlvara() {
+		return historicoAlvara;
+	}
+
+	public void setHistoricoAlvara(List<CredenciadoAlvara> historicoAlvara) {
+		this.historicoAlvara = historicoAlvara;
+	}
+
+	public List<CredenciadoPortaria> getHistoricoPortaria() {
+		return historicoPortaria;
+	}
+
+	public void setHistoricoPortaria(List<CredenciadoPortaria> historicoPortaria) {
+		this.historicoPortaria = historicoPortaria;
+	}
 
 	public String getNumeroRegistro() {
 		return numeroRegistro;

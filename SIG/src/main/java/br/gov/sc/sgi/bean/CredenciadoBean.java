@@ -1,10 +1,15 @@
 package br.gov.sc.sgi.bean;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,6 +20,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.servlet.http.HttpSession;
 
 import org.omnifaces.util.Messages;
@@ -22,9 +28,13 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.model.UploadedFile;
 
+import com.google.gson.Gson;
+
 import br.gov.sc.sgi.dao.CidadeDAO;
+import br.gov.sc.sgi.dao.CredenciadoAlvaraDAO;
 import br.gov.sc.sgi.dao.CredenciadoDAO;
 import br.gov.sc.sgi.dao.CredenciadoDocAdicDAO;
+import br.gov.sc.sgi.dao.CredenciadoPortariaDAO;
 import br.gov.sc.sgi.dao.CredenciadoSGPEDAO;
 import br.gov.sc.sgi.dao.CredencialStatusDAO;
 import br.gov.sc.sgi.dao.CredencialTipoDAO;
@@ -32,13 +42,16 @@ import br.gov.sc.sgi.dao.EstadoDAO;
 import br.gov.sc.sgi.dao.PessoaDAO;
 import br.gov.sc.sgi.domain.Cidade;
 import br.gov.sc.sgi.domain.Credenciado;
+import br.gov.sc.sgi.domain.CredenciadoAlvara;
 import br.gov.sc.sgi.domain.CredenciadoDocAdic;
 import br.gov.sc.sgi.domain.CredenciadoHist;
+import br.gov.sc.sgi.domain.CredenciadoPortaria;
 import br.gov.sc.sgi.domain.CredenciadoSGPE;
 import br.gov.sc.sgi.domain.CredencialStatus;
 import br.gov.sc.sgi.domain.CredencialTipo;
 import br.gov.sc.sgi.domain.Estado;
 import br.gov.sc.sgi.domain.PessoaFisica;
+import br.gov.sc.sgi.domain.PessoaJuridica;
 import br.gov.sc.sgi.domain.Usuario;
 import util.JSFUtil;
 
@@ -50,6 +63,10 @@ public class CredenciadoBean implements Serializable {
 	private List<Credenciado> credenciados;
 	private Credenciado credenciado;
 	private Credenciado credenciadoDaBusca;
+	
+	private CredenciadoPortaria portaria;
+	private CredenciadoAlvara alvara;
+	private PessoaJuridica empresa;
 
 	private CredenciadoHist credenciadoHist;
 
@@ -76,6 +93,7 @@ public class CredenciadoBean implements Serializable {
 	private Boolean exibeInserirAss;
 
 	private boolean skip;
+	private boolean medicoPsicologoSim;
 
 	private UploadedFile imagem;
 
@@ -293,9 +311,15 @@ public class CredenciadoBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+			usuarioLogado = (Usuario) sessao.getAttribute("usuario");
+			
+			
 			credenciado = new Credenciado();
 
 			credenciadoHist = new CredenciadoHist();
+			portaria = new CredenciadoPortaria();
+			alvara = new CredenciadoAlvara();
 
 			pessoa = new PessoaFisica();
 
@@ -511,6 +535,52 @@ public class CredenciadoBean implements Serializable {
 					"Erro ao imprimir o relatório. Valores das variáveis inválidos " + nulo.getMessage());
 		}
 	}
+	
+	public void adicionaPortaria() {
+		try {
+
+			portaria.setUsuarioCadastro(usuarioLogado);
+			portaria.setDataInclusao(new Date());
+			portaria.setEmpresaPF(credenciado);
+
+			CredenciadoPortariaDAO portariaDAO = new CredenciadoPortariaDAO();
+			portariaDAO.merge(portaria);
+
+			Messages.addGlobalInfo("Portaria incluída com sucesso!");
+
+			portaria = new CredenciadoPortaria();
+
+			CredenciadoBean.this.buscar();
+
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("Ocorreu um erro ao tentar incluir a Portaria.");
+			erro.printStackTrace();
+			CredenciadoBean.this.buscar();
+		}
+	}
+	
+	public void adicionaAlvara() {
+		try {
+
+			alvara.setUsuarioCadastro(usuarioLogado);
+			alvara.setDataInclusao(new Date());
+			alvara.setEmpresaPF(credenciado);
+
+			CredenciadoAlvaraDAO alvaraDAO = new CredenciadoAlvaraDAO();
+			alvaraDAO.merge(alvara);
+
+			Messages.addGlobalInfo("Alvará incluído com sucesso!");
+
+			alvara = new CredenciadoAlvara();
+
+			CredenciadoBean.this.buscar();
+
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("Ocorreu um erro ao tentar incluir o Alvará.");
+			erro.printStackTrace();
+			CredenciadoBean.this.buscar();
+		}
+	}
 
 	public void buscar() {
 
@@ -542,6 +612,11 @@ public class CredenciadoBean implements Serializable {
 			pessoa = PessoaDAO.carregarCpf(pessoa.getCpf());
 
 			credenciadoDaBusca = CredenciadoDAO.consultaporPessoa(pessoa);
+			System.out.println(credenciadoDaBusca.getCredencialTipo());
+			if(credenciadoDaBusca.getCredencialTipo().getTipocredencial().equals("Médico") || credenciadoDaBusca.getCredencialTipo().getTipocredencial().equals("Psicólogo")) {
+				medicoPsicologoSim = true;
+				System.out.println("PASSOU" + credenciadoDaBusca.getCredencialTipo());
+			}
 
 			if (pessoa == null) {
 				CredenciadoBean.this.listar();
@@ -708,4 +783,89 @@ public class CredenciadoBean implements Serializable {
 			return event.getNewStep();
 		}
 	}
+	
+	public void pesquisaCep(AjaxBehaviorEvent event) {
+		try {
+
+			String newcep = pessoa.getCep().replace(".", "");
+			newcep = newcep.replace("-", "");
+
+			URL url = new URL("http://viacep.com.br/ws/" + newcep + "/json");
+			URLConnection urlConnection = url.openConnection();
+			InputStream is = urlConnection.getInputStream();
+			BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+
+			StringBuilder jsonCep = new StringBuilder();
+
+			String cep = "";
+
+			while ((cep = br.readLine()) != null) {
+
+				jsonCep.append(cep);
+
+			}
+
+			System.out.println(jsonCep);
+
+			PessoaFisica cepEmpresa = new Gson().fromJson(jsonCep.toString(), PessoaFisica.class);
+
+			System.out.println(cepEmpresa.getCep());
+			System.out.println(cepEmpresa.getEndereco());
+
+			pessoa.setCep(cepEmpresa.getCep());
+
+			pessoa.setEndereco(cepEmpresa.getEndereco() + ", " + cepEmpresa.getBairro());
+
+			CidadeDAO municipioDAO = new CidadeDAO();
+			EstadoDAO estadoDAO = new EstadoDAO();
+
+			pessoa.setEstadoEndereco(estadoDAO.loadSigla(cepEmpresa.getUf())); 
+
+			Cidades = municipioDAO.buscarPorEstado(pessoa.getEstadoEndereco().getCodigo());
+
+			pessoa.setMunicipioEndereco(municipioDAO.loadNome(cepEmpresa.getLocalidade()));
+
+			System.out.println(municipioDAO.loadNome(cepEmpresa.getLocalidade()));
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public CredenciadoPortaria getPortaria() {
+		return portaria;
+	}
+
+	public void setPortaria(CredenciadoPortaria portaria) {
+		this.portaria = portaria;
+	}
+
+	public CredenciadoAlvara getAlvara() {
+		return alvara;
+	}
+
+	public void setAlvara(CredenciadoAlvara alvara) {
+		this.alvara = alvara;
+	}
+
+	public PessoaJuridica getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(PessoaJuridica empresa) {
+		this.empresa = empresa;
+	}
+
+	public boolean isMedicoPsicologoSim() {
+		return medicoPsicologoSim;
+	}
+
+	public void setMedicoPsicologoSim(boolean medicoPsicologoSim) {
+		this.medicoPsicologoSim = medicoPsicologoSim;
+	}
+
+	
+	
+	
+	
 }

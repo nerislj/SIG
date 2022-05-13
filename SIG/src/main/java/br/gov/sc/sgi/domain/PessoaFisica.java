@@ -9,6 +9,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.google.gson.annotations.SerializedName;
+
 @SuppressWarnings("serial")
 @Entity
 public class PessoaFisica extends GenericDomain {
@@ -45,6 +47,7 @@ public class PessoaFisica extends GenericDomain {
 	@Column(length = 10, nullable = true)
 	private String cep;
 
+	@SerializedName("logradouro")
 	@Column(length = 50, nullable = false)
 	private String endereco;
 
@@ -70,6 +73,15 @@ public class PessoaFisica extends GenericDomain {
 
 	@Column(length = 50)
 	private String email;
+	
+	@SerializedName("uf")
+	private String uf;
+	
+	@SerializedName("localidade")
+	private String localidade;
+	
+	@SerializedName("bairro")
+	private String bairro;
 
 	public String getCpf() {
 		return cpf;
@@ -222,5 +234,30 @@ public class PessoaFisica extends GenericDomain {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	public String getLocalidade() {
+		return localidade;
+	}
+
+	public void setLocalidade(String localidade) {
+		this.localidade = localidade;
+	}
+
+	public String getBairro() {
+		return bairro;
+	}
+
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+
+	public String getUf() {
+		return uf;
+	}
+
+	public void setUf(String uf) {
+		this.uf = uf;
+	}
+	
 
 }

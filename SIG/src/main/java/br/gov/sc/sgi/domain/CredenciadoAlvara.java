@@ -15,8 +15,12 @@ import javax.persistence.TemporalType;
 public class CredenciadoAlvara extends GenericDomain {
 
 	@OneToOne
-	@JoinColumn(nullable = false)
+	@JoinColumn
 	private CredenciadoEmp empresa;
+	
+	@OneToOne
+	@JoinColumn
+	private Credenciado empresaPF;
 
 	@Temporal(TemporalType.DATE)
 	@Column(nullable = false)
@@ -36,6 +40,17 @@ public class CredenciadoAlvara extends GenericDomain {
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Usuario usuarioCadastro;
+
+	
+	
+
+	public Credenciado getEmpresaPF() {
+		return empresaPF;
+	}
+
+	public void setEmpresaPF(Credenciado empresaPF) {
+		this.empresaPF = empresaPF;
+	}
 
 	public CredenciadoEmp getEmpresa() {
 		return empresa;

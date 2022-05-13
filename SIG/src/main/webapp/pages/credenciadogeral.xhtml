@@ -424,6 +424,110 @@
 									</p:dataTable>
 
 								</p:panelGrid>
+								
+								
+								
+								<p:panelGrid columns="2" layout="grid">
+
+									
+									
+									<p:dataTable id="listaAlvara" rendered="#{credenciadoBean.medicoPsicologoSim}"
+										emptyMessage="Nenhum registro encontrado."
+										value="#{credenciadoBean.credenciado.historicoAlvara}"
+										var="alvara" style="width: 100%">
+
+										<f:facet name="header">
+											<h3>ALVARÁ</h3>
+											<p:commandButton value="Adicionar"
+											
+												oncomplete="PF('dialogoalvara').show();"
+												update=":alvara:alvara"
+												rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
+												<f:actionListener
+													type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+											</p:commandButton>
+										</f:facet>
+
+										<p:column headerText="Alvará"
+											style="width: 9%; text-align: center;">
+											<h:outputText value="#{alvara.alvara}" />
+										</p:column>
+
+										<p:column headerText="Data Inicio"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{alvara.dataInicio.date}/#{alvara.dataInicio.month+1}/#{alvara.dataInicio.year+1900}" />
+										</p:column>
+
+										<p:column headerText="Data Fim"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{alvara.dataFim.date}/#{alvara.dataFim.month+1}/#{alvara.dataFim.year+1900}" />
+										</p:column>
+
+										<p:column headerText="Data Inclusão"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{alvara.dataInclusao.date}/#{alvara.dataInclusao.month+1}/#{alvara.dataInclusao.year+1900}" />
+										</p:column>
+
+										<p:column headerText="Usuário Inclusão"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{alvara.usuarioCadastro.pessoa.nomeCompleto}" />
+										</p:column>
+									</p:dataTable>
+									
+									
+									<p:dataTable id="listaPortaria" rendered="#{credenciadoBean.medicoPsicologoSim}"
+										emptyMessage="Nenhum registro encontrado."
+										value="#{credenciadoBean.credenciado.historicoPortaria}"
+										var="portaria" style="width: 100%">
+
+										<f:facet name="header">
+											<h3>PORTARIA</h3>
+											<p:commandButton value="Adicionar"
+												oncomplete="PF('dialogoportaria').show();"
+												update=":portaria:portaria"
+												rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
+												<f:actionListener
+													type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+											</p:commandButton>
+										</f:facet>
+
+										<p:column headerText="Portaria"
+											style="width: 9%; text-align: center;">
+											<h:outputText value="#{portaria.portaria}" />
+										</p:column>
+
+										<p:column headerText="Data Inicio"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{portaria.dataInicio.date}/#{portaria.dataInicio.month+1}/#{portaria.dataInicio.year+1900}" />
+										</p:column>
+
+										<p:column headerText="Data Fim"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{portaria.dataFim.date}/#{portaria.dataFim.month+1}/#{portaria.dataFim.year+1900}" />
+										</p:column>
+
+										<p:column headerText="Data Inclusão"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{portaria.dataInclusao.date}/#{portaria.dataInclusao.month+1}/#{portaria.dataInclusao.year+1900}" />
+										</p:column>
+
+										<p:column headerText="Usuário Inclusão"
+											style="width: 9%; text-align: center;">
+											<h:outputText
+												value="#{portaria.usuarioCadastro.pessoa.nomeCompleto}" />
+										</p:column>
+									</p:dataTable>
+									
+									
+								
+								</p:panelGrid>
 
 
 							</p:panel>
@@ -452,6 +556,85 @@
 
 
 		</p:tabView>
+		
+		<p:dialog header="Portaria" widgetVar="dialogoportaria"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="portaria">
+				<h:panelGrid id="portaria" columns="2">
+
+					<p:outputLabel value="Portaria:" />
+					<p:inputText maxlength="50" size="60"
+						value="#{credenciadoBean.portaria.portaria}" required="true"
+						requiredMessage="O campo Portaria é obritarório"
+						style="text-transform:uppercase;" />
+
+					<p:outputLabel value="Data Inicio:" />
+					<p:calendar id="dataInicio" maxlength="8" size="6"
+						value="#{credenciadoBean.portaria.dataInicio}" required="true"
+						requiredMessage="O campo Data Inicio é obrigatório" locale="pt_BR"
+						pattern="dd/MM/yyyy" mask="true" />
+
+					<p:outputLabel value="Data Fim:" />
+					<p:calendar id="dataFim" maxlength="8" size="6"
+						value="#{credenciadoBean.portaria.dataFim}" required="true"
+						requiredMessage="O campo Data Fim é obrigatório" locale="pt_BR"
+						pattern="dd/MM/yyyy" mask="true" />
+
+				</h:panelGrid>
+
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{credenciadoBean.adicionaPortaria}"
+						update=":mensagem tabView:formularioPessoais:listaPortaria"
+						oncomplete="PF('dialogoportaria').hide();" />
+					<p:commandButton value="Fechar"
+						oncomplete="PF('dialogoportaria').hide();" />
+				</h:panelGrid>
+
+			</h:form>
+
+		</p:dialog>
+
+		<p:dialog header="Alvará" widgetVar="dialogoalvara" draggable="false"
+			resizable="false" modal="true" closable="false">
+			<h:form id="alvara">
+				<h:panelGrid id="alvara" columns="2">
+
+					<p:outputLabel value="Alvará:" />
+					<p:inputText maxlength="50" size="60"
+						value="#{credenciadoBean.alvara.alvara}" required="true"
+						requiredMessage="O campo Alvará é obritarório"
+						style="text-transform:uppercase;" />
+
+					<p:outputLabel value="Data Inicio:" />
+					<p:calendar id="dataInicio" maxlength="8" size="6"
+						value="#{credenciadoBean.alvara.dataInicio}" required="true"
+						requiredMessage="O campo Data Inicio é obrigatório" locale="pt_BR"
+						pattern="dd/MM/yyyy" mask="true" />
+
+					<p:outputLabel value="Data Fim:" />
+					<p:calendar id="dataFim" maxlength="8" size="6"
+						value="#{credenciadoBean.alvara.dataFim}" required="true"
+						requiredMessage="O campo Data Fim é obrigatório" locale="pt_BR"
+						pattern="dd/MM/yyyy" mask="true" />
+
+				</h:panelGrid>
+
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{credenciadoBean.adicionaAlvara}"
+						update=":mensagem tabView:formularioPessoais:listaAlvara"
+						oncomplete="PF('dialogoalvara').hide();" />
+					<p:commandButton value="Fechar"
+						oncomplete="PF('dialogoalvara').hide();" />
+				</h:panelGrid>
+
+			</h:form>
+
+		</p:dialog>
+		
 
 		<p:dialog header="SGP-e" widgetVar="dialogosgpe" draggable="false"
 			resizable="false" modal="true" closable="false">
