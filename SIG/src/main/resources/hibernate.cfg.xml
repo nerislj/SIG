@@ -104,15 +104,21 @@
 		<mapping class="br.gov.sc.geapo.domain.MaterialSaidaRelacao" />
 		
 		<mapping class="br.gov.sc.cetran.domain.ProcessoAno" /> 
-
-		<mapping class="br.gov.sc.cetran.domain.Situacao" /> <!-- IMPORT WIZARD DIRETO-->
-		<mapping class="br.gov.sc.cetran.domain.Representacao" /> <!-- IMPORT WIZARD DIRETO-->
-		<mapping class="br.gov.sc.cetran.domain.TipoRequerente" /> <!-- IMPORT WIZARD DIRETO-->
-		<mapping class="br.gov.sc.cetran.domain.Conselheiro" /> <!-- IMPORT WIZARD DIRETO-->
+		<mapping class="br.gov.sc.cetran.domain.Situacao" /> 
+		<mapping class="br.gov.sc.cetran.domain.Representacao" /> 
+		<mapping class="br.gov.sc.cetran.domain.TipoRequerente" /> 
+		<mapping class="br.gov.sc.cetran.domain.Conselheiro" /> 
+		<mapping class="br.gov.sc.cetran.domain.Requerente" /> 
+		<mapping class="br.gov.sc.cetran.domain.ProcessoCetran" />
+		<mapping class="br.gov.sc.cetran.domain.HistoricoProcesso" />
 		
-		<mapping class="br.gov.sc.cetran.domain.Requerente" /> <!-- IMPORT WIZARD PRA CRIAR TABELA > TRUCANTE > SQL> DEPOIS PRECISA DATA EXPORT-->
-		<mapping class="br.gov.sc.cetran.domain.ProcessoCetran" /> <!-- IMPORT WIZARD PRA CRIAR TABELA > TRUCANTE > SQL> DEPOIS PRECISA DATA EXPORT-->
-		<mapping class="br.gov.sc.cetran.domain.HistoricoProcesso" /> <!-- IMPORT WIZARD DIRETO -->
+		<mapping class="br.gov.sc.codet.domain.NomenclaturaProcesso" />
+		<mapping class="br.gov.sc.codet.domain.SituacaoProcesso" />
+		<mapping class="br.gov.sc.codet.domain.SetorAtual" />
+		<mapping class="br.gov.sc.codet.domain.FasesProcesso" />
+		<mapping class="br.gov.sc.codet.domain.PartesProcesso" />
+		<mapping class="br.gov.sc.codet.domain.Processo" />
+		
 
 
 	</session-factory>

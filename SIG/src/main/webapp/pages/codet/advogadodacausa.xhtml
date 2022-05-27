@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="formlista" rendered="#{autenticacaoBean.temPermissoes([1, 27])}">
+			<p:panel header="Advogado da Causa - Listagem">
+				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+					paginator="true" value="#{advogadoDaCausaBean.listaAdvogados}"
+					var="advogado" rows="10" style="width: 40%; padding-left: 25%; ">
+					<f:facet name="header">
+						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
+							actionListener="#{advogadoDaCausaBean.novo()}"
+							update=":formcadastro:cadastro">
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+					</f:facet>
+					
+
+					<p:column headerText="Nome" sortBy="#{advogado.pessoaFisica.nomeCompleto}"
+						filterBy="#{advogado.pessoaFisica.nomeCompleto}" style="width: 70px; text-align: center;">
+						<h:outputText value="#{advogado.pessoaFisica.nomeCompleto}" />
+					</p:column>
+					
+						<p:column headerText="Usuário Cadastro" sortBy="#{advogado.usuarioCadastro.pessoa.nomeCompleto}"
+						filterBy="#{advogado.usuarioCadastro.pessoa.nomeCompleto}" style="width: 70px; text-align: center;">
+						<h:outputText value="#{advogado.usuarioCadastro.pessoa.nomeCompleto}" />
+					</p:column>
+					
+						<p:column headerText="Data Cadastro" sortBy="#{advogado.dataCadastro}"
+						filterBy="#{advogado.dataCadastro}" style="width: 70px; text-align: center;">
+						<h:outputText value="#{advogado.dataCadastro}" />
+					</p:column>
+					
+
+					<p:column headerText="Opções" style="width: 70px; text-align: center;">
+						<p:commandButton icon="ui-icon-trash"
+							actionListener="#{advogadoDaCausaBean.excluir}"
+							update=":mensagem :formlista:lista">
+							<p:confirm header="Confirmação"
+								message="Deseja excluir a Advogado?" icon="ui-icon-alert" />
+							<f:attribute name="acaoSelecionado" value="#{acao}" />
+						</p:commandButton>
+
+						<p:commandButton icon="ui-icon-pencil"
+							actionListener="#{advogadoDaCausaBean.editar}"
+							update=":formcadastro:cadastro"
+							oncomplete="PF('dialogo').show();">
+							<f:attribute name="acaoSelecionado" value="#{acao}" />
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+
+					</p:column>
+				</p:dataTable>
+
+				<p:confirmDialog global="true">
+					<p:commandButton value="Sim" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="Não" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+			</p:panel>
+		</h:form>
+
+		<p:dialog header="Advogado - Cadastro" widgetVar="dialogo"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="formcadastro">
+				<h:panelGrid id="cadastro" columns="2">
+				
+						<p:outputLabel value="Pessoa: " />
+					<p:selectOneMenu filter="true"
+						value="#{advogadoDaCausaBean.advogadoDaCausa.pessoaFisica}"
+						converter="omnifaces.SelectItemsConverter" required="true"
+						requiredMessage="O campo Pessoa é obrigatório">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma Pessoa" />
+						<f:selectItems value="#{advogadoDaCausaBean.pessoas}" var="pessoas"
+							itemValue="#{pessoas}"
+							itemLabel="#{pessoas.cpf} - #{pessoas.nomeCompleto}" />
+					</p:selectOneMenu>
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{advogadoDaCausaBean.salvar()}"
+						update=":mensagem :formcadastro:cadastro :formlista:lista" oncomplete="PF('dialogo').hide();" />
+					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

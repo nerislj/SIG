@@ -1,0 +1,711 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+
+		<h:outputStylesheet name="primeicons/primeicons.css"
+			library="primefaces" />
+
+		<style type="text/css">
+.ui-icon-mail-closed {
+	-ms-transform: scale(1.5); /* IE 9 */
+	-webkit-transform: scale(1.5); /* Chrome, Safari, Opera */
+	transform: scale(1.5);
+}
+
+.ui-icon-pencil {
+	-ms-transform: scale(1.3); /* IE 9 */
+	-webkit-transform: scale(1.3); /* Chrome, Safari, Opera */
+	transform: scale(1.3);
+}
+
+.ui-icon-folder-collapsed {
+	-ms-transform: scale(1.3); /* IE 9 */
+	-webkit-transform: scale(1.3); /* Chrome, Safari, Opera */
+	transform: scale(1.3);
+}
+
+.ui-dialog.ui-widget-content .ui-dialog-title {
+	left: 50%; /* left-align your element to center */
+	transform: translateX(-50%);
+	/* offset left by half the width of your element */
+	position: relative; /* use or dont' use depending on element parent */
+}
+</style>
+
+
+		<p:tab title="Consulta"
+			rendered="#{autenticacaoBean.temPermissoes([1, 13, 17, 18])}">
+
+
+			<h:form id="formularioConsulta">
+				<p:panel header="Consulta">
+
+
+
+
+					<div class="ui-g-12 ui-md-5">
+						<p:staticMessage severity="info" summary="Posso pesquisar por:"
+							detail="CPF (Parte), CNPJ (Acusado), Número Processo, Número SGPE" />
+
+					</div>
+					<br />
+					<br />
+					<br />
+					<br />
+					<p:inputText id="campo" maxlength="14" size="12"
+						value="#{processoBean.campoDaBusca}"
+						style="text-transform:uppercase;">
+						<p:keyFilter regEx="/[\d\-\.]/" preventPaste="false" />
+					</p:inputText>
+
+
+					<p:commandButton icon="pi pi-search"
+						actionListener="#{processoBean.buscarCamposPesquisa}"
+						update=":mensagem tabView:formularioEmpresas:painelDados :empresa:panelEmpresa processo:tabViewProcesso:listaFases"
+						style="background: #01B50D;">
+						<f:actionListener
+							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+					</p:commandButton>
+
+					<!-- ALTERAR AQUI -->
+
+
+
+					<p:commandButton value="Novo" icon="pi pi-user-plus"
+						rendered="#{autenticacaoBean.temPermissoes([1, 13])}"
+						actionListener="#{credenciadoEmpBean.carregarEmpresaNova}"
+						onclick="PF('novaEmpresa').show();"
+						update=":mensagem tabView:formularioEmpresas:painelDados :empresa:panelEmpresa">
+						<f:actionListener
+							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+					</p:commandButton>
+
+
+				</p:panel>
+			</h:form>
+		</p:tab>
+		<p:tabView id="tabView"
+			rendered="#{autenticacaoBean.temPermissoes([1, 13, 17, 18])}">
+			<p:tab title="Processos">
+				<h:form id="formularioEmpresas">
+					<h:panelGroup id="painelDados" layout="block">
+
+
+
+
+						<!-- <h:panelGrid columns="2"
+							rendered="#{credenciadoEmpBean.exibePainelDados}">
+							 -->
+						<p:panelGrid columns="1" layout="grid"
+							rendered="#{processoBean.exibePainelDados}">
+
+							<p:dataTable id="listaCorregedoria"
+								emptyMessage="Nenhum processo encontrado." paginator="true"
+								rows="10" value="#{processoBean.listaProcessos}" var="processo">
+
+
+
+
+								<f:facet name="header">
+									<h3>PROCESSOS CORREGEDORIA</h3>
+
+									<p:commandButton value="Adicionar Processo"
+										style="background: #01B50D;"
+										oncomplete="PF('dialogoAdicionarProcesso').show();"
+										update="processo:tabViewProcesso:listaFases"
+										rendered="#{autenticacaoBean.temPermissoes([1, 13])}">
+
+									</p:commandButton>
+
+								</f:facet>
+
+								<p:column headerText="Nomenclatura"
+									style="width: 9%; text-align: center;">
+									<h:outputText value="#{processo.nomenclatura.descricao}" />
+								</p:column>
+
+
+								<p:column headerText="Número Processo"
+									style="width: 9%; text-align: center;">
+									<h:outputText value="#{processo.numProcesso}" />
+								</p:column>
+
+								<p:column headerText="Número SGPE"
+									style="width: 9%; text-align: center;">
+									<h:outputText value="#{processo.numSGPE}" />
+								</p:column>
+
+								<p:column headerText="Acusado"
+									style="width: 9%; text-align: center;">
+									<h:outputText
+										value="#{processo.credenciadoPJ.pessoaJuridica.nomeFantasia} #{processo.credenciadoPJ.pessoaJuridica.cnpj}" />
+								</p:column>
+
+								<p:column headerText="Situacao"
+									style="width: 9%; text-align: center;">
+									<h:outputText value="#{processo.situacao.descricao}" />
+								</p:column>
+
+								<p:column headerText="Opções"
+									style="width: 6%; text-align: center;"
+									rendered="#{autenticacaoBean.temPermissoes([1, 13])}">
+
+									<p:commandButton actionListener="#{processoBean.editar}"
+										icon="ui-icon-search"
+										onclick="PF('dialogoAdicionarProcesso').show();"
+										style="align: center;"
+										update=":mensagem tabView:formularioEmpresas:painelDados :processo:processo processo:tabViewProcesso:listaFases">
+										<f:attribute name="processoSelecionado" value="#{processo}" />
+										<f:actionListener
+											type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+
+									</p:commandButton>
+
+								</p:column>
+
+
+
+							</p:dataTable>
+
+						</p:panelGrid>
+
+
+
+						<br />
+						<br />
+
+
+
+
+
+
+					</h:panelGroup>
+
+
+
+
+
+
+				</h:form>
+
+
+			</p:tab>
+
+
+
+
+
+
+
+
+		</p:tabView>
+
+
+
+
+
+
+
+
+
+
+
+
+		<p:dialog header="Nova empresa" widgetVar="novaEmpresa"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="empresa">
+
+				<h:panelGrid id="panelEmpresa" columns="2">
+
+					<p:outputLabel value="CNPJ: *" />
+					<p:inputText maxlength="50" size="30"
+						value="#{credenciadoEmpBean.empresa.cnpj}" required="true"
+						requiredMessage="O campo Razão Social é obrigatório"
+						style="text-transform:uppercase;" />
+
+
+					<p:outputLabel value="Razão Social: *" />
+					<p:inputText maxlength="50" size="30"
+						value="#{credenciadoEmpBean.empresa.razaoSocial}" required="true"
+						requiredMessage="O campo Razão Social é obrigatório"
+						style="text-transform:uppercase;" />
+
+					<p:outputLabel value="Nome Fantasia:" />
+					<p:inputText maxlength="50" size="30"
+						value="#{credenciadoEmpBean.empresa.nomeFantasia}"
+						style="text-transform:uppercase;" />
+
+					<p:outputLabel value="" />
+					<p:outputLabel value="" />
+
+					<p:separator />
+					<p:separator />
+
+
+
+					<p:outputLabel value="CEP: *" />
+					<p:inputMask id="cep_endereco" mask="99.999-999" maxlength="11"
+						size="11" value="#{credenciadoEmpBean.empresa.cep}"
+						required="true" requiredMessage="O campo CEP é obrigatório">
+						<f:ajax event="blur" execute="@this"
+							render="endereco estado cidade"
+							listener="#{credenciadoEmpBean.pesquisaCep}"></f:ajax>
+					</p:inputMask>
+
+					<p:outputLabel value="Endereço: *" />
+					<p:inputText maxlength="50" size="30" id="endereco"
+						value="#{credenciadoEmpBean.empresa.endereco}" required="true"
+						requiredMessage="O campo Endereço Residência é obrigatório"
+						style="text-transform:uppercase;" />
+
+					<p:outputLabel value="Complemento:" />
+					<p:inputText maxlength="50" size="30"
+						value="#{credenciadoEmpBean.empresa.complemento}"
+						style="text-transform:uppercase;" />
+
+
+
+					<p:outputLabel for="estado" value="UF: *" />
+					<p:selectOneMenu id="estado" filter="true"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{credenciadoEmpBean.empresa.estadoEndereco}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione um estado" />
+						<f:selectItems value="#{credenciadoEmpBean.estados}" var="estado"
+							itemValue="#{estado}" itemLabel="#{estado.sigla}" />
+						<p:ajax listener="#{credenciadoEmpBean.popular}"
+							update=":empresa:cidade" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="cidade" value="Municipio:" />
+					<p:selectOneMenu id="cidade" filter="true" required="true"
+						requiredMessage="O campo Municipio é obrigatório"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{credenciadoEmpBean.empresa.municipioEndereco}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma cidade" />
+						<f:selectItems value="#{credenciadoEmpBean.cidades}" var="cidade"
+							itemValue="#{cidade}" itemLabel="#{cidade.nome}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="" />
+					<p:outputLabel value="" />
+
+
+
+					<p:outputLabel value="Telefone Empresa:" />
+					<p:inputMask id="telemp" mask="(99) 9999-9999" maxlength="11"
+						size="11" value="#{credenciadoEmpBean.empresa.telEmp}">
+					</p:inputMask>
+
+					<p:outputLabel value="Celular Empresa:" />
+					<p:inputMask id="celemp" mask="(99) 99999-9999" maxlength="11"
+						size="11" value="#{credenciadoEmpBean.empresa.celEmp}">
+					</p:inputMask>
+
+					<p:outputLabel value="E-mail Empresa:" />
+					<p:inputText maxlength="50" size="30"
+						value="#{credenciadoEmpBean.empresa.email}"
+						style="text-transform:uppercase;" />
+
+					<p:separator />
+					<p:separator />
+
+
+
+					<p:outputLabel value="Status: *"
+						rendered="#{credenciadoEmpBean.mostrarNãoVirtual}" />
+					<p:selectOneMenu filter="true"
+						rendered="#{credenciadoEmpBean.mostrarNãoVirtual}"
+						value="#{credenciadoEmpBean.credenciado.credencialStatus}"
+						converter="omnifaces.SelectItemsConverter"
+						requiredMessage="O campo Status é obrigatório">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione um Status" />
+						<f:selectItems value="#{credenciadoEmpBean.credencialStatus}"
+							var="status" itemValue="#{status}"
+							itemLabel="#{status.tipoStatus}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Tipo Credencial: *"
+						rendered="#{credenciadoEmpBean.mostrarNãoVirtual}" />
+					<p:selectOneMenu filter="true"
+						rendered="#{credenciadoEmpBean.mostrarNãoVirtual}"
+						value="#{credenciadoEmpBean.credenciado.credencialTipo}"
+						converter="omnifaces.SelectItemsConverter"
+						requiredMessage="O campo Tipo Credencial é obrigatório">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione o Tipo" />
+						<f:selectItems value="#{credenciadoEmpBean.credencialEmpTipos}"
+							var="tipo" itemValue="#{tipo}" itemLabel="#{tipo.tipocredencial}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Validade: *"
+						rendered="#{credenciadoEmpBean.mostrarNãoVirtual}" />
+					<p:calendar id="credval" maxlength="8" size="6"
+						rendered="#{credenciadoEmpBean.mostrarNãoVirtual}"
+						value="#{credenciadoEmpBean.credenciado.vencimentoCredencial}"
+						locale="pt_BR" pattern="dd/MM/yyyy" mask="true"
+						requiredMessage="O campo Validade é obrigatório" />
+
+
+					<p:outputLabel value="" />
+					<p:outputLabel value="" />
+					<p:outputLabel value="" />
+
+
+
+					<h:panelGrid columns="3">
+						<p:commandButton value="Salvar"
+							actionListener="#{credenciadoEmpBean.salvar()}"
+							update=":mensagem tabView:formularioEmpresas:painelDados"
+							oncomplete="PF('novaEmpresa').hide();"
+							style="background: #01B50D;" />
+
+						<p:commandButton value="Cancelar"
+							update="tabView:formularioEmpresas:painelDados"
+							oncomplete="PF('novaEmpresa').hide();" />
+
+					</h:panelGrid>
+
+				</h:panelGrid>
+
+
+
+			</h:form>
+
+		</p:dialog>
+
+
+		<p:dialog widgetVar="dialogoAdicionarProcesso" draggable="false"
+			resizable="true" modal="true" closable="true" responsive="true"
+			height="700px" width="60%">
+			<f:facet name="header">
+
+				<h:outputText id="someDialogHeader" value="Acusado" />
+
+			</f:facet>
+
+			<h:form id="processo">
+
+
+
+				<p:panel header="Processo">
+
+
+
+
+
+
+					<h:panelGrid id="processo" columns="2" style="margin: 0 auto;"
+						styleClass="ui-panelgrid-blank ui-fluid">
+
+
+						<p:outputLabel value="Acusado: " />
+						<p:selectOneMenu value="#{processoBean.processo.credenciadoPJ}"
+							required="true" filter="true"
+							requiredMessage="O campo empresa é obrigatório"
+							converter="omnifaces.SelectItemsConverter" style="color: red;">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione um acusado" />
+							<f:selectItems value="#{processoBean.listaEmpresasCredenciadas}"
+								var="empresa" itemValue="#{empresa}"
+								itemLabel="#{empresa.pessoaJuridica.nomeFantasia} #{empresa.pessoaJuridica.cnpj}" />
+						</p:selectOneMenu>
+
+
+						<p:outputLabel value="Nomenclatura: " />
+						<p:selectOneMenu value="#{processoBean.processo.nomenclatura}"
+							required="true" filter="true"
+							requiredMessage="O campo nomenclatura é obrigatório"
+							converter="omnifaces.SelectItemsConverter">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione uma nomenclatura" />
+							<f:selectItems value="#{processoBean.listaNomemclaturas}"
+								var="nomenclatura" itemValue="#{nomenclatura}"
+								itemLabel="#{nomenclatura.descricao}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel for="button2" value="Data Instauração " />
+						<p:calendar id="button2" readonlyInput="true"
+							value="#{processoBean.processo.dataInstauracao}" showIcon="true" />
+
+						<p:outputLabel value="Número Processo: " />
+						<p:inputText placeholder="003/16"
+							value="#{processoBean.processo.numProcesso}"
+							style="text-transform:uppercase;">
+						</p:inputText>
+
+						<p:outputLabel value="Número SGPE: " />
+						<p:inputText placeholder="003/16 sgpe"
+							value="#{processoBean.processo.numSGPE}"
+							style="text-transform:uppercase;">
+						</p:inputText>
+
+
+						<p:outputLabel value="Situação:" />
+						<p:selectOneMenu value="#{processoBean.processo.situacao}"
+							required="true" filter="true"
+							requiredMessage="O campo Situação é obrigatório"
+							converter="omnifaces.SelectItemsConverter">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione uma situação" />
+							<f:selectItems value="#{processoBean.listaSituacoes}"
+								var="situacao" itemValue="#{situacao}"
+								itemLabel="#{situacao.descricao}" />
+						</p:selectOneMenu>
+
+
+						<p:outputLabel value="Setor Atual: " />
+						<p:selectOneMenu value="#{processoBean.processo.setorAtual}"
+							required="true" filter="true"
+							requiredMessage="O campo Setor Atual é obrigatório"
+							converter="omnifaces.SelectItemsConverter">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione um setor atual" />
+							<f:selectItems value="#{processoBean.listaSetorAtuais}"
+								var="setor" itemValue="#{setor}" itemLabel="#{setor.descrisao}" />
+						</p:selectOneMenu>
+
+
+					</h:panelGrid>
+
+					<br />
+
+
+					<br />
+
+					<h:panelGrid columns="2" style="margin: 0 auto;">
+						<p:commandButton value="Gravar Processo" icon="pi pi-save"
+							style="background: #01B50D;"
+							actionListener="#{processoBean.salvar()}"
+							update=":mensagem tabView:formularioEmpresas:painelDados :processo:processo processo:tabViewProcesso:listaFases" />
+
+
+
+					</h:panelGrid>
+
+
+				</p:panel>
+
+
+
+				<p:tabView id="tabViewProcesso">
+
+
+					<p:tab title="Partes">
+
+						<f:facet name="title">
+							Partes <i class="pi pi-users"></i>
+						</f:facet>
+
+
+						<p:panel header="Partes">
+							<p:dataTable id="lista"
+								emptyMessage="Nenhum registro encontrado." paginator="true"
+								value="#{processoBean.listaPartesProcessos}" var="parte"
+								rows="10">
+								<f:facet name="header">
+									<p:commandButton value="Novo"
+										oncomplete="PF('dialogo').show();"
+										actionListener="#{processoBean.novo()}"
+										update="processo:tabViewProcesso:lista">
+										<f:actionListener
+											type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+									</p:commandButton>
+								</f:facet>
+
+
+
+
+								<p:column headerText="Nome" sortBy="#{parte.dataCadastro}"
+									filterBy="#{parte.dataCadastro}"
+									style="width: 70px; text-align: center;">
+									<h:outputText value="#{parte.dataCadastro}" />
+								</p:column>
+
+
+
+
+								<p:column headerText="Opções"
+									style="width: 70px; text-align: center;">
+									<p:commandButton icon="ui-icon-trash"
+										actionListener="#{processoBean.excluirParte}"
+										update=":mensagem processo:tabViewProcesso:lista">
+										<p:confirm header="Confirmação"
+											message="Deseja excluir a Advogado?" icon="ui-icon-alert" />
+										<f:attribute name="acaoSelecionado" value="#{acao}" />
+									</p:commandButton>
+
+									<p:commandButton icon="ui-icon-pencil"
+										actionListener="#{processoBean.editarParte}"
+										update="processo:tabViewProcesso:lista"
+										oncomplete="PF('dialogo').show();">
+										<f:attribute name="acaoSelecionado" value="#{acao}" />
+										<f:actionListener
+											type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+									</p:commandButton>
+
+								</p:column>
+							</p:dataTable>
+
+							<p:confirmDialog global="true">
+								<p:commandButton value="Sim" type="button"
+									styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+								<p:commandButton value="Não" type="button"
+									styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+							</p:confirmDialog>
+						</p:panel>
+
+					</p:tab>
+
+
+					<p:tab title="Fases">
+
+						<f:facet name="title">
+							Fases <i class="pi pi-cog"></i>
+						</f:facet>
+
+						<p:panel header="Fase Administrativa">
+
+							<p:dataTable id="listaFases" showGridlines="true"
+								emptyMessage="Nenhum registro encontrado." paginator="true"
+								rows="5" value="#{processoBean.listaFases}" var="fases"
+								editable="true">
+
+
+
+
+
+
+
+								<p:ajax event="rowEdit" listener="#{faseProcessoBean.editar}"
+									update="processo:tabViewProcesso:listaFases">
+									<f:attribute name="faseSelecionado" value="#{fases}" />
+									<f:actionListener
+										type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+								</p:ajax>
+
+
+
+								<p:column headerText="Data">
+
+
+									<h:outputText value="#{fases.dataCadastro}" />
+
+
+
+								</p:column>
+
+								<p:column headerText="Ocorrencia">
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{fases.ocorrencia}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:inputText id="modelInput2" value="#{fases.ocorrencia}"
+												style="width:100%" />
+										</f:facet>
+									</p:cellEditor>
+								</p:column>
+
+								<p:column headerText="Anotações">
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{fases.anotacao}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:inputText id="modelInput3" value="#{fases.anotacao}"
+												style="width:100%" />
+										</f:facet>
+									</p:cellEditor>
+								</p:column>
+
+								<p:column headerText="Providencias">
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{fases.providencia}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:inputText id="modelInput4" value="#{fases.providencia}"
+												style="width:100%" />
+										</f:facet>
+									</p:cellEditor>
+								</p:column>
+
+								<p:column style="width:32px" headerText="Ações">
+									<p:rowEditor />
+								</p:column>
+
+							</p:dataTable>
+
+						</p:panel>
+
+					</p:tab>
+
+
+
+
+
+				</p:tabView>
+
+
+
+
+
+			</h:form>
+
+
+
+		</p:dialog>
+
+
+
+		<p:dialog header="Parte - Cadastro" widgetVar="dialogo"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="formcadastro">
+				<h:panelGrid id="cadastro" columns="2">
+
+					<p:outputLabel value="Pessoa: " />
+					<p:selectOneMenu filter="true"
+						value="#{comissionadoBean.comissao.pessoaFisica}"
+						converter="omnifaces.SelectItemsConverter" required="true"
+						requiredMessage="O campo Pessoa é obrigatório">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma Pessoa" />
+						<f:selectItems value="#{comissionadoBean.pessoas}" var="pessoas"
+							itemValue="#{pessoas}"
+							itemLabel="#{pessoas.cpf} - #{pessoas.nomeCompleto}" />
+					</p:selectOneMenu>
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{comissionadoBean.salvar()}"
+						update=":mensagem :formcadastro:cadastro processo:tabViewProcesso:lista"
+						oncomplete="PF('dialogo').hide();" />
+					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+
+
+
+	</ui:define>
+</ui:composition>
+
+
+
+
+
+
+

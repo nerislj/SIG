@@ -10,6 +10,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import br.gov.sc.sgi.domain.Credenciado;
+import br.gov.sc.sgi.domain.CredenciadoEmp;
 import br.gov.sc.sgi.domain.CredenciadoHist;
 import br.gov.sc.sgi.domain.PessoaFisica;
 import br.gov.sc.sgi.domain.Usuario;
@@ -77,6 +78,29 @@ public class CredenciadoDAO extends GenericDAO<Credenciado> {
 		}
 	}
 
+	
+	public static Credenciado consultaporCpfString(String empresa) {
+
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+
+		try {
+		Criteria consulta = sessao.createCriteria(Credenciado.class);
+System.out.println(consulta);
+		consulta.createAlias("pessoa", "p");
+		consulta.add(Restrictions.eq("p.cpf", empresa));
+
+		
+		Credenciado resultado = (Credenciado) consulta.uniqueResult(); 
+		
+		return resultado;
+		
+		
+	} catch (RuntimeException erro) {
+		throw erro;
+	} finally {
+		sessao.close();
+	}
+	}
 
 
 }

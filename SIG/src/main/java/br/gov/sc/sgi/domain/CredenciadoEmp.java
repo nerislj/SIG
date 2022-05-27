@@ -41,6 +41,8 @@ public class CredenciadoEmp extends GenericDomain {
 	private Date vencimentoCredencial;
 	
 	
+	
+	
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "empresa")
 	@Fetch(FetchMode.SUBSELECT)

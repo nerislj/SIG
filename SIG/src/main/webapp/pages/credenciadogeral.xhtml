@@ -29,18 +29,18 @@
 							<f:actionListener
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 						</p:commandButton>
-						
-						
-						
-						 
-						 
-						
+
+
+
+
+
+
 
 					</div>
 				</p:panel>
 			</h:form>
 		</p:tab>
-		
+
 		<p:tabView id="tabView"
 			rendered="#{autenticacaoBean.temPermissoes([1, 13, 17, 18])}">
 			<p:tab title="Dados Credenciado">
@@ -424,14 +424,15 @@
 									</p:dataTable>
 
 								</p:panelGrid>
-								
-								
-								
+
+
+
 								<p:panelGrid columns="2" layout="grid">
 
-									
-									
-									<p:dataTable id="listaAlvara" rendered="#{credenciadoBean.medicoPsicologoSim}"
+
+
+									<p:dataTable id="listaAlvara"
+										rendered="#{credenciadoBean.medicoPsicologoSim}"
 										emptyMessage="Nenhum registro encontrado."
 										value="#{credenciadoBean.credenciado.historicoAlvara}"
 										var="alvara" style="width: 100%">
@@ -439,7 +440,6 @@
 										<f:facet name="header">
 											<h3>ALVARÁ</h3>
 											<p:commandButton value="Adicionar"
-											
 												oncomplete="PF('dialogoalvara').show();"
 												update=":alvara:alvara"
 												rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
@@ -477,9 +477,10 @@
 												value="#{alvara.usuarioCadastro.pessoa.nomeCompleto}" />
 										</p:column>
 									</p:dataTable>
-									
-									
-									<p:dataTable id="listaPortaria" rendered="#{credenciadoBean.medicoPsicologoSim}"
+
+
+									<p:dataTable id="listaPortaria"
+										rendered="#{credenciadoBean.medicoPsicologoSim}"
 										emptyMessage="Nenhum registro encontrado."
 										value="#{credenciadoBean.credenciado.historicoPortaria}"
 										var="portaria" style="width: 100%">
@@ -524,9 +525,9 @@
 												value="#{portaria.usuarioCadastro.pessoa.nomeCompleto}" />
 										</p:column>
 									</p:dataTable>
-									
-									
-								
+
+
+
 								</p:panelGrid>
 
 
@@ -556,7 +557,7 @@
 
 
 		</p:tabView>
-		
+
 		<p:dialog header="Portaria" widgetVar="dialogoportaria"
 			draggable="false" resizable="false" modal="true" closable="false">
 			<h:form id="portaria">
@@ -634,7 +635,7 @@
 			</h:form>
 
 		</p:dialog>
-		
+
 
 		<p:dialog header="SGP-e" widgetVar="dialogosgpe" draggable="false"
 			resizable="false" modal="true" closable="false">
@@ -752,8 +753,8 @@
 			</h:form>
 
 		</p:dialog>
-		
-		
+
+
 
 
 

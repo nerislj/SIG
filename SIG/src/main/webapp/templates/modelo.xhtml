@@ -203,13 +203,12 @@ $(window).bind('beforeunload', function() {
 							url="/Sistema_Integrado_de_Gestão/pages/materialaprovacao.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 21])}" />
 
-
-
 					</p:submenu>
 
 
 					<p:submenu label="Cetran"
 						rendered="#{autenticacaoBean.temPermissoes([1, 27])}">
+						
 						<p:menuitem value="Situações" icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/cetran/situacao.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
@@ -231,10 +230,31 @@ $(window).bind('beforeunload', function() {
 						<p:menuitem value="Relatório e Histórico" icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/cetran/relatoriodistribuicao.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
-
-
-
-
+							
+					</p:submenu>
+					
+					
+					<p:submenu label="Corregedoria"
+						rendered="#{autenticacaoBean.temPermissoes([1, 27])}">
+						
+						<p:menuitem value="Ação Processo" icon="ui-icon-document"
+							url="/Sistema_Integrado_de_Gestão/pages/codet/acaoprocesso.xhtml"
+							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
+							<p:menuitem value="Decisão Processo" icon="ui-icon-document"
+							url="/Sistema_Integrado_de_Gestão/pages/codet/decisaoprocesso.xhtml"
+							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
+						<p:menuitem value="Advogados" icon="ui-icon-document"
+							url="/Sistema_Integrado_de_Gestão/pages/codet/advogadodacausa.xhtml"
+							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
+							<p:menuitem value="Comissionado" icon="ui-icon-document"
+							url="/Sistema_Integrado_de_Gestão/pages/codet/comissionado.xhtml"
+							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
+							
+						<p:menuitem value="Processos" icon="ui-icon-document"
+							url="/Sistema_Integrado_de_Gestão/pages/codet/processos.xhtml"
+							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
+						
+							
 					</p:submenu>
 
 					<p:submenu label="Solicitações">
@@ -243,15 +263,12 @@ $(window).bind('beforeunload', function() {
 
 					</p:submenu>
 
-
-
 					<f:facet name="options">
 						<p:outputLabel style="margin:1px 10px 1px 1px;"
 							value="#{autenticacaoBean.usuarioLogado.pessoa.nomeCompleto}" />
 						<p:commandButton value="Logout" icon="ui-icon-power"
 							action="#{autenticacaoBean.logout}" ajax="false" />
 					</f:facet>
-
 
 				</p:menubar>
 
