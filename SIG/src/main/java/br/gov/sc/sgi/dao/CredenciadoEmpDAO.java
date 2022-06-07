@@ -9,6 +9,8 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import br.gov.sc.codet.domain.NomenclaturaProcesso;
+import br.gov.sc.codet.domain.Processo;
 import br.gov.sc.sgi.domain.CredenciadoEmp;
 import br.gov.sc.sgi.domain.CredenciadoEmpHist;
 import br.gov.sc.sgi.domain.Oficio;
@@ -45,11 +47,9 @@ public class CredenciadoEmpDAO extends GenericDAO<CredenciadoEmp> {
 
 		consulta.add(Restrictions.eq("pessoaJuridica", empresa));
 
-		if (consulta.uniqueResult().equals(null)) {
-			return null;
-		} else {
-			return (CredenciadoEmp) consulta.uniqueResult();
-		}
+		
+			return (CredenciadoEmp) consulta.setMaxResults(1).uniqueResult();
+		
 	}
 	
 	public static CredenciadoEmp consultaporCnpjString(String empresa) {
@@ -145,6 +145,29 @@ System.out.println(consulta);
 		} finally {
 			sessao.close();
 		}
+	}
+	
+	public static PessoaJuridica carregaEmpresa(String cnpj) {
+
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+
+		try {
+		Criteria consulta = sessao.createCriteria(PessoaJuridica.class);
+
+		
+		consulta.add(Restrictions.eq("cnpj", cnpj));
+		
+		
+		return (PessoaJuridica) consulta.setMaxResults(1).uniqueResult();
+		
+		
+		
+		
+	} catch (RuntimeException erro) {
+		throw erro;
+	} finally {
+		sessao.close();
+	}
 	}
 	
 	public void salvarCredenciado(CredenciadoEmp credenciado, PessoaJuridica empresa, CredenciadoEmpHist credenciadoHist, Usuario usuarioLogado) {

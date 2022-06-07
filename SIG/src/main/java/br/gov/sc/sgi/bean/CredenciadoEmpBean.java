@@ -527,11 +527,10 @@ public class CredenciadoEmpBean implements Serializable {
 	 * "Ocorreu um erro ao tentar buscar as Pessoas."); erro.printStackTrace(); } }
 	 */
 
-	public void carregarEmpresaNova() {
-		System.out.println(empresa.getCnpj());
-		empresa.setCnpj(empresa.getCnpj());
-
-	}
+	//public void carregarEmpresaNova() {
+	//	System.out.println(empresa.getCnpj());
+	//	empresa.setCnpj(empresa.getCnpj());
+	//}
 
 	public void salvar() {
 		try {
@@ -546,15 +545,19 @@ public class CredenciadoEmpBean implements Serializable {
 				//credenciado.setDataCadastro(new Date());
 				//credenciadoDAO.merge(credenciado);
 				
-				
-				
-				
 			
-				credenciadoDAO.salvarCredenciadoPrimeiroCadastro(credenciado, empresa, credenciadoEmpHist, usuarioLogado);
 				
 				empresa.setCredenciadoEmpVirtual("Não");
 
 				pessoaJuridicaDAO.merge(empresa);
+				
+				empresa = credenciadoDAO.carregaEmpresa(empresa.getCnpj());
+				
+				System.out.println(empresa + " empresa credenciado2 == null && filtro == 2");
+			
+				credenciadoDAO.salvarCredenciadoPrimeiroCadastro(credenciado, empresa, credenciadoEmpHist, usuarioLogado);
+				
+				
 				
 			
 			} else if (credenciado2 != null && filtro == 2) {
@@ -653,6 +656,7 @@ public class CredenciadoEmpBean implements Serializable {
 
 			if (empresa.getCredenciadoEmpVirtual() == null || empresa.getCredenciadoEmpVirtual().equals("Não")) {
 				credenciado2 = credenciadoDAO.loadCredenciado(empresa);
+				credenciado = credenciadoDAO.loadCredenciado(empresa);
 			}
 			if (empresa.getEstadoEndereco() != null) {
 				Cidades = municipioDAO.buscarPorEstado(empresa.getEstadoEndereco().getCodigo());
@@ -811,7 +815,7 @@ public class CredenciadoEmpBean implements Serializable {
 
 			CredenciadoEmpBean.this.buscarFuncionario();
 
-			if (empresa.getCredenciadoEmpVirtual() == null || empresa.getCredenciadoEmpVirtual() == "Não") {
+			if (empresa.getCredenciadoEmpVirtual() == null || empresa.getCredenciadoEmpVirtual().equals("Não")) {
 
 				relacaoFuncionario.setCredenciado(funcionario);
 				relacaoFuncionario.setCredenciadoEmp(credenciadoDaBusca);
@@ -862,7 +866,7 @@ public class CredenciadoEmpBean implements Serializable {
 
 		try {
 
-			if (empresa.getCredenciadoEmpVirtual() == null || empresa.getCredenciadoEmpVirtual() == "Não") {
+			if (empresa.getCredenciadoEmpVirtual() == null || empresa.getCredenciadoEmpVirtual().equals("Não")) {
 
 				relacaoFuncionario = (CredencialRelacaoCred) evento.getComponent().getAttributes()
 						.get("funcionarioSelecionado");
@@ -962,7 +966,7 @@ public class CredenciadoEmpBean implements Serializable {
 	public void adicionaSGPE() {
 		try {
 
-			if (empresa.getCredenciadoEmpVirtual() == null || empresa.getCredenciadoEmpVirtual() == "Não") {
+			if (empresa.getCredenciadoEmpVirtual() == null || empresa.getCredenciadoEmpVirtual().equals("Não")) {
 				SGPE.setUsuarioCadastro(usuarioLogado);
 				SGPE.setDataInclusao(new Date());
 				SGPE.setEmpresa(credenciadoDaBusca);
@@ -1006,7 +1010,7 @@ public class CredenciadoEmpBean implements Serializable {
 			obs.setUsuarioCadastro(usuarioLogado);
 			obs.setDataInclusao(new Date());
 
-			if (empresa.getCredenciadoEmpVirtual() == null || empresa.getCredenciadoEmpVirtual() == "Não") {
+			if (empresa.getCredenciadoEmpVirtual() == null || empresa.getCredenciadoEmpVirtual().equals("Não")) {
 				obs.setEmpresa(credenciadoDaBusca);
 			} else {
 				obs.setEmpresaPJ(empresaDaBusca);

@@ -114,9 +114,11 @@
 		
 		<mapping class="br.gov.sc.codet.domain.NomenclaturaProcesso" />
 		<mapping class="br.gov.sc.codet.domain.SituacaoProcesso" />
+		<mapping class="br.gov.sc.codet.domain.PenalidadeProcesso" />
 		<mapping class="br.gov.sc.codet.domain.SetorAtual" />
 		<mapping class="br.gov.sc.codet.domain.FasesProcesso" />
 		<mapping class="br.gov.sc.codet.domain.PartesProcesso" />
+		<mapping class="br.gov.sc.codet.domain.HistoricoProcessoCODET" />
 		<mapping class="br.gov.sc.codet.domain.Processo" />
 		
 

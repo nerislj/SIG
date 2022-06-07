@@ -59,24 +59,13 @@
 
 						<p:commandButton value="Pesquisar" icon="ui-icon-search"
 							actionListener="#{credenciadoEmpBean.buscarCredenciado}"
-							update=":mensagem tabView:formularioEmpresas:painelDados :empresa:panelEmpresa processo:tabViewProcesso:listaFases"
+							update=":mensagem tabView:formularioEmpresas:painelDados"
 							style="background: #01B50D;">
 							<f:actionListener
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 						</p:commandButton>
 
-						<!-- ALTERAR AQUI -->
-
-
-
-						<p:commandButton value="Novo"
-							rendered="#{autenticacaoBean.temPermissoes([1, 13])}"
-							actionListener="#{credenciadoEmpBean.carregarEmpresaNova}"
-							onclick="PF('novaEmpresa').show();"
-							update=":mensagem tabView:formularioEmpresas:painelDados :empresa:panelEmpresa">
-							<f:actionListener
-								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
-						</p:commandButton>
+						
 
 					</div>
 				</p:panel>
@@ -190,73 +179,7 @@
 
 
 
-								<p:panelGrid columns="1" layout="grid"
-									rendered="#{autenticacaoBean.temPermissoes([1, 13])}">
-									<p:dataTable id="listaCorregedoria"
-										emptyMessage="Nenhum registro encontrado."
-										value="#{credenciadoEmpBean.credenciado.veiculo}"
-										var="veiculo">
-
-
-
-
-										<f:facet name="header">
-											<h3>PROCESSOS CORREGEDORIA</h3>
-
-											<p:commandButton value="Adicionar Processo"
-												style="width: 6%; text-align: center; margin:auto; display:block;"
-												oncomplete="PF('dialogoAdicionarProcesso').show();"
-												update="processo:tabViewProcesso:listaFases"
-												rendered="#{autenticacaoBean.temPermissoes([1, 13])}">
-												
-											</p:commandButton>
-
-										</f:facet>
-
-
-										<p:column headerText="Número Processo"
-											style="width: 9%; text-align: center;">
-											<h:outputText value="023/09" />
-										</p:column>
-
-
-										<p:column headerText="Data Entrada"
-											style="width: 9%; text-align: center;">
-											<h:outputText value="16/05/2022" />
-										</p:column>
-
-										<p:column headerText="Ação"
-											style="width: 9%; text-align: center;">
-											<h:outputText value="Fiscalização" />
-										</p:column>
-
-										<p:column headerText="Movimentado Por"
-											style="width: 9%; text-align: center;">
-											<h:outputText value="Ciclano" />
-										</p:column>
-
-										<p:column headerText="Opções"
-											style="width: 6%; text-align: center;"
-											rendered="#{autenticacaoBean.temPermissoes([1, 13])}">
-
-											<p:commandButton
-												actionListener="#{frotaViagemBean.visualizar}"
-												icon="ui-icon-search" onclick="PF('dlgAprovar').show();"
-												style="align: center;"
-												update=":mensagem tabView:formularioEmpresas:listaProp">
-												<f:attribute name="viagemSelecionado" value="#{viagem}" />
-
-											</p:commandButton>
-
-										</p:column>
-
-
-
-									</p:dataTable>
-
-								</p:panelGrid>
-
-
+							
 
 								<br />
 								<br />
@@ -326,7 +249,7 @@
 											rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
 											<p:commandButton icon="ui-icon-trash"
 												actionListener="#{credenciadoEmpBean.excluirFuncionario}"
-												update=":mensagem tabView:formularioEmpresas:lista3, tabView:formularioEmpresas:lista33">
+												update=":mensagem tabView:formularioEmpresas:lista3 tabView:formularioEmpresas:lista33">
 												<p:confirm header="Confirmação"
 													message="Deseja excluir o Funcionário?"
 													icon="ui-icon-alert" />
@@ -467,7 +390,7 @@
 											rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
 											<p:commandButton icon="ui-icon-trash"
 												actionListener="#{credenciadoEmpBean.excluirFuncionario}"
-												update=":mensagem tabView:formularioEmpresas:lista3, tabView:formularioEmpresas:lista33">
+												update=":mensagem tabView:formularioEmpresas:lista3 tabView:formularioEmpresas:lista33">
 												<p:confirm header="Confirmação"
 													message="Deseja excluir o Funcionário?"
 													icon="ui-icon-alert" />
@@ -655,8 +578,10 @@
 
 										<p:column headerText="Data Fim"
 											style="width: 9%; text-align: center;">
-											<h:outputText
+											<h:outputText rendered="#{portaria.dataFim != null}"
 												value="#{portaria.dataFim.date}/#{portaria.dataFim.month+1}/#{portaria.dataFim.year+1900}" />
+												<h:outputText rendered="#{portaria.dataFim == null}"
+												value="Sem data" />
 										</p:column>
 
 										<p:column headerText="Data Inclusão"
@@ -1025,7 +950,7 @@
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
 						actionListener="#{credenciadoEmpBean.adicionaObs}"
-						update=":mensagem tabView:formularioEmpresas:lista4, tabView:formularioEmpresas:lista44"
+						update=":mensagem tabView:formularioEmpresas:lista4 tabView:formularioEmpresas:lista44"
 						oncomplete="PF('dialogoobs').hide();" />
 					<p:commandButton value="Fechar"
 						oncomplete="PF('dialogoobs').hide();" />
@@ -1054,8 +979,8 @@
 
 					<p:outputLabel value="Data Fim:" />
 					<p:calendar id="dataFim" maxlength="8" size="6"
-						value="#{credenciadoEmpBean.portaria.dataFim}" required="true"
-						requiredMessage="O campo Data Fim é obrigatório" locale="pt_BR"
+						value="#{credenciadoEmpBean.portaria.dataFim}"
+					 locale="pt_BR"
 						pattern="dd/MM/yyyy" mask="true" />
 
 				</h:panelGrid>
@@ -1140,7 +1065,7 @@
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
 						actionListener="#{credenciadoEmpBean.adicionaSGPE}"
-						update=":mensagem tabView:formularioEmpresas:lista7, tabView:formularioEmpresas:lista77"
+						update=":mensagem tabView:formularioEmpresas:lista7 tabView:formularioEmpresas:lista77"
 						oncomplete="PF('dialogosgpe').hide();" />
 					<p:commandButton value="Fechar"
 						oncomplete="PF('dialogosgpe').hide();" />
@@ -1328,400 +1253,9 @@
 
 
 
-		<p:dialog header="Nova empresa" widgetVar="novaEmpresa"
-			draggable="false" resizable="false" modal="true" closable="false">
-			<h:form id="empresa">
+		
 
-				<h:panelGrid id="panelEmpresa" columns="2">
-
-					<p:outputLabel value="CNPJ: *" />
-					<p:inputText maxlength="50" size="30"
-						value="#{credenciadoEmpBean.empresa.cnpj}" required="true"
-						requiredMessage="O campo Razão Social é obrigatório"
-						style="text-transform:uppercase;" />
-
-
-					<p:outputLabel value="Razão Social: *" />
-					<p:inputText maxlength="50" size="30"
-						value="#{credenciadoEmpBean.empresa.razaoSocial}" required="true"
-						requiredMessage="O campo Razão Social é obrigatório"
-						style="text-transform:uppercase;" />
-
-					<p:outputLabel value="Nome Fantasia:" />
-					<p:inputText maxlength="50" size="30"
-						value="#{credenciadoEmpBean.empresa.nomeFantasia}"
-						style="text-transform:uppercase;" />
-
-					<p:outputLabel value="" />
-					<p:outputLabel value="" />
-
-					<p:separator />
-					<p:separator />
-
-
-
-					<p:outputLabel value="CEP: *" />
-					<p:inputMask id="cep_endereco" mask="99.999-999" maxlength="11"
-						size="11" value="#{credenciadoEmpBean.empresa.cep}"
-						required="true" requiredMessage="O campo CEP é obrigatório">
-						<f:ajax event="blur" execute="@this"
-							render="endereco estado cidade"
-							listener="#{credenciadoEmpBean.pesquisaCep}"></f:ajax>
-					</p:inputMask>
-
-					<p:outputLabel value="Endereço: *" />
-					<p:inputText maxlength="50" size="30" id="endereco"
-						value="#{credenciadoEmpBean.empresa.endereco}" required="true"
-						requiredMessage="O campo Endereço Residência é obrigatório"
-						style="text-transform:uppercase;" />
-
-					<p:outputLabel value="Complemento:" />
-					<p:inputText maxlength="50" size="30"
-						value="#{credenciadoEmpBean.empresa.complemento}"
-						style="text-transform:uppercase;" />
-
-
-
-					<p:outputLabel for="estado" value="UF: *" />
-					<p:selectOneMenu id="estado" filter="true"
-						converter="omnifaces.SelectItemsConverter"
-						value="#{credenciadoEmpBean.empresa.estadoEndereco}">
-						<f:selectItem noSelectionOption="true"
-							itemLabel="Selecione um estado" />
-						<f:selectItems value="#{credenciadoEmpBean.estados}" var="estado"
-							itemValue="#{estado}" itemLabel="#{estado.sigla}" />
-						<p:ajax listener="#{credenciadoEmpBean.popular}"
-							update=":empresa:cidade" />
-					</p:selectOneMenu>
-
-					<p:outputLabel for="cidade" value="Municipio:" />
-					<p:selectOneMenu id="cidade" filter="true" required="true"
-						requiredMessage="O campo Municipio é obrigatório"
-						converter="omnifaces.SelectItemsConverter"
-						value="#{credenciadoEmpBean.empresa.municipioEndereco}">
-						<f:selectItem noSelectionOption="true"
-							itemLabel="Selecione uma cidade" />
-						<f:selectItems value="#{credenciadoEmpBean.cidades}" var="cidade"
-							itemValue="#{cidade}" itemLabel="#{cidade.nome}" />
-					</p:selectOneMenu>
-
-					<p:outputLabel value="" />
-					<p:outputLabel value="" />
-
-
-
-					<p:outputLabel value="Telefone Empresa:" />
-					<p:inputMask id="telemp" mask="(99) 9999-9999" maxlength="11"
-						size="11" value="#{credenciadoEmpBean.empresa.telEmp}">
-					</p:inputMask>
-
-					<p:outputLabel value="Celular Empresa:" />
-					<p:inputMask id="celemp" mask="(99) 99999-9999" maxlength="11"
-						size="11" value="#{credenciadoEmpBean.empresa.celEmp}">
-					</p:inputMask>
-
-					<p:outputLabel value="E-mail Empresa:" />
-					<p:inputText maxlength="50" size="30"
-						value="#{credenciadoEmpBean.empresa.email}"
-						style="text-transform:uppercase;" />
-
-					<p:separator />
-					<p:separator />
-
-
-
-					<p:outputLabel value="Status: *"
-						rendered="#{credenciadoEmpBean.mostrarNãoVirtual}" />
-					<p:selectOneMenu filter="true"
-						rendered="#{credenciadoEmpBean.mostrarNãoVirtual}"
-						value="#{credenciadoEmpBean.credenciado.credencialStatus}"
-						converter="omnifaces.SelectItemsConverter"
-						requiredMessage="O campo Status é obrigatório">
-						<f:selectItem noSelectionOption="true"
-							itemLabel="Selecione um Status" />
-						<f:selectItems value="#{credenciadoEmpBean.credencialStatus}"
-							var="status" itemValue="#{status}"
-							itemLabel="#{status.tipoStatus}" />
-					</p:selectOneMenu>
-
-					<p:outputLabel value="Tipo Credencial: *"
-						rendered="#{credenciadoEmpBean.mostrarNãoVirtual}" />
-					<p:selectOneMenu filter="true"
-						rendered="#{credenciadoEmpBean.mostrarNãoVirtual}"
-						value="#{credenciadoEmpBean.credenciado.credencialTipo}"
-						converter="omnifaces.SelectItemsConverter"
-						requiredMessage="O campo Tipo Credencial é obrigatório">
-						<f:selectItem noSelectionOption="true"
-							itemLabel="Selecione o Tipo" />
-						<f:selectItems value="#{credenciadoEmpBean.credencialEmpTipos}"
-							var="tipo" itemValue="#{tipo}" itemLabel="#{tipo.tipocredencial}" />
-					</p:selectOneMenu>
-
-					<p:outputLabel value="Validade: *"
-						rendered="#{credenciadoEmpBean.mostrarNãoVirtual}" />
-					<p:calendar id="credval" maxlength="8" size="6"
-						rendered="#{credenciadoEmpBean.mostrarNãoVirtual}"
-						value="#{credenciadoEmpBean.credenciado.vencimentoCredencial}"
-						locale="pt_BR" pattern="dd/MM/yyyy" mask="true"
-						requiredMessage="O campo Validade é obrigatório" />
-
-
-					<p:outputLabel value="" />
-					<p:outputLabel value="" />
-					<p:outputLabel value="" />
-
-
-
-					<h:panelGrid columns="3">
-						<p:commandButton value="Salvar"
-							actionListener="#{credenciadoEmpBean.salvar()}"
-							update=":mensagem tabView:formularioEmpresas:painelDados"
-							oncomplete="PF('novaEmpresa').hide();"
-							style="background: #01B50D;" />
-
-						<p:commandButton value="Cancelar"
-							update="tabView:formularioEmpresas:painelDados"
-							oncomplete="PF('novaEmpresa').hide();" />
-
-					</h:panelGrid>
-
-				</h:panelGrid>
-
-
-
-			</h:form>
-
-		</p:dialog>
-
-
-		<p:dialog widgetVar="dialogoAdicionarProcesso" draggable="false"
-			resizable="false" modal="true" closable="false" width="800"
-			max-height="700">
-			<f:facet name="header">
-
-				<h:outputText id="someDialogHeader" value="CFC SC" />
-
-			</f:facet>
-
-			<h:form id="processo">
-
-
-
-				<p:panel header="Processo">
-
-					<p:panelGrid id="processo" columns="4"
-						columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-4,ui-g-12 ui-md-2,ui-g-12 ui-md-4"
-						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
-
-
-
-
-
-
-						<p:outputLabel value="Número Processo: " />
-						<p:inputText placeholder="003/16" value="003/16" style="text-transform:uppercase;">
-						</p:inputText>
-
-
-						<p:outputLabel value="Data Entrada: " />
-						<p:inputText placeholder="18/05/2022" value="18/05/2022" style="text-transform:uppercase;">
-						</p:inputText>
-
-
-
-
-
-						<p:outputLabel value="Ação: " />
-						<p:selectOneMenu value="#{requerenteBean.filtro}" required="true"
-							requiredMessage="Campo Decisão é obrigatório.">
-							<f:selectItem itemLabel="Processo Administrativo" itemValue="2" />
-							<f:selectItem itemLabel="Jurídica" itemValue="1" />
-							<f:selectItem itemLabel="Organização" itemValue="3" />
-						</p:selectOneMenu>
-
-						<p:outputLabel value="Decisão: " />
-						<p:selectOneMenu value="#{requerenteBean.filtro}" required="true"
-							requiredMessage="Campo Decisão é obrigatório.">
-							<f:selectItem itemLabel="Em tramite" itemValue="2" />
-							<f:selectItem itemLabel="Jurídica" itemValue="1" />
-							<f:selectItem itemLabel="Organização" itemValue="3" />
-						</p:selectOneMenu>
-
-					</p:panelGrid>
-
-					<br />
-					<p:panelGrid columns="1" styleClass="ui-panelgrid-blank ui-fluid"
-						layout="grid">
-
-						<p:outputLabel value="Objeto da Ação: " />
-						<p:inputText
-							placeholder="Abordando aluna e instrutor em desacordo com frequencia de aulas práticas"
-							value="Abordando aluna e instrutor em desacordo com frequencia de aulas práticas">
-						</p:inputText>
-
-
-						<p:outputLabel value="Advogado da Causa: " />
-						<p:selectOneMenu value="#{requerenteBean.filtro}" required="true"
-							requiredMessage="Campo Decisão é obrigatório.">
-							<f:selectItem itemLabel="FULANO - 10575406625" itemValue="2" />
-							<f:selectItem itemLabel="Jurídica" itemValue="1" />
-							<f:selectItem itemLabel="Organização" itemValue="3" />
-						</p:selectOneMenu>
-
-
-					</p:panelGrid>
-
-					<br />
-
-					<h:panelGrid columns="2" style="margin: 0 auto;">
-						<p:commandButton value="Gravar" icon="pi pi-save"
-							actionListener="#{requerenteBean.salvar()}"
-							update=":mensagem :processo:processo " />
-
-						<p:commandButton value="Sair"
-							actionListener="#{requerenteBean.novo()}" update=":mensagem" />
-
-					</h:panelGrid>
-
-
-				</p:panel>
-
-
-
-				<p:tabView id="tabViewProcesso">
-				
-				
-				
-			
-				
-					<p:tab title="Fases">
-
-						<f:facet name="title">
-							Fases <i class="pi pi-cog"></i>
-						</f:facet>
-
-						<p:panel header="Fase Administrativa">
-
-							<!-- https://www.primefaces.org/showcase-v8/ui/data/datatable/addRow.xhtml -->
-
-							<div class="ui-g">
-								<div class="ui-g-12">
-									<p:commandButton value="Adicionar nova Fase"
-										style="color: #518e2e" process="@this"
-										update=":processo:processo"
-										action="#{dtAddRowView.onAddNew()}"
-										oncomplete="PF('cars1').addRow();" />
-								</div>
-							</div>
-
-							<p:dataTable id="listaFases" showGridlines="true"
-								emptyMessage="Nenhum registro encontrado."
-								value="#{credenciadoEmpBean.empresa.historicoObs}"
-								var="obs" editable="true">
-
-
-								<p:ajax event="rowEdit" listener="#{dtAddRowView.onRowEdit}"
-									update=":processo:processo" />
-								<p:ajax event="rowEditCancel"
-									listener="#{dtAddRowView.onRowCancel}"
-									update=":processo:processo" />
-												
-
-								<p:column headerText="Data">
-									<p:cellEditor>
-										<f:facet name="output">
-											<h:outputText
-												value="#{obs.observacao}" />
-										</f:facet>
-										<f:facet name="input">
-											<p:inputText id="modelInput"
-												value="#{obs.observacao}"
-												style="width:100%" />
-										</f:facet>
-									</p:cellEditor>
-								</p:column>
-								
-								<p:column headerText="Ocorrencia">
-									<p:cellEditor>
-										<f:facet name="output">
-											<h:outputText
-												value="#{obs.observacao}" />
-										</f:facet>
-										<f:facet name="input">
-											<p:inputText id="modelInput2"
-												value="#{obs.observacao}"
-												style="width:100%" />
-										</f:facet>
-									</p:cellEditor>
-								</p:column>
-								
-								<p:column headerText="Anotações">
-									<p:cellEditor>
-										<f:facet name="output">
-											<h:outputText
-												value="#{obs.observacao}" />
-										</f:facet>
-										<f:facet name="input">
-											<p:inputText id="modelInput3"
-												value="#{obs.observacao}"
-												style="width:100%" />
-										</f:facet>
-									</p:cellEditor>
-								</p:column>
-								
-								<p:column headerText="Providencias">
-									<p:cellEditor>
-										<f:facet name="output">
-											<h:outputText
-												value="#{obs.observacao}" />
-										</f:facet>
-										<f:facet name="input">
-											<p:inputText id="modelInput4"
-												value="#{obs.observacao}"
-												style="width:100%" />
-										</f:facet>
-									</p:cellEditor>
-								</p:column>
-
-								<p:column style="width:32px" headerText="Ações">
-									<p:rowEditor />
-								</p:column>
-
-							</p:dataTable>
-
-						</p:panel>
-
-					</p:tab>
-					<p:tab title="Partes">
-
-						<f:facet name="title">
-							Partes <i class="pi pi-users"></i>
-						</f:facet>
-
-					</p:tab>
-
-					<p:tab title="Apensos">
-
-						<f:facet name="title">
-							Apensos <i class="pi pi-paperclip"></i>
-						</f:facet>
-
-					</p:tab>
-					
-				
-					
-
-				</p:tabView>
-
-
-
-
-
-			</h:form>
-			
-	
-
-		</p:dialog>
+		
 
 
 

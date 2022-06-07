@@ -9,50 +9,39 @@
 
 	<ui:define name="conteudo">
 		<h:form id="formlista" rendered="#{autenticacaoBean.temPermissoes([1, 27])}">
-			<p:panel header="Advogado da Causa - Listagem">
+			<p:panel header="Setor Atual Processo - Listagem">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
-					paginator="true" value="#{comissionadoBean.listaComissionados}"
-					var="advogado" rows="10" style="width: 40%; padding-left: 25%; ">
+					paginator="true" value="#{setorAtualBean.listaSetoresAtuais}"
+					var="setor" rows="10" style="width: 40%; padding-left: 25%; ">
 					<f:facet name="header">
 						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
-							actionListener="#{comissionadoBean.novo()}"
+							actionListener="#{setorAtualBean.novo()}"
 							update=":formcadastro:cadastro">
 							<f:actionListener
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 						</p:commandButton>
 					</f:facet>
-					
 
-					<p:column headerText="Nome" sortBy="#{advogado.pessoaFisica.nomeCompleto}"
-						filterBy="#{advogado.pessoaFisica.nomeCompleto}" style="width: 70px; text-align: center;">
-						<h:outputText value="#{advogado.pessoaFisica.nomeCompleto}" />
-					</p:column>
-					
-						<p:column headerText="Usuário Cadastro" sortBy="#{advogado.usuarioCadastro.pessoa.nomeCompleto}"
-						filterBy="#{advogado.usuarioCadastro.pessoa.nomeCompleto}" style="width: 70px; text-align: center;">
-						<h:outputText value="#{advogado.usuarioCadastro.pessoa.nomeCompleto}" />
-					</p:column>
-					
-						<p:column headerText="Data Cadastro" sortBy="#{advogado.dataCadastro}"
-						filterBy="#{advogado.dataCadastro}" style="width: 70px; text-align: center;">
-						<h:outputText value="#{advogado.dataCadastro}" />
+					<p:column headerText="Nome" sortBy="#{setor.descricao}"
+						filterBy="#{setor.descricao}" style="width: 70px; text-align: center;">
+						<h:outputText value="#{setor.descricao}" />
 					</p:column>
 					
 
 					<p:column headerText="Opções" style="width: 70px; text-align: center;">
 						<p:commandButton icon="ui-icon-trash"
-							actionListener="#{comissionadoBean.excluir}"
+							actionListener="#{setorAtualBean.excluir}"
 							update=":mensagem :formlista:lista">
 							<p:confirm header="Confirmação"
-								message="Deseja excluir a Advogado?" icon="ui-icon-alert" />
-							<f:attribute name="acaoSelecionado" value="#{acao}" />
+								message="Deseja excluir a Situação?" icon="ui-icon-alert" />
+							<f:attribute name="setorSelecionado" value="#{setor}" />
 						</p:commandButton>
 
 						<p:commandButton icon="ui-icon-pencil"
-							actionListener="#{comissionadoBean.editar}"
+							actionListener="#{setorAtualBean.editar}"
 							update=":formcadastro:cadastro"
 							oncomplete="PF('dialogo').show();">
-							<f:attribute name="acaoSelecionado" value="#{acao}" />
+							<f:attribute name="setorSelecionado" value="#{setor}" />
 							<f:actionListener
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 						</p:commandButton>
@@ -69,28 +58,21 @@
 			</p:panel>
 		</h:form>
 
-		<p:dialog header="Advogado - Cadastro" widgetVar="dialogo"
+		<p:dialog header="Setor Atual - Cadastro" widgetVar="dialogo"
 			draggable="false" resizable="false" modal="true" closable="false">
 			<h:form id="formcadastro">
 				<h:panelGrid id="cadastro" columns="2">
-				
-						<p:outputLabel value="Pessoa: " />
-					<p:selectOneMenu filter="true"
-						value="#{comissionadoBean.comissao.pessoaFisica}"
-						converter="omnifaces.SelectItemsConverter" required="true"
-						requiredMessage="O campo Pessoa é obrigatório">
-						<f:selectItem noSelectionOption="true"
-							itemLabel="Selecione uma Pessoa" />
-						<f:selectItems value="#{comissionadoBean.pessoas}" var="pessoas"
-							itemValue="#{pessoas}"
-							itemLabel="#{pessoas.cpf} - #{pessoas.nomeCompleto}" />
-					</p:selectOneMenu>
+					<p:outputLabel value="Nome:" />
+					<p:inputText maxlength="255" size="25"
+						value="#{setorAtualBean.setorAtualProcesso.descricao}" required="true"
+						style="text-transform:uppercase;"
+						requiredMessage="O campo Nome é obrigatório" />
 
 				</h:panelGrid>
 
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
-						actionListener="#{comissionadoBean.salvar()}"
+						actionListener="#{setorAtualBean.salvar()}"
 						update=":mensagem :formcadastro:cadastro :formlista:lista" oncomplete="PF('dialogo').hide();" />
 					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
 				</h:panelGrid>

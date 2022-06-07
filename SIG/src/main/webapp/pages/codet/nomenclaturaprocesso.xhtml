@@ -9,47 +9,35 @@
 
 	<ui:define name="conteudo">
 		<h:form id="formlista" rendered="#{autenticacaoBean.temPermissoes([1, 27])}">
-			<p:panel header="Advogado da Causa - Listagem">
+			<p:panel header="Ação Processo - Listagem">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
-					paginator="true" value="#{advogadoDaCausaBean.listaAdvogados}"
-					var="advogado" rows="10" style="width: 40%; padding-left: 25%; ">
+					paginator="true" value="#{nomenclaturaProcessoBean.listaNomenclaturasProcessos}"
+					var="acao" rows="10" style="width: 40%; padding-left: 25%; ">
 					<f:facet name="header">
 						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
-							actionListener="#{advogadoDaCausaBean.novo()}"
+							actionListener="#{nomenclaturaProcessoBean.novo()}"
 							update=":formcadastro:cadastro">
 							<f:actionListener
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 						</p:commandButton>
 					</f:facet>
-					
 
-					<p:column headerText="Nome" sortBy="#{advogado.pessoaFisica.nomeCompleto}"
-						filterBy="#{advogado.pessoaFisica.nomeCompleto}" style="width: 70px; text-align: center;">
-						<h:outputText value="#{advogado.pessoaFisica.nomeCompleto}" />
+					<p:column headerText="Nome" sortBy="#{acao.descricao}"
+						filterBy="#{acao.descricao}" style="width: 70px; text-align: center;">
+						<h:outputText value="#{acao.descricao}" />
 					</p:column>
-					
-						<p:column headerText="Usuário Cadastro" sortBy="#{advogado.usuarioCadastro.pessoa.nomeCompleto}"
-						filterBy="#{advogado.usuarioCadastro.pessoa.nomeCompleto}" style="width: 70px; text-align: center;">
-						<h:outputText value="#{advogado.usuarioCadastro.pessoa.nomeCompleto}" />
-					</p:column>
-					
-						<p:column headerText="Data Cadastro" sortBy="#{advogado.dataCadastro}"
-						filterBy="#{advogado.dataCadastro}" style="width: 70px; text-align: center;">
-						<h:outputText value="#{advogado.dataCadastro}" />
-					</p:column>
-					
 
 					<p:column headerText="Opções" style="width: 70px; text-align: center;">
 						<p:commandButton icon="ui-icon-trash"
-							actionListener="#{advogadoDaCausaBean.excluir}"
+							actionListener="#{nomenclaturaProcessoBean.excluir}"
 							update=":mensagem :formlista:lista">
 							<p:confirm header="Confirmação"
-								message="Deseja excluir a Advogado?" icon="ui-icon-alert" />
+								message="Deseja excluir a Situação?" icon="ui-icon-alert" />
 							<f:attribute name="acaoSelecionado" value="#{acao}" />
 						</p:commandButton>
 
 						<p:commandButton icon="ui-icon-pencil"
-							actionListener="#{advogadoDaCausaBean.editar}"
+							actionListener="#{nomenclaturaProcessoBean.editar}"
 							update=":formcadastro:cadastro"
 							oncomplete="PF('dialogo').show();">
 							<f:attribute name="acaoSelecionado" value="#{acao}" />
@@ -69,28 +57,21 @@
 			</p:panel>
 		</h:form>
 
-		<p:dialog header="Advogado - Cadastro" widgetVar="dialogo"
+		<p:dialog header="Situação - Cadastro" widgetVar="dialogo"
 			draggable="false" resizable="false" modal="true" closable="false">
 			<h:form id="formcadastro">
 				<h:panelGrid id="cadastro" columns="2">
-				
-						<p:outputLabel value="Pessoa: " />
-					<p:selectOneMenu filter="true"
-						value="#{advogadoDaCausaBean.advogadoDaCausa.pessoaFisica}"
-						converter="omnifaces.SelectItemsConverter" required="true"
-						requiredMessage="O campo Pessoa é obrigatório">
-						<f:selectItem noSelectionOption="true"
-							itemLabel="Selecione uma Pessoa" />
-						<f:selectItems value="#{advogadoDaCausaBean.pessoas}" var="pessoas"
-							itemValue="#{pessoas}"
-							itemLabel="#{pessoas.cpf} - #{pessoas.nomeCompleto}" />
-					</p:selectOneMenu>
+					<p:outputLabel value="Nome:" />
+					<p:inputText maxlength="255" size="25"
+						value="#{nomenclaturaProcessoBean.nomenclaturaProcesso.descricao}" required="true"
+						style="text-transform:uppercase;"
+						requiredMessage="O campo Nome é obrigatório" />
 
 				</h:panelGrid>
 
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
-						actionListener="#{advogadoDaCausaBean.salvar()}"
+						actionListener="#{nomenclaturaProcessoBean.salvar()}"
 						update=":mensagem :formcadastro:cadastro :formlista:lista" oncomplete="PF('dialogo').hide();" />
 					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
 				</h:panelGrid>

@@ -6,6 +6,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 import br.gov.sc.cetran.domain.Situacao;
+import br.gov.sc.codet.domain.SituacaoProcesso;
 import br.gov.sc.geapo.dao.GenericDAO;
 import br.gov.sc.sgi.util.HibernateUtil;
 

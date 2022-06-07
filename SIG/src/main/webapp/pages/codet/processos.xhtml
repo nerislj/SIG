@@ -118,8 +118,9 @@
 
 									<p:commandButton value="Adicionar Processo"
 										style="background: #01B50D;"
+										actionListener="#{processoBean.adicionaProcesso}"
 										oncomplete="PF('dialogoAdicionarProcesso').show();"
-										update="processo:tabViewProcesso:listaFases"
+										update="processo:processo tabView:formularioEmpresas:listaCorregedoria processo:tabViewProcesso:listaFases processo:tabViewProcesso:lista processo:tabViewProcesso:listaHistorico"
 										rendered="#{autenticacaoBean.temPermissoes([1, 13])}">
 
 									</p:commandButton>
@@ -153,15 +154,15 @@
 									<h:outputText value="#{processo.situacao.descricao}" />
 								</p:column>
 
-								<p:column headerText="Opções"
-									style="width: 6%; text-align: center;"
+								<p:column headerText="Ações"
+									style="width: 5%; text-align: center;"
 									rendered="#{autenticacaoBean.temPermissoes([1, 13])}">
 
 									<p:commandButton actionListener="#{processoBean.editar}"
 										icon="ui-icon-search"
 										onclick="PF('dialogoAdicionarProcesso').show();"
 										style="align: center;"
-										update=":mensagem tabView:formularioEmpresas:painelDados :processo:processo processo:tabViewProcesso:listaFases">
+										update=":mensagem tabView:formularioEmpresas:painelDados :processo:processo processo:tabViewProcesso:listaFases processo:tabViewProcesso:lista :processo:processo processo:tabViewProcesso:listaHistorico">
 										<f:attribute name="processoSelecionado" value="#{processo}" />
 										<f:actionListener
 											type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
@@ -433,7 +434,7 @@
 								itemLabel="#{nomenclatura.descricao}" />
 						</p:selectOneMenu>
 
-						<p:outputLabel for="button2" value="Data Instauração " />
+						<p:outputLabel for="button2" value="Data Instauração: " />
 						<p:calendar id="button2" readonlyInput="true"
 							value="#{processoBean.processo.dataInstauracao}" showIcon="true" />
 
@@ -471,7 +472,8 @@
 							<f:selectItem noSelectionOption="true"
 								itemLabel="Selecione um setor atual" />
 							<f:selectItems value="#{processoBean.listaSetorAtuais}"
-								var="setor" itemValue="#{setor}" itemLabel="#{setor.descrisao}" />
+								var="setorAtual" itemValue="#{setorAtual}"
+								itemLabel="#{setorAtual.descricao}" />
 						</p:selectOneMenu>
 
 
@@ -485,8 +487,8 @@
 					<h:panelGrid columns="2" style="margin: 0 auto;">
 						<p:commandButton value="Gravar Processo" icon="pi pi-save"
 							style="background: #01B50D;"
-							actionListener="#{processoBean.salvar()}"
-							update=":mensagem tabView:formularioEmpresas:painelDados :processo:processo processo:tabViewProcesso:listaFases" />
+							actionListener="#{processoBean.gravarProcesso()}"
+							update=":mensagem tabView:formularioEmpresas:painelDados :processo:processo processo:tabViewProcesso:listaFases processo:tabViewProcesso:lista" />
 
 
 
@@ -511,11 +513,10 @@
 							<p:dataTable id="lista"
 								emptyMessage="Nenhum registro encontrado." paginator="true"
 								value="#{processoBean.listaPartesProcessos}" var="parte"
-								rows="10">
+								editable="true" editMode="cell" rows="10">
 								<f:facet name="header">
-									<p:commandButton value="Novo"
+									<p:commandButton value="Nova Parte" icon="pi pi-user-plus"
 										oncomplete="PF('dialogo').show();"
-										actionListener="#{processoBean.novo()}"
 										update="processo:tabViewProcesso:lista">
 										<f:actionListener
 											type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
@@ -524,18 +525,65 @@
 
 
 
+								<p:ajax event="cellEdit"
+									listener="#{processoBean.cellEditEvent}"
+									update=":mensagem processo:tabViewProcesso:lista" />
 
-								<p:column headerText="Nome" sortBy="#{parte.dataCadastro}"
-									filterBy="#{parte.dataCadastro}"
-									style="width: 70px; text-align: center;">
+								<p:column headerText="Credenciado">
+									<h:outputText rendered="#{parte.credenciado==null}"
+										value="#{parte.credenciadoEmpresa.pessoaJuridica.nomeFantasia} #{parte.credenciadoEmpresa.pessoaJuridica.cnpj}" />
+									<h:outputText rendered="#{parte.credenciadoEmpresa==null}"
+										value="#{parte.credenciado.pessoa.nomeCompleto} #{parte.credenciado.pessoa.cpf}" />
+								</p:column>
+
+								<p:column headerText="Penalidade">
+
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText
+												rendered="#{parte.penalidadeProcesso.descricao!=null}"
+												value="#{parte.penalidadeProcesso.descricao}" />
+											<h:outputText styleClass="ui-icon ui-icon-plus"
+												style="float:left"
+												rendered="#{parte.penalidadeProcesso.descricao==null}" />
+											<h:outputText
+												rendered="#{parte.penalidadeProcesso.descricao==null}"
+												value="Adicionar" />
+
+										</f:facet>
+										<f:facet name="input">
+											<h:selectOneMenu value="#{parte.penalidadeProcesso}"
+												converter="generic" style="width:100%">
+												<f:selectItems
+													value="#{processoBean.listaPenalidadesProcessos}"
+													var="penal" itemLabel="#{penal.descricao}"
+													itemValue="#{penal}" />
+											</h:selectOneMenu>
+										</f:facet>
+									</p:cellEditor>
+
+								</p:column>
+
+
+								<p:column headerText="Data Cadastro">
 									<h:outputText value="#{parte.dataCadastro}" />
+								</p:column>
+
+								<p:column headerText="Usuário Cadastro">
+									<h:outputText
+										value="#{parte.usuarioCadastro.pessoa.nomeCompleto}" />
 								</p:column>
 
 
 
 
-								<p:column headerText="Opções"
-									style="width: 70px; text-align: center;">
+
+								<p:column headerText="Ações" style="width:3%">
+
+
+
+
+
 									<p:commandButton icon="ui-icon-trash"
 										actionListener="#{processoBean.excluirParte}"
 										update=":mensagem processo:tabViewProcesso:lista">
@@ -544,16 +592,10 @@
 										<f:attribute name="acaoSelecionado" value="#{acao}" />
 									</p:commandButton>
 
-									<p:commandButton icon="ui-icon-pencil"
-										actionListener="#{processoBean.editarParte}"
-										update="processo:tabViewProcesso:lista"
-										oncomplete="PF('dialogo').show();">
-										<f:attribute name="acaoSelecionado" value="#{acao}" />
-										<f:actionListener
-											type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
-									</p:commandButton>
-
 								</p:column>
+
+
+
 							</p:dataTable>
 
 							<p:confirmDialog global="true">
@@ -595,7 +637,7 @@
 
 
 
-								<p:column headerText="Data">
+								<p:column headerText="Data" style="width:4%">
 
 
 									<h:outputText value="#{fases.dataCadastro}" />
@@ -604,7 +646,7 @@
 
 								</p:column>
 
-								<p:column headerText="Ocorrencia">
+								<p:column headerText="Ocorrencia" style="width:24%">
 									<p:cellEditor>
 										<f:facet name="output">
 											<h:outputText value="#{fases.ocorrencia}" />
@@ -616,7 +658,7 @@
 									</p:cellEditor>
 								</p:column>
 
-								<p:column headerText="Anotações">
+								<p:column headerText="Anotações" style="width:5%">
 									<p:cellEditor>
 										<f:facet name="output">
 											<h:outputText value="#{fases.anotacao}" />
@@ -628,7 +670,7 @@
 									</p:cellEditor>
 								</p:column>
 
-								<p:column headerText="Providencias">
+								<p:column headerText="Providencias" style="width:9%">
 									<p:cellEditor>
 										<f:facet name="output">
 											<h:outputText value="#{fases.providencia}" />
@@ -639,10 +681,110 @@
 										</f:facet>
 									</p:cellEditor>
 								</p:column>
+								
+								
+									<p:column headerText="Usuário Cadastro" style="width:9%">
 
-								<p:column style="width:32px" headerText="Ações">
+
+									<h:outputText value="#{fases.usuarioCadastro.pessoa.nomeCompleto}" />
+
+
+
+								</p:column>
+
+								<p:column style="width:2%" headerText="Ações">
 									<p:rowEditor />
 								</p:column>
+
+							</p:dataTable>
+
+						</p:panel>
+
+					</p:tab>
+
+					<p:tab title="Histórico">
+
+						<f:facet name="title">
+							Histórico <i class="pi pi-list"></i>
+						</f:facet>
+
+
+						<p:panel header="Histórico processo">
+
+							<h:panelGrid id="cadastroHistorico" columns="2" cellpadding="2"
+								style="margin: 0 auto;">
+
+								<p:inputTextarea maxlength="255" rows="3" cols="50"
+									value="#{processoBean.historicoProcesso.descricao}"
+									counter="display" counterTemplate="Restam {0} Caracteres." />
+								<h:outputText />
+								<h:outputText id="display" />
+
+							</h:panelGrid>
+
+							<h:panelGrid columns="2" style="margin: 0 auto;">
+								<p:commandButton value="Salvar"
+									actionListener="#{processoBean.salvarHistorico()}"
+									update=":mensagem processo:tabViewProcesso:listaHistorico" />
+
+							</h:panelGrid>
+
+							<p:dataTable id="listaHistorico" showGridlines="true"
+								emptyMessage="Nenhum registro encontrado." paginator="true"
+								rows="5" value="#{processoBean.listaHistoricoProcessos}"
+								var="hist">
+
+
+
+
+
+								<p:column headerText="Histórico Descrição">
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{hist.descricao}" />
+
+										</f:facet>
+										<f:facet name="input">
+											<p:inputTextarea maxlength="255" rows="1" cols="50"
+												value="#{hist.descricao}" counter="display"
+												counterTemplate="Restam {0} Caracteres." />
+											<h:outputText />
+											<h:outputText id="display" />
+										</f:facet>
+									</p:cellEditor>
+								</p:column>
+
+
+
+
+
+								<p:column headerText="Usuário Cadastro">
+									<h:outputText
+										value="#{hist.usuarioCadastro.pessoa.nomeCompleto}" />
+								</p:column>
+
+								<p:column headerText="Data Cadastro" style="width: 70px; text-align: center;">
+									<h:outputText value="#{hist.dataCadastro}" />
+								</p:column>
+
+
+								<p:column headerText="Ações" style="width: 3%; text-align: center;">
+
+
+
+									<p:commandButton icon="ui-icon-pencil"
+										actionListener="#{processoBean.editarHistorico}"
+										update=":mensagem processo:tabViewProcesso:listaHistorico processo:tabViewProcesso:cadastroHistorico">
+										<f:attribute name="histSelecionado" value="#{hist}" />
+										<f:actionListener
+											type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+									</p:commandButton>
+
+								</p:column>
+
+
+
+
 
 							</p:dataTable>
 
@@ -673,23 +815,23 @@
 			<h:form id="formcadastro">
 				<h:panelGrid id="cadastro" columns="2">
 
-					<p:outputLabel value="Pessoa: " />
+					<p:outputLabel value="Credenciado: " />
 					<p:selectOneMenu filter="true"
-						value="#{comissionadoBean.comissao.pessoaFisica}"
+						value="#{processoBean.parteProcesso.credenciado}"
 						converter="omnifaces.SelectItemsConverter" required="true"
-						requiredMessage="O campo Pessoa é obrigatório">
+						requiredMessage="O campo Credenciado é obrigatório">
 						<f:selectItem noSelectionOption="true"
-							itemLabel="Selecione uma Pessoa" />
-						<f:selectItems value="#{comissionadoBean.pessoas}" var="pessoas"
-							itemValue="#{pessoas}"
-							itemLabel="#{pessoas.cpf} - #{pessoas.nomeCompleto}" />
+							itemLabel="Selecione um Credenciado" />
+						<f:selectItems value="#{processoBean.listaCredenciados}" var="cred"
+							itemValue="#{cred}"
+							itemLabel="#{cred.pessoa.cpf} - #{cred.pessoa.nomeCompleto}" />
 					</p:selectOneMenu>
 
 				</h:panelGrid>
 
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
-						actionListener="#{comissionadoBean.salvar()}"
+						actionListener="#{processoBean.salvarParte()}"
 						update=":mensagem :formcadastro:cadastro processo:tabViewProcesso:lista"
 						oncomplete="PF('dialogo').hide();" />
 					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />

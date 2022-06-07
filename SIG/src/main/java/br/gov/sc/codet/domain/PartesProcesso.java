@@ -18,6 +18,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import br.gov.sc.sgi.domain.Credenciado;
+import br.gov.sc.sgi.domain.CredenciadoEmp;
 import br.gov.sc.sgi.domain.CredencialRelacaoProp;
 import br.gov.sc.sgi.domain.Usuario;
 
@@ -35,12 +36,30 @@ public class PartesProcesso extends GenericDomain {
 	private Usuario usuarioCadastro;
 	
 	@OneToOne
-	@JoinColumn(name = "credenciado_codigo")
+	@JoinColumn
 	private Credenciado credenciado;
+	
+	@OneToOne
+	@JoinColumn
+	private CredenciadoEmp credenciadoEmpresa;
+	
+	@OneToOne
+	@JoinColumn
+	private PenalidadeProcesso penalidadeProcesso;
 	
 	@ManyToOne
 	@JoinColumn(name = "processo_codigo")
 	private Processo processo;
+	
+	
+
+	public PenalidadeProcesso getPenalidadeProcesso() {
+		return penalidadeProcesso;
+	}
+
+	public void setPenalidadeProcesso(PenalidadeProcesso penalidadeProcesso) {
+		this.penalidadeProcesso = penalidadeProcesso;
+	}
 
 	public Date getDataCadastro() {
 		return dataCadastro;
@@ -72,6 +91,14 @@ public class PartesProcesso extends GenericDomain {
 
 	public void setProcesso(Processo processo) {
 		this.processo = processo;
+	}
+
+	public CredenciadoEmp getCredenciadoEmpresa() {
+		return credenciadoEmpresa;
+	}
+
+	public void setCredenciadoEmpresa(CredenciadoEmp credenciadoEmpresa) {
+		this.credenciadoEmpresa = credenciadoEmpresa;
 	}
 	
 	

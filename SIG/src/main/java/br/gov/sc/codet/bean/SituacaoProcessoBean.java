@@ -18,7 +18,7 @@ import br.gov.sc.codet.domain.SituacaoProcesso;
 @SuppressWarnings("serial")
 @ManagedBean
 @ViewScoped
-public class SituacaoBean implements Serializable {
+public class SituacaoProcessoBean implements Serializable {
 
 	private SituacaoProcesso situacaoProcesso;
 	private List<SituacaoProcesso> listaSituacoesProcessos;
@@ -64,6 +64,8 @@ public class SituacaoBean implements Serializable {
 	public void salvar() {
 		try {
 			SituacaoProcessoDAO situacaoProcessoDAO = new SituacaoProcessoDAO();
+			situacaoProcesso.setDescricao(situacaoProcesso.getDescricao().toUpperCase());
+			
 			situacaoProcessoDAO.merge(situacaoProcesso);
 
 			situacaoProcesso = new SituacaoProcesso();

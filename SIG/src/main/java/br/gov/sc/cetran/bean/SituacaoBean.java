@@ -12,9 +12,6 @@ import org.omnifaces.util.Messages;
 
 import br.gov.sc.cetran.dao.SituacaoDAO;
 import br.gov.sc.cetran.domain.Situacao;
-import br.gov.sc.sgi.bean.SetorBean;
-import br.gov.sc.sgi.dao.SetorDAO;
-import br.gov.sc.sgi.domain.Setor;
 
 @SuppressWarnings("serial")
 @ManagedBean

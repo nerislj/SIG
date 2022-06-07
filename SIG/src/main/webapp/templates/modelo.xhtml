@@ -8,7 +8,7 @@
 <h:head>
 
 
-	
+
 
 	<script>
 $(document).ready(function(){
@@ -208,7 +208,7 @@ $(window).bind('beforeunload', function() {
 
 					<p:submenu label="Cetran"
 						rendered="#{autenticacaoBean.temPermissoes([1, 27])}">
-						
+
 						<p:menuitem value="Situações" icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/cetran/situacao.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
@@ -230,31 +230,32 @@ $(window).bind('beforeunload', function() {
 						<p:menuitem value="Relatório e Histórico" icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/cetran/relatoriodistribuicao.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
-							
+
 					</p:submenu>
-					
-					
+
+
 					<p:submenu label="Corregedoria"
 						rendered="#{autenticacaoBean.temPermissoes([1, 27])}">
-						
-						<p:menuitem value="Ação Processo" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/codet/acaoprocesso.xhtml"
+
+						<p:menuitem value="Nomenclatura Processo" icon="ui-icon-document"
+							url="/Sistema_Integrado_de_Gestão/pages/codet/nomenclaturaprocesso.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
-							<p:menuitem value="Decisão Processo" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/codet/decisaoprocesso.xhtml"
+						<p:menuitem value="Situação Processo" icon="ui-icon-document"
+							url="/Sistema_Integrado_de_Gestão/pages/codet/situacaoprocesso.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
-						<p:menuitem value="Advogados" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/codet/advogadodacausa.xhtml"
+						<p:menuitem value="Setor Atual" icon="ui-icon-document"
+							url="/Sistema_Integrado_de_Gestão/pages/codet/setoratual.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
-							<p:menuitem value="Comissionado" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/codet/comissionado.xhtml"
+						<p:menuitem value="Penalidade Processo" icon="ui-icon-document"
+							url="/Sistema_Integrado_de_Gestão/pages/codet/penalidadeprocesso.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
-							
+
+
 						<p:menuitem value="Processos" icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/codet/processos.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
-						
-							
+
+
 					</p:submenu>
 
 					<p:submenu label="Solicitações">

@@ -53,11 +53,11 @@ public class Processo extends GenericDomain {
 	private CredenciadoEmp credenciadoPJ;
 	
 	@OneToMany(mappedBy = "processo")
-	@Fetch(FetchMode.JOIN)
+	@Fetch(FetchMode.SUBSELECT)
 	private List<PartesProcesso> partesProcesso;
 
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "processo")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "processo")
 	@Fetch(FetchMode.SUBSELECT)
 	private List<FasesProcesso> fasesAdminitrativas;
 	

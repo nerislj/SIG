@@ -7,22 +7,24 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import br.gov.sc.cetran.domain.HistoricoProcesso;
 import br.gov.sc.codet.domain.FasesProcesso;
+import br.gov.sc.codet.domain.HistoricoProcessoCODET;
 import br.gov.sc.codet.domain.PartesProcesso;
 import br.gov.sc.codet.domain.Processo;
 import br.gov.sc.sgi.util.HibernateUtil;
 
-public class PartesProcessoDAO extends GenericDAO<PartesProcesso>{
+public class HistoricoProcessoDAO extends GenericDAO<HistoricoProcessoCODET>{
 	
 	
 	@SuppressWarnings("unchecked")
-	public List<PartesProcesso> listarPorProcesso(Processo processo) {
+	public List<HistoricoProcessoCODET> listarPorProcesso(Processo processo) {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 		try {
-			Criteria consulta = sessao.createCriteria(PartesProcesso.class);
+			Criteria consulta = sessao.createCriteria(HistoricoProcessoCODET.class);
 			consulta.add(Restrictions.eq("processo", processo));	
 			consulta.addOrder(Order.desc("dataCadastro"));
-			List<PartesProcesso> resultado = consulta.list();
+			List<HistoricoProcessoCODET> resultado = consulta.list();
 			return resultado;
 		} catch (RuntimeException erro) {
 			throw erro;

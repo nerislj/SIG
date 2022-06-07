@@ -9,38 +9,39 @@
 
 	<ui:define name="conteudo">
 		<h:form id="formlista" rendered="#{autenticacaoBean.temPermissoes([1, 27])}">
-			<p:panel header="Ação Processo - Listagem">
+			<p:panel header="Penalidade Processo - Listagem">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
-					paginator="true" value="#{acaoProcessoBean.listaAcoesProcessos}"
-					var="acao" rows="10" style="width: 40%; padding-left: 25%; ">
+					paginator="true" value="#{penalidadeProcessoBean.listaPenalidadesProcesso}"
+					var="penal" rows="10" style="width: 40%; padding-left: 25%; ">
 					<f:facet name="header">
 						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
-							actionListener="#{acaoProcessoBean.novo()}"
+							actionListener="#{penalidadeProcessoBean.novo()}"
 							update=":formcadastro:cadastro">
 							<f:actionListener
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 						</p:commandButton>
 					</f:facet>
 
-					<p:column headerText="Nome" sortBy="#{acao.descricao}"
-						filterBy="#{acao.descricao}" style="width: 70px; text-align: center;">
-						<h:outputText value="#{acao.descricao}" />
+					<p:column headerText="Nome" sortBy="#{penal.descricao}"
+						filterBy="#{penal.descricao}" style="width: 70px; text-align: center;">
+						<h:outputText value="#{penal.descricao}" />
 					</p:column>
+					
 
 					<p:column headerText="Opções" style="width: 70px; text-align: center;">
 						<p:commandButton icon="ui-icon-trash"
-							actionListener="#{acaoProcessoBean.excluir}"
+							actionListener="#{penalidadeProcessoBean.excluir}"
 							update=":mensagem :formlista:lista">
 							<p:confirm header="Confirmação"
 								message="Deseja excluir a Situação?" icon="ui-icon-alert" />
-							<f:attribute name="acaoSelecionado" value="#{acao}" />
+							<f:attribute name="penalidadeSelecionado" value="#{penal}" />
 						</p:commandButton>
 
 						<p:commandButton icon="ui-icon-pencil"
-							actionListener="#{acaoProcessoBean.editar}"
+							actionListener="#{penalidadeProcessoBean.editar}"
 							update=":formcadastro:cadastro"
 							oncomplete="PF('dialogo').show();">
-							<f:attribute name="acaoSelecionado" value="#{acao}" />
+							<f:attribute name="penalidadeSelecionado" value="#{penal}" />
 							<f:actionListener
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 						</p:commandButton>
@@ -57,13 +58,13 @@
 			</p:panel>
 		</h:form>
 
-		<p:dialog header="Situação - Cadastro" widgetVar="dialogo"
+		<p:dialog header="Penalidade - Cadastro" widgetVar="dialogo"
 			draggable="false" resizable="false" modal="true" closable="false">
 			<h:form id="formcadastro">
 				<h:panelGrid id="cadastro" columns="2">
 					<p:outputLabel value="Nome:" />
 					<p:inputText maxlength="255" size="25"
-						value="#{acaoProcessoBean.acaoProcesso.descricao}" required="true"
+						value="#{penalidadeProcessoBean.penalidadeProcesso.descricao}" required="true"
 						style="text-transform:uppercase;"
 						requiredMessage="O campo Nome é obrigatório" />
 
@@ -71,7 +72,7 @@
 
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
-						actionListener="#{acaoProcessoBean.salvar()}"
+						actionListener="#{penalidadeProcessoBean.salvar()}"
 						update=":mensagem :formcadastro:cadastro :formlista:lista" oncomplete="PF('dialogo').hide();" />
 					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
 				</h:panelGrid>

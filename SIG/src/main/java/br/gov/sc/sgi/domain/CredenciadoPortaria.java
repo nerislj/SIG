@@ -34,7 +34,7 @@ public class CredenciadoPortaria extends GenericDomain {
 	private Date dataInicio;
 
 	@Temporal(TemporalType.DATE)
-	@Column(nullable = false)
+	@Column
 	private Date dataFim;
 
 	@ManyToOne

@@ -59,6 +59,8 @@ public class NomenclaturaProcessoBean implements Serializable {
 	public void salvar() {
 		try {
 			NomenclaturaProcessoDAO nomenclaturaProcessoDAO = new NomenclaturaProcessoDAO();
+			nomenclaturaProcesso.setDescricao(nomenclaturaProcesso.getDescricao().toUpperCase());
+			
 			nomenclaturaProcessoDAO.merge(nomenclaturaProcesso);
 
 			nomenclaturaProcesso = new NomenclaturaProcesso();
