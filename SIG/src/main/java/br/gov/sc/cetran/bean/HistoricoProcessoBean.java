@@ -62,6 +62,7 @@ public class HistoricoProcessoBean implements Serializable {
 	@SuppressWarnings("static-access")
 	public void blurConselheiro() {
 		
+		
 		ConselheiroDAO conselheiroDAO = new ConselheiroDAO();
 		conselheiro = conselheiroDAO.carregarConselheiro(historicoProcesso.getConselheiro().getNome());
 		

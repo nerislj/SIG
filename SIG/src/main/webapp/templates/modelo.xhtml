@@ -254,6 +254,10 @@ $(window).bind('beforeunload', function() {
 						<p:menuitem value="Processos" icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/codet/processos.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
+							
+							<p:menuitem value="Relatório Setor/Situação" icon="ui-icon-document"
+							url="/Sistema_Integrado_de_Gestão/pages/codet/relatorioprocesso.xhtml"
+							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
 
 
 					</p:submenu>

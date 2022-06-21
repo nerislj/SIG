@@ -21,7 +21,7 @@ public class PartesProcessoDAO extends GenericDAO<PartesProcesso>{
 		try {
 			Criteria consulta = sessao.createCriteria(PartesProcesso.class);
 			consulta.add(Restrictions.eq("processo", processo));	
-			consulta.addOrder(Order.desc("dataCadastro"));
+			consulta.addOrder(Order.asc("codigo"));
 			List<PartesProcesso> resultado = consulta.list();
 			return resultado;
 		} catch (RuntimeException erro) {

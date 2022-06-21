@@ -101,6 +101,29 @@ System.out.println(consulta);
 		sessao.close();
 	}
 	}
+	
+	public static Credenciado consultaporCredencial(String numeroCredencial) {
+
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+
+		try {
+		Criteria consulta = sessao.createCriteria(Credenciado.class);
+
+		
+		consulta.add(Restrictions.eq("numeroRegistro", numeroCredencial));
+
+		
+		Credenciado resultado = (Credenciado) consulta.setMaxResults(1).uniqueResult();
+		
+		return resultado;
+		
+		
+	} catch (RuntimeException erro) {
+		throw erro;
+	} finally {
+		sessao.close();
+	}
+	}
 
 
 }

@@ -27,7 +27,7 @@ import br.gov.sc.sgi.domain.Usuario;
 @Table(name = "codet_partesprocesso")
 public class PartesProcesso extends GenericDomain {
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false)
 	private Date dataCadastro;
 	
@@ -51,7 +51,20 @@ public class PartesProcesso extends GenericDomain {
 	@JoinColumn(name = "processo_codigo")
 	private Processo processo;
 	
+	@Column(length = 255)
+	private String decisao;
 	
+	
+	
+	
+
+	public String getDecisao() {
+		return decisao;
+	}
+
+	public void setDecisao(String decisao) {
+		this.decisao = decisao;
+	}
 
 	public PenalidadeProcesso getPenalidadeProcesso() {
 		return penalidadeProcesso;

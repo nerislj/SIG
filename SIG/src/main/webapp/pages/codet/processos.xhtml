@@ -52,7 +52,7 @@
 
 					<div class="ui-g-12 ui-md-5">
 						<p:staticMessage severity="info" summary="Posso pesquisar por:"
-							detail="CPF (Parte), CNPJ (Acusado), Número Processo, Número SGPE" />
+							detail="CPF ou Credencial (Parte), CNPJ (Acusado), Número Processo, Número SGPE" />
 
 					</div>
 					<br />
@@ -62,7 +62,7 @@
 					<p:inputText id="campo" maxlength="14" size="12"
 						value="#{processoBean.campoDaBusca}"
 						style="text-transform:uppercase;">
-						<p:keyFilter regEx="/[\d\-\.]/" preventPaste="false" />
+
 					</p:inputText>
 
 
@@ -120,7 +120,7 @@
 										style="background: #01B50D;"
 										actionListener="#{processoBean.adicionaProcesso}"
 										oncomplete="PF('dialogoAdicionarProcesso').show();"
-										update="processo:processo tabView:formularioEmpresas:listaCorregedoria processo:tabViewProcesso:listaFases processo:tabViewProcesso:lista processo:tabViewProcesso:listaHistorico"
+										update="processo:processo tabView:formularioEmpresas:listaCorregedoria processo:tabViewProcesso:listaFases processo:tabViewProcesso:listaPartes processo:tabViewProcesso:listaHistorico"
 										rendered="#{autenticacaoBean.temPermissoes([1, 13])}">
 
 									</p:commandButton>
@@ -154,6 +154,11 @@
 									<h:outputText value="#{processo.situacao.descricao}" />
 								</p:column>
 
+								<p:column headerText="Setor Atual"
+									style="width: 9%; text-align: center;">
+									<h:outputText value="#{processo.setorAtual.descricao}" />
+								</p:column>
+
 								<p:column headerText="Ações"
 									style="width: 5%; text-align: center;"
 									rendered="#{autenticacaoBean.temPermissoes([1, 13])}">
@@ -162,7 +167,7 @@
 										icon="ui-icon-search"
 										onclick="PF('dialogoAdicionarProcesso').show();"
 										style="align: center;"
-										update=":mensagem tabView:formularioEmpresas:painelDados :processo:processo processo:tabViewProcesso:listaFases processo:tabViewProcesso:lista :processo:processo processo:tabViewProcesso:listaHistorico">
+										update=":mensagem tabView:formularioEmpresas:painelDados :processo:processo processo:tabViewProcesso:listaFases processo:tabViewProcesso:listaPartes :processo:processo processo:tabViewProcesso:listaHistorico">
 										<f:attribute name="processoSelecionado" value="#{processo}" />
 										<f:actionListener
 											type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
@@ -488,7 +493,7 @@
 						<p:commandButton value="Gravar Processo" icon="pi pi-save"
 							style="background: #01B50D;"
 							actionListener="#{processoBean.gravarProcesso()}"
-							update=":mensagem tabView:formularioEmpresas:painelDados :processo:processo processo:tabViewProcesso:listaFases processo:tabViewProcesso:lista" />
+							update=":mensagem tabView:formularioEmpresas:painelDados :processo:processo processo:tabViewProcesso:listaFases processo:tabViewProcesso:listaPartes" />
 
 
 
@@ -510,30 +515,58 @@
 
 
 						<p:panel header="Partes">
-							<p:dataTable id="lista"
+
+							<p:remoteCommand name="updateTable" process="@this"
+								update=":mensagem processo:tabViewProcesso:listaPartes" />
+							<p:dataTable id="listaPartes"
 								emptyMessage="Nenhum registro encontrado." paginator="true"
 								value="#{processoBean.listaPartesProcessos}" var="parte"
 								editable="true" editMode="cell" rows="10">
 								<f:facet name="header">
 									<p:commandButton value="Nova Parte" icon="pi pi-user-plus"
 										oncomplete="PF('dialogo').show();"
-										update="processo:tabViewProcesso:lista">
+										update="processo:tabViewProcesso:listaPartes">
 										<f:actionListener
 											type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 									</p:commandButton>
 								</f:facet>
 
+								<f:facet name="footer">
+									<div style="padding-top: 5px;">
 
 
-								<p:ajax event="cellEdit"
-									listener="#{processoBean.cellEditEvent}"
-									update=":mensagem processo:tabViewProcesso:lista" />
+
+										<h:commandLink style="padding: .3em 1em;"
+											styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-button-text ui-c"
+											action="#{processoBean.gerarRelatorioPartes}"
+											update=":mensagem processo:tabViewProcesso:listaPartes"
+											target="_new" value="Imprimir Relatório ">
+											<p:graphicImage library="images" name="pdf.png" width="11" />
+										</h:commandLink>
+
+
+
+
+									</div>
+								</f:facet>
+
+
+
+								<p:ajax event="cellEdit" oncomplete="updateTable()"
+									listener="#{processoBean.cellEditEvent}" />
+
+
 
 								<p:column headerText="Credenciado">
+
+
 									<h:outputText rendered="#{parte.credenciado==null}"
 										value="#{parte.credenciadoEmpresa.pessoaJuridica.nomeFantasia} #{parte.credenciadoEmpresa.pessoaJuridica.cnpj}" />
 									<h:outputText rendered="#{parte.credenciadoEmpresa==null}"
 										value="#{parte.credenciado.pessoa.nomeCompleto} #{parte.credenciado.pessoa.cpf}" />
+
+
+
 								</p:column>
 
 								<p:column headerText="Penalidade">
@@ -554,6 +587,7 @@
 										<f:facet name="input">
 											<h:selectOneMenu value="#{parte.penalidadeProcesso}"
 												converter="generic" style="width:100%">
+												<f:selectItem itemLabel="Selecione uma penalidade..." />
 												<f:selectItems
 													value="#{processoBean.listaPenalidadesProcessos}"
 													var="penal" itemLabel="#{penal.descricao}"
@@ -564,12 +598,34 @@
 
 								</p:column>
 
+								<p:column headerText="Decisão">
+								
+								<p:cellEditor>
+										<f:facet name="output">
+										
+										<h:outputText rendered="#{parte.decisao!=null}" value="#{parte.decisao}" />
+										
+											<h:outputText styleClass="ui-icon ui-icon-plus"
+												style="float:left"
+												rendered="#{parte.decisao==null}" />
+											<h:outputText
+												rendered="#{parte.decisao==null}"
+												value="Adicionar" />
 
-								<p:column headerText="Data Cadastro">
+										</f:facet>
+										<f:facet name="input">
+											<p:inputText value="#{parte.decisao}"
+												style="width:100%" />
+										</f:facet>
+									</p:cellEditor>
+								
+								</p:column>
+
+								<p:column headerText="Última alteração">
 									<h:outputText value="#{parte.dataCadastro}" />
 								</p:column>
 
-								<p:column headerText="Usuário Cadastro">
+								<p:column headerText="Alterado Por">
 									<h:outputText
 										value="#{parte.usuarioCadastro.pessoa.nomeCompleto}" />
 								</p:column>
@@ -586,10 +642,10 @@
 
 									<p:commandButton icon="ui-icon-trash"
 										actionListener="#{processoBean.excluirParte}"
-										update=":mensagem processo:tabViewProcesso:lista">
-										<p:confirm header="Confirmação"
-											message="Deseja excluir a Advogado?" icon="ui-icon-alert" />
-										<f:attribute name="acaoSelecionado" value="#{acao}" />
+										update=":mensagem processo:tabViewProcesso:listaPartes">
+										<p:confirm header="Confirmação" message="Deseja excluir?"
+											icon="ui-icon-alert" />
+										<f:attribute name="parteSelecionado" value="#{parte}" />
 									</p:commandButton>
 
 								</p:column>
@@ -625,10 +681,30 @@
 
 
 
+								<f:facet name="footer">
+									<div style="padding-top: 5px;">
 
 
 
-								<p:ajax event="rowEdit" listener="#{faseProcessoBean.editar}"
+
+
+										<h:commandLink style="padding: .3em 1em;"
+											styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-button-text ui-c"
+											action="#{processoBean.gerarRelatorioFases}"
+											update=":mensagem processo:tabViewProcesso:listaFases"
+											target="_new" value="Imprimir Relatório ">
+											<p:graphicImage library="images" name="pdf.png" width="11" />
+										</h:commandLink>
+
+
+
+
+
+									</div>
+								</f:facet>
+
+
+								<p:ajax event="rowEdit" listener="#{processoBean.rowEditFases}"
 									update="processo:tabViewProcesso:listaFases">
 									<f:attribute name="faseSelecionado" value="#{fases}" />
 									<f:actionListener
@@ -681,12 +757,13 @@
 										</f:facet>
 									</p:cellEditor>
 								</p:column>
-								
-								
-									<p:column headerText="Usuário Cadastro" style="width:9%">
 
 
-									<h:outputText value="#{fases.usuarioCadastro.pessoa.nomeCompleto}" />
+								<p:column headerText="Usuário Cadastro" style="width:9%">
+
+
+									<h:outputText
+										value="#{fases.usuarioCadastro.pessoa.nomeCompleto}" />
 
 
 
@@ -735,6 +812,31 @@
 								var="hist">
 
 
+								<f:facet name="footer">
+									<div style="padding-top: 5px;">
+
+
+
+
+										<h:commandLink style="padding: .3em 1em;"
+											styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-button-text ui-c"
+											action="#{processoBean.gerarRelatorioHistorico}"
+											update=":mensagem processo:tabViewProcesso:listaHistorico"
+											target="_new" value="Imprimir Relatório ">
+											<p:graphicImage library="images" name="pdf.png" width="11" />
+										</h:commandLink>
+
+
+
+
+
+
+
+									</div>
+								</f:facet>
+
+
+
 
 
 
@@ -763,12 +865,14 @@
 										value="#{hist.usuarioCadastro.pessoa.nomeCompleto}" />
 								</p:column>
 
-								<p:column headerText="Data Cadastro" style="width: 70px; text-align: center;">
+								<p:column headerText="Data Cadastro"
+									style="width: 70px; text-align: center;">
 									<h:outputText value="#{hist.dataCadastro}" />
 								</p:column>
 
 
-								<p:column headerText="Ações" style="width: 3%; text-align: center;">
+								<p:column headerText="Ações"
+									style="width: 3%; text-align: center;">
 
 
 
@@ -822,8 +926,8 @@
 						requiredMessage="O campo Credenciado é obrigatório">
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione um Credenciado" />
-						<f:selectItems value="#{processoBean.listaCredenciados}" var="cred"
-							itemValue="#{cred}"
+						<f:selectItems value="#{processoBean.listaCredenciados}"
+							var="cred" itemValue="#{cred}"
 							itemLabel="#{cred.pessoa.cpf} - #{cred.pessoa.nomeCompleto}" />
 					</p:selectOneMenu>
 
@@ -832,7 +936,7 @@
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
 						actionListener="#{processoBean.salvarParte()}"
-						update=":mensagem :formcadastro:cadastro processo:tabViewProcesso:lista"
+						update=":mensagem :formcadastro:cadastro processo:tabViewProcesso:listaPartes"
 						oncomplete="PF('dialogo').hide();" />
 					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
 				</h:panelGrid>

@@ -1,6 +1,8 @@
 package br.gov.sc.codet.bean;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -16,6 +18,7 @@ import javax.faces.convert.ConverterException;
 import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpSession;
 
+import org.exolab.castor.types.DateTime;
 import org.omnifaces.util.Messages;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.CellEditEvent;
@@ -44,6 +47,7 @@ import br.gov.sc.sgi.dao.CredenciadoEmpDAO;
 import br.gov.sc.sgi.domain.Credenciado;
 import br.gov.sc.sgi.domain.CredenciadoEmp;
 import br.gov.sc.sgi.domain.Usuario;
+import util.JSFUtil;
 
 @SuppressWarnings("serial")
 @ManagedBean
@@ -70,12 +74,11 @@ public class ProcessoBean implements Serializable {
 	private String campoDaBusca;
 	private CredenciadoEmp empresaPJ;
 	private Credenciado credenciado;
+	private Credenciado credenciadoCredencial;
 
 	private Usuario usuarioLogado;
 
 	private Boolean exibePainelDados;
-	
-	
 
 	public List<Credenciado> getListaCredenciados() {
 		return listaCredenciados;
@@ -140,7 +143,7 @@ public class ProcessoBean implements Serializable {
 			NomenclaturaProcessoDAO nomenclaturaDAO = new NomenclaturaProcessoDAO();
 			SetorAtualDAO setorAtualDAO = new SetorAtualDAO();
 			PenalidadeProcessoDAO penalidadeDAO = new PenalidadeProcessoDAO();
-			
+
 			CredenciadoDAO credenciadoDAO = new CredenciadoDAO();
 			CredenciadoEmpDAO empresaCredenciadaDAO = new CredenciadoEmpDAO();
 
@@ -161,11 +164,12 @@ public class ProcessoBean implements Serializable {
 
 	public void cellEditEvent(CellEditEvent event) {
 
+		PartesProcessoDAO partesDAO = new PartesProcessoDAO();
+
 		try {
 
-			PartesProcessoDAO partesDAO = new PartesProcessoDAO();
-
-			// RowEditEvent PartesProcesso user = (PartesProcesso) event.getObject
+			// RowEditEvent --------PartesProcesso user = (PartesProcesso)
+			// event.getObject();-------
 
 			DataTable dataTable = (DataTable) event.getSource();
 
@@ -175,13 +179,44 @@ public class ProcessoBean implements Serializable {
 
 			System.out.println("Penalidade Processo: " + user.getPenalidadeProcesso());
 			user.setPenalidadeProcesso(user.getPenalidadeProcesso());
+			user.setUsuarioCadastro(usuarioLogado);
+			user.setDataCadastro(new Date());
 
 			partesDAO.merge(user);
+
+			System.out.println(listaPartesProcessos + "listaPartesProcessos CELLEDIEVENT");
 
 			Messages.addGlobalInfo("Penalidade adicionada com Sucesso!");
 
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar adicionar a Penalidade.");
+			erro.printStackTrace();
+		}
+
+		listaPartesProcessos = partesDAO.listarPorProcesso(processo);
+
+		System.out.println(listaPartesProcessos + "listaPartesProcessos CELLEDIEVENT FORA");
+	}
+
+	public void rowEditFases(RowEditEvent event) {
+
+		FasesProcessoDAO fasesDAO = new FasesProcessoDAO();
+
+		try {
+
+			FasesProcesso user = (FasesProcesso) event.getObject();
+
+			System.out.println("Edit rowEditFases: " + user);
+
+			user.setDataCadastro(new Date());
+			user.setUsuarioCadastro(usuarioLogado);
+
+			fasesDAO.merge(user);
+
+			Messages.addGlobalInfo("Fase alterada com Sucesso!");
+
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("Ocorreu um erro ao tentar alterar a Fase.");
 			erro.printStackTrace();
 		}
 
@@ -213,12 +248,19 @@ public class ProcessoBean implements Serializable {
 
 			} else {
 
+				ProcessoDAO.merge(processo);
+
 				parteProcesso = ProcessoDAO.carregaParteProcesso(processo);
 
-				ProcessoDAO.salvarFasesEPartes(fasesProcesso, processo, usuarioLogado, parteProcesso);
+				System.out.println(parteProcesso + " parteProcesso BEAN");
+				if (parteProcesso != null) {
 
-				listaFases = fasesDAO.listarPorProcesso(processo);
-				listaPartesProcessos = partesDAO.listarPorProcesso(processo);
+					ProcessoDAO.salvarFasesEPartes(fasesProcesso, processo, usuarioLogado, parteProcesso);
+
+					listaFases = fasesDAO.listarPorProcesso(processo);
+					listaPartesProcessos = partesDAO.listarPorProcesso(processo);
+
+				}
 
 			}
 
@@ -265,6 +307,24 @@ public class ProcessoBean implements Serializable {
 		}
 	}
 
+	public void excluirParte(ActionEvent evento) {
+
+		try {
+			parteProcesso = (PartesProcesso) evento.getComponent().getAttributes().get("parteSelecionado");
+
+			PartesProcessoDAO parteDAO = new PartesProcessoDAO();
+			parteDAO.excluir(parteProcesso);
+
+			parteProcesso = new PartesProcesso();
+			listaPartesProcessos = parteDAO.listarPorProcesso(processo);
+
+			Messages.addGlobalInfo("Ação removida com sucesso.");
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("Ocorreu um erro ao tentar excluir a Ação.");
+			erro.printStackTrace();
+		}
+	}
+
 	public void adicionaProcesso() {
 
 		listaProcessos = new ArrayList<>();
@@ -298,12 +358,14 @@ public class ProcessoBean implements Serializable {
 			empresaPJ = CredenciadoEmpDAO.consultaporCnpjString(campoDaBusca);
 
 			credenciado = CredenciadoDAO.consultaporCpfString(campoDaBusca);
+			
+			credenciadoCredencial = CredenciadoDAO.consultaporCredencial(campoDaBusca);
 
 			System.out.println(credenciado + " credenciado");
 			System.out.println(empresaPJ + " empresaPJ");
 
 			ProcessoDAO processoDAO = new ProcessoDAO();
-			listaProcessos = processoDAO.listarProcessos(campoDaBusca, credenciado, empresaPJ);
+			listaProcessos = processoDAO.listarProcessos(campoDaBusca, credenciado, credenciadoCredencial, empresaPJ);
 			System.out.println(listaProcessos + " listaProcessos");
 
 			exibePainelDados = true;
@@ -336,16 +398,18 @@ public class ProcessoBean implements Serializable {
 		}
 
 	}
-	
+
 	public void salvarParte() {
 
 		try {
 
 			PartesProcessoDAO parteDAO = new PartesProcessoDAO();
 
+			parteProcesso.setCredenciadoEmpresa(null);
 			parteProcesso.setCredenciado(parteProcesso.getCredenciado());
 			parteProcesso.setDataCadastro(new Date());
 			parteProcesso.setUsuarioCadastro(usuarioLogado);
+			parteProcesso.setProcesso(processo);
 
 			parteDAO.merge(parteProcesso);
 
@@ -355,6 +419,51 @@ public class ProcessoBean implements Serializable {
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar salvar a Parte.");
 			erro.printStackTrace();
+		}
+
+	}
+
+	public void gerarRelatorioPartes() {
+
+		try {
+
+			JSFUtil.redirect("../ImprimirRelatorio?rlt_nome=parteprocesso" + "&processoId=" + processo.getCodigo());
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (NullPointerException nulo) {
+			throw new NullPointerException(
+					"Erro ao imprimir o relatório. Valores das variáveis inválidos " + nulo.getMessage());
+		}
+
+	}
+	
+	public void gerarRelatorioFases() {
+
+		try {
+
+			JSFUtil.redirect("../ImprimirRelatorio?rlt_nome=fasesprocesso" + "&processoId=" + processo.getCodigo());
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (NullPointerException nulo) {
+			throw new NullPointerException(
+					"Erro ao imprimir o relatório. Valores das variáveis inválidos " + nulo.getMessage());
+		}
+
+	}
+	
+	public void gerarRelatorioHistorico() {
+
+		try {
+
+			JSFUtil.redirect("../ImprimirRelatorio?rlt_nome=historicoprocesso" + "&processoId=" + processo.getCodigo());
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (NullPointerException nulo) {
+			throw new NullPointerException(
+					"Erro ao imprimir o relatório. Valores das variáveis inválidos " + nulo.getMessage());
 		}
 
 	}
@@ -461,6 +570,14 @@ public class ProcessoBean implements Serializable {
 
 	public void setListaPenalidadesProcessos(List<PenalidadeProcesso> listaPenalidadesProcessos) {
 		this.listaPenalidadesProcessos = listaPenalidadesProcessos;
+	}
+
+	public Credenciado getCredenciadoCredencial() {
+		return credenciadoCredencial;
+	}
+
+	public void setCredenciadoCredencial(Credenciado credenciadoCredencial) {
+		this.credenciadoCredencial = credenciadoCredencial;
 	}
 
 }

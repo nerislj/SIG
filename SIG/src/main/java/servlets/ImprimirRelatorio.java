@@ -52,24 +52,30 @@ public class ImprimirRelatorio extends HttpServlet {
 		String report = request.getParameter("rlt_nome");
 
 		try {
-
+			
+			//CRED
 			if (request.getParameter("credenciadoId") != null && !request.getParameter("credenciadoId").equals("0")) {
-				// parameters.put("PSET_CODIGO",
-				// request.getParameter("set_codigo") != null?
-				// Integer.parseInt(request.getParameter("set_codigo")) : 0);
 				parameters.put("CREDENCIADO", Integer.parseInt(request.getParameter("credenciadoId")));
 			}
 			
+			//CODET
+			if (request.getParameter("processoId") != null && !request.getParameter("processoId").equals("0")) {
+				parameters.put("PROCESSOID", request.getParameter("processoId"));
+			}
+			if (request.getParameter("setorId") != null && !request.getParameter("setorId").equals("0")) {
+				parameters.put("SETORATUALID", request.getParameter("setorId"));
+				System.out.println("request.getParameter(\"setorId\")" + request.getParameter("setorId"));
+			}
+			if (request.getParameter("situacaoId") != null && !request.getParameter("situacaoId").equals("0")) {
+				parameters.put("SITUACAOID", request.getParameter("situacaoId"));
+				System.out.println("request.getParameter(\"situacaoId\")" + request.getParameter("situacaoId"));
+			}
+			
+			//CETRAN
 			if (request.getParameter("data") != null && !request.getParameter("data").equals("0")) {
-				// parameters.put("PSET_CODIGO",
-				// request.getParameter("set_codigo") != null?
-				// Integer.parseInt(request.getParameter("set_codigo")) : 0);
 				parameters.put("DATA", (request.getParameter("data")));
 			}
 			if (request.getParameter("id") != null && !request.getParameter("id").equals("0")) {
-				// parameters.put("PSET_CODIGO",
-				// request.getParameter("set_codigo") != null?
-				// Integer.parseInt(request.getParameter("set_codigo")) : 0);
 				parameters.put("ID", request.getParameter("id"));
 			}
 			/*

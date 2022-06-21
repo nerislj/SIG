@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+
+
+
+		<p:panel header="Relatório Processo">
+
+
+			<h:form id="formcadastro">
+				<h:panelGrid id="cadastro" columns="2" style="margin: 0 auto;">
+
+					<p:outputLabel for="setor" value="Setor Atual: " />
+					<p:selectOneMenu id="setor" filter="true" converter="generic"
+						value="#{relatorioProcessoBean.processo.setorAtual}">
+						<f:selectItem noSelectionOption="true" itemValue=""
+							itemLabel="Todos" />
+						<f:selectItems value="#{relatorioProcessoBean.listaSetores}"
+							var="setor" itemValue="#{setor}" itemLabel="#{setor.descricao}" />
+
+
+					</p:selectOneMenu>
+
+
+					<p:outputLabel for="situacao" value="Situação: " />
+					<p:selectOneMenu id="situacao" filter="true" converter="generic"
+						value="#{relatorioProcessoBean.processo.situacao}">
+						<f:selectItem noSelectionOption="true" itemValue=""
+							itemLabel="Todos" />
+						<f:selectItems value="#{relatorioProcessoBean.situacoesProcessos}"
+							var="situacao" itemValue="#{situacao}"
+							itemLabel="#{situacao.descricao}" />
+							
+					</p:selectOneMenu>
+					
+					<p:outputLabel for="dataInicial" value="Data Inicial:" />
+					<p:calendar id="dataInicial" readonlyInput="false"
+						yearRange="c-120:c-14"
+						placeholder="Todas"
+						pattern="dd/MM/yyyy"
+						value="#{relatorioProcessoBean.dataInicial}"
+						showIcon="true" />
+						
+						<p:outputLabel for="dataFinal" value="Data Final:" />
+					<p:calendar id="dataFinal" readonlyInput="false"
+						yearRange="c-120:c-14"
+						placeholder="Todas"
+						pattern="dd/MM/yyyy"
+						value="#{relatorioProcessoBean.dataFinal}"
+						showIcon="true" />
+					
+
+
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" style="margin: 0 auto;">
+					<p:commandButton value="Gerar Relatório"
+						actionListener="#{relatorioProcessoBean.blurProcessos}"
+						update=":mensagem :formcadastro:cadastro :formlista:lista" />
+
+				</h:panelGrid>
+
+
+			</h:form>
+
+
+		</p:panel>
+
+		<h:form id="formlista">
+
+
+
+			<p:panel header="Processos">
+				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+					paginator="true" value="#{relatorioProcessoBean.listaProcessos}"
+					var="processo" rows="10">
+
+
+
+					<f:facet name="footer">
+						<div style="padding-top: 5px;">
+
+
+
+							<h:commandLink style="padding: .3em 1em;"
+								styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-button-text ui-c"
+								action="#{relatorioProcessoBean.gerarRelatorioSetorSituacao}"
+								update=":mensagem formlista:lista"
+								target="_new" value="Imprimir Relatório ">
+								<p:graphicImage library="images" name="pdf.png" width="11" />
+							</h:commandLink>
+
+
+
+
+						</div>
+					</f:facet>
+
+
+					<p:column headerText="Nomenclatura"
+						style="width: 9%; text-align: center;">
+						<h:outputText value="#{processo.nomenclatura.descricao}" />
+					</p:column>
+
+
+					<p:column headerText="Número Processo"
+						style="width: 9%; text-align: center;">
+						<h:outputText value="#{processo.numProcesso}" />
+					</p:column>
+
+					<p:column headerText="Número SGPE"
+						style="width: 9%; text-align: center;">
+						<h:outputText value="#{processo.numSGPE}" />
+					</p:column>
+
+					<p:column headerText="Acusado"
+						style="width: 9%; text-align: center;">
+						<h:outputText
+							value="#{processo.credenciadoPJ.pessoaJuridica.nomeFantasia} #{processo.credenciadoPJ.pessoaJuridica.cnpj}" />
+					</p:column>
+
+					<p:column headerText="Situacao"
+						style="width: 9%; text-align: center;">
+						<h:outputText value="#{processo.situacao.descricao}" />
+					</p:column>
+
+					<p:column headerText="Setor Atual"
+						style="width: 9%; text-align: center;">
+						<h:outputText value="#{processo.setorAtual.descricao}" />
+					</p:column>
+					
+					<p:column headerText="Data Instauração"
+						style="width: 9%; text-align: center;">
+						<h:outputText value="#{processo.dataInstauracao}">
+						  <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+						</h:outputText>
+					</p:column>
+
+
+
+
+				</p:dataTable>
+
+
+
+			</p:panel>
+
+		</h:form>
+
+
+
+
+
+
+	</ui:define>
+</ui:composition>
