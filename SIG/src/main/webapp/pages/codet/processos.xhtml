@@ -43,6 +43,9 @@
 	/* offset left by half the width of your element */
 	position: relative; /* use or dont' use depending on element parent */
 }
+.customPanelGrid .ui-panelgrid-content {
+        align-items: center;
+    }
 </style>
 
 
@@ -84,7 +87,7 @@
 
 
 
-					
+
 
 				</p:panel>
 			</h:form>
@@ -127,12 +130,14 @@
 								</f:facet>
 
 
-								<p:ajax event="rowToggle" listener="#{processoBean.onRowToggle}" update="processo:processo tabView:formularioEmpresas:listaCorregedoria" />
-								<p:column headerText="Partes" style="width: 2%; text-align: center;">
+								<p:ajax event="rowToggle" listener="#{processoBean.onRowToggle}"
+									update="processo:processo tabView:formularioEmpresas:listaCorregedoria" />
+								<p:column headerText="Partes"
+									style="width: 2%; text-align: center;">
 									<p:rowToggler />
-									
-										
-									
+
+
+
 								</p:column>
 
 								<p:column headerText="Nomenclatura"
@@ -188,7 +193,7 @@
 									<p:dataTable id="listaPartes"
 										emptyMessage="Nenhuma parte encontrada." paginator="false"
 										value="#{processoBean.listaPartesProcessos}" var="parte"
-									 rows="10">
+										rows="10">
 
 
 
@@ -206,8 +211,8 @@
 												value="#{parte.credenciadoEmpresa.pessoaJuridica.nomeFantasia} #{parte.credenciadoEmpresa.pessoaJuridica.cnpj}" />
 											<h:outputText rendered="#{parte.credenciadoEmpresa==null}"
 												value="#{parte.credenciado.pessoa.nomeCompleto} #{parte.credenciado.pessoa.cpf}" />
-												
-												
+
+
 
 
 
@@ -216,16 +221,16 @@
 										<p:column headerText="Penalidade">
 
 
-										
-												<h:outputText
-													rendered="#{parte.penalidadeProcesso.descricao!=null}"
-													value="#{parte.penalidadeProcesso.descricao}" />
-												
-												<h:outputText
-													rendered="#{parte.penalidadeProcesso.descricao==null}"
-													value="Sem Penalidade" />
 
-										
+											<h:outputText
+												rendered="#{parte.penalidadeProcesso.descricao!=null}"
+												value="#{parte.penalidadeProcesso.descricao}" />
+
+											<h:outputText
+												rendered="#{parte.penalidadeProcesso.descricao==null}"
+												value="Sem Penalidade" />
+
+
 
 
 										</p:column>
@@ -236,7 +241,7 @@
 											<h:outputText rendered="#{parte.decisao!=null}"
 												value="#{parte.decisao}" />
 
-											
+
 											<h:outputText rendered="#{parte.decisao==null}"
 												value="Sem Decisão" />
 
@@ -492,11 +497,6 @@
 
 				<p:panel header="Processo">
 
-
-
-
-
-
 					<h:panelGrid id="processo" columns="2" style="margin: 0 auto;"
 						styleClass="ui-panelgrid-blank ui-fluid">
 
@@ -541,10 +541,9 @@
 							value="#{processoBean.processo.numSGPE}"
 							style="text-transform:uppercase;">
 						</p:inputText>
-
-
+						
 						<p:outputLabel value="Situação:" />
-						<p:selectOneMenu value="#{processoBean.processo.situacao}"
+						<p:selectOneMenu style="width: 100% !important" value="#{processoBean.processo.situacao}"
 							required="true" filter="true"
 							requiredMessage="O campo Situação é obrigatório"
 							converter="omnifaces.SelectItemsConverter">
@@ -554,18 +553,28 @@
 								var="situacao" itemValue="#{situacao}"
 								itemLabel="#{situacao.descricao}" />
 
-							<p:ajax event="change" update="pnlSetorAtual, :processo:processo"
+							<p:ajax event="change" update="pnlSetorAtual processo:processoSituacaoSetor"
 								process="@this" listener="#{processoBean.habilitar()}" />
 
 						</p:selectOneMenu>
+
+
+					</h:panelGrid>
+					
+
+					<p:panelGrid id="processoSituacaoSetor" columns="2" 
+                 style="margin: 0 auto; width: auto;"
+						styleClass="ui-panelgrid-blank ui-fluid">
+
+						
 
 
 						<p:outputLabel rendered="#{processoBean.arquivado == false}"
 							value="Setor Atual: " />
 						<p:selectOneMenu rendered="#{processoBean.arquivado == false}"
 							id="pnlSetorAtual" value="#{processoBean.processo.setorAtual}"
-							required="true" filter="true"
-							requiredMessage="O campo Setor Atual é obrigatório"
+							 filter="true"
+							
 							converter="omnifaces.SelectItemsConverter">
 							<f:selectItem noSelectionOption="true"
 								itemLabel="Selecione um setor atual" />
@@ -573,14 +582,15 @@
 								var="setorAtual" itemValue="#{setorAtual}"
 								itemLabel="#{setorAtual.descricao}" />
 						</p:selectOneMenu>
+						
+						
 
 
-					</h:panelGrid>
+					</p:panelGrid>
+					
+					
 
-					<br />
-
-
-					<br />
+					
 
 					<h:panelGrid columns="2" style="margin: 0 auto;">
 						<p:commandButton value="Gravar Processo" icon="pi pi-save"
@@ -609,8 +619,7 @@
 
 						<p:panel header="Partes">
 
-							<p:remoteCommand name="updateTable" process="@this"
-								update=":mensagem processo:tabViewProcesso:listaPartes" />
+							
 							<p:dataTable id="listaPartes"
 								emptyMessage="Nenhum registro encontrado." paginator="true"
 								value="#{processoBean.listaPartesProcessos}" var="parte"
@@ -645,7 +654,7 @@
 
 
 
-								<p:ajax event="cellEdit" oncomplete="updateTable()"
+								<p:ajax event="cellEdit" 
 									listener="#{processoBean.cellEditEvent}" />
 
 

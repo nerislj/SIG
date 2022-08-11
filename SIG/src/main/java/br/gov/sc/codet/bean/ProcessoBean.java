@@ -185,15 +185,16 @@ public class ProcessoBean implements Serializable {
 	public void cellEditEvent(CellEditEvent event) {
 
 		PartesProcessoDAO partesDAO = new PartesProcessoDAO();
+		DataTable dataTable = (DataTable) event.getSource();
 
+		PartesProcesso user = (PartesProcesso) dataTable.getRowData();
+		
 		try {
 
 			// RowEditEvent --------PartesProcesso user = (PartesProcesso)
 			// event.getObject();-------
 
-			DataTable dataTable = (DataTable) event.getSource();
-
-			PartesProcesso user = (PartesProcesso) dataTable.getRowData();
+			
 
 			System.out.println("Edit: " + user);
 
@@ -203,6 +204,8 @@ public class ProcessoBean implements Serializable {
 			user.setDataCadastro(new Date());
 
 			partesDAO.merge(user);
+			
+			
 
 			System.out.println(listaPartesProcessos + "listaPartesProcessos CELLEDIEVENT");
 
@@ -216,6 +219,8 @@ public class ProcessoBean implements Serializable {
 		listaPartesProcessos = partesDAO.listarPorProcesso(processo);
 
 		System.out.println(listaPartesProcessos + "listaPartesProcessos CELLEDIEVENT FORA");
+		
+		user = new PartesProcesso();
 	}
 
 	public void rowEditFases(RowEditEvent event) {
@@ -453,6 +458,8 @@ public class ProcessoBean implements Serializable {
 			parteDAO.merge(parteProcesso);
 
 			listaPartesProcessos = parteDAO.listarPorProcesso(processo);
+			
+			parteProcesso = new PartesProcesso();
 
 			Messages.addGlobalInfo("Parte cadastrado com sucesso!");
 		} catch (RuntimeException erro) {

@@ -44,7 +44,7 @@ public class Processo extends GenericDomain {
 	private NomenclaturaProcesso nomenclatura;
 	
 	@OneToOne
-	@JoinColumn(nullable = false)
+	@JoinColumn
 	private SetorAtual setorAtual;
 	
 	@ManyToOne
