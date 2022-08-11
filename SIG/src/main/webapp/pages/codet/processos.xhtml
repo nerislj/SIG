@@ -25,6 +25,12 @@
 	transform: scale(1.3);
 }
 
+.ui-icon-zoomin {
+	-ms-transform: scale(1.2); /* IE 9 */
+	-webkit-transform: scale(1.2); /* Chrome, Safari, Opera */
+	transform: scale(1.2);
+}
+
 .ui-icon-folder-collapsed {
 	-ms-transform: scale(1.3); /* IE 9 */
 	-webkit-transform: scale(1.3); /* Chrome, Safari, Opera */
@@ -78,15 +84,7 @@
 
 
 
-					<p:commandButton value="Novo" icon="pi pi-user-plus"
-						rendered="#{autenticacaoBean.temPermissoes([1, 13])}"
-						actionListener="#{credenciadoEmpBean.carregarEmpresaNova}"
-						onclick="PF('novaEmpresa').show();"
-						update=":mensagem tabView:formularioEmpresas:painelDados :empresa:panelEmpresa">
-						<f:actionListener
-							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
-					</p:commandButton>
-
+					
 
 				</p:panel>
 			</h:form>
@@ -108,7 +106,8 @@
 
 							<p:dataTable id="listaCorregedoria"
 								emptyMessage="Nenhum processo encontrado." paginator="true"
-								rows="10" value="#{processoBean.listaProcessos}" var="processo">
+								rows="10" value="#{processoBean.listaProcessos}" var="processo"
+								rowKey="#{processo.codigo}">
 
 
 
@@ -127,19 +126,28 @@
 
 								</f:facet>
 
+
+								<p:ajax event="rowToggle" listener="#{processoBean.onRowToggle}" update="processo:processo tabView:formularioEmpresas:listaCorregedoria" />
+								<p:column headerText="Partes" style="width: 2%; text-align: center;">
+									<p:rowToggler />
+									
+										
+									
+								</p:column>
+
 								<p:column headerText="Nomenclatura"
-									style="width: 9%; text-align: center;">
+									style="width: 5%; text-align: center;">
 									<h:outputText value="#{processo.nomenclatura.descricao}" />
 								</p:column>
 
 
 								<p:column headerText="Número Processo"
-									style="width: 9%; text-align: center;">
+									style="width: 4%; text-align: center;">
 									<h:outputText value="#{processo.numProcesso}" />
 								</p:column>
 
 								<p:column headerText="Número SGPE"
-									style="width: 9%; text-align: center;">
+									style="width: 4%; text-align: center;">
 									<h:outputText value="#{processo.numSGPE}" />
 								</p:column>
 
@@ -149,22 +157,22 @@
 										value="#{processo.credenciadoPJ.pessoaJuridica.nomeFantasia} #{processo.credenciadoPJ.pessoaJuridica.cnpj}" />
 								</p:column>
 
-								<p:column headerText="Situacao"
-									style="width: 9%; text-align: center;">
+								<p:column headerText="Situacao Atual"
+									style="width: 5%; text-align: center;">
 									<h:outputText value="#{processo.situacao.descricao}" />
 								</p:column>
 
 								<p:column headerText="Setor Atual"
-									style="width: 9%; text-align: center;">
+									style="width: 5%; text-align: center;">
 									<h:outputText value="#{processo.setorAtual.descricao}" />
 								</p:column>
 
 								<p:column headerText="Ações"
-									style="width: 5%; text-align: center;"
+									style="width: 3%; text-align: center;"
 									rendered="#{autenticacaoBean.temPermissoes([1, 13])}">
 
 									<p:commandButton actionListener="#{processoBean.editar}"
-										icon="ui-icon-search"
+										icon="ui-icon-zoomin"
 										onclick="PF('dialogoAdicionarProcesso').show();"
 										style="align: center;"
 										update=":mensagem tabView:formularioEmpresas:painelDados :processo:processo processo:tabViewProcesso:listaFases processo:tabViewProcesso:listaPartes :processo:processo processo:tabViewProcesso:listaHistorico">
@@ -175,6 +183,85 @@
 									</p:commandButton>
 
 								</p:column>
+
+								<p:rowExpansion>
+									<p:dataTable id="listaPartes"
+										emptyMessage="Nenhuma parte encontrada." paginator="false"
+										value="#{processoBean.listaPartesProcessos}" var="parte"
+									 rows="10">
+
+
+
+
+
+
+
+
+
+
+										<p:column headerText="Credenciado">
+
+
+											<h:outputText rendered="#{parte.credenciado==null}"
+												value="#{parte.credenciadoEmpresa.pessoaJuridica.nomeFantasia} #{parte.credenciadoEmpresa.pessoaJuridica.cnpj}" />
+											<h:outputText rendered="#{parte.credenciadoEmpresa==null}"
+												value="#{parte.credenciado.pessoa.nomeCompleto} #{parte.credenciado.pessoa.cpf}" />
+												
+												
+
+
+
+										</p:column>
+
+										<p:column headerText="Penalidade">
+
+
+										
+												<h:outputText
+													rendered="#{parte.penalidadeProcesso.descricao!=null}"
+													value="#{parte.penalidadeProcesso.descricao}" />
+												
+												<h:outputText
+													rendered="#{parte.penalidadeProcesso.descricao==null}"
+													value="Sem Penalidade" />
+
+										
+
+
+										</p:column>
+
+										<p:column headerText="Decisão">
+
+
+											<h:outputText rendered="#{parte.decisao!=null}"
+												value="#{parte.decisao}" />
+
+											
+											<h:outputText rendered="#{parte.decisao==null}"
+												value="Sem Decisão" />
+
+
+
+										</p:column>
+
+										<p:column headerText="Última alteração">
+											<h:outputText value="#{parte.dataCadastro}" />
+										</p:column>
+
+										<p:column headerText="Alterado Por">
+											<h:outputText
+												value="#{parte.usuarioCadastro.pessoa.nomeCompleto}" />
+										</p:column>
+
+
+
+
+
+
+
+
+									</p:dataTable>
+								</p:rowExpansion>
 
 
 
@@ -466,11 +553,17 @@
 							<f:selectItems value="#{processoBean.listaSituacoes}"
 								var="situacao" itemValue="#{situacao}"
 								itemLabel="#{situacao.descricao}" />
+
+							<p:ajax event="change" update="pnlSetorAtual, :processo:processo"
+								process="@this" listener="#{processoBean.habilitar()}" />
+
 						</p:selectOneMenu>
 
 
-						<p:outputLabel value="Setor Atual: " />
-						<p:selectOneMenu value="#{processoBean.processo.setorAtual}"
+						<p:outputLabel rendered="#{processoBean.arquivado == false}"
+							value="Setor Atual: " />
+						<p:selectOneMenu rendered="#{processoBean.arquivado == false}"
+							id="pnlSetorAtual" value="#{processoBean.processo.setorAtual}"
 							required="true" filter="true"
 							requiredMessage="O campo Setor Atual é obrigatório"
 							converter="omnifaces.SelectItemsConverter">
@@ -599,26 +692,24 @@
 								</p:column>
 
 								<p:column headerText="Decisão">
-								
-								<p:cellEditor>
+
+									<p:cellEditor>
 										<f:facet name="output">
-										
-										<h:outputText rendered="#{parte.decisao!=null}" value="#{parte.decisao}" />
-										
+
+											<h:outputText rendered="#{parte.decisao!=null}"
+												value="#{parte.decisao}" />
+
 											<h:outputText styleClass="ui-icon ui-icon-plus"
-												style="float:left"
-												rendered="#{parte.decisao==null}" />
-											<h:outputText
-												rendered="#{parte.decisao==null}"
+												style="float:left" rendered="#{parte.decisao==null}" />
+											<h:outputText rendered="#{parte.decisao==null}"
 												value="Adicionar" />
 
 										</f:facet>
 										<f:facet name="input">
-											<p:inputText value="#{parte.decisao}"
-												style="width:100%" />
+											<p:inputText value="#{parte.decisao}" style="width:100%" />
 										</f:facet>
 									</p:cellEditor>
-								
+
 								</p:column>
 
 								<p:column headerText="Última alteração">

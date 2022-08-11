@@ -23,8 +23,10 @@ import org.omnifaces.util.Messages;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
+import org.primefaces.event.ToggleEvent;
 
 import br.gov.sc.cetran.domain.HistoricoProcesso;
+import br.gov.sc.cetran.domain.ProcessoCetran;
 import br.gov.sc.cetran.domain.Requerente;
 import br.gov.sc.codet.dao.FasesProcessoDAO;
 import br.gov.sc.codet.dao.HistoricoProcessoDAO;
@@ -79,6 +81,7 @@ public class ProcessoBean implements Serializable {
 	private Usuario usuarioLogado;
 
 	private Boolean exibePainelDados;
+	private Boolean arquivado;
 
 	public List<Credenciado> getListaCredenciados() {
 		return listaCredenciados;
@@ -155,12 +158,29 @@ public class ProcessoBean implements Serializable {
 			listaSetorAtuais = setorAtualDAO.listar();
 			listaSituacoes = situacaoDAO.listar();
 			listaNomemclaturas = nomenclaturaDAO.listar();
+			
+			
 
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar listar as Ações.");
 			erro.printStackTrace();
 		}
 	}
+	
+	public void onRowToggle(ToggleEvent event) {
+		PartesProcessoDAO partesDAO = new PartesProcessoDAO();
+		
+	    FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+	                                        "Row State " + event.getVisibility(),
+	                                        "Model:" + ((Processo) event.getData()));
+	    
+	    System.out.println(event.getData());
+	    
+	    listaPartesProcessos = partesDAO.listarPorProcessoObject(event.getData());
+
+	    FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+	
 
 	public void cellEditEvent(CellEditEvent event) {
 
@@ -345,12 +365,29 @@ public class ProcessoBean implements Serializable {
 
 		processo = (Processo) evento.getComponent().getAttributes().get("processoSelecionado");
 
+		
+		arquivado = false;
+		
 		listaPartesProcessos = partesDAO.listarPorProcesso(processo);
 		listaFases = fasesDAO.listarPorProcesso(processo);
 		listaHistoricoProcessos = historicoDAO.listarPorProcesso(processo);
 	}
 
-	public void buscarCamposPesquisa() {
+	public void habilitar() {
+		if (processo.getSituacao().getDescricao().equals("ARQUIVADO")) {
+
+			arquivado = true;
+			System.out.println("ARQUIVADO SIM");
+		} else {
+			arquivado = false;
+		}
+
+	}
+
+	public void buscarCamposPesquisa( ) {
+		
+	
+		
 		try {
 
 			listaProcessos = new ArrayList<>();
@@ -358,7 +395,7 @@ public class ProcessoBean implements Serializable {
 			empresaPJ = CredenciadoEmpDAO.consultaporCnpjString(campoDaBusca);
 
 			credenciado = CredenciadoDAO.consultaporCpfString(campoDaBusca);
-			
+
 			credenciadoCredencial = CredenciadoDAO.consultaporCredencial(campoDaBusca);
 
 			System.out.println(credenciado + " credenciado");
@@ -367,6 +404,8 @@ public class ProcessoBean implements Serializable {
 			ProcessoDAO processoDAO = new ProcessoDAO();
 			listaProcessos = processoDAO.listarProcessos(campoDaBusca, credenciado, credenciadoCredencial, empresaPJ);
 			System.out.println(listaProcessos + " listaProcessos");
+			
+			
 
 			exibePainelDados = true;
 
@@ -437,7 +476,7 @@ public class ProcessoBean implements Serializable {
 		}
 
 	}
-	
+
 	public void gerarRelatorioFases() {
 
 		try {
@@ -452,7 +491,7 @@ public class ProcessoBean implements Serializable {
 		}
 
 	}
-	
+
 	public void gerarRelatorioHistorico() {
 
 		try {
@@ -578,6 +617,14 @@ public class ProcessoBean implements Serializable {
 
 	public void setCredenciadoCredencial(Credenciado credenciadoCredencial) {
 		this.credenciadoCredencial = credenciadoCredencial;
+	}
+
+	public Boolean getArquivado() {
+		return arquivado;
+	}
+
+	public void setArquivado(Boolean arquivado) {
+		this.arquivado = arquivado;
 	}
 
 }
