@@ -41,6 +41,9 @@ public class HistoricoProcessoBean implements Serializable {
 			ConselheiroDAO conselheiroDAO = new ConselheiroDAO();
 			listaConselheiros = conselheiroDAO.listarTudo();
 			
+			HistoricoProcessoDAO HistoricoProcessoDAO = new HistoricoProcessoDAO();
+			listaHistoricoProcessos = HistoricoProcessoDAO.listar();
+			
 			historicoProcesso = new HistoricoProcesso();
 			
 			//EDIÇÃO HISTORICO BEAN

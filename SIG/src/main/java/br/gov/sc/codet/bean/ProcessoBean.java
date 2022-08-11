@@ -259,8 +259,8 @@ public class ProcessoBean implements Serializable {
 			ProcessoDAO ProcessoDAO = new ProcessoDAO();
 			PartesProcessoDAO partesDAO = new PartesProcessoDAO();
 
-			System.out.println(processo);
-			if (processo.getCodigo() == null) {
+			System.out.println("processo.getCodigo()==null" + processo);
+			if (processo.getCodigo()==null) {
 
 				ProcessoDAO.merge(processo);
 
