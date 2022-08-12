@@ -57,6 +57,7 @@ import util.JSFUtil;
 public class ProcessoBean implements Serializable {
 
 	private Processo processo;
+	private Processo processoDoBanco;
 	private List<Processo> listaProcessos;
 
 	private PartesProcesso parteProcesso;
@@ -158,29 +159,25 @@ public class ProcessoBean implements Serializable {
 			listaSetorAtuais = setorAtualDAO.listar();
 			listaSituacoes = situacaoDAO.listar();
 			listaNomemclaturas = nomenclaturaDAO.listar();
-			
-			
 
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar listar as Ações.");
 			erro.printStackTrace();
 		}
 	}
-	
+
 	public void onRowToggle(ToggleEvent event) {
 		PartesProcessoDAO partesDAO = new PartesProcessoDAO();
-		
-	    FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-	                                        "Row State " + event.getVisibility(),
-	                                        "Model:" + ((Processo) event.getData()));
-	    
-	    System.out.println(event.getData());
-	    
-	    listaPartesProcessos = partesDAO.listarPorProcessoObject(event.getData());
 
-	    FacesContext.getCurrentInstance().addMessage(null, msg);
+		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Row State " + event.getVisibility(),
+				"Model:" + ((Processo) event.getData()));
+
+		System.out.println(event.getData());
+
+		listaPartesProcessos = partesDAO.listarPorProcessoObject(event.getData());
+
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
-	
 
 	public void cellEditEvent(CellEditEvent event) {
 
@@ -188,13 +185,11 @@ public class ProcessoBean implements Serializable {
 		DataTable dataTable = (DataTable) event.getSource();
 
 		PartesProcesso user = (PartesProcesso) dataTable.getRowData();
-		
+
 		try {
 
 			// RowEditEvent --------PartesProcesso user = (PartesProcesso)
 			// event.getObject();-------
-
-			
 
 			System.out.println("Edit: " + user);
 
@@ -204,8 +199,6 @@ public class ProcessoBean implements Serializable {
 			user.setDataCadastro(new Date());
 
 			partesDAO.merge(user);
-			
-			
 
 			System.out.println(listaPartesProcessos + "listaPartesProcessos CELLEDIEVENT");
 
@@ -219,7 +212,7 @@ public class ProcessoBean implements Serializable {
 		listaPartesProcessos = partesDAO.listarPorProcesso(processo);
 
 		System.out.println(listaPartesProcessos + "listaPartesProcessos CELLEDIEVENT FORA");
-		
+
 		user = new PartesProcesso();
 	}
 
@@ -259,37 +252,47 @@ public class ProcessoBean implements Serializable {
 			ProcessoDAO ProcessoDAO = new ProcessoDAO();
 			PartesProcessoDAO partesDAO = new PartesProcessoDAO();
 
-			System.out.println("processo.getCodigo()==null" + processo);
-			if (processo.getCodigo()==null) {
+			processoDoBanco = ProcessoDAO.carregaProcesso(processo.getCredenciadoPJ(), processo.getNomenclatura(),
+					processo.getSituacao());
+
+			if (processoDoBanco == null && processo.getCodigo() == null) {
 
 				ProcessoDAO.merge(processo);
 
-				processo = ProcessoDAO.carregaProcesso(processo.getCredenciadoPJ());
+				processo = ProcessoDAO.carregaProcessoUltimo(processo.getCredenciadoPJ(), processo.getNomenclatura(),
+						processo.getSituacao());
 
 				ProcessoDAO.salvarFasesEPartes(fasesProcesso, processo, usuarioLogado, parteProcesso);
 
 				listaFases = fasesDAO.listarPorProcesso(processo);
 				listaPartesProcessos = partesDAO.listarPorProcesso(processo);
+				listaProcessos = ProcessoDAO.listarProcessos(campoDaBusca, credenciado, credenciadoCredencial, processo.getCredenciadoPJ());
+				
+				
 
 			} else {
-
+				
+				
 				ProcessoDAO.merge(processo);
 
 				parteProcesso = ProcessoDAO.carregaParteProcesso(processo);
 
-				System.out.println(parteProcesso + " parteProcesso BEAN");
-				if (parteProcesso != null) {
+				System.out.println(processo);
 
-					ProcessoDAO.salvarFasesEPartes(fasesProcesso, processo, usuarioLogado, parteProcesso);
+				ProcessoDAO.salvarFasesEPartes(fasesProcesso, processo, usuarioLogado, parteProcesso);
 
-					listaFases = fasesDAO.listarPorProcesso(processo);
-					listaPartesProcessos = partesDAO.listarPorProcesso(processo);
-
-				}
-
+				listaFases = fasesDAO.listarPorProcesso(processo);
+				listaPartesProcessos = partesDAO.listarPorProcesso(processo);
 			}
 
-			Messages.addGlobalInfo("Ação cadastrada com Sucesso!");
+				
+					
+					
+			
+				
+				Messages.addGlobalInfo("Processo cadastrado com Sucesso!");
+			
+
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar salvar a Ação.");
 			erro.printStackTrace();
@@ -370,9 +373,8 @@ public class ProcessoBean implements Serializable {
 
 		processo = (Processo) evento.getComponent().getAttributes().get("processoSelecionado");
 
-		
 		arquivado = false;
-		
+
 		listaPartesProcessos = partesDAO.listarPorProcesso(processo);
 		listaFases = fasesDAO.listarPorProcesso(processo);
 		listaHistoricoProcessos = historicoDAO.listarPorProcesso(processo);
@@ -389,10 +391,8 @@ public class ProcessoBean implements Serializable {
 
 	}
 
-	public void buscarCamposPesquisa( ) {
-		
-	
-		
+	public void buscarCamposPesquisa() {
+
 		try {
 
 			listaProcessos = new ArrayList<>();
@@ -409,8 +409,6 @@ public class ProcessoBean implements Serializable {
 			ProcessoDAO processoDAO = new ProcessoDAO();
 			listaProcessos = processoDAO.listarProcessos(campoDaBusca, credenciado, credenciadoCredencial, empresaPJ);
 			System.out.println(listaProcessos + " listaProcessos");
-			
-			
 
 			exibePainelDados = true;
 
@@ -458,7 +456,7 @@ public class ProcessoBean implements Serializable {
 			parteDAO.merge(parteProcesso);
 
 			listaPartesProcessos = parteDAO.listarPorProcesso(processo);
-			
+
 			parteProcesso = new PartesProcesso();
 
 			Messages.addGlobalInfo("Parte cadastrado com sucesso!");
@@ -632,6 +630,14 @@ public class ProcessoBean implements Serializable {
 
 	public void setArquivado(Boolean arquivado) {
 		this.arquivado = arquivado;
+	}
+
+	public Processo getProcessoDoBanco() {
+		return processoDoBanco;
+	}
+
+	public void setProcessoDoBanco(Processo processoDoBanco) {
+		this.processoDoBanco = processoDoBanco;
 	}
 
 }

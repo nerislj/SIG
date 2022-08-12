@@ -41,13 +41,17 @@ public class ProcessoDAO extends GenericDAO<Processo> {
 
 			if (cpf == null && numeroCredencial == null) {
 
+				consulta.addOrder(Order.desc("codigo"));
 				consulta.add(Restrictions.disjunction()
-
+						
+					
+						
 						.add(Restrictions.eq("credenciadoPJ", empresaCNPJ))
 						.add(Restrictions.eq("numProcesso", campoDigitado))
 						.add(Restrictions.eq("numSGPE", campoDigitado)));
 
 			} else {
+				consulta.addOrder(Order.desc("codigo"));
 				consulta.createAlias("partesProcesso", "e");
 
 				consulta.add(Restrictions.disjunction().add(Restrictions.eq("e.credenciado", cpf))
@@ -69,6 +73,50 @@ public class ProcessoDAO extends GenericDAO<Processo> {
 	}
 
 	@SuppressWarnings({ "unchecked" })
+	public void salvarFasesEPartesDoBanco(FasesProcesso fasesProcesso, Processo processo, Usuario usuarioLogado,
+			PartesProcesso parteProcesso) {
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+		Transaction transacao = null;
+
+		try {
+			transacao = sessao.beginTransaction();
+
+			System.out.println(parteProcesso);
+
+			parteProcesso.setProcesso(processo);
+			parteProcesso.setCredenciadoEmpresa(processo.getCredenciadoPJ());
+			parteProcesso.setDataCadastro(new Date());
+			parteProcesso.setUsuarioCadastro(usuarioLogado);
+
+			sessao.merge(parteProcesso);
+
+			fasesProcesso.setUsuarioCadastro(usuarioLogado);
+			fasesProcesso.setDataCadastro(new Date());
+			fasesProcesso.setProcesso(processo);
+
+			fasesProcesso.setOcorrencia("Nomenclatura: " + processo.getNomenclatura().getDescricao() + ", Nº Processo: "
+					+ processo.getNumProcesso() + ", Nº SGPE: " + processo.getNumSGPE());
+			fasesProcesso.setAnotacao(processo.getSituacao().getDescricao());
+
+			if (processo.getSituacao().getDescricao().equals("ARQUIVADO")) {
+				fasesProcesso.setProvidencia("Setor Atual: ARQUIVO");
+			} else {
+				fasesProcesso.setProvidencia("Setor Atual: " + processo.getSetorAtual().getDescricao());
+			}
+
+			sessao.save(fasesProcesso);
+
+			transacao.commit();
+		} catch (RuntimeException erro) {
+			if (transacao != null) {
+				transacao.rollback();
+			}
+			throw erro;
+		} finally {
+			sessao.close();
+		}
+	}
+	
 	public void salvarFasesEPartes(FasesProcesso fasesProcesso, Processo processo, Usuario usuarioLogado,
 			PartesProcesso parteProcesso) {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
@@ -93,7 +141,12 @@ public class ProcessoDAO extends GenericDAO<Processo> {
 			fasesProcesso.setOcorrencia("Nomenclatura: " + processo.getNomenclatura().getDescricao() + ", Nº Processo: "
 					+ processo.getNumProcesso() + ", Nº SGPE: " + processo.getNumSGPE());
 			fasesProcesso.setAnotacao(processo.getSituacao().getDescricao());
-			fasesProcesso.setProvidencia("Setor Atual: " + processo.getSetorAtual().getDescricao());
+
+			if (processo.getSituacao().getDescricao().equals("ARQUIVADO")) {
+				fasesProcesso.setProvidencia("Setor Atual: ARQUIVO");
+			} else {
+				fasesProcesso.setProvidencia("Setor Atual: " + processo.getSetorAtual().getDescricao());
+			}
 
 			sessao.save(fasesProcesso);
 
@@ -107,6 +160,7 @@ public class ProcessoDAO extends GenericDAO<Processo> {
 			sessao.close();
 		}
 	}
+
 
 	public void salvarAdicionarNovaFase(FasesProcesso fasesProcesso, Processo processo, Usuario usuarioLogado) {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
@@ -139,7 +193,8 @@ public class ProcessoDAO extends GenericDAO<Processo> {
 		}
 	}
 
-	public static Processo carregaProcesso(CredenciadoEmp credenciadoPJ) {
+	public static Processo carregaProcesso(CredenciadoEmp credenciadoPJ, NomenclaturaProcesso nomenclatura,
+			SituacaoProcesso situacao) {
 
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 
@@ -147,6 +202,31 @@ public class ProcessoDAO extends GenericDAO<Processo> {
 			Criteria consulta = sessao.createCriteria(Processo.class);
 
 			consulta.add(Restrictions.eq("credenciadoPJ", credenciadoPJ));
+			consulta.add(Restrictions.eq("nomenclatura", nomenclatura));
+			consulta.add(Restrictions.eq("situacao", situacao));
+		
+
+			return (Processo) consulta.setMaxResults(1).uniqueResult();
+
+		} catch (RuntimeException erro) {
+			throw erro;
+		} finally {
+			sessao.close();
+		}
+	}
+
+	public static Processo carregaProcessoUltimo(CredenciadoEmp credenciadoPJ, NomenclaturaProcesso nomenclatura,
+			SituacaoProcesso situacao) {
+
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+
+		try {
+			Criteria consulta = sessao.createCriteria(Processo.class);
+
+			consulta.addOrder(Order.desc("codigo"));
+			consulta.add(Restrictions.eq("credenciadoPJ", credenciadoPJ));
+			consulta.add(Restrictions.eq("nomenclatura", nomenclatura));
+			consulta.add(Restrictions.eq("situacao", situacao));
 
 			return (Processo) consulta.setMaxResults(1).uniqueResult();
 
@@ -238,7 +318,7 @@ public class ProcessoDAO extends GenericDAO<Processo> {
 				}
 
 			} else {
-				
+
 				consulta.add(Restrictions.ge("dataInstauracao", dateIni));
 				consulta.add(Restrictions.le("dataInstauracao", dateFini));
 			}
