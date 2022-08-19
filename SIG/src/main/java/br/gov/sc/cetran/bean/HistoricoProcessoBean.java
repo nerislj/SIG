@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -61,6 +62,7 @@ public class HistoricoProcessoBean implements Serializable {
 	public void novo() {
 		historicoProcesso = new HistoricoProcesso();
 	}
+
 	
 	@SuppressWarnings("static-access")
 	public void blurConselheiro() {
@@ -143,6 +145,78 @@ public void gerarRelatorio() {
 
 	public void editar(ActionEvent evento) {
 		historicoProcesso = (HistoricoProcesso) evento.getComponent().getAttributes().get("historicoProcessoSelecionado");		
+	}
+	
+	
+
+	private Date dataHoje;
+	private Date data70Dias;
+	private Date data80Dias;
+	
+	
+	
+	public Date getData80Dias() {
+		return data80Dias;
+	}
+
+	public void setData80Dias(Date data80Dias) {
+		this.data80Dias = data80Dias;
+	}
+
+	public Date getDataHoje() {
+		return dataHoje;
+	}
+
+	public void setDataHoje(Date dataHoje) {
+		this.dataHoje = dataHoje;
+	}
+
+	public Date getData70Dias() {
+		return data70Dias;
+	}
+
+	public void setData70Dias(Date data70Dias) {
+		this.data70Dias = data70Dias;
+	}
+
+	@SuppressWarnings("deprecation")
+	public String convertTime(Date time) {
+		dataHoje = new Date();
+
+		dataHoje.setDate(dataHoje.getDate());
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		System.out.println(sdf.format(dataHoje) + " dataHoje");
+		
+		return sdf.format(dataHoje);
+	}
+
+	@SuppressWarnings("deprecation")
+	public String convert70Dias(Date time) {
+		data70Dias = new Date();
+		data70Dias.setDate(data70Dias.getDate() + 70);
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		System.out.println(sdf.format(data70Dias) + " data70Dias");
+
+		return sdf.format(data70Dias);
+	}
+	
+	@SuppressWarnings("deprecation")
+	public String convert80Dias(Date time) {
+		data80Dias = new Date();
+		
+		historicoProcesso.getDataDistribuicao();
+		System.out.println(historicoProcesso.getDataDistribuicao() + " historicoProcesso.getDataDistribuicao()");
+		data80Dias.setDate(data80Dias.getDate() + 80);
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		System.out.println(sdf.format(data80Dias) + " data80Dias");
+
+		return sdf.format(data80Dias);
 	}
 
 	public HistoricoProcesso getHistoricoProcesso() {

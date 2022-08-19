@@ -43,9 +43,7 @@ public class ProcessoDAO extends GenericDAO<Processo> {
 
 				consulta.addOrder(Order.desc("codigo"));
 				consulta.add(Restrictions.disjunction()
-						
-					
-						
+
 						.add(Restrictions.eq("credenciadoPJ", empresaCNPJ))
 						.add(Restrictions.eq("numProcesso", campoDigitado))
 						.add(Restrictions.eq("numSGPE", campoDigitado)));
@@ -116,7 +114,7 @@ public class ProcessoDAO extends GenericDAO<Processo> {
 			sessao.close();
 		}
 	}
-	
+
 	public void salvarFasesEPartes(FasesProcesso fasesProcesso, Processo processo, Usuario usuarioLogado,
 			PartesProcesso parteProcesso) {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
@@ -161,7 +159,6 @@ public class ProcessoDAO extends GenericDAO<Processo> {
 		}
 	}
 
-
 	public void salvarAdicionarNovaFase(FasesProcesso fasesProcesso, Processo processo, Usuario usuarioLogado) {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 		Transaction transacao = null;
@@ -204,7 +201,6 @@ public class ProcessoDAO extends GenericDAO<Processo> {
 			consulta.add(Restrictions.eq("credenciadoPJ", credenciadoPJ));
 			consulta.add(Restrictions.eq("nomenclatura", nomenclatura));
 			consulta.add(Restrictions.eq("situacao", situacao));
-		
 
 			return (Processo) consulta.setMaxResults(1).uniqueResult();
 
@@ -267,61 +263,98 @@ public class ProcessoDAO extends GenericDAO<Processo> {
 
 			if (setor != null && situacao == null) {
 
-				if (dateIni != null || dateFini != null) {
+				consulta.add(Restrictions.eq("setorAtual", setor));
 
-					if (dateIni == dateFini) {
+				if (dateIni != null || dateFini != null) {
+					if (dateIni.equals(dateFini)) {
 						consulta.add(Restrictions.eq("dataInstauracao", dateIni));
 					} else {
 						System.out.println(dateIni);
 						System.out.println(dateFini);
+
 						consulta.add(Restrictions.ge("dataInstauracao", dateIni));
 						consulta.add(Restrictions.le("dataInstauracao", dateFini));
-						consulta.add(Restrictions.eq("setorAtual", setor));
 					}
-				} else {
-					consulta.add(Restrictions.eq("setorAtual", setor));
 				}
-
 			}
 
 			if (situacao != null && setor == null) {
 
+				consulta.add(Restrictions.eq("situacao", situacao));
+				
 				if (dateIni != null || dateFini != null) {
-					if (dateIni == dateFini) {
+					if (dateIni.equals(dateFini)) {
 						consulta.add(Restrictions.eq("dataInstauracao", dateIni));
 					} else {
 						System.out.println(dateIni);
 						System.out.println(dateFini);
-						consulta.add(Restrictions.eq("situacao", situacao));
+
 						consulta.add(Restrictions.ge("dataInstauracao", dateIni));
 						consulta.add(Restrictions.le("dataInstauracao", dateFini));
 					}
-				} else {
-					consulta.add(Restrictions.eq("situacao", situacao));
 				}
 			}
 
 			if (situacao != null && setor != null) {
 
-				if (dateIni != null || dateFini != null) {
+				consulta.add(Restrictions.eq("situacao", situacao));
+				consulta.add(Restrictions.eq("setorAtual", setor));
 
-					if (dateIni == dateFini) {
+				if (dateIni != null || dateFini != null) {
+					if (dateIni.equals(dateFini)) {
 						consulta.add(Restrictions.eq("dataInstauracao", dateIni));
 					} else {
 						System.out.println(dateIni);
 						System.out.println(dateFini);
-						consulta.add(Restrictions.eq("setorAtual", setor));
-						consulta.add(Restrictions.eq("situacao", situacao));
+
 						consulta.add(Restrictions.ge("dataInstauracao", dateIni));
 						consulta.add(Restrictions.le("dataInstauracao", dateFini));
 					}
 				}
-
-			} else {
-
-				consulta.add(Restrictions.ge("dataInstauracao", dateIni));
-				consulta.add(Restrictions.le("dataInstauracao", dateFini));
 			}
+
+			/*
+			 * if (setor != null && situacao == null) {
+			 * 
+			 * if (dateIni != null || dateFini != null) {
+			 * 
+			 * if (dateIni == dateFini) { consulta.add(Restrictions.eq("dataInstauracao",
+			 * dateIni)); } else { System.out.println(dateIni);
+			 * System.out.println(dateFini); consulta.add(Restrictions.ge("dataInstauracao",
+			 * dateIni)); consulta.add(Restrictions.le("dataInstauracao", dateFini));
+			 * consulta.add(Restrictions.eq("setorAtual", setor)); } } else {
+			 * consulta.add(Restrictions.eq("setorAtual", setor)); }
+			 * 
+			 * }
+			 */
+
+			/*
+			 * if (situacao != null && setor == null) {
+			 * 
+			 * if (dateIni != null || dateFini != null) { if (dateIni.equals(dateFini)) {
+			 * consulta.add(Restrictions.eq("dataInstauracao", dateIni)); } else {
+			 * System.out.println(dateIni); System.out.println(dateFini);
+			 * consulta.add(Restrictions.eq("situacao", situacao));
+			 * consulta.add(Restrictions.ge("dataInstauracao", dateIni));
+			 * consulta.add(Restrictions.le("dataInstauracao", dateFini)); } } else {
+			 * consulta.add(Restrictions.eq("situacao", situacao)); } }
+			 * 
+			 * if (situacao != null && setor != null) {
+			 * 
+			 * if (dateIni != null || dateFini != null) {
+			 * 
+			 * if (dateIni == dateFini) { consulta.add(Restrictions.eq("dataInstauracao",
+			 * dateIni)); } else { System.out.println(dateIni);
+			 * System.out.println(dateFini); consulta.add(Restrictions.eq("setorAtual",
+			 * setor)); consulta.add(Restrictions.eq("situacao", situacao));
+			 * consulta.add(Restrictions.ge("dataInstauracao", dateIni));
+			 * consulta.add(Restrictions.le("dataInstauracao", dateFini)); } } else {
+			 * 
+			 * consulta.add(Restrictions.ge("dataInstauracao", dateIni));
+			 * consulta.add(Restrictions.le("dataInstauracao", dateFini)); }
+			 * 
+			 * }
+			 */
 
 			List<Processo> resultado = consulta.list();
 

@@ -25,4 +25,17 @@ public class SetorAtualDAO extends GenericDAO<SetorAtual>{
 		return (SetorAtual) criteria.setMaxResults(1).uniqueResult();
 	}
 	
+	public static SetorAtual carregarSetorAtualCodigo() {
+
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+
+		
+		Criteria criteria = sessao.createCriteria(SetorAtual.class);
+		
+		criteria.add(Restrictions.eq("descricao", "ARQUIVO"));
+		
+
+		return (SetorAtual) criteria.setMaxResults(1).uniqueResult();
+	}
+	
 }
