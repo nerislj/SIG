@@ -1,5 +1,7 @@
 package br.gov.sc.cetran.dao;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -23,9 +25,18 @@ public class HistoricoProcessoDAO extends GenericDAO<HistoricoProcesso>{
 
 	
 	@SuppressWarnings("unchecked")
-	public List<HistoricoProcesso> listarPorData() throws Exception {
+	public List<HistoricoProcesso> listarPorData(int anoHoje) throws Exception {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 		Criteria consulta = sessao.createCriteria(HistoricoProcesso.class);
+		
+		String sDateS = anoHoje + "-01-01";
+		Date sDateF=new SimpleDateFormat("yyyy-MM-dd").parse(sDateS);
+		
+		String eDateS = anoHoje + "-12-31";
+		Date eDateF=new SimpleDateFormat("yyyy-MM-dd").parse(eDateS); 
+		
+		consulta.add(Restrictions.ge("dataDistribuicao", sDateF)); 
+		consulta.add(Restrictions.lt("dataDistribuicao", eDateF));
 		consulta.addOrder(Order.desc("dataDistribuicao"));
 		List<HistoricoProcesso> resultado = (List<HistoricoProcesso>) consulta.list();
 

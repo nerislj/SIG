@@ -10,21 +10,24 @@
 	<ui:define name="conteudo">
 		<style type="text/css">
 .vencida {
-	background-color: #FF4040 !important;
-	background-image: none !important;
-	color: #000000 !important;
+	background: #f8b7bd !important;
+	border: 1px solid #ef5350 !important;
+	border-width: 0 4px 0 4px !important;
+	color: #212121 !important;
 }
 
 .avencer {
-	background-color: #FFFF00 !important;
-	background-image: none !important;
-	color: #000000 !important;
+	background: #ffecb3 !important;
+	border: 1px solid #ffc107 !important;
+	border-width: 0 4px 0 4px !important;
+	color: #212121 !important;
 }
 
 .ok {
-	background-color: #43CD80 !important;
-	background-image: none !important;
-	color: #000000 !important;
+	background: #b7d8b7 !important;
+	border: 1px solid #2E8B57 !important;
+	border-width: 0 4px 0 4px !important;
+	color: #212121 !important;
 }
 </style>
 
@@ -35,14 +38,14 @@
 
 				<p:panelGrid columns="2" style="margin: 0 auto;">
 
-					<h:outputLabel style="color: #FF4040">▇</h:outputLabel>
+					<h:outputLabel style="color: #f8b7bd">▇</h:outputLabel>
 					<h:outputLabel>Vencida (81+ dias)</h:outputLabel>
 
 
-					<h:outputLabel style="color: #FFFF00">▇</h:outputLabel>
+					<h:outputLabel style="color: #ffecb3">▇</h:outputLabel>
 					<h:outputLabel>À vencer (71 até 80 dias)</h:outputLabel>
 
-					<h:outputLabel style="color: #43CD80">▇</h:outputLabel>
+					<h:outputLabel style="color: #b7d8b7">▇</h:outputLabel>
 					<h:outputLabel>Em dia (1 até 70 dias)</h:outputLabel>
 
 				</p:panelGrid>
@@ -51,17 +54,34 @@
 
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true"
-					value="#{historicoProcessoBean.listaHistoricoProcessos}"
-					var="hist" rows="10" style="width: 100%;"
+					value="#{historicoProcessoBean.listaHistoricoProcessosAVencer}" var="hist"
+					rows="10" style="width: 100%;"
 					rowStyleClass="#{
-					(historicoProcessoBean.convertTime() le hist.dataDistribuicao.time+6048000000 ? 'ok': 
-					(historicoProcessoBean.convertTime() ge hist.dataDistribuicao.time+6134400000 and historicoProcessoBean.convertTime() le hist.dataDistribuicao.time+6912000000  ? 'avencer':
-					(historicoProcessoBean.convertTime() ge hist.dataDistribuicao.time+6998400000 ? 'vencida' :
+					(historicoProcessoBean.convertTime() lt hist.dataDistribuicao.time+6048000000 ? 'ok' : 
+					(historicoProcessoBean.convertTime() gt hist.dataDistribuicao.time+6998400000 ? 'vencida' :
+					'avencer'
 					
-					null
+					))}">
 					
-					)))}">
+					<f:facet name="header">
+						<p:outputLabel value="Ano: " />
+								<p:selectOneMenu id="ano"
+									converter="omnifaces.SelectItemsConverter"
+									value="#{historicoProcessoBean.ano}">
+									<f:selectItems value="#{oficioBean.anos}" var="ano"
+										itemValue="#{ano}" itemLabel="#{ano.oficioAno}" />
+								</p:selectOneMenu>
+									<p:spacer width="15" height="10" />
 
+								<p:commandButton value="Consultar"
+									actionListener="#{historicoProcessoBean.consultaPorAno}"
+									update=":mensagem :formlista:lista"
+									style="background: #01B50D;">
+									<f:actionListener
+										type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+								</p:commandButton>
+
+</f:facet>
 					<p:column headerText="Recorrido"
 						sortBy="#{hist.processoCetran.recorrido}"
 						filterBy="#{hist.processoCetran.recorrido}"
@@ -69,14 +89,14 @@
 						<h:outputText value="#{hist.processoCetran.recorrido}" />
 					</p:column>
 
-					<p:column headerText="Data Distribuição"
+					<p:column headerText="Nº Processo"
 						sortBy="#{hist.processoCetran.numero}"
 						filterBy="#{hist.processoCetran.numero}"
 						style="width: 10%; text-align: center;">
 						<h:outputText value="#{hist.processoCetran.numero}" />
 					</p:column>
 
-					<p:column headerText="Data Atual" sortBy="#{hist.processoCetran.placa}"
+					<p:column headerText="Placa" sortBy="#{hist.processoCetran.placa}"
 						filterBy="#{hist.processoCetran.placa}"
 						style="width: 10%; text-align: center;">
 						<h:outputText value="#{hist.processoCetran.placa}" />
@@ -127,7 +147,7 @@
 						style="width: 15%; text-align: center;">
 						<h:outputText value="#{hist.situacao.descricao}" />
 					</p:column>
-					
+
 					<p:column headerText="Alterado Por"
 						sortBy="#{hist.usuarioCadastro.pessoa.nomeCompleto}"
 						filterBy="#{hist.usuarioCadastro.pessoa.nomeCompleto}"
@@ -139,8 +159,8 @@
 							rendered="#{hist.usuarioCadastro.pessoa.nomeCompleto == null}"
 							value="Sem alteração" />
 					</p:column>
-					
-				
+
+
 
 
 				</p:dataTable>

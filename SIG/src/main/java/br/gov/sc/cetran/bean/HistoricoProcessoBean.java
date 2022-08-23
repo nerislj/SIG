@@ -23,6 +23,8 @@ import br.gov.sc.cetran.domain.Conselheiro;
 import br.gov.sc.cetran.domain.HistoricoProcesso;
 import br.gov.sc.cetran.domain.Representacao;
 import br.gov.sc.codet.domain.PartesProcesso;
+import br.gov.sc.sgi.dao.OficioDAO;
+import br.gov.sc.sgi.domain.OficioAno;
 import util.JSFUtil;
 
 @SuppressWarnings("serial")
@@ -32,8 +34,11 @@ public class HistoricoProcessoBean implements Serializable {
 
 	private HistoricoProcesso historicoProcesso;
 	private Conselheiro conselheiro;
+	
+	private OficioAno Ano;
 
 	private List<HistoricoProcesso> listaHistoricoProcessos;
+	private List<HistoricoProcesso> listaHistoricoProcessosAVencer;
 	private List<Conselheiro> listaConselheiros;
 
 	@PostConstruct
@@ -45,6 +50,9 @@ public class HistoricoProcessoBean implements Serializable {
 
 			HistoricoProcessoDAO HistoricoProcessoDAO = new HistoricoProcessoDAO();
 			listaHistoricoProcessos = HistoricoProcessoDAO.listar();
+			
+			int anoHoje = new Date().getYear() + 1900;
+			listaHistoricoProcessosAVencer = HistoricoProcessoDAO.listarPorData(anoHoje);
 
 			historicoProcesso = new HistoricoProcesso();
 
@@ -56,6 +64,18 @@ public class HistoricoProcessoBean implements Serializable {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+	
+	public void consultaPorAno() {
+		try {
+			HistoricoProcessoDAO HistoricoProcessoDAO = new HistoricoProcessoDAO();
+
+			listaHistoricoProcessosAVencer = HistoricoProcessoDAO.listarPorData(Ano.getOficioAno());
+
+		} catch (Exception erro) {
+			Messages.addGlobalError("Ocorreu um erro ao tentar listar os Ofícios.");
+			erro.printStackTrace();
 		}
 	}
 
@@ -138,17 +158,9 @@ public class HistoricoProcessoBean implements Serializable {
 	}
 
 	private Date dataHoje;
-	private Date data70Dias;
-	private Date data80Dias;
+	
 
-	public Date getData80Dias() {
-		return data80Dias;
-	}
-
-	public void setData80Dias(Date data80Dias) {
-		this.data80Dias = data80Dias;
-	}
-
+	
 	public Date getDataHoje() {
 		return dataHoje;
 	}
@@ -157,13 +169,8 @@ public class HistoricoProcessoBean implements Serializable {
 		this.dataHoje = dataHoje;
 	}
 
-	public Date getData70Dias() {
-		return data70Dias;
-	}
 
-	public void setData70Dias(Date data70Dias) {
-		this.data70Dias = data70Dias;
-	}
+	
 
 	@SuppressWarnings("deprecation")
 	public Long convertTime()  {
@@ -175,34 +182,13 @@ public class HistoricoProcessoBean implements Serializable {
 	}
 
 	
-	@SuppressWarnings("deprecation")
-	public String convert70Dias(Date time) {
-		data70Dias = new Date();
-		
-		
-		
-		data70Dias.setDate(data70Dias.getDate() + 70);
-
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-		System.out.println(sdf.format(data70Dias) + " data70Dias");
-
-		return sdf.format(data70Dias);
+	
+	public OficioAno getAno() {
+		return Ano;
 	}
 
-	@SuppressWarnings("deprecation")
-	public String convert80Dias(Date time) {
-		data80Dias = new Date();
-
-		historicoProcesso.getDataDistribuicao();
-		System.out.println(historicoProcesso.getDataDistribuicao() + " historicoProcesso.getDataDistribuicao()");
-		data80Dias.setDate(data80Dias.getDate() + 80);
-
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-		System.out.println(sdf.format(data80Dias) + " data80Dias");
-
-		return sdf.format(data80Dias);
+	public void setAno(OficioAno ano) {
+		Ano = ano;
 	}
 
 	public HistoricoProcesso getHistoricoProcesso() {
@@ -235,6 +221,14 @@ public class HistoricoProcessoBean implements Serializable {
 
 	public void setListaConselheiros(List<Conselheiro> listaConselheiros) {
 		this.listaConselheiros = listaConselheiros;
+	}
+
+	public List<HistoricoProcesso> getListaHistoricoProcessosAVencer() {
+		return listaHistoricoProcessosAVencer;
+	}
+
+	public void setListaHistoricoProcessosAVencer(List<HistoricoProcesso> listaHistoricoProcessosAVencer) {
+		this.listaHistoricoProcessosAVencer = listaHistoricoProcessosAVencer;
 	}
 
 }
