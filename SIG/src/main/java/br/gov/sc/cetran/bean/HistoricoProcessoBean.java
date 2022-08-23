@@ -13,17 +13,11 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
 import org.omnifaces.util.Messages;
-import org.primefaces.component.datatable.DataTable;
 
 import br.gov.sc.cetran.dao.ConselheiroDAO;
 import br.gov.sc.cetran.dao.HistoricoProcessoDAO;
-import br.gov.sc.cetran.dao.RepresentacaoDAO;
-import br.gov.sc.cetran.dao.RequerenteDAO;
 import br.gov.sc.cetran.domain.Conselheiro;
 import br.gov.sc.cetran.domain.HistoricoProcesso;
-import br.gov.sc.cetran.domain.Representacao;
-import br.gov.sc.codet.domain.PartesProcesso;
-import br.gov.sc.sgi.dao.OficioDAO;
 import br.gov.sc.sgi.domain.OficioAno;
 import util.JSFUtil;
 
