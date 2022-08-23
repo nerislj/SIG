@@ -32,6 +32,22 @@ public class HistoricoProcessoDAO extends GenericDAO<HistoricoProcesso>{
 		return resultado;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<HistoricoProcesso> loadDistribuicao60(HistoricoProcesso ano) throws Exception {
+
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+		Criteria criteria = sessao.createCriteria(HistoricoProcesso.class);
+		criteria.addOrder(Order.desc("codigo"));
+		
+		List<HistoricoProcesso> resultado = (List<HistoricoProcesso>) criteria.list();
+
+		return resultado;
+
+	}
+	
+	
+	
+	
 	
 	
 	

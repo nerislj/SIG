@@ -36,7 +36,7 @@
 				<p:panelGrid columns="2" style="margin: 0 auto;">
 
 					<h:outputLabel style="color: #FF4040">▇</h:outputLabel>
-					<h:outputLabel>Vencida (81 a 90 dias)</h:outputLabel>
+					<h:outputLabel>Vencida (81+ dias)</h:outputLabel>
 
 
 					<h:outputLabel style="color: #FFFF00">▇</h:outputLabel>
@@ -54,12 +54,13 @@
 					value="#{historicoProcessoBean.listaHistoricoProcessos}"
 					var="hist" rows="10" style="width: 100%;"
 					rowStyleClass="#{
-					(hist.dataDistribuicao.date lt (hist.dataDistribuicao.date+70) ? 'ok': 
-					(credenciadoEmpBean.convertTime(credenciadoEmpBean.dataHoje.date) gt (hist.dataDistribuicao.date+70) ? 'avencer':
+					(historicoProcessoBean.convertTime() le hist.dataDistribuicao.time+6048000000 ? 'ok': 
+					(historicoProcessoBean.convertTime() ge hist.dataDistribuicao.time+6134400000 and historicoProcessoBean.convertTime() le hist.dataDistribuicao.time+6912000000  ? 'avencer':
+					(historicoProcessoBean.convertTime() ge hist.dataDistribuicao.time+6998400000 ? 'vencida' :
 					
-					'vencida' 
+					null
 					
-					))}">
+					)))}">
 
 					<p:column headerText="Recorrido"
 						sortBy="#{hist.processoCetran.recorrido}"
@@ -68,14 +69,14 @@
 						<h:outputText value="#{hist.processoCetran.recorrido}" />
 					</p:column>
 
-					<p:column headerText="Nº Processo"
+					<p:column headerText="Data Distribuição"
 						sortBy="#{hist.processoCetran.numero}"
 						filterBy="#{hist.processoCetran.numero}"
 						style="width: 10%; text-align: center;">
-						<h:outputText value="#{hist.dataDistribuicao}" />
+						<h:outputText value="#{hist.processoCetran.numero}" />
 					</p:column>
 
-					<p:column headerText="Placa" sortBy="#{hist.processoCetran.placa}"
+					<p:column headerText="Data Atual" sortBy="#{hist.processoCetran.placa}"
 						filterBy="#{hist.processoCetran.placa}"
 						style="width: 10%; text-align: center;">
 						<h:outputText value="#{hist.processoCetran.placa}" />
