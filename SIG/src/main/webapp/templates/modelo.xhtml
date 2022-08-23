@@ -230,6 +230,10 @@ $(window).bind('beforeunload', function() {
 						<p:menuitem value="Relatório e Histórico" icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/cetran/relatoriodistribuicao.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
+							
+							<p:menuitem value="Processos à Vencer" icon="ui-icon-document"
+							url="/Sistema_Integrado_de_Gestão/pages/cetran/processoavencer.xhtml"
+							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
 
 					</p:submenu>
 

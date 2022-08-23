@@ -63,6 +63,7 @@ public class ProcessoBean implements Serializable {
 	private PartesProcesso parteProcesso;
 	private FasesProcesso fasesProcesso;
 	private HistoricoProcessoCODET historicoProcesso;
+	private SetorAtual setorAtualCodigo;
 
 	private List<NomenclaturaProcesso> listaNomemclaturas;
 	private List<SituacaoProcesso> listaSituacoes;
@@ -380,8 +381,14 @@ public class ProcessoBean implements Serializable {
 
 	public void habilitar() {
 		if (processo.getSituacao().getDescricao().equals("ARQUIVADO")) {
-
+				
+			SetorAtualDAO setorDAO = new SetorAtualDAO();
+			
+			
+			setorAtualCodigo = setorDAO.carregarSetorAtualCodigo();
+			System.out.println("setorAtualCodigo" + setorAtualCodigo);
 			arquivado = true;
+			processo.setSetorAtual(setorAtualCodigo);
 			System.out.println("ARQUIVADO SIM");
 		} else {
 			arquivado = false;
@@ -636,6 +643,14 @@ public class ProcessoBean implements Serializable {
 
 	public void setProcessoDoBanco(Processo processoDoBanco) {
 		this.processoDoBanco = processoDoBanco;
+	}
+
+	public SetorAtual getSetorAtualCodigo() {
+		return setorAtualCodigo;
+	}
+
+	public void setSetorAtualCodigo(SetorAtual setorAtualCodigo) {
+		this.setorAtualCodigo = setorAtualCodigo;
 	}
 
 }

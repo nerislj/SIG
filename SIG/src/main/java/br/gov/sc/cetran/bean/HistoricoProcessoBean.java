@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -12,6 +13,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
 import org.omnifaces.util.Messages;
+import org.primefaces.component.datatable.DataTable;
 
 import br.gov.sc.cetran.dao.ConselheiroDAO;
 import br.gov.sc.cetran.dao.HistoricoProcessoDAO;
@@ -20,6 +22,7 @@ import br.gov.sc.cetran.dao.RequerenteDAO;
 import br.gov.sc.cetran.domain.Conselheiro;
 import br.gov.sc.cetran.domain.HistoricoProcesso;
 import br.gov.sc.cetran.domain.Representacao;
+import br.gov.sc.codet.domain.PartesProcesso;
 import util.JSFUtil;
 
 @SuppressWarnings("serial")
@@ -29,26 +32,24 @@ public class HistoricoProcessoBean implements Serializable {
 
 	private HistoricoProcesso historicoProcesso;
 	private Conselheiro conselheiro;
-	
+
 	private List<HistoricoProcesso> listaHistoricoProcessos;
 	private List<Conselheiro> listaConselheiros;
-	
 
 	@PostConstruct
 	public void listar() {
 		try {
-			
+
 			ConselheiroDAO conselheiroDAO = new ConselheiroDAO();
 			listaConselheiros = conselheiroDAO.listarTudo();
-			
+
 			HistoricoProcessoDAO HistoricoProcessoDAO = new HistoricoProcessoDAO();
 			listaHistoricoProcessos = HistoricoProcessoDAO.listar();
-			
+
 			historicoProcesso = new HistoricoProcesso();
-			
-			//EDIÇÃO HISTORICO BEAN
-			
-			
+
+			// EDIÇÃO HISTORICO BEAN
+
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar listar a HistoricoProcesso.");
 			erro.printStackTrace();
@@ -61,20 +62,18 @@ public class HistoricoProcessoBean implements Serializable {
 	public void novo() {
 		historicoProcesso = new HistoricoProcesso();
 	}
-	
+
 	@SuppressWarnings("static-access")
 	public void blurConselheiro() {
-		
-		
+
 		ConselheiroDAO conselheiroDAO = new ConselheiroDAO();
 		conselheiro = conselheiroDAO.carregarConselheiro(historicoProcesso.getConselheiro().getNome());
-		
-		
-		System.out.println("VALOR conselheiro " +conselheiro);
-		
+
+		System.out.println("VALOR conselheiro " + conselheiro);
+
 		HistoricoProcessoDAO HistoricoProcessoDAO = new HistoricoProcessoDAO();
 		listaHistoricoProcessos = HistoricoProcessoDAO.listarTudo(conselheiro);
-		
+
 		System.out.println(listaHistoricoProcessos);
 		System.out.println(conselheiro);
 		System.out.println(historicoProcesso.getConselheiro().getNome());
@@ -82,11 +81,9 @@ public class HistoricoProcessoBean implements Serializable {
 
 	public void salvar() {
 		try {
-			
-			
+
 			HistoricoProcessoDAO HistoricoProcessoDAO = new HistoricoProcessoDAO();
 			HistoricoProcessoDAO.merge(historicoProcesso);
-			
 
 			Messages.addGlobalInfo("HistoricoProcesso cadastrado com Sucesso!");
 		} catch (RuntimeException erro) {
@@ -98,19 +95,14 @@ public class HistoricoProcessoBean implements Serializable {
 	public void excluir(ActionEvent evento) {
 
 		try {
-			
-			
 
-			historicoProcesso = (HistoricoProcesso) evento.getComponent().getAttributes().get("histSelecionado");		
+			historicoProcesso = (HistoricoProcesso) evento.getComponent().getAttributes().get("histSelecionado");
 
 			HistoricoProcessoDAO histDAO = new HistoricoProcessoDAO();
 			histDAO.excluir(historicoProcesso);
 
-			
-			
 			listaHistoricoProcessos = new ArrayList<>();
 			HistoricoProcessoBean.this.listar();
-		
 
 			Messages.addGlobalInfo("HistoricoProcesso removido com sucesso.");
 		} catch (RuntimeException erro) {
@@ -118,31 +110,99 @@ public class HistoricoProcessoBean implements Serializable {
 			erro.printStackTrace();
 		}
 	}
-	
-public void gerarRelatorio() {
-		
+
+	public void gerarRelatorio() {
+
 		try {
-			
-			
+
 			SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-			
-			 String dataFormat = df.format(historicoProcesso.getDataDistribuicao());
-			
-		
-		JSFUtil.redirect("../ImprimirRelatorio?rlt_nome=RelatorioDistribuicao" + "&data=" + dataFormat + "&id=" + historicoProcesso.getConselheiro().getCodigo());
-		System.out.println("IMPRIMIR RELATÓRIO DADOS" + historicoProcesso);
-		
-	} catch (IOException e) {
-		e.printStackTrace();
-	} catch (NullPointerException nulo) {
-		throw new NullPointerException(
-				"Erro ao imprimir o relatório. Valores das variáveis inválidos " + nulo.getMessage());
-	}
-		
+
+			String dataFormat = df.format(historicoProcesso.getDataDistribuicao());
+
+			JSFUtil.redirect("../ImprimirRelatorio?rlt_nome=RelatorioDistribuicao" + "&data=" + dataFormat + "&id="
+					+ historicoProcesso.getConselheiro().getCodigo());
+			System.out.println("IMPRIMIR RELATÓRIO DADOS" + historicoProcesso);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (NullPointerException nulo) {
+			throw new NullPointerException(
+					"Erro ao imprimir o relatório. Valores das variáveis inválidos " + nulo.getMessage());
+		}
+
 	}
 
 	public void editar(ActionEvent evento) {
-		historicoProcesso = (HistoricoProcesso) evento.getComponent().getAttributes().get("historicoProcessoSelecionado");		
+		historicoProcesso = (HistoricoProcesso) evento.getComponent().getAttributes()
+				.get("historicoProcessoSelecionado");
+	}
+
+	private Date dataHoje;
+	private Date data70Dias;
+	private Date data80Dias;
+
+	public Date getData80Dias() {
+		return data80Dias;
+	}
+
+	public void setData80Dias(Date data80Dias) {
+		this.data80Dias = data80Dias;
+	}
+
+	public Date getDataHoje() {
+		return dataHoje;
+	}
+
+	public void setDataHoje(Date dataHoje) {
+		this.dataHoje = dataHoje;
+	}
+
+	public Date getData70Dias() {
+		return data70Dias;
+	}
+
+	public void setData70Dias(Date data70Dias) {
+		this.data70Dias = data70Dias;
+	}
+
+	@SuppressWarnings("deprecation")
+	public Long convertTime()  {
+		
+		
+		
+		System.out.println("System.currentTimeMillis();" + System.currentTimeMillis());
+		return System.currentTimeMillis();
+	}
+
+	
+	@SuppressWarnings("deprecation")
+	public String convert70Dias(Date time) {
+		data70Dias = new Date();
+		
+		
+		
+		data70Dias.setDate(data70Dias.getDate() + 70);
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+		System.out.println(sdf.format(data70Dias) + " data70Dias");
+
+		return sdf.format(data70Dias);
+	}
+
+	@SuppressWarnings("deprecation")
+	public String convert80Dias(Date time) {
+		data80Dias = new Date();
+
+		historicoProcesso.getDataDistribuicao();
+		System.out.println(historicoProcesso.getDataDistribuicao() + " historicoProcesso.getDataDistribuicao()");
+		data80Dias.setDate(data80Dias.getDate() + 80);
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+		System.out.println(sdf.format(data80Dias) + " data80Dias");
+
+		return sdf.format(data80Dias);
 	}
 
 	public HistoricoProcesso getHistoricoProcesso() {
@@ -177,17 +237,4 @@ public void gerarRelatorio() {
 		this.listaConselheiros = listaConselheiros;
 	}
 
-
-	
-
-
-
-
-
-	
-	
-
-	
 }
-
-

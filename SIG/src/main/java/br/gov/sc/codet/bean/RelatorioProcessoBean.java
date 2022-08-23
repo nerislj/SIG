@@ -178,6 +178,20 @@ public class RelatorioProcessoBean implements Serializable {
 				setorAtual = setorDAO.carregarSetorAtual(processo.getSetorAtual().getDescricao());
 
 				situacaoProcesso = null;
+				if(dataInicial != null && dataFinal == null) {
+					Messages.addGlobalError("Favor informar a Data Final");
+					
+				}
+				
+				if(dataFinal != null && dataInicial == null) {
+					Messages.addGlobalError("Favor informar a Data Inicial");
+					
+				}
+				listaProcessos = processoDAO.listarTudo(setorAtual, situacaoProcesso,  dataInicial, dataFinal);
+				if(listaProcessos.equals(null)) {
+					Messages.addGlobalError("Não existe dados com os campos fornecidos!");
+				}
+				System.out.println(listaProcessos);
 			}
 
 			if (processo.getSetorAtual() == null && processo.getSituacao() != null) {
@@ -186,30 +200,49 @@ public class RelatorioProcessoBean implements Serializable {
 				situacaoProcesso = situacaoDAO.carregarSituacao(processo.getSituacao().getDescricao());
 
 				setorAtual = null;
+				if(dataInicial != null && dataFinal == null) {
+					Messages.addGlobalError("Favor informar a Data Final");
+					
+				}
+				
+				if(dataFinal != null && dataInicial == null) {
+					Messages.addGlobalError("Favor informar a Data Inicial");
+					
+				}
+				listaProcessos = processoDAO.listarTudo(setorAtual, situacaoProcesso,  dataInicial, dataFinal);
+				if(listaProcessos.equals(null)) {
+					Messages.addGlobalError("Não existe dados com os campos fornecidos!");
+				}
+				System.out.println(listaProcessos);
 			}
 
 			if (processo.getSetorAtual() != null && processo.getSituacao() != null) {
 				System.out.println("OS DOIS");
 				setorAtual = setorDAO.carregarSetorAtual(processo.getSetorAtual().getDescricao());
 				situacaoProcesso = situacaoDAO.carregarSituacao(processo.getSituacao().getDescricao());
-
-				System.out.println(listaProcessos);
-			}
-
-			if (processo.getSetorAtual() == null && processo.getSituacao() == null) {
-				System.out.println("TODOS");
-				listaProcessos = processoDAO.listarTudo(setorAtual, situacaoProcesso, dataInicial, dataFinal);
-			} else {
-
+				if(dataInicial != null && dataFinal == null) {
+					Messages.addGlobalError("Favor informar a Data Final");
+					
+				}
 				
-				
+				if(dataFinal != null && dataInicial == null) {
+					Messages.addGlobalError("Favor informar a Data Inicial");
+					
+				}
 				listaProcessos = processoDAO.listarTudo(setorAtual, situacaoProcesso,  dataInicial, dataFinal);
+				if(listaProcessos.equals(null)) {
+					Messages.addGlobalError("Não existe dados com os campos fornecidos!");
+				}
 				System.out.println(listaProcessos);
-				
 			}
+
+			
+				
+				
+			
 
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
 
 	}

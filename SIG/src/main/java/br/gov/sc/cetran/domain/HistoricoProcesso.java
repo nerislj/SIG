@@ -26,7 +26,7 @@ public class HistoricoProcesso extends GenericDomainCetran {
 	private String descricao;
 
 
-	@Temporal(TemporalType.TIMESTAMP)
+	
 	@Column
 	private Date dataDistribuicao;
 	

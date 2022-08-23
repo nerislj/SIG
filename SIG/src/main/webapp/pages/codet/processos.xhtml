@@ -162,14 +162,20 @@
 										value="#{processo.credenciadoPJ.pessoaJuridica.nomeFantasia} #{processo.credenciadoPJ.pessoaJuridica.cnpj}" />
 								</p:column>
 
-								<p:column headerText="Situacao Atual"
+								<p:column headerText="Situação Atual"
 									style="width: 5%; text-align: center;">
 									<h:outputText value="#{processo.situacao.descricao}" />
 								</p:column>
 
 								<p:column headerText="Setor Atual"
 									style="width: 5%; text-align: center;">
-									<h:outputText value="#{processo.setorAtual.descricao}" />
+									<h:outputText
+												rendered="#{processo.setorAtual.descricao!=null}"
+												value="#{processo.setorAtual.descricao}" />
+									
+									<h:outputText
+												rendered="#{processo.setorAtual.descricao==null}"
+												value="ARQUIVO" />
 								</p:column>
 								
 								
