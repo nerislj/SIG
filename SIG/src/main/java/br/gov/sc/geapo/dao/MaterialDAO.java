@@ -49,7 +49,7 @@ public class MaterialDAO extends GenericDAO<Material>{
 			materialEntrada.setDataCadastro(new Date());
 			
 			
-			sessao.save(material);
+			sessao.merge(material);
 						
 			sessao.save(materialEntrada);
 			

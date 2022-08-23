@@ -8,7 +8,8 @@
 	template="/templates/modelo.xhtml">
 
 	<ui:define name="conteudo">
-		<h:form id="formlista" rendered="#{autenticacaoBean.temPermissoes([1, 19, 21])}">
+		<h:form id="formlista"
+			rendered="#{autenticacaoBean.temPermissoes([1, 19, 21])}">
 			<p:panel header="Material - Listagem">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{materialBean.listaMateriais}"
@@ -21,27 +22,56 @@
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 						</p:commandButton>
 					</f:facet>
-					
-					<p:column headerText="Material Tipo" sortBy="#{material.materialTipo.tipomaterial}"
-						filterBy="#{material.materialTipo.tipomaterial}" style="width: 70px; text-align: center;">
+
+					<p:column headerText="Material Tipo"
+						sortBy="#{material.materialTipo.tipomaterial}"
+						filterBy="#{material.materialTipo.tipomaterial}"
+						style="width: 70px; text-align: center;">
 						<h:outputText value="#{material.materialTipo.tipomaterial}" />
 					</p:column>
 
 					<p:column headerText="Material" sortBy="#{material.material}"
-						filterBy="#{material.material}" style="width: 70px; text-align: center;">
+						filterBy="#{material.material}"
+						style="width: 70px; text-align: center;">
 						<h:outputText value="#{material.material}" />
 					</p:column>
-					
-					<p:column headerText="Patrimonio" sortBy="#{material.patrimonio}"
-						filterBy="#{material.patrimonio}" style="width: 70px; text-align: center;">
-						<h:outputText value="#{material.patrimonio}" />
-					</p:column>
-					
-					
-					
-					
 
-					
+					<p:column headerText="codigoMaterial"
+						sortBy="#{material.codigoMaterial}"
+						filterBy="#{material.codigoMaterial}"
+						style="width: 70px; text-align: center;">
+						<h:outputText value="#{material.codigoMaterial}" />
+					</p:column>
+
+
+					<p:column headerText="Obervação"
+						sortBy="#{material.materialObservacao}"
+						filterBy="#{material.materialObservacao}"
+						style="width: 70px; text-align: center;">
+						<h:outputText value="#{material.materialObservacao}" />
+					</p:column>
+
+
+
+					<p:column headerText="Opções"
+						style="width: 70px; text-align: center;">
+
+
+
+						<p:commandButton icon="ui-icon-pencil"
+							actionListener="#{materialBean.editar}"
+							update=":formcadastro:cadastro"
+							oncomplete="PF('dialogo').show();">
+							<f:attribute name="materialSelecionado" value="#{material}" />
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+
+					</p:column>
+
+
+
+
 				</p:dataTable>
 
 				<p:confirmDialog global="true">
@@ -57,36 +87,52 @@
 			draggable="false" resizable="false" modal="true" closable="false">
 			<h:form id="formcadastro">
 				<h:panelGrid id="cadastro" columns="2">
-				
-				<p:outputLabel value="Material Tipo: *" />
-					<p:selectOneMenu filter="true" value="#{materialBean.material.materialTipo}"
+
+					<p:outputLabel value="Material Tipo: *" />
+					<p:selectOneMenu filter="true"
+						value="#{materialBean.material.materialTipo}"
 						converter="omnifaces.SelectItemsConverter" required="true"
 						requiredMessage="O campo Material Tipo é obrigatório">
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione um Tipo" />
 						<f:selectItems value="#{materialBean.listaTipos}" var="tipo"
-							itemValue="#{tipo}"
-							itemLabel="#{tipo.tipomaterial}" />
+							itemValue="#{tipo}" itemLabel="#{tipo.tipomaterial}" />
 					</p:selectOneMenu>
-				
-				
+
+
 					<p:outputLabel value="Material: *" />
 					<p:inputText maxlength="90" size="12"
 						value="#{materialBean.material.material}" required="true"
 						style="text-transform: uppercase"
 						requiredMessage="O campo Material é obrigatório" />
-						
-						
-					<p:outputLabel value="Patrimonio" />
+
+
+					<p:outputLabel value="Codigo: *" />
 					<p:inputText maxlength="10" size="12"
-						value="#{materialBean.material.patrimonio}"
-						requiredMessage="O campo Patrimonio é obrigatório" />
+						value="#{materialBean.material.codigoMaterial}" required="true"
+						requiredMessage="O campo Codigo é obrigatório" />
+
+
+					<p:outputLabel value="Obervação: " />
+					<p:inputTextarea maxlength="255"
+						value="#{materialBean.material.materialObservacao}"
+						counter="display" counterTemplate="Restam {0} Caracteres." />
+					<h:outputText />
+					<h:outputText id="display" />
 
 				</h:panelGrid>
-				<br/>
-				<p:outputLabel value="Campos com (*) são obrigatórios" /> <br/> <br/>
-				<p:outputLabel value="Antes de salvar verifique se os campos foram preenchidos" style="background: #db8a8a; color: #000000" /> <br/>
-				<p:outputLabel value="corretamente." style="background: #db8a8a; color: #000000" /><br/><br/>
+				<br />
+				<p:outputLabel value="Campos com (*) são obrigatórios" />
+				<br />
+				<br />
+				<p:outputLabel
+					value="Antes de salvar verifique se os campos foram preenchidos"
+					style="background: #db8a8a; color: #000000" />
+				<br />
+				<p:outputLabel value="corretamente."
+					style="background: #db8a8a; color: #000000" />
+				<br />
+				<br />
 
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
