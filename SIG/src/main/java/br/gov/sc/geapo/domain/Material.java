@@ -31,7 +31,13 @@ public class Material extends GenericDomain {
 	private Date dataCadastro;
 
 	@Column(length = 50)
-	private String patrimonio;
+	private String codigoMaterial;
+	
+	@Column(length = 15)
+	private String tipoPeso;
+	
+	@Column(length = 255)
+	private String materialObservacao;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "material")
 	@Fetch(FetchMode.SUBSELECT)
@@ -81,12 +87,29 @@ public class Material extends GenericDomain {
 		this.historicoSaidaMaterial = historicoSaidaMaterial;
 	}
 
-	public String getPatrimonio() {
-		return patrimonio;
+	public String getCodigoMaterial() {
+		return codigoMaterial;
 	}
 
-	public void setPatrimonio(String patrimonio) {
-		this.patrimonio = patrimonio;
+	public void setCodigoMaterial(String codigoMaterial) {
+		this.codigoMaterial = codigoMaterial;
 	}
 
+	public String getMaterialObservacao() {
+		return materialObservacao;
+	}
+
+	public void setMaterialObservacao(String materialObservacao) {
+		this.materialObservacao = materialObservacao;
+	}
+
+	public String getTipoPeso() {
+		return tipoPeso;
+	}
+
+	public void setTipoPeso(String tipoPeso) {
+		this.tipoPeso = tipoPeso;
+	}
+
+	
 }

@@ -85,7 +85,7 @@ public class FrotaVeiculoBean implements Serializable {
 			FrotaVeiculoDAO veiculoDAO = new FrotaVeiculoDAO();
 			veiculos = veiculoDAO.listar();
 		} catch (RuntimeException erro) {
-			Messages.addGlobalError("Ocorreu um erro ao tentar listar as Cidades.");
+			Messages.addGlobalError("Ocorreu um erro ao tentar listar os veiculos.");
 			erro.printStackTrace();
 		}
 	}
@@ -126,7 +126,7 @@ public class FrotaVeiculoBean implements Serializable {
 			
 			veiculos = veiculoDAO.listar();
 
-			Messages.addGlobalInfo("Veiculo cadastrada com Sucesso!");
+			Messages.addGlobalInfo("Veiculo cadastrado com Sucesso!");
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar salvar a Veiculo.");
 			erro.printStackTrace();
