@@ -30,6 +30,10 @@ import br.gov.sc.geapo.domain.MaterialSaidaHist;
 import br.gov.sc.geapo.domain.MaterialSaidaRelacao;
 import br.gov.sc.geapo.domain.MaterialStatus;
 import br.gov.sc.geapo.domain.MaterialTipo;
+import br.gov.sc.sgi.dao.SetorDAO;
+import br.gov.sc.sgi.dao.UnidadeDAO;
+import br.gov.sc.sgi.domain.Setor;
+import br.gov.sc.sgi.domain.Unidade;
 import br.gov.sc.sgi.domain.Usuario;
 
 @SuppressWarnings("serial")
@@ -67,6 +71,9 @@ public class MaterialSaidaBean implements Serializable {
 
 	private List<Material> listaMateriais;
 	private List<MaterialTipo> listaTipos;
+	private List<Setor> setores;
+	private List<Unidade> Unidades;
+	private Unidade unidade;
 
 	@PostConstruct
 	public void listar() {
@@ -110,12 +117,32 @@ public class MaterialSaidaBean implements Serializable {
 			erro.printStackTrace();
 		}
 	}
+	
+
+	public void popularUnidades() {
+		try {
+			if (materialSaidaFront.getUnidade() != null) {
+				SetorDAO setorDAO = new SetorDAO();
+				setores = setorDAO.buscarPorUnidade(materialSaidaFront.getUnidade().getCodigo());
+			} else {
+				setores = new ArrayList<>();
+			}
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("Ocorreu um erro ao tentar filtrar os setores");
+			erro.printStackTrace();
+		}
+	}
 
 	public void novo() {
 
 		materialSaida = new MaterialSaida();
 
 		materialSaidaFront = new MaterialSaida();
+		
+		UnidadeDAO unidadeDAO = new UnidadeDAO();
+		Unidades = unidadeDAO.listar();
+		
+		setores = new ArrayList<>();
 
 	}
 
@@ -509,6 +536,30 @@ public class MaterialSaidaBean implements Serializable {
 
 	public void setListaEntradaMateriais(List<MaterialEntrada> listaEntradaMateriais) {
 		this.listaEntradaMateriais = listaEntradaMateriais;
+	}
+
+	public List<Unidade> getUnidades() {
+		return Unidades;
+	}
+
+	public void setUnidades(List<Unidade> unidades) {
+		Unidades = unidades;
+	}
+
+	public List<Setor> getSetores() {
+		return setores;
+	}
+
+	public void setSetores(List<Setor> setores) {
+		this.setores = setores;
+	}
+
+	public Unidade getUnidade() {
+		return unidade;
+	}
+
+	public void setUnidade(Unidade unidade) {
+		this.unidade = unidade;
 	}
 
 	

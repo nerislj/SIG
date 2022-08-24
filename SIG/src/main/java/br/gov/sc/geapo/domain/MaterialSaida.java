@@ -18,6 +18,7 @@ import org.hibernate.annotations.FetchMode;
 
 import br.gov.sc.sgi.domain.RecursoMultaTramita;
 import br.gov.sc.sgi.domain.Setor;
+import br.gov.sc.sgi.domain.Unidade;
 import br.gov.sc.sgi.domain.Usuario;
 
 @SuppressWarnings("serial")
@@ -33,6 +34,10 @@ public class MaterialSaida extends GenericDomain {
 	@JoinColumn(nullable = false)
 	private MaterialTipo materialTipo;
 	
+	
+	@ManyToOne
+	@JoinColumn
+	private Unidade unidade;
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
@@ -56,9 +61,30 @@ public class MaterialSaida extends GenericDomain {
 	@Column(length = 255)
 	private String ressalva;
 	
+	@Column(length = 255)
+	private String nSGPE;
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "materialSaida")
 	@Fetch(FetchMode.JOIN)
 	private List<MaterialSaidaRelacao> materialSaidaRelacao;
+	
+	
+
+	public String getnSGPE() {
+		return nSGPE;
+	}
+
+	public void setnSGPE(String nSGPE) {
+		this.nSGPE = nSGPE;
+	}
+
+	public Unidade getUnidade() {
+		return unidade;
+	}
+
+	public void setUnidade(Unidade unidade) {
+		this.unidade = unidade;
+	}
 
 	public Material getMaterial() {
 		return material;
