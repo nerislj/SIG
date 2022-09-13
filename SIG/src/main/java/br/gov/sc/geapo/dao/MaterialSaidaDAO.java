@@ -1,5 +1,8 @@
 package br.gov.sc.geapo.dao;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -7,14 +10,21 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
+import br.gov.sc.codet.domain.Processo;
+import br.gov.sc.codet.domain.SetorAtual;
+import br.gov.sc.codet.domain.SituacaoProcesso;
 import br.gov.sc.geapo.domain.Material;
 import br.gov.sc.geapo.domain.MaterialEntrada;
 import br.gov.sc.geapo.domain.MaterialSaida;
 import br.gov.sc.geapo.domain.MaterialSaidaHist;
 import br.gov.sc.geapo.domain.MaterialSaidaRelacao;
 import br.gov.sc.geapo.domain.MaterialStatus;
+import br.gov.sc.sgi.domain.OficioAno;
+import br.gov.sc.sgi.domain.Setor;
+import br.gov.sc.sgi.domain.Unidade;
 import br.gov.sc.sgi.domain.Usuario;
 import br.gov.sc.sgi.util.HibernateUtil;
 
@@ -209,15 +219,11 @@ public class MaterialSaidaDAO extends GenericDAO<MaterialSaida> {
 			for (int posicao = 0; posicao < listaSaida.size(); posicao++) {
 
 				int aux00 = 0;
-				
 
 				boolean find = false;
 				int count = 0;
-				
 
 				while (listaSaida.size() != 0) {
-					
-	
 
 					System.out.println(listaSaida.get(posicao).getMaterialSaida().getMaterial().getMaterial());
 
@@ -251,20 +257,18 @@ public class MaterialSaidaDAO extends GenericDAO<MaterialSaida> {
 
 						System.out.println(nome.getMaterialSaida().getMaterial().getMaterial());
 						System.out.println(materialSaida.getMaterial().getMaterial());
-						
-						
+
 						if (nome.getMaterialSaida().getMaterial().getMaterial()
 								.equals(materialSaida.getMaterial().getMaterial())) {
 
-						
 							aux00 = aux00 + listaSaida.get(i).getMaterialSaida().getQuantidade();
 							System.out.println(aux00);
-							
+
 							try {
 								for (int j = i + 1; j <= listaSaida.size(); j++) {
-									
-									System.out.println("AQUI "+ listaSaida.get(j));
-									if(listaSaida.get(j).getMaterialSaida().getMaterial().getMaterial().isEmpty()){
+
+									System.out.println("AQUI " + listaSaida.get(j));
+									if (listaSaida.get(j).getMaterialSaida().getMaterial().getMaterial().isEmpty()) {
 										find = false;
 										break;
 									}
@@ -278,33 +282,21 @@ public class MaterialSaidaDAO extends GenericDAO<MaterialSaida> {
 										count++;
 										break;
 									}
-									
 
-									
 								}
 
 							} catch (RuntimeException erro) {
 								find = false;
 								count++;
 							}
-							
-							
-							System.out.println("I " + listaSaida.get(i));
-						
 
-						
-								listaSaida.remove(i);
-								
-							
-							
-							
-								
-							
-							
+							System.out.println("I " + listaSaida.get(i));
+
+							listaSaida.remove(i);
 
 						}
 
-						if (count >= 2 && find==false) {
+						if (count >= 2 && find == false) {
 
 							System.out.println("materialEntrada " + materialEntrada.getMaterial().getMaterial());
 
@@ -323,7 +315,6 @@ public class MaterialSaidaDAO extends GenericDAO<MaterialSaida> {
 
 							nn = 0;
 
-							
 							aux00 = 0;
 							find = false;
 							count = 0;
@@ -331,7 +322,7 @@ public class MaterialSaidaDAO extends GenericDAO<MaterialSaida> {
 
 						}
 
-						if (count == 1 && find==false) {
+						if (count == 1 && find == false) {
 
 							System.out.println("materialEntrada " + materialEntrada.getMaterial().getMaterial());
 
@@ -354,8 +345,7 @@ public class MaterialSaidaDAO extends GenericDAO<MaterialSaida> {
 
 							n = 0;
 							aux00 = 0;
-							
-							
+
 							break;
 						}
 
@@ -364,14 +354,97 @@ public class MaterialSaidaDAO extends GenericDAO<MaterialSaida> {
 				}
 
 			}
-			
-		
 
 			transacao.commit();
 		} catch (RuntimeException erro) {
 			if (transacao != null) {
 				transacao.rollback();
 			}
+			throw erro;
+		} finally {
+			sessao.close();
+		}
+	}
+
+	@SuppressWarnings({ "unchecked" })
+	public List<MaterialSaida> listarRelatorioMaterial(Unidade unidade, Setor setor, MaterialStatus statusMaterial,
+			int anoHoje, Material material) throws ParseException {
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+		try {
+
+			Criteria consulta = sessao.createCriteria(MaterialSaida.class);
+
+			String sDateS = anoHoje + "-01-01";
+			Date sDateF = new SimpleDateFormat("yyyy-MM-dd").parse(sDateS);
+
+			String eDateS = anoHoje + "-12-31";
+			Date eDateF = new SimpleDateFormat("yyyy-MM-dd").parse(eDateS);
+
+			System.out.println("anoHoje " + anoHoje);
+			System.out.println("sDateS " + sDateS);
+			System.out.println("eDateS " + eDateS);
+
+			System.out.println("setor " + setor);
+			System.out.println("statusMaterial " + statusMaterial);
+			System.out.println("unidade " + unidade);
+
+			if (setor != null && statusMaterial == null && unidade == null && material == null) {
+
+				consulta.add(Restrictions.eq("setorAbertura", setor));
+
+				consulta.add(Restrictions.ge("dataCadastro", sDateF));
+				consulta.add(Restrictions.lt("dataCadastro", eDateF));
+
+			}
+
+			if (unidade != null && statusMaterial == null && setor == null && material == null) {
+
+				consulta.add(Restrictions.eq("unidade", unidade));
+
+				consulta.add(Restrictions.ge("dataCadastro", sDateF));
+				consulta.add(Restrictions.lt("dataCadastro", eDateF));
+			}
+
+			if (statusMaterial != null && setor == null && unidade == null && material == null) {
+
+				consulta.add(Restrictions.eq("materialStatus", statusMaterial));
+
+				consulta.add(Restrictions.ge("dataCadastro", sDateF));
+				consulta.add(Restrictions.lt("dataCadastro", eDateF));
+			}
+			
+			if (material != null && statusMaterial == null && setor == null && unidade == null) {
+
+				consulta.add(Restrictions.eq("material", material));
+
+				consulta.add(Restrictions.ge("dataCadastro", sDateF));
+				consulta.add(Restrictions.lt("dataCadastro", eDateF));
+			}
+
+			if (statusMaterial != null && setor != null && unidade != null && material != null) {
+
+				consulta.add(Restrictions.eq("materialStatus", statusMaterial));
+				consulta.add(Restrictions.eq("setorAbertura", setor));
+				consulta.add(Restrictions.eq("unidade", unidade));
+				consulta.add(Restrictions.eq("material", material));
+
+				consulta.add(Restrictions.ge("dataCadastro", sDateF));
+				consulta.add(Restrictions.lt("dataCadastro", eDateF));
+			}
+			
+			if (statusMaterial == null && setor == null && unidade == null && material == null) {
+
+				
+
+				consulta.add(Restrictions.ge("dataCadastro", sDateF));
+				consulta.add(Restrictions.lt("dataCadastro", eDateF));
+			}
+
+			List<MaterialSaida> resultado = consulta.list();
+
+			return resultado;
+
+		} catch (RuntimeException erro) {
 			throw erro;
 		} finally {
 			sessao.close();

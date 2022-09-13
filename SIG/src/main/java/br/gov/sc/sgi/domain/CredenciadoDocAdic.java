@@ -23,7 +23,6 @@ public class CredenciadoDocAdic extends GenericDomain {
 	private Date dataInclusao;
 	
 	@Temporal(TemporalType.DATE)
-	@Column(nullable = false)
 	private Date dataValidade;
 	
 	@Column(length = 15, nullable = false)

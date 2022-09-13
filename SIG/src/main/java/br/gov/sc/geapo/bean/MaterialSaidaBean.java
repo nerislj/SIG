@@ -173,6 +173,9 @@ public class MaterialSaidaBean implements Serializable {
 
 			materialSaida.setMaterialTipo(materialSaidaFront.getMaterialTipo());
 			materialSaida.setMaterial(materialSaidaFront.getMaterial());
+			materialSaida.setUnidade(materialSaidaFront.getUnidade());
+			materialSaida.setSetorAbertura(materialSaidaFront.getSetorAbertura());
+			materialSaida.setnSGPE(materialSaidaFront.getnSGPE());
 			materialSaida.setQuantidade(materialSaidaFront.getQuantidade());
 			materialSaida.setDataCadastro(new Date());
 			materialSaida.setMaterialStatus(valor);

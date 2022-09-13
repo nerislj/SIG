@@ -100,6 +100,7 @@ public class MaterialBean implements Serializable {
 			
 			material.setMaterial(material.getMaterial().toUpperCase());
 			
+			
 			materialDAO.salvarEntradaEstoque(materialEntrada, material, materialTipo);
 			
 			MaterialEntradaDAO materialEntradaDAO = new MaterialEntradaDAO();

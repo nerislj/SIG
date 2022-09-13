@@ -185,14 +185,14 @@ $(window).bind('beforeunload', function() {
 					</p:submenu>
 
 
-					<p:submenu label="GEAPO"
-						rendered="#{autenticacaoBean.temPermissoes([1, 19, 21])}">
+					<p:submenu label="Almoxarifado"
+						rendered="#{autenticacaoBean.temPermissoes([1, 19, 25])}">
 						<p:menuitem value="Material Tipo" icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/materialtipo.xhtml"
-							rendered="#{autenticacaoBean.temPermissoes([1, 21])}" />
+							 />
 						<p:menuitem value="Material Status" icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/materialstatus.xhtml"
-							rendered="#{autenticacaoBean.temPermissoes([1])}" />
+							 />
 						<p:menuitem value="Material" icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/material.xhtml" />
 						<p:menuitem value="Material Entrada" icon="ui-icon-document"
@@ -201,7 +201,11 @@ $(window).bind('beforeunload', function() {
 							url="/Sistema_Integrado_de_Gestão/pages/materialsaida.xhtml" />
 						<p:menuitem value="Aprovação Pedidos" icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/materialaprovacao.xhtml"
-							rendered="#{autenticacaoBean.temPermissoes([1, 21])}" />
+							 />
+							<p:menuitem value="Relatório" icon="ui-icon-document"
+							url="/Sistema_Integrado_de_Gestão/pages/materialrelatorio.xhtml"
+							 />
+							
 
 					</p:submenu>
 

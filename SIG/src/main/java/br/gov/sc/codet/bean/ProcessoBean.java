@@ -253,13 +253,12 @@ public class ProcessoBean implements Serializable {
 			ProcessoDAO ProcessoDAO = new ProcessoDAO();
 			PartesProcessoDAO partesDAO = new PartesProcessoDAO();
 
-			processoDoBanco = ProcessoDAO.carregaProcesso(processo.getCredenciadoPJ(), processo.getNomenclatura(),
-					processo.getSituacao());
+			processoDoBanco = ProcessoDAO.carregaProcesso(processo.getCodigo());
 
-			System.out.println(processoDoBanco);
+			System.out.println("processoDoBanco" + processoDoBanco);
 
 			if (processoDoBanco == null && processo.getCodigo() == null) {
-
+				System.out.println("ENTROU AQUI processoDoBanco.equals(null)");
 				ProcessoDAO.merge(processo);
 
 				processo = ProcessoDAO.carregaProcessoUltimo(processo.getCredenciadoPJ(), processo.getNomenclatura(),
@@ -272,7 +271,10 @@ public class ProcessoBean implements Serializable {
 				listaProcessos = ProcessoDAO.listarProcessos(campoDaBusca, credenciado, credenciadoCredencial,
 						processo.getCredenciadoPJ());
 
-			} else if (processoDoBanco != null && processo.getCodigo() == null) {
+				Messages.addGlobalInfo("Processo cadastrado com Sucesso!");
+
+			} else if (processoDoBanco.getNumProcesso().equals(processo.getNumProcesso())
+					&& processoDoBanco.getNumSGPE().equals(processo.getNumSGPE()) && processo.getCodigo() == null) {
 				Messages.addGlobalError("Já existe processo com os dados fornecidos!");
 			} else {
 				System.out.println(processoDoBanco);
@@ -280,20 +282,17 @@ public class ProcessoBean implements Serializable {
 
 				ProcessoDAO.merge(processo);
 
-				parteProcesso = ProcessoDAO.carregaParteProcesso(processo);
-
 				System.out.println(processo);
 
-				ProcessoDAO.salvarFasesEPartes(fasesProcesso, processo, usuarioLogado, parteProcesso);
+				ProcessoDAO.salvarFases(fasesProcesso, processo, usuarioLogado);
+
+				Messages.addGlobalInfo("Processo cadastrado com Sucesso!");
 			}
-				
+
 			listaFases = fasesDAO.listarPorProcesso(processo);
 			listaPartesProcessos = partesDAO.listarPorProcesso(processo);
 
-			Messages.addGlobalInfo("Processo cadastrado com Sucesso!");
-
 		} catch (RuntimeException erro) {
-		
 
 		}
 	}
@@ -381,10 +380,9 @@ public class ProcessoBean implements Serializable {
 
 	public void habilitar() {
 		if (processo.getSituacao().getDescricao().equals("ARQUIVADO")) {
-				
+
 			SetorAtualDAO setorDAO = new SetorAtualDAO();
-			
-			
+
 			setorAtualCodigo = setorDAO.carregarSetorAtualCodigo();
 			System.out.println("setorAtualCodigo" + setorAtualCodigo);
 			arquivado = true;
@@ -399,7 +397,8 @@ public class ProcessoBean implements Serializable {
 	public void buscarCamposPesquisa() {
 
 		try {
-
+			
+			
 			listaProcessos = new ArrayList<>();
 
 			empresaPJ = CredenciadoEmpDAO.consultaporCnpjString(campoDaBusca);
@@ -412,7 +411,13 @@ public class ProcessoBean implements Serializable {
 			System.out.println(empresaPJ + " empresaPJ");
 
 			ProcessoDAO processoDAO = new ProcessoDAO();
-			listaProcessos = processoDAO.listarProcessos(campoDaBusca, credenciado, credenciadoCredencial, empresaPJ);
+
+			if (campoDaBusca.isEmpty()) {
+				listaProcessos = processoDAO.listarCampoDigitadoNULL();
+			} else {
+				listaProcessos = processoDAO.listarProcessos(campoDaBusca, credenciado, credenciadoCredencial,
+						empresaPJ);
+			}
 			System.out.println(listaProcessos + " listaProcessos");
 
 			exibePainelDados = true;

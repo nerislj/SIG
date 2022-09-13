@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -25,6 +26,8 @@ import org.primefaces.event.FlowEvent;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 
+import br.gov.sc.cetran.dao.ConselheiroDAO;
+import br.gov.sc.cetran.dao.HistoricoProcessoDAO;
 import br.gov.sc.cetran.domain.ProcessoCetran;
 import br.gov.sc.sgi.dao.CidadeDAO;
 import br.gov.sc.sgi.dao.CredenciadoAlvaraDAO;
@@ -83,6 +86,7 @@ public class CredenciadoEmpBean implements Serializable {
 	private CredenciadoEmp credenciado;
 	private CredenciadoEmp credenciado2;
 	private CredenciadoEmp credenciadoDaBusca;
+	private String credenciadoPesquisaPorNome;
 
 	private CredenciadoEmpHist credenciadoEmpHist;
 
@@ -147,6 +151,29 @@ public class CredenciadoEmpBean implements Serializable {
 		}
 
 	}
+	
+	@SuppressWarnings("static-access")
+	public void blurCredenciado() {
+
+		CredenciadoEmpDAO credenciadoEmpDAO = new CredenciadoEmpDAO();
+		empresa = credenciadoEmpDAO.carregarCredenciadoEmp(credenciadoPesquisaPorNome);
+		
+		empresa.setCnpj(credenciadoPesquisaPorNome);
+
+		System.out.println("VALOR credenciadoPesquisaPorNome " + credenciadoPesquisaPorNome);
+
+		
+	}
+	
+	 public List<CredenciadoEmp> completeTheme(String query) {
+	        String queryLowerCase = query.toLowerCase();
+	        
+	        CredenciadoEmpDAO credenciadoDAO = new CredenciadoEmpDAO();
+			
+			
+	        List<CredenciadoEmp> allThemes = credenciadoDAO.listar();
+	        return allThemes.stream().filter(t -> t.getPessoaJuridica().getNomeFantasia().toLowerCase().startsWith(queryLowerCase)).collect(Collectors.toList());
+	    }
 
 	public int getFiltro() {
 		return filtro;
@@ -1234,5 +1261,19 @@ public class CredenciadoEmpBean implements Serializable {
 	public void setCredenciado2(CredenciadoEmp credenciado2) {
 		this.credenciado2 = credenciado2;
 	}
+
+	public String getCredenciadoPesquisaPorNome() {
+		return credenciadoPesquisaPorNome;
+	}
+
+	public void setCredenciadoPesquisaPorNome(String credenciadoPesquisaPorNome) {
+		this.credenciadoPesquisaPorNome = credenciadoPesquisaPorNome;
+	}
+
+	
+
+	
+
+	
 
 }

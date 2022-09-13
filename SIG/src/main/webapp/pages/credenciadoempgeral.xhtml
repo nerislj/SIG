@@ -48,9 +48,27 @@
 				<p:panel header="Consulta">
 
 					<div align="center">
+					
+					
+				
+ 
+						<p:outputLabel for="cred" value="Credenciado " />
+					<p:selectOneMenu id="cred" filter="true" style="width:225px"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{credenciadoEmpBean.credenciadoPesquisaPorNome}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione um credenciado" />
+						<f:selectItems value="#{credenciadoEmpBean.credenciados}"  
+							var="cred" itemValue="#{cred.pessoaJuridica.cnpj}"
+							itemLabel="#{cred.pessoaJuridica.nomeFantasia} - #{cred.pessoaJuridica.cnpj}" />
+
+						<p:ajax event="change"
+							listener="#{credenciadoEmpBean.blurCredenciado}"
+							update="formularioConsulta:cnpj" />
+					</p:selectOneMenu>
 
 						<p:outputLabel value="CNPJ: " />
-						<p:inputText id="placa" maxlength="14" size="12"
+						<p:inputText id="cnpj" maxlength="14" size="12"
 							value="#{credenciadoEmpBean.empresa.cnpj}"
 							style="text-transform:uppercase;">
 							<p:keyFilter regEx="/[\d\-\.]/" preventPaste="false" />

@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+
+		<script type="text/javascript">
+            $(document).ready(function () {
+                collapseDetailsRows();
+            });
+            /*A property to set row groups to auto-collapse does not currently
+             * exist with the primefaces component.  This will auto-collapse
+             * every rowgroup, which is what I want in this case.*/
+            function collapseDetailsRows() {
+                var rowGroups = $('.ui-rowgroup-toggler');
+                for (var i = 0; i &lt; rowGroups.length; i ++) {
+                    $(rowGroups[i]).trigger('click');
+                }
+            }
+        </script>
+
+		<p:panel header="Relatório Processo">
+
+
+			<h:form id="formcadastro">
+				<h:panelGrid id="cadastro" columns="2" style="margin: 0 auto;">
+
+					<p:outputLabel for="unidade" value="Unidade: " />
+					<p:selectOneMenu id="unidade" filter="true"
+						converter="genericSGIDOMAIN"
+						value="#{relatorioMaterialBean.materialSaida.unidade}">
+						<f:selectItem noSelectionOption="true" itemValue=""
+							itemLabel="Todos" />
+						<f:selectItems value="#{relatorioMaterialBean.listaUnidades}"
+							var="uni" itemValue="#{uni}" itemLabel="#{uni.unidadeNome}" />
+						<p:ajax listener="#{relatorioMaterialBean.popularSetor}"
+							update=":formcadastro:setor" />
+
+					</p:selectOneMenu>
+
+					<p:outputLabel for="setor" value="Setor: " />
+					<p:selectOneMenu id="setor" filter="true"
+						converter="genericSGIDOMAIN"
+						value="#{relatorioMaterialBean.materialSaida.setorAbertura}">
+						<f:selectItem noSelectionOption="true" itemValue=""
+							itemLabel="Todos" />
+						<f:selectItems value="#{relatorioMaterialBean.listaSetores}"
+							var="setor" itemValue="#{setor}" itemLabel="#{setor.setor}" />
+
+
+					</p:selectOneMenu>
+
+					<p:outputLabel for="material" value="Material: " />
+					<p:selectOneMenu id="material" filter="true"
+						converter="genericGEAPODOMAIN"
+						value="#{relatorioMaterialBean.materialSaida.material}">
+						<f:selectItem noSelectionOption="true" itemValue=""
+							itemLabel="Todos" />
+						<f:selectItems value="#{relatorioMaterialBean.listaMateriais}"
+							var="mat" itemValue="#{mat}"
+							itemLabel="#{mat.material.toUpperCase()}" />
+
+					</p:selectOneMenu>
+
+
+					<p:outputLabel for="situacao" value="Status: " />
+					<p:selectOneMenu id="situacao" filter="true"
+						converter="genericGEAPODOMAIN"
+						value="#{relatorioMaterialBean.materialSaida.materialStatus}">
+						<f:selectItem noSelectionOption="true" itemValue=""
+							itemLabel="Todos" />
+						<f:selectItems value="#{relatorioMaterialBean.listaStatus}"
+							var="status" itemValue="#{status}"
+							itemLabel="#{status.materialStatus.toUpperCase()}" />
+
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Ano: " />
+					<p:selectOneMenu id="ano"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{relatorioMaterialBean.ano}">
+						<f:selectItems value="#{oficioBean.anos}" var="ano"
+							itemValue="#{ano}" itemLabel="#{ano.oficioAno}" />
+					</p:selectOneMenu>
+					<p:spacer width="15" height="10" />
+
+
+
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" style="margin: 0 auto;">
+					<p:commandButton value="Gerar Relatório"
+						actionListener="#{relatorioMaterialBean.blurProcessos}"
+						oncomplete="collapseDetailsRows();"
+						update=":mensagem :formcadastro:cadastro :formlista:lista :formlista:lista2" />
+
+				</h:panelGrid>
+
+
+			</h:form>
+
+
+		</p:panel>
+
+		<h:form id="formlista">
+
+
+
+			<p:panel header="Materiais">
+
+
+
+				<p:dataTable id="lista" var="mat"
+					value="#{relatorioMaterialBean.listaMateriaisSaida}"
+					sortBy="#{mat.dataCadastro.month+1} + #{mat.material.material}"
+					expandableRowGroups="true"
+					emptyMessage="Nenhum registro encontrado.">
+
+					<f:facet name="header">
+            CONTROLE DE CONSUMO DE MATERIAL DOS CENTROS DE CUSTO <br />
+						<br />
+            TOTAL MENSAL
+        </f:facet>
+					<p:headerRow>
+						<p:column colspan="4">
+							<h:outputText value="Mês " />
+							<h:outputText value="#{mat.dataCadastro}">
+								<f:convertDateTime pattern="MM/yyyy" />
+							</h:outputText>
+
+							<h:outputText value=" " />
+
+
+							<h:outputText value="#{mat.material.material}" />
+
+
+
+
+
+						</p:column>
+					</p:headerRow>
+
+
+
+
+					<p:column headerText="Material">
+						<h:outputText value="#{mat.material.material}" />
+					</p:column>
+
+					<p:column headerText="Data Cadastro">
+						<h:outputText value="#{mat.dataCadastro}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Material Status">
+						<h:outputText
+							value="#{mat.materialStatus.materialStatus.toUpperCase()}" />
+					</p:column>
+					<p:column headerText="Quantidade">
+						<h:outputText value="#{mat.quantidade}" />
+					</p:column>
+					<p:summaryRow>
+
+						<p:column colspan="3"
+							style="text-align:right; background: #b7d8b7 !important;
+	border: 1px solid #2E8B57 !important;
+	border-width: 0 4px 0 4px !important;
+	color: #212121 !important;">
+							<h:outputText value="Total:" />
+						</p:column>
+						<p:column
+							style="background: #b7d8b7 !important;
+	border: 1px solid #2E8B57 !important;
+	border-width: 0 4px 0 4px !important;
+	color: #212121 !important;">
+							<h:outputText
+								value="#{relatorioMaterialBean.brandSubtotal(mat.material.material, mat.dataCadastro.month+1)}">
+
+							</h:outputText>
+
+
+
+
+						</p:column>
+					</p:summaryRow>
+
+
+				</p:dataTable>
+
+				<br />
+				<br />
+				<br />
+
+				<p:dataTable id="lista2" var="mat"
+					value="#{relatorioMaterialBean.listaMateriaisSaida}"
+					sortBy="#{mat.material.material}" expandableRowGroups="false"
+					emptyMessage="Nenhum registro encontrado."
+					style="width: 50%; padding-left: 25%; ">
+
+					<f:facet name="header">
+            TOTAL ANUAL
+        </f:facet>
+
+					<h:outputText value="#{mat.dataCadastro}">
+						<f:convertDateTime pattern="yyyy" />
+					</h:outputText>
+					<p:headerRow>
+
+
+
+						<p:column colspan="3">
+							<h:outputText value="" />
+							<h:outputText value="#{mat.dataCadastro}">
+								<f:convertDateTime pattern="yyyy" />
+							</h:outputText>
+
+							<h:outputText value=" " />
+
+
+							<h:outputText value="#{mat.material.material}" />
+
+							<h:outputText value=" " />
+							<h:outputText value="Total " />
+
+							<h:outputText
+								value="#{relatorioMaterialBean.subTotalAnual(mat.material.material)}" />
+
+
+						</p:column>
+					</p:headerRow>
+
+
+					<p:rowExpansion>
+
+						<p:column headerText="Material">
+							<h:outputText value="#{mat.material.material}" />
+						</p:column>
+
+						<p:column headerText="Data Cadastro">
+							<h:outputText value="#{mat.dataCadastro}" />
+						</p:column>
+						<p:column headerText="Material Status">
+							<h:outputText value="#{mat.materialStatus.materialStatus}" />
+						</p:column>
+						<p:column headerText="Quantidade">
+							<h:outputText value="#{mat.quantidade}" />
+						</p:column>
+						<p:summaryRow>
+							<p:column colspan="3" style="text-align:right">
+								<h:outputText value="Total Anual:" />
+							</p:column>
+							<p:column>
+
+
+								<h:outputText
+									value="#{relatorioMaterialBean.subTotalAnual(mat.material.material)}">
+
+								</h:outputText>
+
+
+							</p:column>
+						</p:summaryRow>
+
+					</p:rowExpansion>
+
+
+				</p:dataTable>
+
+
+			</p:panel>
+
+		</h:form>
+
+
+
+
+
+
+	</ui:define>
+</ui:composition>

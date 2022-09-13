@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 @Entity
 public class CredencialTipo extends GenericDomain {
 
-	@Column(length = 20, unique = true)
+	@Column(length = 60, unique = true)
 	private String tipocredencial;
 
 	public String getTipocredencial() {

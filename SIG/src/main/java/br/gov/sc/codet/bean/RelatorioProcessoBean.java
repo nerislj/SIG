@@ -235,6 +235,26 @@ public class RelatorioProcessoBean implements Serializable {
 				}
 				System.out.println(listaProcessos);
 			}
+			
+			if (processo.getSetorAtual() == null && processo.getSituacao() == null) {
+				System.out.println("OS DOIS NULL");
+				setorAtual = null;
+				situacaoProcesso = null;
+				if(dataInicial != null && dataFinal == null) {
+					Messages.addGlobalError("Favor informar a Data Final");
+					
+				}
+				
+				if(dataFinal != null && dataInicial == null) {
+					Messages.addGlobalError("Favor informar a Data Inicial");
+					
+				}
+				listaProcessos = processoDAO.listarTudo(setorAtual, situacaoProcesso,  dataInicial, dataFinal);
+				if(listaProcessos.equals(null)) {
+					Messages.addGlobalError("Não existe dados com os campos fornecidos!");
+				}
+				System.out.println(listaProcessos);
+			}
 
 			
 				

@@ -9,6 +9,7 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import br.gov.sc.cetran.domain.Conselheiro;
 import br.gov.sc.codet.domain.NomenclaturaProcesso;
 import br.gov.sc.codet.domain.Processo;
 import br.gov.sc.sgi.domain.CredenciadoEmp;
@@ -219,6 +220,21 @@ System.out.println(consulta);
 	}
 
 
+	
+	public static PessoaJuridica carregarCredenciadoEmp(String empresa) {
+
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+
+		
+		Criteria criteria = sessao.createCriteria(PessoaJuridica.class);
+		
+		criteria.add(Restrictions.eq("cnpj", empresa));
+		
+
+		return (PessoaJuridica) criteria.setMaxResults(1).uniqueResult();
+	}
+	
+	
 
 }
 

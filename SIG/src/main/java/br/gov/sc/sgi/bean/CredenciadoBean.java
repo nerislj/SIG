@@ -613,7 +613,7 @@ public class CredenciadoBean implements Serializable {
 
 			credenciadoDaBusca = CredenciadoDAO.consultaporPessoa(pessoa);
 			System.out.println(credenciadoDaBusca.getCredencialTipo());
-			if(credenciadoDaBusca.getCredencialTipo().getTipocredencial().equals("Médico") || credenciadoDaBusca.getCredencialTipo().getTipocredencial().equals("Psicólogo")) {
+			if(credenciadoDaBusca.getCredencialTipo().getTipocredencial().contains("Médico") || credenciadoDaBusca.getCredencialTipo().getTipocredencial().contains("Psicólogo")) {
 				medicoPsicologoSim = true;
 				System.out.println("PASSOU" + credenciadoDaBusca.getCredencialTipo());
 			}

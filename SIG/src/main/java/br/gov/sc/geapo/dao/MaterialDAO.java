@@ -13,6 +13,7 @@ import br.gov.sc.geapo.domain.Material;
 import br.gov.sc.geapo.domain.MaterialEntrada;
 import br.gov.sc.geapo.domain.MaterialEntradaHist;
 import br.gov.sc.geapo.domain.MaterialTipo;
+import br.gov.sc.sgi.domain.Setor;
 import br.gov.sc.sgi.domain.Usuario;
 import br.gov.sc.sgi.util.HibernateUtil;
 
@@ -42,6 +43,7 @@ public class MaterialDAO extends GenericDAO<Material>{
 		try {
 			transacao = sessao.beginTransaction();
 			
+			System.out.println(material + " material");
 			
 			materialEntrada.setMaterial(material);
 			materialEntrada.setMaterialTipo(materialTipo);
@@ -49,7 +51,8 @@ public class MaterialDAO extends GenericDAO<Material>{
 			materialEntrada.setDataCadastro(new Date());
 			
 			
-			sessao.merge(material);
+			
+			sessao.save(material);
 						
 			sessao.save(materialEntrada);
 			
@@ -64,6 +67,19 @@ public class MaterialDAO extends GenericDAO<Material>{
 		} finally {
 			sessao.close();
 		}
+	}
+	
+	public static Material carregarMaterial(String setor) {
+
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+
+		
+		Criteria criteria = sessao.createCriteria(Material.class);
+		
+		criteria.add(Restrictions.eq("material", setor));
+		
+
+		return (Material) criteria.setMaxResults(1).uniqueResult();
 	}
 	
 }

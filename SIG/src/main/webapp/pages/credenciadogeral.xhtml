@@ -263,8 +263,10 @@
 
 										<p:column headerText="Data Vencimento"
 											style="width: 9%; text-align: center;">
-											<h:outputText
+											<h:outputText rendered="#{credenciado.vencimentoCredencial != null}"
 												value="#{credenciado.vencimentoCredencial.date}/#{credenciado.vencimentoCredencial.month+1}/#{credenciado.vencimentoCredencial.year+1900}" />
+												<h:outputText rendered="#{credenciado.vencimentoCredencial == null}"
+												value="Sem data" />
 										</p:column>
 
 										<p:column headerText="Status Credencial"
@@ -320,8 +322,13 @@
 
 										<p:column headerText="Validade"
 											style="width: 9%; text-align: center;">
-											<h:outputText
+											
+											<h:outputText rendered="#{doc.dataValidade != null}"
 												value="#{doc.dataValidade.date}/#{doc.dataValidade.month+1}/#{doc.dataValidade.year+1900}" />
+												<h:outputText rendered="#{doc.dataValidade == null}"
+												value="Sem data" />
+												
+										
 										</p:column>
 
 										<p:column headerText="Inclusão"
@@ -509,8 +516,12 @@
 
 										<p:column headerText="Data Fim"
 											style="width: 9%; text-align: center;">
-											<h:outputText
+											
+											<h:outputText rendered="#{portaria.dataFim != null}"
 												value="#{portaria.dataFim.date}/#{portaria.dataFim.month+1}/#{portaria.dataFim.year+1900}" />
+												<h:outputText rendered="#{portaria.dataFim == null}"
+												value="Sem data" />
+											
 										</p:column>
 
 										<p:column headerText="Data Inclusão"
@@ -577,8 +588,8 @@
 
 					<p:outputLabel value="Data Fim:" />
 					<p:calendar id="dataFim" maxlength="8" size="6"
-						value="#{credenciadoBean.portaria.dataFim}" required="true"
-						requiredMessage="O campo Data Fim é obrigatório" locale="pt_BR"
+						value="#{credenciadoBean.portaria.dataFim}"
+						locale="pt_BR"
 						pattern="dd/MM/yyyy" mask="true" />
 
 				</h:panelGrid>
@@ -695,8 +706,7 @@
 
 					<p:outputLabel value="Validade: " />
 					<p:calendar id="dataValidade" maxlength="8" size="6"
-						value="#{credenciadoBean.doc.dataValidade}" required="true"
-						requiredMessage="O campo Data de Nascimento é obrigatório"
+						value="#{credenciadoBean.doc.dataValidade}"
 						locale="pt_BR" pattern="dd/MM/yyyy" mask="true" />
 
 				</h:panelGrid>
