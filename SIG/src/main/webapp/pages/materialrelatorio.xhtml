@@ -116,7 +116,7 @@
             TOTAL MENSAL
         </f:facet>
 					<p:headerRow>
-						<p:column colspan="6">
+						<p:column colspan="7">
 							<h:outputText value="Mês " />
 							<h:outputText value="#{mat.dataCadastro}">
 								<f:convertDateTime pattern="MM/yyyy" />
@@ -153,6 +153,17 @@
 							<f:convertDateTime pattern="dd/MM/yyyy" />
 						</h:outputText>
 					</p:column>
+					
+					<p:column headerText="Ressalva">
+						
+						
+						<h:outputText rendered="#{mat.ressalva != null}"
+												value="#{mat.ressalva}" />
+												<h:outputText rendered="#{mat.ressalva == null}"
+												value="Sem Ressalva" />
+						
+					</p:column>
+					
 					<p:column headerText="Status">
 						<h:outputText
 							value="#{mat.materialStatus.materialStatus.toUpperCase()}" />
@@ -162,7 +173,7 @@
 					</p:column>
 					<p:summaryRow>
 
-						<p:column colspan="5"
+						<p:column colspan="6"
 							style="text-align:right; background: #b7d8b7 !important;
 	border: 1px solid #2E8B57 !important;
 	border-width: 0 4px 0 4px !important;
