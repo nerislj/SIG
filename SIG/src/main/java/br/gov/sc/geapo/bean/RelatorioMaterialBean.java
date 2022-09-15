@@ -12,8 +12,6 @@ import javax.faces.bean.ViewScoped;
 
 import org.omnifaces.util.Messages;
 
-import br.gov.sc.codet.dao.SituacaoProcessoDAO;
-import br.gov.sc.codet.domain.SituacaoProcesso;
 import br.gov.sc.geapo.dao.MaterialDAO;
 import br.gov.sc.geapo.dao.MaterialSaidaDAO;
 import br.gov.sc.geapo.dao.MaterialStatusDAO;
@@ -125,10 +123,6 @@ public class RelatorioMaterialBean implements Serializable {
 			listaSetores = setorDAO.listar();
 			listaStatus = statusDAO.listar();
 			listaMateriais = materialDAO.listar();
-
-			
-		
-			
 			
 			materialSaida = new MaterialSaida();
 			// EDIÇÃO HISTORICO BEAN
@@ -199,105 +193,75 @@ public class RelatorioMaterialBean implements Serializable {
 		try {
 
 			
-			if (materialSaida.getSetorAbertura() == null && materialSaida.getUnidade() == null
-					&& materialSaida.getMaterialStatus() == null && materialSaida.getMaterial() != null) {
-				System.out.println("MATERIAL MATERIAL");
+			if (materialSaida.getSetorAbertura() == null && materialSaida.getMaterial() != null) {
+				System.out.println("MATERIAL");
 
 				material = materialDAO.carregarMaterial(materialSaida.getMaterial().getMaterial());
 
-				statusMaterial = null;
 				
-				listaMateriaisSaida = materialSaidaDAO.listarRelatorioMaterial(unidade, setorAtual, statusMaterial,
+				
+				listaMateriaisSaida = materialSaidaDAO.listarRelatorioMaterial(setorAtual,
 						Ano.getOficioAno(), material);
 				
 				if (listaMateriaisSaida.equals(null)) {
 					Messages.addGlobalError("Não existe dados com os campos fornecidos!");
 				}
 				System.out.println(listaMateriaisSaida);
-			}
+			} 
 
 			
 
-			if (materialSaida.getSetorAbertura() != null && materialSaida.getUnidade() == null
-					&& materialSaida.getMaterialStatus() == null) {
+			if (materialSaida.getSetorAbertura() != null && materialSaida.getMaterial() == null
+					) {
 				System.out.println("SETOR ATUAL");
 
 				setorAtual = setorDAO.carregarSetorAtual(materialSaida.getSetorAbertura().getSetor());
 
-				statusMaterial = null;
 				
-				listaMateriaisSaida = materialSaidaDAO.listarRelatorioMaterial(unidade, setorAtual, statusMaterial,
+				
+				listaMateriaisSaida = materialSaidaDAO.listarRelatorioMaterial(setorAtual,
 						Ano.getOficioAno(), material);
 				
 				if (listaMateriaisSaida.isEmpty()) {
 					Messages.addGlobalError("Não existe dados com os campos fornecidos!");
 				}
 				System.out.println(listaMateriaisSaida);
-			}
-
-			if (materialSaida.getSetorAbertura() == null && materialSaida.getUnidade() != null
-					&& materialSaida.getMaterialStatus() == null) {
-				System.out.println("UNIDADE AQUI");
-
-				unidade = unidadeDAO.carregarUnidadeAtual(materialSaida.getUnidade().getUnidadeNome());
-
-				statusMaterial = null;
 				
-				listaMateriaisSaida = materialSaidaDAO.listarRelatorioMaterial(unidade, setorAtual, statusMaterial,
-						Ano.getOficioAno(), material);
-				if (listaMateriaisSaida.isEmpty()) {
-					Messages.addGlobalError("Não existe dados com os campos fornecidos!");
-				}
-				System.out.println(listaMateriaisSaida);
-			}
-
-			if (materialSaida.getSetorAbertura() == null && materialSaida.getUnidade() == null
-					&& materialSaida.getMaterialStatus() != null) {
-				System.out.println("AQUI MATERIAL STATUS");
-
-				statusMaterial = statusDAO.carregarStatus(materialSaida.getMaterialStatus().getMaterialStatus());
-
-				setorAtual = null;
 				
-				listaMateriaisSaida = materialSaidaDAO.listarRelatorioMaterial(unidade, setorAtual, statusMaterial,
-						Ano.getOficioAno(), material);
-				if (listaMateriaisSaida.isEmpty()) {
-					Messages.addGlobalError("Não existe dados com os campos fornecidos!");
-				}
-				System.out.println(listaMateriaisSaida);
-			}
-
-			if (materialSaida.getSetorAbertura() != null && materialSaida.getMaterialStatus() != null
-					&& materialSaida.getUnidade() != null && materialSaida.getMaterial() != null) {
-				System.out.println("OS TRÊS");
-				setorAtual = setorDAO.carregarSetorAtual(materialSaida.getSetorAbertura().getSetor());
-				statusMaterial = statusDAO.carregarStatus(materialSaida.getMaterialStatus().getMaterialStatus());
-				unidade = unidadeDAO.carregarUnidadeAtual(materialSaida.getUnidade().getUnidadeNome());
-				material = materialDAO.carregarMaterial(materialSaida.getMaterial().getMaterial());
 				
-				listaMateriaisSaida = materialSaidaDAO.listarRelatorioMaterial(unidade, setorAtual, statusMaterial,
-						Ano.getOficioAno(), material);
-				if (listaMateriaisSaida.isEmpty()) {
-					Messages.addGlobalError("Não existe dados com os campos fornecidos!");
-				}
-				System.out.println(listaMateriaisSaida);
-			}
+			} 
 			
-			if (materialSaida.getSetorAbertura() == null && materialSaida.getMaterialStatus() == null
-					&& materialSaida.getUnidade() == null && materialSaida.getMaterial() == null) {
-				System.out.println("OS TRÊS");
+			if (materialSaida.getSetorAbertura() != null && materialSaida.getMaterial() != null
+					) {
+				System.out.println("OS DOIS");
+
+				setorAtual = setorDAO.carregarSetorAtual(materialSaida.getSetorAbertura().getSetor());
+				material = materialDAO.carregarMaterial(materialSaida.getMaterial().getMaterial());
+
 				
 				
-				listaMateriaisSaida = materialSaidaDAO.listarRelatorioMaterial(unidade, setorAtual, statusMaterial,
+				listaMateriaisSaida = materialSaidaDAO.listarRelatorioMaterial(setorAtual,
 						Ano.getOficioAno(), material);
+				
 				if (listaMateriaisSaida.isEmpty()) {
 					Messages.addGlobalError("Não existe dados com os campos fornecidos!");
 				}
 				System.out.println(listaMateriaisSaida);
+				
+				
+				
+			} else {
+				
+				System.out.println("TODOS");
+				listaMateriaisSaida = materialSaidaDAO.listarRelatorioMaterial(setorAtual,
+						Ano.getOficioAno(), material);
 			}
+
 			
 		
+			
 
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

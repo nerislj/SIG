@@ -367,8 +367,8 @@ public class MaterialSaidaDAO extends GenericDAO<MaterialSaida> {
 	}
 
 	@SuppressWarnings({ "unchecked" })
-	public List<MaterialSaida> listarRelatorioMaterial(Unidade unidade, Setor setor, MaterialStatus statusMaterial,
-			int anoHoje, Material material) throws ParseException {
+	public List<MaterialSaida> listarRelatorioMaterial(Setor setor, int anoHoje, Material material)
+			throws ParseException {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 		try {
 
@@ -385,57 +385,45 @@ public class MaterialSaidaDAO extends GenericDAO<MaterialSaida> {
 			System.out.println("eDateS " + eDateS);
 
 			System.out.println("setor " + setor);
-			System.out.println("statusMaterial " + statusMaterial);
-			System.out.println("unidade " + unidade);
 
-			if (setor != null && statusMaterial == null && unidade == null && material == null) {
-
-				consulta.add(Restrictions.eq("setorAbertura", setor));
-
-				consulta.add(Restrictions.ge("dataCadastro", sDateF));
-				consulta.add(Restrictions.lt("dataCadastro", eDateF));
-
-			}
-
-			if (unidade != null && statusMaterial == null && setor == null && material == null) {
-
-				consulta.add(Restrictions.eq("unidade", unidade));
-
-				consulta.add(Restrictions.ge("dataCadastro", sDateF));
-				consulta.add(Restrictions.lt("dataCadastro", eDateF));
-			}
-
-			if (statusMaterial != null && setor == null && unidade == null && material == null) {
-
-				consulta.add(Restrictions.eq("materialStatus", statusMaterial));
-
-				consulta.add(Restrictions.ge("dataCadastro", sDateF));
-				consulta.add(Restrictions.lt("dataCadastro", eDateF));
-			}
-			
-			if (material != null && statusMaterial == null && setor == null && unidade == null) {
-
-				consulta.add(Restrictions.eq("material", material));
-
-				consulta.add(Restrictions.ge("dataCadastro", sDateF));
-				consulta.add(Restrictions.lt("dataCadastro", eDateF));
-			}
-
-			if (statusMaterial != null && setor != null && unidade != null && material != null) {
-
-				consulta.add(Restrictions.eq("materialStatus", statusMaterial));
-				consulta.add(Restrictions.eq("setorAbertura", setor));
-				consulta.add(Restrictions.eq("unidade", unidade));
-				consulta.add(Restrictions.eq("material", material));
-
-				consulta.add(Restrictions.ge("dataCadastro", sDateF));
-				consulta.add(Restrictions.lt("dataCadastro", eDateF));
-			}
-			
-			if (statusMaterial == null && setor == null && unidade == null && material == null) {
-
+			if (setor != null && material == null) {
 				
+				consulta.createAlias("materialStatus", "t");
+				consulta.add(Restrictions.eq("t.materialStatus", "aprovado"));
+				consulta.add(Restrictions.eq("setorAbertura", setor));
 
+				consulta.add(Restrictions.ge("dataCadastro", sDateF));
+				consulta.add(Restrictions.lt("dataCadastro", eDateF));
+
+			}
+
+			if (material != null && setor == null) {
+
+				consulta.createAlias("materialStatus", "t");
+				consulta.add(Restrictions.eq("t.materialStatus", "aprovado"));
+				consulta.add(Restrictions.eq("material", material));
+
+				consulta.add(Restrictions.ge("dataCadastro", sDateF));
+				consulta.add(Restrictions.lt("dataCadastro", eDateF));
+			}
+
+			if (material != null && setor != null) {
+
+				consulta.createAlias("materialStatus", "t");
+				consulta.add(Restrictions.eq("t.materialStatus", "aprovado"));
+				consulta.add(Restrictions.eq("setorAbertura", setor));
+
+				consulta.add(Restrictions.eq("material", material));
+
+				consulta.add(Restrictions.ge("dataCadastro", sDateF));
+				consulta.add(Restrictions.lt("dataCadastro", eDateF));
+			}
+
+			if (setor == null && material == null) {
+
+				consulta.createAlias("materialStatus", "t");
+				consulta.add(Restrictions.eq("t.materialStatus", "aprovado"));
+				
 				consulta.add(Restrictions.ge("dataCadastro", sDateF));
 				consulta.add(Restrictions.lt("dataCadastro", eDateF));
 			}

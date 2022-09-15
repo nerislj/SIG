@@ -8,6 +8,9 @@
 	template="/templates/modelo.xhtml">
 
 	<ui:define name="conteudo">
+	
+	<h:outputStylesheet name="primeicons/primeicons.css"
+			library="primefaces" />
 
 		<script type="text/javascript">
             $(document).ready(function () {
@@ -30,18 +33,7 @@
 			<h:form id="formcadastro">
 				<h:panelGrid id="cadastro" columns="2" style="margin: 0 auto;">
 
-					<p:outputLabel for="unidade" value="Unidade: " />
-					<p:selectOneMenu id="unidade" filter="true"
-						converter="genericSGIDOMAIN"
-						value="#{relatorioMaterialBean.materialSaida.unidade}">
-						<f:selectItem noSelectionOption="true" itemValue=""
-							itemLabel="Todos" />
-						<f:selectItems value="#{relatorioMaterialBean.listaUnidades}"
-							var="uni" itemValue="#{uni}" itemLabel="#{uni.unidadeNome}" />
-						<p:ajax listener="#{relatorioMaterialBean.popularSetor}"
-							update=":formcadastro:setor" />
 
-					</p:selectOneMenu>
 
 					<p:outputLabel for="setor" value="Setor: " />
 					<p:selectOneMenu id="setor" filter="true"
@@ -50,7 +42,7 @@
 						<f:selectItem noSelectionOption="true" itemValue=""
 							itemLabel="Todos" />
 						<f:selectItems value="#{relatorioMaterialBean.listaSetores}"
-							var="setor" itemValue="#{setor}" itemLabel="#{setor.setor}" />
+							var="setor" itemValue="#{setor}" itemLabel="#{setor.setorNome} - #{setor.setor}" />
 
 
 					</p:selectOneMenu>
@@ -68,17 +60,6 @@
 					</p:selectOneMenu>
 
 
-					<p:outputLabel for="situacao" value="Status: " />
-					<p:selectOneMenu id="situacao" filter="true"
-						converter="genericGEAPODOMAIN"
-						value="#{relatorioMaterialBean.materialSaida.materialStatus}">
-						<f:selectItem noSelectionOption="true" itemValue=""
-							itemLabel="Todos" />
-						<f:selectItems value="#{relatorioMaterialBean.listaStatus}"
-							var="status" itemValue="#{status}"
-							itemLabel="#{status.materialStatus.toUpperCase()}" />
-
-					</p:selectOneMenu>
 
 					<p:outputLabel value="Ano: " />
 					<p:selectOneMenu id="ano"
@@ -108,6 +89,8 @@
 
 		</p:panel>
 
+
+
 		<h:form id="formlista">
 
 
@@ -123,12 +106,17 @@
 					emptyMessage="Nenhum registro encontrado.">
 
 					<f:facet name="header">
+						<p:commandButton value="Imprimir" type="button" icon="pi pi-print"
+							style="display:left;margin-bottom: 20px">
+							<p:printer target=":formlista" />
+						</p:commandButton>
+						<br />
             CONTROLE DE CONSUMO DE MATERIAL DOS CENTROS DE CUSTO <br />
 						<br />
             TOTAL MENSAL
         </f:facet>
 					<p:headerRow>
-						<p:column colspan="4">
+						<p:column colspan="6">
 							<h:outputText value="Mês " />
 							<h:outputText value="#{mat.dataCadastro}">
 								<f:convertDateTime pattern="MM/yyyy" />
@@ -148,17 +136,24 @@
 
 
 
+					<p:column headerText="Nº SGPE">
+						<h:outputText value="#{mat.nSGPE}" />
+					</p:column>
 
 					<p:column headerText="Material">
 						<h:outputText value="#{mat.material.material}" />
 					</p:column>
 
-					<p:column headerText="Data Cadastro">
+					<p:column headerText="Setor">
+						<h:outputText value="#{mat.setorAbertura.setorNome}" />
+					</p:column>
+
+					<p:column headerText="Data">
 						<h:outputText value="#{mat.dataCadastro}">
 							<f:convertDateTime pattern="dd/MM/yyyy" />
 						</h:outputText>
 					</p:column>
-					<p:column headerText="Material Status">
+					<p:column headerText="Status">
 						<h:outputText
 							value="#{mat.materialStatus.materialStatus.toUpperCase()}" />
 					</p:column>
@@ -167,7 +162,7 @@
 					</p:column>
 					<p:summaryRow>
 
-						<p:column colspan="3"
+						<p:column colspan="5"
 							style="text-align:right; background: #b7d8b7 !important;
 	border: 1px solid #2E8B57 !important;
 	border-width: 0 4px 0 4px !important;
@@ -201,27 +196,23 @@
 					value="#{relatorioMaterialBean.listaMateriaisSaida}"
 					sortBy="#{mat.material.material}" expandableRowGroups="false"
 					emptyMessage="Nenhum registro encontrado."
-					style="width: 50%; padding-left: 25%; ">
+					>
 
 					<f:facet name="header">
-            TOTAL ANUAL
+            TOTAL ANUAL 
+           
+           
+           <h:outputText value="#{relatorioMaterialBean.ano.oficioAno}" />
+					
         </f:facet>
 
-					<h:outputText value="#{mat.dataCadastro}">
-						<f:convertDateTime pattern="yyyy" />
-					</h:outputText>
+					
 					<p:headerRow>
 
 
 
-						<p:column colspan="3">
-							<h:outputText value="" />
-							<h:outputText value="#{mat.dataCadastro}">
-								<f:convertDateTime pattern="yyyy" />
-							</h:outputText>
-
-							<h:outputText value=" " />
-
+						<p:column style="float: center" >
+							
 
 							<h:outputText value="#{mat.material.material}" />
 
@@ -236,38 +227,7 @@
 					</p:headerRow>
 
 
-					<p:rowExpansion>
-
-						<p:column headerText="Material">
-							<h:outputText value="#{mat.material.material}" />
-						</p:column>
-
-						<p:column headerText="Data Cadastro">
-							<h:outputText value="#{mat.dataCadastro}" />
-						</p:column>
-						<p:column headerText="Material Status">
-							<h:outputText value="#{mat.materialStatus.materialStatus}" />
-						</p:column>
-						<p:column headerText="Quantidade">
-							<h:outputText value="#{mat.quantidade}" />
-						</p:column>
-						<p:summaryRow>
-							<p:column colspan="3" style="text-align:right">
-								<h:outputText value="Total Anual:" />
-							</p:column>
-							<p:column>
-
-
-								<h:outputText
-									value="#{relatorioMaterialBean.subTotalAnual(mat.material.material)}">
-
-								</h:outputText>
-
-
-							</p:column>
-						</p:summaryRow>
-
-					</p:rowExpansion>
+					
 
 
 				</p:dataTable>

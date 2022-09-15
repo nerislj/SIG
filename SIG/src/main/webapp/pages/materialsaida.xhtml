@@ -195,6 +195,14 @@ a:-webkit-any-link {
 					<p:spinner id="quantidade"
 						value="#{materialSaidaBean.materialSaidaFront.quantidade}"
 						required="true" requiredMessage="O campo Quantidade é obrigatório" />
+						
+						
+						<p:outputLabel value="Ressalva: " />
+					<p:inputTextarea maxlength="255"
+						value="#{materialSaidaBean.materialSaidaFront.ressalva}" counter="display"
+						counterTemplate="Restam {0} Caracteres." />
+					<h:outputText />
+					<h:outputText id="display" />
 
 
 				</h:panelGrid>
