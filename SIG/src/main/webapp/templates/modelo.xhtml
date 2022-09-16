@@ -188,9 +188,9 @@ $(window).bind('beforeunload', function() {
 					<p:submenu label="Almoxarifado"
 						rendered="#{autenticacaoBean.temPermissoes([1, 19, 25])}">
 						<p:menuitem value="Material Tipo" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/materialtipo.xhtml"
-							 />
-
+							url="/Sistema_Integrado_de_Gestão/pages/materialtipo.xhtml" />
+						<p:menuitem value="Centro de Custo" icon="ui-icon-document"
+							url="/Sistema_Integrado_de_Gestão/pages/materialcentrocusto.xhtml" />
 						<p:menuitem value="Cadastro de Materiais" icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/material.xhtml" />
 						<p:menuitem value="Estoque Material" icon="ui-icon-document"
@@ -198,13 +198,9 @@ $(window).bind('beforeunload', function() {
 						<p:menuitem value="Solicitação Material" icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/materialsaida.xhtml" />
 						<p:menuitem value="Aprovação Pedidos" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/materialaprovacao.xhtml"
-							 />
-							<p:menuitem value="Relatório" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/materialrelatorio.xhtml"
-							 />
-							
-
+							url="/Sistema_Integrado_de_Gestão/pages/materialaprovacao.xhtml" />
+						<p:menuitem value="Relatório" icon="ui-icon-document"
+							url="/Sistema_Integrado_de_Gestão/pages/materialrelatorio.xhtml" />
 					</p:submenu>
 
 					<p:submenu label="Cetran"
@@ -231,8 +227,8 @@ $(window).bind('beforeunload', function() {
 						<p:menuitem value="Relatório e Histórico" icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/cetran/relatoriodistribuicao.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
-							
-							<p:menuitem value="Processos à Vencer" icon="ui-icon-document"
+
+						<p:menuitem value="Processos à Vencer" icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/cetran/processoavencer.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
 
@@ -259,8 +255,9 @@ $(window).bind('beforeunload', function() {
 						<p:menuitem value="Processos" icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/codet/processos.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 13])}" />
-							
-							<p:menuitem value="Relatório Setor/Situação" icon="ui-icon-document"
+
+						<p:menuitem value="Relatório Setor/Situação"
+							icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/codet/relatorioprocesso.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 13])}" />
 

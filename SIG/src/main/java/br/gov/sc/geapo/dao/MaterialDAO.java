@@ -11,10 +11,7 @@ import org.hibernate.criterion.Restrictions;
 
 import br.gov.sc.geapo.domain.Material;
 import br.gov.sc.geapo.domain.MaterialEntrada;
-import br.gov.sc.geapo.domain.MaterialEntradaHist;
 import br.gov.sc.geapo.domain.MaterialTipo;
-import br.gov.sc.sgi.domain.Setor;
-import br.gov.sc.sgi.domain.Usuario;
 import br.gov.sc.sgi.util.HibernateUtil;
 
 public class MaterialDAO extends GenericDAO<Material>{
@@ -69,14 +66,14 @@ public class MaterialDAO extends GenericDAO<Material>{
 		}
 	}
 	
-	public static Material carregarMaterial(String setor) {
+	public static Material carregarMaterial(String centroCog) {
 
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 
 		
 		Criteria criteria = sessao.createCriteria(Material.class);
 		
-		criteria.add(Restrictions.eq("material", setor));
+		criteria.add(Restrictions.eq("material", centroCog));
 		
 
 		return (Material) criteria.setMaxResults(1).uniqueResult();

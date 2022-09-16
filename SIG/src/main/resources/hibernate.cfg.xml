@@ -101,6 +101,7 @@
 		<mapping class="br.gov.sc.geapo.domain.MaterialSaidaHist" />
 		<mapping class="br.gov.sc.geapo.domain.MaterialStatus" />
 		<mapping class="br.gov.sc.geapo.domain.MaterialTipo" />
+		<mapping class="br.gov.sc.geapo.domain.MaterialCentroCusto" />
 		<mapping class="br.gov.sc.geapo.domain.MaterialSaidaRelacao" />
 		
 		<mapping class="br.gov.sc.cetran.domain.ProcessoAno" /> 
