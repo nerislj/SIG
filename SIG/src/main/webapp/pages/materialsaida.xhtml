@@ -64,19 +64,14 @@ a:-webkit-any-link {
 						<h:outputText value="#{material.material.material}" />
 					</p:column>
 
-					<p:column headerText="Unidade" sortBy="#{material.materialCentroCusto.unidade.unidadeNome}"
-						filterBy="#{material.materialCentroCusto.unidade.unidadeNome}"
+					<p:column headerText="Unidade" sortBy="#{material.materialCentroDeCusto.unidade.unidadeNome}"
+						filterBy="#{material.materialCentroDeCusto.unidade.unidadeNome}"
 						style="width: 120px; text-align: center;">
 						<h:outputText
-							value="#{material.materialCentroCusto.unidade.unidadeNome}" />
+							value="#{material.materialCentroDeCusto.unidade.unidadeNome}" />
 					</p:column>
 
-					<p:column headerText="Setor"
-						sortBy="#{material.setorAbertura.setor}"
-						filterBy="#{material.setorAbertura.setor}"
-						style="width: 80px; text-align: center;">
-						<h:outputText value="#{material.setorAbertura.setor}" />
-					</p:column>
+				
 
 					<p:column headerText="Nº SGPE" sortBy="#{material.nSGPE}"
 						filterBy="#{material.nSGPE}"
@@ -164,25 +159,15 @@ a:-webkit-any-link {
 					<p:selectOneMenu id="unidade" filter="true"
 						requiredMessage="O campo Unidade é obrigatório"
 						converter="omnifaces.SelectItemsConverter"
-						value="#{materialSaidaBean.materialSaidaFront.unidade}">
+						value="#{materialSaidaBean.materialSaidaFront.materialCentroDeCusto}">
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione uma unidade" />
-						<f:selectItems value="#{materialSaidaBean.unidades}" var="unidade"
-							itemValue="#{unidade}" itemLabel="#{unidade.unidadeNome}" />
-						<p:ajax listener="#{materialSaidaBean.listaCusto}"
-							update=":formcadastro:setor" />
+						<f:selectItems value="#{materialSaidaBean.listaCusto}" var="c"
+							itemValue="#{c}" itemLabel="#{c.centroCog} - #{c.centroSigla} - #{c.unidade.unidadeNome}" />
+						
 					</p:selectOneMenu>
 
-					<p:outputLabel for="setor" value="Setor: " />
-					<p:selectOneMenu id="setor" filter="true"
-						requiredMessage="O campo Setor é obrigatório"
-						converter="omnifaces.SelectItemsConverter"
-						value="#{materialSaidaBean.materialSaidaFront.setorAbertura}">
-						<f:selectItem noSelectionOption="true"
-							itemLabel="Selecione um setor" />
-						<f:selectItems value="#{materialSaidaBean.setores}" var="setor"
-							itemValue="#{setor}" itemLabel="#{setor.setor}" />
-					</p:selectOneMenu>
+					
 
 
 					<p:outputLabel value="Nº SGPE: *" />

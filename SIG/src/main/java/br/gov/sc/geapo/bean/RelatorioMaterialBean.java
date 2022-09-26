@@ -2,7 +2,6 @@ package br.gov.sc.geapo.bean;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -136,19 +135,7 @@ public class RelatorioMaterialBean implements Serializable {
 		}
 	}
 	
-	public void popularSetor() {
-		try {
-			if (materialSaida.getUnidade() != null) {
-				SetorDAO setorDAO = new SetorDAO();
-				listaSetores = setorDAO.buscarPorUnidade(materialSaida.getUnidade().getCodigo());
-			} else {
-				listaSetores = new ArrayList<>();
-			}
-		} catch (RuntimeException erro) {
-			Messages.addGlobalError("Ocorreu um erro ao tentar filtrar os setores");
-			erro.printStackTrace();
-		}
-	}
+	
 
 	
 	
@@ -193,7 +180,7 @@ public class RelatorioMaterialBean implements Serializable {
 		try {
 
 			
-			if (materialSaida.getSetorAbertura() == null && materialSaida.getMaterial() != null) {
+			if (materialSaida.getMaterial() != null) {
 				System.out.println("MATERIAL");
 
 				material = materialDAO.carregarMaterial(materialSaida.getMaterial().getMaterial());
@@ -211,31 +198,12 @@ public class RelatorioMaterialBean implements Serializable {
 
 			
 
-			if (materialSaida.getSetorAbertura() != null && materialSaida.getMaterial() == null
-					) {
-				System.out.println("SETOR ATUAL");
-
-				setorAtual = setorDAO.carregarSetorAtual(materialSaida.getSetorAbertura().getSetor());
-
-				
-				
-				listaMateriaisSaida = materialSaidaDAO.listarRelatorioMaterial(setorAtual,
-						Ano.getOficioAno(), material);
-				
-				if (listaMateriaisSaida.isEmpty()) {
-					Messages.addGlobalError("Não existe dados com os campos fornecidos!");
-				}
-				System.out.println(listaMateriaisSaida);
-				
-				
-				
-			} 
 			
-			if (materialSaida.getSetorAbertura() != null && materialSaida.getMaterial() != null
+			if (materialSaida.getMaterial() != null
 					) {
 				System.out.println("OS DOIS");
 
-				setorAtual = setorDAO.carregarSetorAtual(materialSaida.getSetorAbertura().getSetor());
+				
 				material = materialDAO.carregarMaterial(materialSaida.getMaterial().getMaterial());
 
 				

@@ -37,11 +37,9 @@ public class MaterialSaida extends GenericDomain {
 	
 	@ManyToOne
 	@JoinColumn
-	private Unidade unidade;
+	private MaterialCentroCusto materialCentroDeCusto;
 
-	@ManyToOne
-	@JoinColumn(nullable = false)
-	private Setor setorAbertura;
+	
 	
 	@ManyToOne
 	@JoinColumn(nullable = false)
@@ -78,13 +76,6 @@ public class MaterialSaida extends GenericDomain {
 		this.nSGPE = nSGPE;
 	}
 
-	public Unidade getUnidade() {
-		return unidade;
-	}
-
-	public void setUnidade(Unidade unidade) {
-		this.unidade = unidade;
-	}
 
 	public Material getMaterial() {
 		return material;
@@ -135,13 +126,7 @@ public class MaterialSaida extends GenericDomain {
 		this.materialTipo = materialTipo;
 	}
 
-	public Setor getSetorAbertura() {
-		return setorAbertura;
-	}
-
-	public void setSetorAbertura(Setor setorAbertura) {
-		this.setorAbertura = setorAbertura;
-	}
+	
 
 	public MaterialStatus getMaterialStatus() {
 		return materialStatus;
@@ -157,6 +142,14 @@ public class MaterialSaida extends GenericDomain {
 
 	public void setMaterialSaidaRelacao(List<MaterialSaidaRelacao> materialSaidaRelacao) {
 		this.materialSaidaRelacao = materialSaidaRelacao;
+	}
+
+	public MaterialCentroCusto getMaterialCentroDeCusto() {
+		return materialCentroDeCusto;
+	}
+
+	public void setMaterialCentroDeCusto(MaterialCentroCusto materialCentroDeCusto) {
+		this.materialCentroDeCusto = materialCentroDeCusto;
 	}
 
 	

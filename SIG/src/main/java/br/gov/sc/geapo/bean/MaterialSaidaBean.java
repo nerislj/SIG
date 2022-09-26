@@ -48,6 +48,8 @@ public class MaterialSaidaBean implements Serializable {
 	private MaterialStatus materialStatus;
 
 	private MaterialEntrada materialEntrada;
+	
+	private MaterialCentroCusto materialCentroCusto;
 
 	private Material material;
 
@@ -83,6 +85,8 @@ public class MaterialSaidaBean implements Serializable {
 			usuarioLogado = (Usuario) sessao.getAttribute("usuario");
 
 			materialSaidaHist = new MaterialSaidaHist();
+			
+			materialCentroCusto = new MaterialCentroCusto();
 
 			MaterialSaidaDAO MaterialSaidaDAO = new MaterialSaidaDAO();
 			listaPedidoMateriaisPorUsuario = MaterialSaidaDAO.listaPedidoMateriaisPorUsuario(usuarioLogado);
@@ -160,8 +164,7 @@ public class MaterialSaidaBean implements Serializable {
 
 			materialSaida.setMaterialTipo(materialSaidaFront.getMaterialTipo());
 			materialSaida.setMaterial(materialSaidaFront.getMaterial());
-			materialSaida.setUnidade(materialSaidaFront.getUnidade());
-			materialSaida.setSetorAbertura(materialSaidaFront.getSetorAbertura());
+			materialSaida.setMaterialCentroDeCusto(materialSaidaFront.getMaterialCentroDeCusto());
 			materialSaida.setnSGPE(materialSaidaFront.getnSGPE());
 			materialSaida.setQuantidade(materialSaidaFront.getQuantidade());
 			materialSaida.setRessalva(materialSaidaFront.getRessalva());
@@ -536,6 +539,16 @@ public class MaterialSaidaBean implements Serializable {
 
 	public void setListaCusto(List<MaterialCentroCusto> listaCusto) {
 		this.listaCusto = listaCusto;
+	}
+
+
+	public MaterialCentroCusto getMaterialCentroCusto() {
+		return materialCentroCusto;
+	}
+
+
+	public void setMaterialCentroCusto(MaterialCentroCusto materialCentroCusto) {
+		this.materialCentroCusto = materialCentroCusto;
 	}
 
 }
