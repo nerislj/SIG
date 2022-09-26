@@ -9,7 +9,6 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -17,13 +16,14 @@ import javax.servlet.http.HttpSession;
 
 import org.omnifaces.util.Messages;
 
+import br.gov.sc.geapo.dao.MaterialCentroCustoDAO;
 import br.gov.sc.geapo.dao.MaterialDAO;
 import br.gov.sc.geapo.dao.MaterialEntradaDAO;
 import br.gov.sc.geapo.dao.MaterialSaidaDAO;
-import br.gov.sc.geapo.dao.MaterialSaidaRelacaoDAO;
 import br.gov.sc.geapo.dao.MaterialStatusDAO;
 import br.gov.sc.geapo.dao.MaterialTipoDAO;
 import br.gov.sc.geapo.domain.Material;
+import br.gov.sc.geapo.domain.MaterialCentroCusto;
 import br.gov.sc.geapo.domain.MaterialEntrada;
 import br.gov.sc.geapo.domain.MaterialSaida;
 import br.gov.sc.geapo.domain.MaterialSaidaHist;
@@ -56,15 +56,15 @@ public class MaterialSaidaBean implements Serializable {
 	private MaterialSaidaHist materialSaidaHist;
 
 	private List<MaterialSaidaRelacao> listaSaida;
-	
+
 	private List<MaterialSaidaRelacao> listaRelacao;
 
 	private List<MaterialSaida> listaSaidaMateriais;
-	
+
 	private List<MaterialSaida> listaSaidaMateriaisPendentes;
-	
+
 	private List<MaterialEntrada> listaEntradaMateriais;
-	
+
 	private List<MaterialEntrada> listaEstoqueMateriais;
 
 	private List<MaterialSaida> listaPedidoMateriaisPorUsuario;
@@ -72,6 +72,7 @@ public class MaterialSaidaBean implements Serializable {
 	private List<Material> listaMateriais;
 	private List<MaterialTipo> listaTipos;
 	private List<Setor> setores;
+	private List<MaterialCentroCusto> listaCusto;
 	private List<Unidade> Unidades;
 	private Unidade unidade;
 
@@ -86,10 +87,9 @@ public class MaterialSaidaBean implements Serializable {
 			MaterialSaidaDAO MaterialSaidaDAO = new MaterialSaidaDAO();
 			listaPedidoMateriaisPorUsuario = MaterialSaidaDAO.listaPedidoMateriaisPorUsuario(usuarioLogado);
 			listaSaidaMateriaisPendentes = MaterialSaidaDAO.listarMaterialPendentes();
-			
+
 			MaterialEntradaDAO MaterialEntradaDAO = new MaterialEntradaDAO();
 			listaEstoqueMateriais = MaterialEntradaDAO.listar();
-		
 
 			/*
 			 * listaPedidoMateriaisPorUsuario =
@@ -100,49 +100,32 @@ public class MaterialSaidaBean implements Serializable {
 			MaterialTipoDAO materialTipoDAO = new MaterialTipoDAO();
 			listaMateriais = materialDAO.listar();
 			listaTipos = materialTipoDAO.listar();
-			
+
 			listaSaida = new ArrayList<>();
-			
-			//PESADÃO
+
+			// PESADÃO
 //			MaterialSaidaRelacaoDAO materialSaidaRelacaoDAO = new MaterialSaidaRelacaoDAO();
 //			listaRelacao = materialSaidaRelacaoDAO.listar("codigo");
-			
-			
-			System.out.println("TAMANHO DA listaSaida "+ listaSaida.size());
-			
-			System.out.println("TAMANHO DA listaRelacao "+ listaRelacao);
+
+			System.out.println("TAMANHO DA listaSaida " + listaSaida.size());
+
+			System.out.println("TAMANHO DA listaRelacao " + listaRelacao);
 
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar listar os Status.");
 			erro.printStackTrace();
 		}
 	}
-	
 
-	public void popularUnidades() {
-		try {
-			if (materialSaidaFront.getUnidade() != null) {
-				SetorDAO setorDAO = new SetorDAO();
-				setores = setorDAO.buscarPorUnidade(materialSaidaFront.getUnidade().getCodigo());
-			} else {
-				setores = new ArrayList<>();
-			}
-		} catch (RuntimeException erro) {
-			Messages.addGlobalError("Ocorreu um erro ao tentar filtrar os setores");
-			erro.printStackTrace();
-		}
-	}
 
 	public void novo() {
 
 		materialSaida = new MaterialSaida();
 
 		materialSaidaFront = new MaterialSaida();
-		
-		UnidadeDAO unidadeDAO = new UnidadeDAO();
-		Unidades = unidadeDAO.listar();
-		
-		setores = new ArrayList<>();
+
+		MaterialCentroCustoDAO materialCentroCustoDAO = new MaterialCentroCustoDAO();
+		listaCusto = materialCentroCustoDAO.listar();
 
 	}
 
@@ -155,13 +138,17 @@ public class MaterialSaidaBean implements Serializable {
 			MaterialSaidaDAO materialSaidaDAO = new MaterialSaidaDAO();
 
 			MaterialStatusDAO materialStatusDAO = new MaterialStatusDAO();
-
+			
+			MaterialCentroCustoDAO materialCentroCustoDAO = new MaterialCentroCustoDAO();
+	
 			Material material = materialSaidaFront.getMaterial();
 
 			MaterialTipo tipoMaterial = materialSaidaFront.getMaterialTipo();
 
 			materialEntrada = materialSaidaDAO.iniciarMaterialEntrada(material.getMaterial(),
 					tipoMaterial.getTipomaterial());
+			
+			listaCusto = materialCentroCustoDAO.listar();
 
 			List<MaterialStatus> resultado = materialStatusDAO.listar();
 
@@ -180,9 +167,8 @@ public class MaterialSaidaBean implements Serializable {
 			materialSaida.setRessalva(materialSaidaFront.getRessalva());
 			materialSaida.setDataCadastro(new Date());
 			materialSaida.setMaterialStatus(valor);
-			
+
 			materialSaida.setUsuarioCadastro(usuarioLogado);
-		
 
 			materialSaidaDAO.merge(materialSaida);
 
@@ -195,8 +181,9 @@ public class MaterialSaidaBean implements Serializable {
 
 			listaSaidaMateriais = materialSaidaDAO.listar();
 			
+
 			listaPedidoMateriaisPorUsuario = materialSaidaDAO.listaPedidoMateriaisPorUsuario(usuarioLogado);
-			
+
 			listaSaidaMateriaisPendentes = materialSaidaDAO.listarMaterialPendentes();
 
 			Messages.addGlobalInfo("Material solicitado com Sucesso!");
@@ -225,11 +212,9 @@ public class MaterialSaidaBean implements Serializable {
 	}
 
 	public void ressalva(ActionEvent evento) {
-		
-		
 
 		materialSaida = (MaterialSaida) evento.getComponent().getAttributes().get("materialSelecionado");
-		
+
 		this.listar();
 	}
 
@@ -288,57 +273,40 @@ public class MaterialSaidaBean implements Serializable {
 	// APROVAÇÃO
 
 	public void salvarAprovado() throws Exception {
-		
 
-	
 		try {
 
 			if (listaSaida.isEmpty()) {
 				Messages.addGlobalError("Selecione pelo menos um Material para dar Saida.");
 			} else {
-				
-				
+
 				MaterialSaidaDAO materialSaidaDAO = new MaterialSaidaDAO();
-				
-				
-				
-		       materialSaidaDAO.salvarSelecionados(listaSaida, materialEntrada);
-		            
-		        
-				
-				
-				
+
+				materialSaidaDAO.salvarSelecionados(listaSaida, materialEntrada);
+
 //				materialEntrada = materialSaidaDAO.iniciarMaterialEntrada(material.getMaterial().getMaterial(),
 //						material.getMaterial().getMaterialTipo().getTipomaterial());
 //				
 //				System.out.println("MATERIAL ENTRADA BEAN " + materialEntrada);
 
-				
-
 				MaterialSaidaBean.this.novo();
-				
-				
+
 				listaSaidaMateriaisPendentes = materialSaidaDAO.listarMaterialPendentes();
-				
-				
 
 				Messages.addGlobalInfo("Saida realizada com sucesso");
-				
+
 				MaterialEntradaDAO materialEntradaDAO = new MaterialEntradaDAO();
 				listaEntradaMateriais = materialEntradaDAO.listar();
-				
-				
 
 			}
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar salvar o Status.");
 			erro.printStackTrace();
 		}
-		
 
 		MaterialEntradaDAO MaterialEntradaDAO = new MaterialEntradaDAO();
 		listaEstoqueMateriais = MaterialEntradaDAO.listar();
-		
+
 		MaterialEntradaDAO materialEntradaDAO = new MaterialEntradaDAO();
 		listaEntradaMateriais = materialEntradaDAO.listar();
 	}
@@ -355,20 +323,19 @@ public class MaterialSaidaBean implements Serializable {
 
 	public void adicionar(ActionEvent evento) {
 		MaterialSaida material = (MaterialSaida) evento.getComponent().getAttributes().get("materialSelecionado");
-		
+
 		System.out.println("material selecionado " + material.getMaterial().getMaterial());
 
 		int achou = -1;
 		for (int posicao = 0; posicao < listaSaida.size(); posicao++) {
 			if (listaSaida.get(posicao).getMaterialSaida().equals(material)) {
 				achou = posicao;
-				
-				
-				//if(listaSaida.get(posicao).getMaterialSaida().getMaterial().getMaterial())
+
+				// if(listaSaida.get(posicao).getMaterialSaida().getMaterial().getMaterial())
 				listaSaida.get(posicao).getMaterialSaida().getMaterial().getMaterial();
 			}
 		}
-		
+
 		if (achou < 0) {
 
 			MaterialSaidaRelacao materialSaida = new MaterialSaidaRelacao();
@@ -377,22 +344,19 @@ public class MaterialSaidaBean implements Serializable {
 			listaSaida.add(materialSaida);
 
 			System.out.println("material selecionado " + material.getMaterial().getMaterial());
-			
 
 		}
-		
+
 		Collections.sort(listaSaida, new Comparator<MaterialSaidaRelacao>() {
-	        @Override
-	        public int compare(MaterialSaidaRelacao fruit2, MaterialSaidaRelacao fruit1)
-	        {
+			@Override
+			public int compare(MaterialSaidaRelacao fruit2, MaterialSaidaRelacao fruit1) {
 
-	            return  fruit1.getMaterialSaida().getMaterial().getMaterial().compareTo(fruit2.getMaterialSaida().getMaterial().getMaterial());
-	        }
+				return fruit1.getMaterialSaida().getMaterial().getMaterial()
+						.compareTo(fruit2.getMaterialSaida().getMaterial().getMaterial());
+			}
 
-			
-	    });
-		
-		
+		});
+
 	}
 
 	public void remover(ActionEvent evento) {
@@ -407,9 +371,9 @@ public class MaterialSaidaBean implements Serializable {
 		}
 		if (achou > -1) {
 			listaSaida.remove(achou);
-			
+
 			System.out.println(listaSaida.size());
-			
+
 		}
 
 	}
@@ -566,6 +530,12 @@ public class MaterialSaidaBean implements Serializable {
 		this.unidade = unidade;
 	}
 
-	
+	public List<MaterialCentroCusto> getListaCusto() {
+		return listaCusto;
+	}
+
+	public void setListaCusto(List<MaterialCentroCusto> listaCusto) {
+		this.listaCusto = listaCusto;
+	}
 
 }

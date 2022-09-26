@@ -10,6 +10,7 @@
 	<ui:define name="conteudo">
 		<h:form id="formlista"
 			rendered="#{autenticacaoBean.temPermissoes([1, 25])}">
+			
 			<p:panel header="Centro de Custo - Listagem">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{materialCentroCustoBean.listaCusto}"
@@ -23,9 +24,17 @@
 						</p:commandButton>
 					</f:facet>
 
+					<p:column headerText="Unidade"
+						filterBy="#{material.unidade.unidadeNome}"
+						sortBy="#{material.unidade.unidadeNome}" style="width: 200px; text-align: center;">
+						<h:outputText
+							value="#{material.unidade.unidadeNome}" />
+
+					</p:column>
+
 					<p:column headerText="Codigo" sortBy="#{material.centroCog}"
 						filterBy="#{material.centroCog}"
-						style="width: 70px; text-align: center;">
+						style="width: 200px; text-align: center;">
 						<h:outputText value="#{material.centroCog}" />
 					</p:column>
 
@@ -69,18 +78,25 @@
 		<p:dialog header="Centro de Custo - Cadastro" widgetVar="dialogo"
 			draggable="false" resizable="false" modal="true" closable="false">
 			<h:form id="formcadastro">
-				<h:panelGrid id="cadastro" columns="3">
+				<h:panelGrid id="cadastro" columns="2">
+
+
+					<p:outputLabel value="Unidade" />
+					<p:selectOneMenu filter="true"
+						value="#{materialCentroCustoBean.materialCentroCusto.unidade}"
+						converter="omnifaces.SelectItemsConverter">
+						<f:selectItem noSelectionOption="true" itemLabel="Selecione uma Unidade" />
+						<f:selectItems value="#{materialCentroCustoBean.listaUnidades}"
+							var="unidade" itemValue="#{unidade}"
+							itemLabel="#{unidade.unidadeNome}" />
+					</p:selectOneMenu>
+
+
 					<p:outputLabel value="Codigo:" />
 					<p:inputText maxlength="10" size="12"
 						value="#{materialCentroCustoBean.materialCentroCusto.centroCog}"
 						required="true" style="text-transform:uppercase;"
 						requiredMessage="O campo Nome é obrigatório" />
-
-					<p:column headerText="Nome Sigla" sortBy="#{material.centroCog}"
-						filterBy="#{material.tipomaterial}"
-						style="width: 70px; text-align: center;">
-						<h:outputText value="#{material.tipomaterial}" />
-					</p:column>
 
 
 					<p:outputLabel value="Sigla:" />
@@ -89,16 +105,11 @@
 						required="true" style="text-transform:uppercase;"
 						requiredMessage="O campo Nome é obrigatório" />
 
-					<p:column headerText="Nome Sigla" sortBy="#{material.centroSigla}"
-						filterBy="#{material.tipomaterial}"
-						style="width: 70px; text-align: center;">
-						<h:outputText value="#{material.centroSigla}" />
-					</p:column>
-
 				</h:panelGrid>
 
-				<h:panelGrid columns="3">
-					<p:commandButton value="Salvar" actionListener="#{materialCentroCustoBean.salvar()}"
+				<h:panelGrid columns="4">
+					<p:commandButton value="Salvar"
+						actionListener="#{materialCentroCustoBean.salvar()}"
 						update=":mensagem :formcadastro:cadastro :formlista:lista"
 						oncomplete="PF('dialogo').hide();" />
 					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />

@@ -63,23 +63,22 @@ a:-webkit-any-link {
 						style="width: 120px; text-align: center;">
 						<h:outputText value="#{material.material.material}" />
 					</p:column>
-					
-					<p:column headerText="Unidade"
-						sortBy="#{material.unidade.unidadeNome}"
-						filterBy="#{material.unidade.unidadeNome}"
+
+					<p:column headerText="Unidade" sortBy="#{material.materialCentroCusto.unidade.unidadeNome}"
+						filterBy="#{material.materialCentroCusto.unidade.unidadeNome}"
 						style="width: 120px; text-align: center;">
-						<h:outputText value="#{material.unidade.unidadeNome}" />
+						<h:outputText
+							value="#{material.materialCentroCusto.unidade.unidadeNome}" />
 					</p:column>
-					
+
 					<p:column headerText="Setor"
 						sortBy="#{material.setorAbertura.setor}"
 						filterBy="#{material.setorAbertura.setor}"
 						style="width: 80px; text-align: center;">
 						<h:outputText value="#{material.setorAbertura.setor}" />
 					</p:column>
-					
-					<p:column headerText="Nº SGPE"
-						sortBy="#{material.nSGPE}"
+
+					<p:column headerText="Nº SGPE" sortBy="#{material.nSGPE}"
 						filterBy="#{material.nSGPE}"
 						style="width: 60px; text-align: center;">
 						<h:outputText value="#{material.nSGPE}" />
@@ -170,7 +169,7 @@ a:-webkit-any-link {
 							itemLabel="Selecione uma unidade" />
 						<f:selectItems value="#{materialSaidaBean.unidades}" var="unidade"
 							itemValue="#{unidade}" itemLabel="#{unidade.unidadeNome}" />
-						<p:ajax listener="#{materialSaidaBean.popularUnidades}"
+						<p:ajax listener="#{materialSaidaBean.listaCusto}"
 							update=":formcadastro:setor" />
 					</p:selectOneMenu>
 
@@ -195,12 +194,12 @@ a:-webkit-any-link {
 					<p:spinner id="quantidade"
 						value="#{materialSaidaBean.materialSaidaFront.quantidade}"
 						required="true" requiredMessage="O campo Quantidade é obrigatório" />
-						
-						
-						<p:outputLabel value="Ressalva: " />
+
+
+					<p:outputLabel value="Ressalva: " />
 					<p:inputTextarea maxlength="255"
-						value="#{materialSaidaBean.materialSaidaFront.ressalva}" counter="display"
-						counterTemplate="Restam {0} Caracteres." />
+						value="#{materialSaidaBean.materialSaidaFront.ressalva}"
+						counter="display" counterTemplate="Restam {0} Caracteres." />
 					<h:outputText />
 					<h:outputText id="display" />
 

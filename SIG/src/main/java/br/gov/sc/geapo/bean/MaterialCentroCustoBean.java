@@ -12,6 +12,8 @@ import org.omnifaces.util.Messages;
 
 import br.gov.sc.geapo.dao.MaterialCentroCustoDAO;
 import br.gov.sc.geapo.domain.MaterialCentroCusto;
+import br.gov.sc.sgi.dao.UnidadeDAO;
+import br.gov.sc.sgi.domain.Unidade;
 
 @SuppressWarnings("serial")
 @ManagedBean
@@ -20,10 +22,15 @@ public class MaterialCentroCustoBean implements Serializable {
 
 	private MaterialCentroCusto MaterialCentroCusto;
 	private List<MaterialCentroCusto> listaCusto;
+	private List<Unidade> listaUnidades;
 
-	
+	public List<Unidade> getListaUnidades() {
+		return listaUnidades;
+	}
 
-	
+	public void setListaUnidades(List<Unidade> listaUnidades) {
+		this.listaUnidades = listaUnidades;
+	}
 
 	public MaterialCentroCusto getMaterialCentroCusto() {
 		return MaterialCentroCusto;
@@ -53,18 +60,32 @@ public class MaterialCentroCustoBean implements Serializable {
 	}
 
 	public void novo() {
-		MaterialCentroCusto = new MaterialCentroCusto();
+		try {
+
+			MaterialCentroCusto = new MaterialCentroCusto();
+
+			UnidadeDAO unidadeDAO = new UnidadeDAO();
+			listaUnidades = unidadeDAO.listar();
+
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("Ocorreu ao gerar listagem.");
+			erro.printStackTrace();
+		}
+
 	}
 
 	public void salvar() {
 		try {
 			MaterialCentroCustoDAO MaterialCentroCustoDAO = new MaterialCentroCustoDAO();
-			
+
 			MaterialCentroCusto.setCentroCog(MaterialCentroCusto.getCentroCog().toUpperCase());
-			
+
 			MaterialCentroCustoDAO.merge(MaterialCentroCusto);
 
 			MaterialCentroCusto = new MaterialCentroCusto();
+			
+			UnidadeDAO unidadeDAO = new UnidadeDAO();
+			listaUnidades = unidadeDAO.listar();
 			listaCusto = MaterialCentroCustoDAO.listar();
 
 			Messages.addGlobalInfo("Centro de custo cadastrado com Sucesso!");
@@ -77,7 +98,8 @@ public class MaterialCentroCustoBean implements Serializable {
 	public void excluir(ActionEvent evento) {
 
 		try {
-			MaterialCentroCusto = (MaterialCentroCusto) evento.getComponent().getAttributes().get("materialcentroSelecionado");
+			MaterialCentroCusto = (MaterialCentroCusto) evento.getComponent().getAttributes()
+					.get("materialcentroSelecionado");
 
 			MaterialCentroCustoDAO MaterialCentroCustoDAO = new MaterialCentroCustoDAO();
 			MaterialCentroCustoDAO.excluir(MaterialCentroCusto);
@@ -93,8 +115,7 @@ public class MaterialCentroCustoBean implements Serializable {
 	}
 
 	public void editar(ActionEvent evento) {
-		MaterialCentroCusto = (MaterialCentroCusto) evento.getComponent().getAttributes().get("materialcentroSelecionado");		
+		MaterialCentroCusto = (MaterialCentroCusto) evento.getComponent().getAttributes()
+				.get("materialcentroSelecionado");
 	}
 }
-
-
