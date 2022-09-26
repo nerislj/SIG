@@ -198,9 +198,10 @@ $(window).bind('beforeunload', function() {
 
 					<p:submenu label="Almoxarifado"
 						rendered="#{autenticacaoBean.temPermissoes([1, 19, 25])}">
+						<p:menuitem value="Centro de Custo" icon="ui-icon-document"
+							url="/Sistema_Integrado_de_Gestão/pages/materialcentrocusto.xhtml" />
 						<p:menuitem value="Material Tipo" icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/materialtipo.xhtml" />
-
 						<p:menuitem value="Cadastro de Materiais" icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/material.xhtml" />
 						<p:menuitem value="Estoque Material" icon="ui-icon-document"
