@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+
+
+
+		<p:panel header="Relatório Férias/Afastamento/Inconsistências">
+
+
+			<h:form id="formcadastro">
+				<h:panelGrid id="cadastro" columns="2" style="margin: 0 auto;">
+
+					<p:outputLabel for="empresa" value="Empresa: " />
+					<p:selectOneMenu id="empresa" filter="true" required="true" style="width:165px"
+						requiredMessage="O campo empresa é obrigatório"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{contratoTerceirizadoBean.contratoTerceirizado.empresaTerceirizada}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma empresa" />
+						<f:selectItems
+							value="#{contratoTerceirizadoBean.listaEmpresasTerceirizadas}"
+							var="empresa" itemValue="#{empresa}"
+							itemLabel="#{empresa.pessoaJuridica.nomeFantasia}" />
+
+					</p:selectOneMenu>
+					
+					<p:outputLabel value="Tipo Evento: *" />
+						<p:selectOneMenu id="tipo" style="width:165px" required="true"
+							value="#{contratoTerceirizadoBean.eventoTerceirizado.tipoEvento}"
+							requiredMessage="O campo Tipo é obrigatório">
+							<f:selectItem itemValue="Férias" itemLabel="Férias" />
+							<f:selectItem itemValue="Afastamento" itemLabel="Afastamento" />
+							<f:selectItem itemValue="Inconsistência"
+								itemLabel="Inconsistência" />
+						</p:selectOneMenu>
+
+					<p:outputLabel for="dataInicial" value="Data Inicial: *" />
+					<p:calendar id="dataInicial" readonlyInput="false"
+						yearRange="c-120:c-14" pattern="dd/MM/yyyy"
+						value="#{contratoTerceirizadoBean.dataInicial}" showIcon="true" />
+
+					<p:outputLabel for="dataFinal" value="Data Final: *" />
+					<p:calendar id="dataFinal" readonlyInput="false"
+						yearRange="c-120:c-14" pattern="dd/MM/yyyy"
+						value="#{contratoTerceirizadoBean.dataFinal}" showIcon="true" />
+
+
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" style="margin: 0 auto;">
+					<p:commandButton value="Gerar Relatório"
+						actionListener="#{contratoTerceirizadoBean.blurEvento}"
+						update=":mensagem :formcadastro:cadastro :formlista:lista" />
+
+				</h:panelGrid>
+			</h:form>
+
+
+		</p:panel>
+
+		<h:form id="formlista">
+
+
+
+			<p:panel header="Eventos">
+				<p:dataTable id="lista"
+					emptyMessage="Nenhum registro encontrado."
+					paginator="true"
+					value="#{contratoTerceirizadoBean.listaEventosTerceirizados}"
+					var="evento" rows="10">
+
+
+					<p:column headerText="Colaborador"
+						sortBy="#{evento.colaborador.pessoa.nomeCompleto}"
+						filterBy="#{evento.colaborador.pessoa.nomeCompleto}"
+						style="width: 20%; text-align: center;">
+						<h:outputText value="#{evento.colaborador.pessoa.nomeCompleto}" />
+					</p:column>
+
+					<p:column headerText="Setor"
+						sortBy="#{evento.colaborador.setor.setorNome}"
+						filterBy="#{evento.colaborador.setor.setorNome}"
+						style="width: 20%; text-align: center;">
+						<h:outputText value="#{evento.colaborador.unidade.unidadeNome}" />
+					</p:column>
+
+					<p:column headerText="Data" style="width: 20%; text-align: center;">
+						<h:outputText
+							value="#{evento.dataEventoInicial.date}/#{evento.dataEventoInicial.month+1}/#{evento.dataEventoInicial.year+1900} - #{evento.dataEventoFinal.date}/#{evento.dataEventoFinal.month+1}/#{evento.dataEventoFinal.year+1900}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Substituto"
+						sortBy="#{evento.substituto.pessoa.nomeCompleto}"
+						filterBy="#{evento.substituto.pessoa.nomeCompleto}"
+						style="width: 20%; text-align: center;">
+						<h:outputText value="#{evento.substituto.pessoa.nomeCompleto}"
+							rendered="#{evento.substituto.pessoa.nomeCompleto!=null}" />
+						<h:outputText value="SEM COBERTURA"
+							rendered="#{evento.substituto.pessoa.nomeCompleto==null}" />
+					</p:column>
+
+					<p:column headerText="Data" style="width: 20%; text-align: center;">
+						<h:outputText rendered="#{evento.substituto.pessoa.nomeCompleto==null}"
+							value="#{evento.dataEventoInicial.date}/#{evento.dataEventoInicial.month+1}/#{evento.dataEventoInicial.year+1900} - #{evento.dataEventoFinal.date}/#{evento.dataEventoFinal.month+1}/#{evento.dataEventoFinal.year+1900}" />
+<h:outputText rendered="#{evento.substituto.pessoa.nomeCompleto!=null}"
+							value="#{evento.dataSubstitutoInicial.date}/#{evento.dataSubstitutoInicial.month+1}/#{evento.dataSubstitutoInicial.year+1900} - #{evento.dataSubstitutoFinal.date}/#{evento.dataSubstitutoFinal.month+1}/#{evento.dataSubstitutoFinal.year+1900}" />
+
+
+					</p:column>
+					
+					<p:column headerText="Dias"
+						sortBy="#{evento.dias}"
+						filterBy="#{evento.dias}"
+						style="width: 20%; text-align: center;">
+						<h:outputText value="#{evento.dias}" />
+					</p:column>
+
+
+
+
+					
+
+
+
+
+
+
+				</p:dataTable>
+
+
+			</p:panel>
+
+		</h:form>
+
+
+
+
+
+
+	</ui:define>
+</ui:composition>

@@ -8,8 +8,6 @@
 <h:head>
 
 
-
-
 	<script>
 $(document).ready(function(){
     console.log("ready is called");
@@ -26,11 +24,24 @@ $(window).bind('beforeunload', function() {
 
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Sistema Integrado de Gestão</title>
+
 	<h:outputStylesheet library="css" name="estilos.css" />
 	<h:outputScript library="js" name="scripts.js" />
+	<h:outputScript library="js" name="jquery.maskMoney.js" />
 </h:head>
 
 <h:body>
+
+	<p:ajaxStatus styleClass="ajax-status" onsuccess="configurarMoeda()">
+		<f:facet name="start">
+			<p:graphicImage library="images" name="loading.gif"
+				styleClass="loading" />
+		</f:facet>
+		<f:facet name="complete">
+			<h:outputText value="" />
+		</f:facet>
+	</p:ajaxStatus>
+
 	<p:growl id="mensagem" />
 
 
@@ -189,8 +200,7 @@ $(window).bind('beforeunload', function() {
 						rendered="#{autenticacaoBean.temPermissoes([1, 19, 25])}">
 						<p:menuitem value="Material Tipo" icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/materialtipo.xhtml" />
-						<p:menuitem value="Centro de Custo" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/materialcentrocusto.xhtml" />
+
 						<p:menuitem value="Cadastro de Materiais" icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/material.xhtml" />
 						<p:menuitem value="Estoque Material" icon="ui-icon-document"
@@ -201,6 +211,8 @@ $(window).bind('beforeunload', function() {
 							url="/Sistema_Integrado_de_Gestão/pages/materialaprovacao.xhtml" />
 						<p:menuitem value="Relatório" icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/materialrelatorio.xhtml" />
+
+
 					</p:submenu>
 
 					<p:submenu label="Cetran"
@@ -261,6 +273,23 @@ $(window).bind('beforeunload', function() {
 							url="/Sistema_Integrado_de_Gestão/pages/codet/relatorioprocesso.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 13])}" />
 
+
+					</p:submenu>
+
+					<p:submenu rendered="#{autenticacaoBean.temPermissoes([1])}"
+					label="Controle Terceirizados">
+						<p:menuitem value="Empresas" icon="ui-icon-document"
+							url="/Sistema_Integrado_de_Gestão/pages/contrato/empresaterceirizada.xhtml" />
+						<p:menuitem value="Cargo Funcionários" icon="ui-icon-document"
+							url="/Sistema_Integrado_de_Gestão/pages/contrato/cargoterceirizado.xhtml" />
+						<p:menuitem value="Funcionários" icon="ui-icon-document"
+							url="/Sistema_Integrado_de_Gestão/pages/contrato/funcionarioterceirizado.xhtml" />
+						<p:menuitem value="Contratos" icon="ui-icon-document"
+							url="/Sistema_Integrado_de_Gestão/pages/contrato/controlecontrato.xhtml" />
+						<p:menuitem value="Relatório Eventos" icon="ui-icon-document"
+							url="/Sistema_Integrado_de_Gestão/pages/contrato/relatorioevento.xhtml" />
+							<p:menuitem value="Relatório Funcionários" icon="ui-icon-document"
+							url="/Sistema_Integrado_de_Gestão/pages/contrato/relatoriocontratoxfuncionario.xhtml" />
 
 					</p:submenu>
 
@@ -338,6 +367,18 @@ $(window).bind('beforeunload', function() {
 
 		</div>
 	</div>
+
+	<script>
+			function configurarMoeda() {
+				$(".moeda").maskMoney({ decimal: ",", thousands: ".", allowZero: true });
+			}
+			
+			$(document).ready(function() {
+				configurarMoeda();
+			});
+		</script>
+
+
 </h:body>
 </html>
 

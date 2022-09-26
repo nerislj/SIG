@@ -122,6 +122,20 @@
 		<mapping class="br.gov.sc.codet.domain.HistoricoProcessoCODET" />
 		<mapping class="br.gov.sc.codet.domain.Processo" />
 		
+		<mapping
+			class="br.gov.sc.contrato.domain.EmpresaTerceirizada" />
+		<mapping class="br.gov.sc.contrato.domain.CargoTerceirizado" />
+		<mapping
+			class="br.gov.sc.contrato.domain.FuncionarioTerceirizado" />
+				<mapping
+			class="br.gov.sc.contrato.domain.EventoTerceirizado" />
+			<mapping
+			class="br.gov.sc.contrato.domain.ContratoRelacao" />
+				<mapping
+			class="br.gov.sc.contrato.domain.ContratoTerceirizado" />
+			<mapping
+			class="br.gov.sc.contrato.domain.ContratoHistFuncionario" />
+		
 
 
 	</session-factory>
