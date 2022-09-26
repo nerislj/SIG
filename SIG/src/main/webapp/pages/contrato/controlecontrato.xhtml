@@ -1,0 +1,808 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+
+		<h:outputStylesheet name="primeicons/primeicons.css"
+			library="primefaces" />
+
+
+
+		<style type="text/css">
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active
+	{
+	color: #333333 !important;
+	text-shadow: 0 1px 1px rgb(255 255 255/ 75%) !important;
+	cursor: pointer !important;
+	background-color: #f5f5f5 !important;
+	*background-color: #e6e6e6 !important;
+	background-image: -ms-linear-gradient(top, #ffffff, #e6e6e6) !important;
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff),
+		to(#e6e6e6)) !important;
+	background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6)
+		!important;
+	background-image: -o-linear-gradient(top, #ffffff, #e6e6e6) !important;
+	background-image: linear-gradient(top, #ffffff, #e6e6e6) !important;
+	background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6) !important;
+	background-repeat: repeat-x !important;
+	border: 1px solid #cccccc !important;
+	*border: 0 !important;
+	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25)
+		!important;
+	border-color: #e6e6e6 #e6e6e6 #bfbfbf !important;
+	border-bottom-color: #b3b3b3 !important;
+	-webkit-border-radius: 4px !important;
+	-moz-border-radius: 4px !important;
+	border-radius: 4px !important;
+	filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff',
+		endColorstr='#e6e6e6', GradientType=0) !important;
+	filter: progid:dximagetransform.microsoft.gradient(enabled=false)
+		!important;
+	*zoom: 1 !important;
+	-webkit-box-shadow: inset 0 1px 0 rgb(255 255 255/ 20%), 0 1px 2px
+		rgb(0 0 0/ 5%) !important;
+	-moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px
+		rgba(0, 0, 0, 0.05) !important;
+	box-shadow: inset 0 1px 0 rgb(255 255 255/ 20%), 0 1px 2px
+		rgb(0 0 0/ 5%) !important;
+}
+
+.ui-state-highlight, .ui-widget-content .ui-state-highlight,
+	.ui-widget-header .ui-state-highlight {
+	color: #333333 !important;
+	text-shadow: 0 1px 1px rgb(255 255 255/ 75%) !important;
+	cursor: pointer !important;
+	background-color: #f5f5f5 !important;
+	*background-color: #e6e6e6 !important;
+	background-image: -ms-linear-gradient(top, #ffffff, #e6e6e6) !important;
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff),
+		to(#e6e6e6)) !important;
+	background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6)
+		!important;
+	background-image: -o-linear-gradient(top, #ffffff, #e6e6e6) !important;
+	background-image: linear-gradient(top, #ffffff, #e6e6e6) !important;
+	background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6) !important;
+	background-repeat: repeat-x !important;
+	border: 1px solid #cccccc !important;
+	*border: 0 !important;
+	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25)
+		!important;
+	border-color: #e6e6e6 #e6e6e6 #bfbfbf !important;
+	border-bottom-color: #b3b3b3 !important;
+	-webkit-border-radius: 4px !important;
+	-moz-border-radius: 4px !important;
+	border-radius: 4px !important;
+	filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff',
+		endColorstr='#e6e6e6', GradientType=0) !important;
+	filter: progid:dximagetransform.microsoft.gradient(enabled=false)
+		!important;
+	*zoom: 1 !important;
+	-webkit-box-shadow: inset 0 1px 0 rgb(255 255 255/ 20%), 0 1px 2px
+		rgb(0 0 0/ 5%) !important;
+	-moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px
+		rgba(0, 0, 0, 0.05) !important;
+	box-shadow: inset 0 1px 0 rgb(255 255 255/ 20%), 0 1px 2px
+		rgb(0 0 0/ 5%) !important;
+}
+
+.ui-icon {
+	width: 16px !important;
+	font-size: 16px !important;
+}
+</style>
+
+
+
+		<p:tabView id="tabView"
+			rendered="#{autenticacaoBean.temPermissoes([1, 13, 17, 18])}">
+			<p:tab title="Contratos">
+				<h:form id="formularioContratos">
+					<h:panelGroup id="painelDados" layout="block">
+
+
+
+
+						<!-- <h:panelGrid columns="2"
+							rendered="#{credenciadoEmpBean.exibePainelDados}">
+							 -->
+						<p:panelGrid columns="1" layout="grid">
+
+							<p:dataTable id="listaContratos"
+								emptyMessage="Nenhum contrato encontrado." paginator="true"
+								rows="10"
+								value="#{contratoTerceirizadoBean.listaContratosTerceirizados}"
+								var="contrato">
+
+
+
+
+								<f:facet name="header">
+									<h3>CONTRATOS</h3>
+
+									<p:commandButton value="Adicionar Novo Contrato" title="Adicionar Novo Contrato"
+									
+										style="align: center;
+    background: #32cd32;
+  
+    border-width: 0 3px 0 3px;
+    color: #000000;"
+										icon="pi pi-plus-circle"
+										oncomplete="PF('dialogoNovoContrato').show();"
+										update="tabView:formularioContratos:listaContratos :contrato:dadosForm"
+										rendered="#{autenticacaoBean.temPermissoes([1, 13])}">
+
+									</p:commandButton>
+
+								</f:facet>
+
+
+								<p:ajax event="rowToggle"
+									listener="#{contratoTerceirizadoBean.onRowToggleFuncionarios}"
+									update="tabView:formularioContratos:listaContratos listaFuncionarios " />
+								<p:column headerText="Funcionários"
+									style="width: 2%; text-align: center;">
+									<p:rowToggler />
+
+
+
+								</p:column>
+								<p:column headerText="Contrato"
+									style="width: 4%; text-align: center;">
+									<h:outputText value="#{contrato.nContrato}" />
+								</p:column>
+
+								<p:column headerText="Número SGPE"
+									style="width: 4%; text-align: center;">
+									<h:outputText value="#{contrato.nSGPE}" />
+								</p:column>
+
+								<p:column headerText="Unidade"
+									style="width: 5%; text-align: center;">
+									<h:outputText value="#{contrato.unidade.unidadeNome}" />
+								</p:column>
+
+
+								<p:column headerText="Município"
+									style="width: 4%; text-align: center;">
+									<h:outputText value="#{contrato.municipio.nome}" />
+								</p:column>
+
+
+
+								<p:column headerText="Quantidade"
+									style="width: 9%; text-align: center;">
+									<h:outputText value="#{contrato.qtdFuncionarios}" />
+								</p:column>
+
+								<p:column headerText="Atividade"
+									style="width: 5%; text-align: center;">
+									<h:outputText value="#{contrato.cargoTerceirizado.descricao}" />
+								</p:column>
+
+								<p:column headerText="H/Dia"
+									style="width: 5%; text-align: center;">
+									<h:outputText value="#{contrato.hrContrato}" />
+								</p:column>
+
+								<p:column headerText="Valor NF"
+									style="width: 5%; text-align: center;">
+									<h:outputText value="#{contrato.valorNF}">
+										<f:convertNumber type="currency" />
+									</h:outputText>
+								</p:column>
+
+								<p:column headerText="Ações"
+									style="width: 3%; text-align: center;"
+									rendered="#{autenticacaoBean.temPermissoes([1, 13])}">
+
+
+									<p:commandButton title="Adicionar funcionário"
+										actionListener="#{contratoTerceirizadoBean.novoFuncionario}"
+										icon="pi pi-user-plus"
+										onclick="PF('dialogoNovoFuncionario').show();"
+										style="align: center;background: #8FBC8F;border-width: 0 3px 0 3px;color: #000000;
+"
+										update=":mensagem tabView:formularioContratos:painelDados funcionario:dadosFormFunc">
+										<f:attribute name="contratoSelecionado" value="#{contrato}" />
+										<f:actionListener
+											type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+
+									</p:commandButton>
+
+									<p:commandButton title="Editar contrato"
+										actionListener="#{contratoTerceirizadoBean.editar}"
+										icon="pi pi-pencil"
+										onclick="PF('dialogoNovoContrato').show();"
+										style="align: center;border-width: 0 3px 0 3px;color: #fff;background: #607d8b;"
+										update=":mensagem contrato:dadosForm">
+										<f:attribute name="contratoSelecionado" value="#{contrato}" />
+										<f:actionListener
+											type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+									</p:commandButton>
+									
+									<p:commandButton title="Remover"
+												actionListener="#{contratoTerceirizadoBean.excluirContrato}"
+												icon="pi pi-times"
+												style="align: center; background: #F59E9C;border-width: 0 3px 0 3px;color: #000000;"
+												update=":mensagem tabView:formularioContratos:painelDados">
+												<p:confirm header="Confirmação"
+													message="Deseja excluir o Funcionário?" icon="ui-icon-alert" />
+												<f:attribute name="contratoSelecionado"
+													value="#{contrato}" />
+												<f:actionListener
+													type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+
+											</p:commandButton>
+
+								</p:column>
+
+
+
+
+
+
+								<p:rowExpansion>
+									<p:dataTable id="listaFuncionarios"
+										emptyMessage="Nenhum funcionário encontrado." paginator="false"
+										value="#{contratoTerceirizadoBean.listaContratoRelacoes}"
+										var="relacao" rows="10">
+
+										<p:column headerText="Funcionário">
+											<h:outputText
+												rendered="#{relacao.funcionarioTerceirizado.tipoEvento.substituto == null}"
+												value="#{relacao.funcionarioTerceirizado.pessoa.nomeCompleto}" />
+
+											<h:outputText
+												rendered="#{relacao.funcionarioTerceirizado.tipoEvento.substituto != null}"
+												value="#{relacao.funcionarioTerceirizado.tipoEvento.substituto.pessoa.nomeCompleto}" />
+										</p:column>
+
+
+										<p:column headerText="Cargo">
+											<h:outputText
+												value="#{relacao.funcionarioTerceirizado.cargoTerceirizado.descricao}" rendered="#{relacao.funcionarioTerceirizado.tipoEvento.substituto == null}" />
+												<h:outputText
+												value="#{relacao.funcionarioTerceirizado.tipoEvento.substituto.cargoTerceirizado.descricao}" rendered="#{relacao.funcionarioTerceirizado.tipoEvento.substituto != null}" />
+										</p:column>
+
+										<p:column headerText="Setor">
+											<h:outputText rendered="#{relacao.funcionarioTerceirizado.tipoEvento.substituto == null}"
+												value="#{relacao.funcionarioTerceirizado.setor.setor} - #{relacao.funcionarioTerceirizado.setor.setorNome}" />
+												<h:outputText rendered="#{relacao.funcionarioTerceirizado.tipoEvento.substituto != null}"
+												value="#{relacao.funcionarioTerceirizado.tipoEvento.substituto.setor.setor} - #{relacao.funcionarioTerceirizado.tipoEvento.substituto.setor.setorNome}" />
+										</p:column>
+
+										<p:column headerText="Cadastrado Por">
+											<h:outputText
+												value="#{relacao.usuarioCadastro.pessoa.nomeCompleto}" />
+										</p:column>
+
+										<p:column headerText="Data Cadastro">
+											<h:outputText value="#{relacao.dataCadastro}">
+												<f:convertDateTime pattern="dd/MM/yyyy" />
+											</h:outputText>
+										</p:column>
+
+										<p:column headerText="Status">
+											<h:outputText value="#{relacao.status}" />
+										</p:column>
+
+										<p:column headerText="Ações"
+											style="width: 4%; text-align: center;"
+											rendered="#{autenticacaoBean.temPermissoes([1, 13])}">
+
+
+											<p:commandButton title="Férias/Afastamento/Inconsistências"
+												actionListener="#{contratoTerceirizadoBean.novoEvento}"
+												icon="pi pi-calendar"
+												onclick="PF('dialogoFeriasAfastamentoInconsistencias').show();"
+												style="align: center;background: #ffecb3;border-width: 0 3px 0 3px;color: #000000;"
+												update=":mensagem tabView:formularioContratos:painelDados feriasAfastamentoInconsistencias:dadosFormFeriasAfastamentoInconsistencias">
+												<f:attribute name="funcionarioSelecionado"
+													value="#{relacao}" />
+												<f:actionListener
+													type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+
+
+											</p:commandButton>
+
+											<p:commandButton title="Remover"
+												actionListener="#{contratoTerceirizadoBean.excluir}"
+												icon="pi pi-times"
+												style="align: center; background: #F59E9C;border-width: 0 3px 0 3px;color: #000000;"
+												update=":mensagem tabView:formularioContratos:painelDados">
+												<p:confirm header="Confirmação"
+													message="Deseja excluir o Funcionário?" icon="ui-icon-alert" />
+												<f:attribute name="funcionarioSelecionado"
+													value="#{relacao}" />
+												<f:actionListener
+													type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+
+											</p:commandButton>
+
+										</p:column>
+
+
+
+
+
+
+
+
+
+									</p:dataTable>
+								</p:rowExpansion>
+
+
+
+							</p:dataTable>
+							
+							<p:confirmDialog global="true">
+					<p:commandButton value="Sim" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="Não" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+
+						</p:panelGrid>
+
+
+
+						<br />
+						<br />
+
+
+
+
+
+
+					</h:panelGroup>
+
+
+
+
+
+
+				</h:form>
+
+
+			</p:tab>
+
+
+
+
+
+
+
+
+		</p:tabView>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		<p:dialog widgetVar="dialogoNovoContrato" draggable="false"
+			resizable="true" modal="true" closable="true" responsive="true">
+			<f:facet name="header">
+
+				<h:outputText id="someDialogHeader" value="Contrato" />
+
+			</f:facet>
+
+			<h:form id="contrato">
+
+
+
+				<p:panel header="Contrato">
+
+					<p:panelGrid id="dadosForm" columns="2" layout="tabular"
+						style="margin: 0 auto;" styleClass="ui-noborder">
+						
+						<p:outputLabel value="Empresa " />
+						<p:selectOneMenu id="empresa" filter="true" style="width:320px"
+							requiredMessage="O campo Empresa é obrigatório"
+							converter="omnifaces.SelectItemsConverter"
+							value="#{contratoTerceirizadoBean.contratoTerceirizado.empresaTerceirizada}">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione uma empresa" />
+							<f:selectItems value="#{contratoTerceirizadoBean.listaEmpresasTerceirizadas}" 
+								var="empresa" itemValue="#{empresa}"
+								itemLabel="#{empresa.pessoaJuridica.nomeFantasia}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Nº Contrato" />
+						<p:inputText maxlength="255" size="50" id="nContrato"
+							value="#{contratoTerceirizadoBean.contratoTerceirizado.nContrato}"
+							required="true"
+							requiredMessage="O campo Nº Contrato é obrigatório" />
+
+						<p:outputLabel value="Nº SGPE" />
+						<p:inputText maxlength="255" size="50" id="nSGPE"
+							value="#{contratoTerceirizadoBean.contratoTerceirizado.nSGPE}"
+							required="true" requiredMessage="O campo Nº SGPE é obrigatório" />
+
+
+
+						<p:outputLabel value="Unidade " />
+						<p:selectOneMenu id="unidade" filter="true" style="width:320px"
+							requiredMessage="O campo Unidade é obrigatório"
+							converter="omnifaces.SelectItemsConverter"
+							value="#{contratoTerceirizadoBean.contratoTerceirizado.unidade}">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione uma unidade" />
+							<f:selectItems value="#{contratoTerceirizadoBean.unidades}"
+								var="unidade" itemValue="#{unidade}"
+								itemLabel="#{unidade.unidadeNome}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Município" />
+						<p:selectOneMenu id="municipio" filter="true" required="true"
+							style="width:320px"
+							requiredMessage="O campo Município é obrigatório"
+							converter="omnifaces.SelectItemsConverter"
+							value="#{contratoTerceirizadoBean.contratoTerceirizado.municipio}">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione uma cidade" />
+							<f:selectItems value="#{contratoTerceirizadoBean.cidades}"
+								var="cidade" itemValue="#{cidade}" itemLabel="#{cidade.nome}" />
+						</p:selectOneMenu>
+
+
+
+						<p:outputLabel value="Qtd Funcionários" />
+
+						<p:inputText id="quantidade" size="50"
+							value="#{contratoTerceirizadoBean.contratoTerceirizado.qtdFuncionarios}"
+							required="true"
+							requiredMessage="O campo Quantidade é obrigatório" />
+
+						<p:outputLabel value="H/Dia" />
+
+						<p:inputText id="hrDia" size="50"
+							value="#{contratoTerceirizadoBean.contratoTerceirizado.hrContrato}"
+							required="true" requiredMessage="O campo H/Dia é obrigatório" />
+
+						<p:outputLabel value="Atividade: " />
+						<p:selectOneMenu id="atividade" filter="true" style="width:320px"
+							requiredMessage="O campo Atividade é obrigatório"
+							converter="omnifaces.SelectItemsConverter"
+							value="#{contratoTerceirizadoBean.contratoTerceirizado.cargoTerceirizado}">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione um cargo" />
+							<f:selectItems value="#{contratoTerceirizadoBean.cargos}"
+								var="cargo" itemValue="#{cargo}" itemLabel="#{cargo.descricao}" />
+						</p:selectOneMenu>
+
+
+
+
+
+
+						<p:outputLabel value="Valor NF" />
+
+
+						<p:inputText id="valorNF" size="52"
+							value="#{contratoTerceirizadoBean.contratoTerceirizado.valorNF}"
+							styleClass="moeda">
+							<f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+						</p:inputText>
+
+
+
+
+
+					</p:panelGrid>
+
+					<br />
+					<br />
+					<h:panelGrid columns="2" style="margin: 0 auto;">
+						<p:commandButton value="Salvar"
+							actionListener="#{contratoTerceirizadoBean.salvar()}"
+							update=":mensagem tabView:formularioContratos:painelDados"
+							oncomplete="PF('dialogoNovoContrato').hide();"
+							style="background: #01B50D;" />
+
+						<p:commandButton value="Cancelar"
+							update="tabView:formularioContratos:painelDados"
+							oncomplete="PF('dialogoNovoContrato').hide();" />
+
+					</h:panelGrid>
+
+
+
+				</p:panel>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			</h:form>
+
+
+
+		</p:dialog>
+
+		<p:dialog widgetVar="dialogoNovoFuncionario" draggable="false"
+			resizable="true" modal="true" closable="true" responsive="true">
+			<f:facet name="header">
+
+				<h:outputText id="someDialogHeaderFunc" value="Funcionário" />
+
+			</f:facet>
+
+			<h:form id="funcionario">
+
+
+
+				<p:panel header="Novo Funcionário">
+
+					<p:panelGrid id="dadosFormFunc" columns="2" layout="tabular"
+						style="margin: 0 auto;" styleClass="ui-noborder">
+
+
+						<p:outputLabel value="Funcionário: " />
+						<p:selectOneMenu id="func" filter="true" style="width:320px"
+							requiredMessage="O campo Funcionário é obrigatório"
+							converter="omnifaces.SelectItemsConverter"
+							value="#{contratoTerceirizadoBean.funcionarioSelecionado}">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione um funcionário" />
+							<f:selectItems
+								value="#{contratoTerceirizadoBean.listaFuncionarios}" var="func"
+								itemValue="#{func}" itemLabel="#{func.pessoa.nomeCompleto}" />
+
+							<p:ajax event="change" update="cpf, dataNascimento, rg"
+								process="@this"
+								listener="#{contratoTerceirizadoBean.dadosFuncSelecionado()}" />
+
+						</p:selectOneMenu>
+
+						<h:outputText value="CPF:" style="font-weight: bold;" />
+						<h:outputText id="cpf"
+							value="#{contratoTerceirizadoBean.pessoa.cpf}" />
+
+						<h:outputText value="RG:" style="font-weight: bold;" />
+						<h:outputText id="rg"
+							value="#{contratoTerceirizadoBean.pessoa.rg} #{contratoTerceirizadoBean.pessoa.rgOrgaoEmissor}" />
+
+						<h:outputText value="Data Nascimento:" style="font-weight: bold;" />
+						<h:outputText id="dataNascimento"
+							value="#{contratoTerceirizadoBean.pessoa.dataNascimento}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+
+
+
+
+
+
+					</p:panelGrid>
+
+					<br />
+					<br />
+					<h:panelGrid columns="2" style="margin: 0 auto;">
+						<p:commandButton value="Salvar"
+							actionListener="#{contratoTerceirizadoBean.salvarNovoFuncionario()}"
+							update=":mensagem tabView:formularioContratos:painelDados"
+							oncomplete="PF('dialogoNovoFuncionario').hide();"
+							style="background: #01B50D;">
+
+						</p:commandButton>
+
+						<p:commandButton value="Cancelar"
+							update="tabView:formularioContratos:painelDados"
+							oncomplete="PF('dialogoNovoContrato').hide();" />
+
+					</h:panelGrid>
+
+				</p:panel>
+			</h:form>
+		</p:dialog>
+
+
+
+
+		<p:dialog header="Parte - Cadastro" widgetVar="dialogo"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="formcadastro">
+				<h:panelGrid id="cadastro" columns="2">
+
+					<p:outputLabel value="Credenciado: " />
+					<p:selectOneMenu filter="true"
+						value="#{contratoBean.partecontrato.credenciado}"
+						converter="omnifaces.SelectItemsConverter" required="true"
+						requiredMessage="O campo Credenciado é obrigatório">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione um Credenciado" />
+						<f:selectItems value="#{contratoBean.listaCredenciados}"
+							var="cred" itemValue="#{cred}"
+							itemLabel="#{cred.pessoa.cpf} - #{cred.pessoa.nomeCompleto}" />
+					</p:selectOneMenu>
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{contratoBean.salvarParte()}"
+						update=":mensagem :formcadastro:cadastro"
+						oncomplete="PF('dialogo').hide();" />
+					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+
+		<p:dialog widgetVar="dialogoFeriasAfastamentoInconsistencias"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<f:facet name="header">
+
+				<h:outputText value="Férias/Afastamento/Inconsistência" />
+
+			</f:facet>
+
+			<h:form id="feriasAfastamentoInconsistencias">
+
+
+
+				<p:panel header="Evento">
+
+					<p:panelGrid id="dadosFormFeriasAfastamentoInconsistencias"
+						columns="2" layout="tabular" style="margin: 0 auto;"
+						styleClass="ui-noborder">
+
+
+						<p:outputLabel value="Tipo Evento:" />
+						<p:selectOneMenu id="tipo" style="width:310px"
+							value="#{contratoTerceirizadoBean.eventoTerceirizado.tipoEvento}"
+							requiredMessage="O campo Tipo é obrigatório">
+							<f:selectItem itemValue="Férias" itemLabel="Férias" />
+							<f:selectItem itemValue="Afastamento" itemLabel="Afastamento" />
+							<f:selectItem itemValue="Inconsistência"
+								itemLabel="Inconsistência" />
+						</p:selectOneMenu>
+
+
+						<p:outputLabel for="dataEvento" value="Data Evento:" />
+
+
+						<p:datePicker id="dataEvento" yearRange="c-120:c-14" size="50"
+							pattern="dd/MM/yyyy" selectionMode="range"
+							value="#{contratoTerceirizadoBean.dataEvento}"
+							readonlyInput="true" showOn="" />
+
+						<p:outputLabel value="Dias" />
+
+						<p:inputText id="dias" size="50"
+							value="#{contratoTerceirizadoBean.eventoTerceirizado.dias}" />
+
+
+						<h:outputLabel id="lbPessoa" value="Possuí Substitudo?: * "
+							for="pessoa" />
+						<p:selectOneRadio id="pessoa"
+							value="#{contratoTerceirizadoBean.filtro}" required="true"
+							requiredMessage="Campo Possuí Substitudo é obrigatório.">
+
+							<f:selectItem itemLabel="Não" itemValue="0" />
+							<f:selectItem itemLabel="Sim" itemValue="1" />
+
+							<p:ajax event="change"
+								update="feriasAfastamentoInconsistencias:dadosFormSubs funcSubstituto, dataSubstituto"
+								process="@this"
+								listener="#{contratoTerceirizadoBean.habilitar()}" />
+
+
+						</p:selectOneRadio>
+
+
+
+
+					</p:panelGrid>
+
+					<p:panelGrid id="dadosFormSubs" columns="2" layout="tabular"
+						style="margin: 0 auto;" styleClass="ui-noborder">
+
+
+						<p:outputLabel value="Substituto: "
+							rendered="#{contratoTerceirizadoBean.mostrarSubstituto == true}" />
+						<p:selectOneMenu id="funcSubstituto" filter="true"
+							style="width:310px"
+							rendered="#{contratoTerceirizadoBean.mostrarSubstituto == true}"
+							requiredMessage="O campo Funcionário é obrigatório"
+							converter="omnifaces.SelectItemsConverter"
+							value="#{contratoTerceirizadoBean.eventoTerceirizado.substituto}">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione um funcionário" />
+							<f:selectItems
+								value="#{contratoTerceirizadoBean.listaFuncionarios}" var="func"
+								itemValue="#{func}" itemLabel="#{func.pessoa.nomeCompleto}" />
+
+
+
+						</p:selectOneMenu>
+
+						<p:outputLabel for="dataSubstituto"
+							rendered="#{contratoTerceirizadoBean.mostrarSubstituto == true}"
+							value="Data Substituição:" />
+						<p:datePicker id="dataSubstituto" yearRange="c-120:c-14"
+							rendered="#{contratoTerceirizadoBean.mostrarSubstituto == true}"
+							pattern="dd/MM/yyyy" selectionMode="range" size="50"
+							value="#{contratoTerceirizadoBean.dataSubstituto}"
+							readonlyInput="true" showOn="" />
+
+
+
+
+					</p:panelGrid>
+
+
+
+					<br />
+					<br />
+					<h:panelGrid columns="2" style="margin: 0 auto;">
+						<p:commandButton value="Salvar"
+							actionListener="#{contratoTerceirizadoBean.salvarEvento()}"
+							update=":mensagem tabView:formularioContratos:painelDados"
+							oncomplete="PF('dialogoFeriasAfastamentoInconsistencias').hide();"
+							style="background: #01B50D;" />
+
+						<p:commandButton value="Cancelar"
+							update="tabView:formularioContratos:painelDados"
+							oncomplete="PF('dialogoFeriasAfastamentoInconsistencias').hide();" />
+
+					</h:panelGrid>
+
+
+
+				</p:panel>
+
+			</h:form>
+
+
+
+		</p:dialog>
+
+
+
+
+	</ui:define>
+</ui:composition>
+
+
+
+
+
+
+

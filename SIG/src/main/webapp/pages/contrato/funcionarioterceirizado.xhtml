@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+
+	<style type="text/css">
+.ui-panelgrid.showcase-text-align-center .ui-grid-responsive .ui-panelgrid-cell
+	{
+	text-align: center;
+}
+
+.customPanelGrid .ui-panelgrid-content {
+	align-items: center;
+}
+.left {
+    text-align: left;
+}
+ 
+.center {
+     text-align: center;
+}
+ 
+.right {
+     text-align: right;
+}
+ 
+.buttonPanel {
+     text-align: center;
+     width:80%;
+     margin:0px auto;
+}
+</style>
+
+	<ui:define name="conteudo">
+
+		<h:outputStylesheet name="primeicons/primeicons.css"
+			library="primefaces" />
+
+		<p:panel header="Cadastro">
+			<h:form id="dadosForm">
+
+
+
+
+
+
+
+ 
+				<p:panelGrid id="dadosForm" columns="2" layout="tabular" style="margin: 0 auto;" styleClass="ui-noborder"
+     
+					 >
+
+			
+					<i class="pi pi-user"></i><b style="color: #518e2e;margin: 0 auto;">DADOS PESSOAIS</b>
+					
+					<h:outputText value="" />
+
+
+					<p:outputLabel value="CPF: " />
+					<p:inputText id="cpf" maxlength="11" size="50" placeholder="Digite o CPF"
+				
+						value="#{funcionarioTerceirizadoBean.pessoa.cpf}" required="true"
+						requiredMessage="O campo CPF é obrigatório">
+						<p:ajax event="blur" listener="#{funcionarioTerceirizadoBean.buscarCPF}"
+								update="dadosForm:rg,dadosForm:orgao,dadosForm:ufrg,dadosForm:nomeCompleto,dadosForm:nomeMae,dadosForm:nomePai,dadosForm:dtNascimento,dadosForm:sexo,dadosForm:email,dadosForm:telres,dadosForm:cel,
+								dadosForm:cepEnd,dadosForm:endResi,dadosForm:complemento,dadosForm:estado,dadosForm:cidade" /> 
+						<f:validator validatorId="CpfValidator" />
+					</p:inputText>
+
+
+					<p:outputLabel value="RG:" />
+					<p:inputText maxlength="11" size="50" id="rg"
+						value="#{funcionarioTerceirizadoBean.pessoa.rg}" required="true"
+						requiredMessage="O campo RG é obrigatório" />
+
+					<p:outputLabel value="Órgão Emissor:" />
+					<p:inputText maxlength="10" size="50" id="orgao"
+						value="#{funcionarioTerceirizadoBean.pessoa.rgOrgaoEmissor}"
+						required="true"
+						requiredMessage="O campo Órgão Emissor é obrigatório"
+						style="text-transform:uppercase;" />
+
+
+
+					<p:outputLabel value="UF RG: " />
+					<p:selectOneMenu filter="true" style="width:380px"
+						value="#{funcionarioTerceirizadoBean.pessoa.rgEstadoEmissao}" id="ufrg"
+						converter="omnifaces.SelectItemsConverter" required="true"
+						requiredMessage="O campo UF é obrigatório">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma UF" />
+						<f:selectItems value="#{funcionarioTerceirizadoBean.estados}"
+							var="estado" itemValue="#{estado}" itemLabel="#{estado.sigla}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Nome Completo:" />
+					<p:inputText maxlength="50" size="50" id="nomeCompleto"
+						value="#{funcionarioTerceirizadoBean.pessoa.nomeCompleto}"
+						required="true"
+						requiredMessage="O campo Nome Completo é obrigatório"
+						style="text-transform:uppercase;" />
+
+					<p:outputLabel value="Nome da Mãe:" />
+					<p:inputText maxlength="50" size="50" id="nomeMae"
+						value="#{funcionarioTerceirizadoBean.pessoa.nomeMae}"
+						required="true"
+						requiredMessage="O campo Nome da Mãe é obrigatório"
+						style="text-transform:uppercase;" />
+
+					<p:outputLabel value="Nome do Pai:" />
+					<p:inputText maxlength="50" size="50" id="nomePai"
+						value="#{funcionarioTerceirizadoBean.pessoa.nomePai}"
+						required="true"
+						requiredMessage="O campo Nome do Pai é obrigatório"
+						style="text-transform:uppercase;" />
+
+					<p:outputLabel value="Data Nascimento:" />
+					<p:calendar maxlength="8" showIcon="true" size="50" id="dtNascimento"
+						value="#{funcionarioTerceirizadoBean.pessoa.dataNascimento}"
+						required="true"
+						requiredMessage="O campo Data de Nascimento é obrigatório"
+						locale="pt_BR" />
+
+					<p:outputLabel value="Sexo:" />
+					<p:selectOneMenu id="sexo" style="width:380px"
+						value="#{funcionarioTerceirizadoBean.pessoa.sexo}"
+						requiredMessage="O campo Sexo é obrigatório">
+						<f:selectItem itemValue="Feminino" itemLabel="Feminino" />
+						<f:selectItem itemValue="Masculino" itemLabel="Masculino" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="E-mail" />
+					<p:inputText maxlength="50" size="50" id="email"
+						value="#{funcionarioTerceirizadoBean.pessoa.email}"
+						required="true" requiredMessage="O campo E-mail é obrigatório"
+						style="text-transform:lowercase;" />
+
+					<p:outputLabel value="Telefone Res.:" />
+					<p:inputMask id="telres" mask="(99) 99999-9999" maxlength="11" size="50"
+						value="#{funcionarioTerceirizadoBean.pessoa.telRes}">
+					</p:inputMask>
+
+					<p:outputLabel value="Celular:" />
+					<p:inputMask id="cel" mask="(99) 99999-9999" maxlength="11" size="50"
+						value="#{funcionarioTerceirizadoBean.pessoa.cel}">
+					</p:inputMask>
+					
+					
+					<br /><br />
+					<i class="pi pi-globe"></i><b style="color: #518e2e;margin: 0 auto;">ENDEREÇO</b>
+					
+					<h:outputText value="" />
+					
+					<p:outputLabel value="CEP:" />
+					<p:inputMask id="cepEnd" mask="99.999-999" maxlength="11" size="50"
+						value="#{funcionarioTerceirizadoBean.pessoa.cep}" required="true"
+						requiredMessage="O campo CEP é obrigatório">
+					</p:inputMask>
+
+					<p:outputLabel value="Endereço Residência: " />
+					<p:inputText maxlength="50" size="50" id="endResi"
+						value="#{funcionarioTerceirizadoBean.pessoa.endereco}"
+						required="true"
+						requiredMessage="O campo Endereço Residência é obrigatório"
+						style="text-transform:uppercase;" />
+
+					<p:outputLabel value="Complemento:" />
+					<p:inputText maxlength="50" size="50" id="complemento"
+						value="#{funcionarioTerceirizadoBean.pessoa.complemento}"
+						style="text-transform:uppercase;" />
+
+					<p:outputLabel for="estado" value="UF: " />
+					<p:selectOneMenu id="estado" filter="true" style="width:380px"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{funcionarioTerceirizadoBean.pessoa.estadoEndereco}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione um estado" />
+						<f:selectItems value="#{funcionarioTerceirizadoBean.estados}"
+							var="estado" itemValue="#{estado}" itemLabel="#{estado.sigla}" />
+						<p:ajax listener="#{funcionarioTerceirizadoBean.popular}"
+							update=":dadosForm:cidade" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="cidade" value="Municipio" />
+					<p:selectOneMenu id="cidade" filter="true" required="true" style="width:380px"
+						requiredMessage="O campo Municipio é obrigatório"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{funcionarioTerceirizadoBean.pessoa.municipioEndereco}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma cidade" />
+						<f:selectItems value="#{funcionarioTerceirizadoBean.cidades}"
+							var="cidade" itemValue="#{cidade}" itemLabel="#{cidade.nome}" />
+					</p:selectOneMenu>
+					
+					
+					<br /><br />
+					<i class="pi pi-briefcase"></i><b style="color: #518e2e;margin: 0 auto;">LOCAÇÃO DE TRABALHO</b>
+					
+					<h:outputText value="" />
+					
+					
+						<p:outputLabel for="unidade" value="Unidade " />
+					<p:selectOneMenu id="unidade" filter="true" style="width:380px"
+						requiredMessage="O campo Unidade é obrigatório"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{funcionarioTerceirizadoBean.funcionarioTerceirizado.unidade}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma unidade" />
+						<f:selectItems value="#{funcionarioTerceirizadoBean.unidades}" var="unidade"
+							itemValue="#{unidade}" itemLabel="#{unidade.unidadeNome}" />
+						<p:ajax listener="#{funcionarioTerceirizadoBean.popularUnidades}"
+							update=":dadosForm:setor" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="setor" value="Setor: " />
+					<p:selectOneMenu id="setor" filter="true" style="width:380px"
+						requiredMessage="O campo Setor é obrigatório"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{funcionarioTerceirizadoBean.funcionarioTerceirizado.setor}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione um setor" />
+						<f:selectItems value="#{funcionarioTerceirizadoBean.setores}" var="setor"
+							itemValue="#{setor}" itemLabel="#{setor.setor}" />
+					</p:selectOneMenu>
+					
+					<p:outputLabel value="Cargo: " />
+					<p:selectOneMenu id="cargo" filter="true" style="width:380px"
+						requiredMessage="O campo Cargo é obrigatório"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{funcionarioTerceirizadoBean.funcionarioTerceirizado.cargoTerceirizado}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione um cargo" />
+						<f:selectItems value="#{funcionarioTerceirizadoBean.cargos}" var="cargo"
+							itemValue="#{cargo}" itemLabel="#{cargo.descricao}" />
+					</p:selectOneMenu>
+					
+					
+
+				</p:panelGrid>
+
+			
+				<br /><br />
+			
+
+
+
+
+
+
+
+
+
+
+				<h:panelGrid columns="2" style="margin: 0 auto;">
+					<p:commandButton value="Salvar" style="background: #01B50D" 
+						actionListener="#{funcionarioTerceirizadoBean.salvar()}"
+						update=":mensagem :formlista:lista" />
+						
+						<p:commandButton value="Limpar" actionListener="#{funcionarioTerceirizadoBean.listar()}"
+						
+						update=":mensagem :formlista:lista"
+						/>
+
+				</h:panelGrid>
+			</h:form>
+
+		</p:panel>
+
+
+
+		<h:form id="formlista"
+			rendered="#{autenticacaoBean.temPermissoes([1, 13])}">
+			<p:panel header="Funcionários - Listagem">
+				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+					paginator="true"
+					value="#{funcionarioTerceirizadoBean.listaFuncionariosTerceirizados}"
+					var="funcionario" rows="10">
+
+
+					<p:column headerText="Nome" sortBy="#{funcionario.pessoa.nomeCompleto}"
+						filterBy="#{funcionario.pessoa.nomeCompleto}"
+						style="width: 70px; text-align: center;">
+						<h:outputText value="#{funcionario.pessoa.nomeCompleto}" />
+					</p:column>
+					<p:column headerText="Unidade" sortBy="#{funcionario.unidade.unidadeNome}"
+						filterBy="#{funcionario.unidade.unidadeNome}"
+						style="width: 70px; text-align: center;">
+						<h:outputText value="#{funcionario.unidade.unidadeNome}" />
+					</p:column>
+					<p:column headerText="Setor" sortBy="#{funcionario.setor.setorNome}"
+						filterBy="#{funcionario.setor.setorNome}"
+						style="width: 70px; text-align: center;">
+						<h:outputText value="#{funcionario.setor.setorNome}" />
+					</p:column>
+					<p:column headerText="Cargo" sortBy="#{funcionario.cargoTerceirizado.descricao}"
+						filterBy="#{funcionario.cargoTerceirizado.descricao}"
+						style="width: 70px; text-align: center;">
+						<h:outputText value="#{funcionario.cargoTerceirizado.descricao}" />
+					</p:column>
+
+					<p:column headerText="Opções"
+						style="width: 70px; text-align: center;">
+						<p:commandButton icon="ui-icon-trash"
+							actionListener="#{funcionarioTerceirizadoBean.excluir}"
+							update=":mensagem :formlista:lista">
+							<p:confirm header="Confirmação"
+								message="Deseja excluir o Funcionário?" icon="ui-icon-alert" />
+							<f:attribute name="funcionarioSelecionado"
+								value="#{funcionario}" />
+						</p:commandButton>
+
+						<p:commandButton icon="ui-icon-pencil"
+							actionListener="#{funcionarioTerceirizadoBean.editar}"
+							update=":dadosForm"
+							>
+							<f:attribute name="funcionarioSelecionado"
+								value="#{funcionario}" />
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+
+					</p:column>
+				</p:dataTable>
+
+				<p:confirmDialog global="true">
+					<p:commandButton value="Sim" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="Não" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+			</p:panel>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
