@@ -15,6 +15,7 @@ import br.gov.sc.geapo.dao.MaterialDAO;
 import br.gov.sc.geapo.dao.MaterialSaidaDAO;
 import br.gov.sc.geapo.dao.MaterialStatusDAO;
 import br.gov.sc.geapo.domain.Material;
+import br.gov.sc.geapo.domain.MaterialCentroCusto;
 import br.gov.sc.geapo.domain.MaterialSaida;
 import br.gov.sc.geapo.domain.MaterialStatus;
 import br.gov.sc.sgi.dao.SetorDAO;
@@ -42,6 +43,7 @@ public class RelatorioMaterialBean implements Serializable {
 	private List<Setor> listaSetores;
 	private List<Unidade> listaUnidades;
 	private List<MaterialStatus> listaStatus;
+	private List<MaterialSaida> listaSaida;
 
 	private Date dataInicial;
 	private String dateIni;
@@ -51,7 +53,15 @@ public class RelatorioMaterialBean implements Serializable {
 	private OficioAno Ano;
 	private int anoHoje;
 	
-	
+
+
+	public List<MaterialSaida> getListaSaida() {
+		return listaSaida;
+	}
+
+	public void setListaSaida(List<MaterialSaida> listaSaida) {
+		this.listaSaida = listaSaida;
+	}
 
 	public MaterialStatus getStatusMaterial() {
 		return statusMaterial;
@@ -114,14 +124,16 @@ public class RelatorioMaterialBean implements Serializable {
 		try {
 
 			UnidadeDAO uniDAO = new UnidadeDAO();
-			SetorDAO setorDAO = new SetorDAO();
+			
 			MaterialStatusDAO statusDAO = new MaterialStatusDAO();
 			MaterialDAO materialDAO = new MaterialDAO();
+			MaterialSaidaDAO materialSaidaDAO = new MaterialSaidaDAO();
 
 			listaUnidades = uniDAO.listar();
-			listaSetores = setorDAO.listar();
+			listaSaida = materialSaidaDAO.listar();
 			listaStatus = statusDAO.listar();
 			listaMateriais = materialDAO.listar();
+			
 			
 			materialSaida = new MaterialSaida();
 			// EDIÇÃO HISTORICO BEAN

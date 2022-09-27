@@ -35,14 +35,13 @@
 
 
 
-					<p:outputLabel for="setor" value="Setor: " />
-					<p:selectOneMenu id="setor" filter="true"
-						converter="genericSGIDOMAIN"
-						value="#{relatorioMaterialBean.materialSaida.setorAbertura}">
+					<p:outputLabel for="centro" value="Centro de Custo: " />
+					<p:selectOneMenu id="centro" filter="true"
+						value="#{relatorioMaterialBean.materialSaida.materialCentroDeCusto}">
 						<f:selectItem noSelectionOption="true" itemValue=""
 							itemLabel="Todos" />
-						<f:selectItems value="#{relatorioMaterialBean.listaSetores}"
-							var="setor" itemValue="#{setor}" itemLabel="#{setor.setorNome} - #{setor.setor}" />
+						<f:selectItems value="#{relatorioMaterialBean.listaSaida}"
+							var="centro" itemValue="#{centro}" itemLabel="#{centro.materialCentroDeCusto.unidade.unidadeNome}" />
 
 
 					</p:selectOneMenu>
@@ -144,8 +143,8 @@
 						<h:outputText value="#{mat.material.material}" />
 					</p:column>
 
-					<p:column headerText="Setor">
-						<h:outputText value="#{mat.setorAbertura.setorNome}" />
+					<p:column headerText="Centro de Custo">
+						<h:outputText value="#{mat.materialCentroDeCusto.unidade.unidadeNome} - #{mat.materialCentroDeCusto.centroSigla}" />
 					</p:column>
 
 					<p:column headerText="Data">
