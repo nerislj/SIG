@@ -20,6 +20,7 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(
    name = "controle_funcionarioterceirizado"

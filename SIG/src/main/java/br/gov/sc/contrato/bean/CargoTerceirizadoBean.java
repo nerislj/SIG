@@ -12,6 +12,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 import org.omnifaces.util.Messages;
 
+@SuppressWarnings("serial")
 @ManagedBean
 @ViewScoped
 public class CargoTerceirizadoBean implements Serializable {
