@@ -57,6 +57,7 @@ public class ContratoTerceirizado extends GenericDomainContrato {
       nullable = false
    )
    private Integer hrContrato;
+   
    @Column(
       length = 255,
       nullable = false,
@@ -64,6 +65,7 @@ public class ContratoTerceirizado extends GenericDomainContrato {
       scale = 2
    )
    private BigDecimal valorNF;
+   
    @Column(
       length = 255
    )

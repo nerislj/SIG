@@ -10,6 +10,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import br.gov.sc.sgi.domain.Usuario;
+
+@SuppressWarnings("serial")
 @Entity
 @Table(
    name = "controle_eventoterceirizado"
@@ -53,8 +56,23 @@ public class EventoTerceirizado extends GenericDomainContrato {
       nullable = false
    )
    private EmpresaTerceirizada empresaTerceirizada;
+   @OneToOne
+   @JoinColumn(
+      nullable = false
+   )
+   private Usuario usuarioCadastro;
+   
+   
 
-   public EmpresaTerceirizada getEmpresaTerceirizada() {
+   public Usuario getUsuarioCadastro() {
+	return usuarioCadastro;
+}
+
+public void setUsuarioCadastro(Usuario usuarioCadastro) {
+	this.usuarioCadastro = usuarioCadastro;
+}
+
+public EmpresaTerceirizada getEmpresaTerceirizada() {
       return this.empresaTerceirizada;
    }
 
