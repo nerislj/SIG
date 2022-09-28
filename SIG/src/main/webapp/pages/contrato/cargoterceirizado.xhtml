@@ -8,7 +8,7 @@
 	template="/templates/modelo.xhtml">
 
 	<ui:define name="conteudo">
-		<h:form id="formlista" rendered="#{autenticacaoBean.temPermissoes([1, 13])}">
+		<h:form id="formlista">
 			<p:panel header="Cargo - Listagem">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{cargoTerceirizadoBean.listaCargosTerceirizado}"

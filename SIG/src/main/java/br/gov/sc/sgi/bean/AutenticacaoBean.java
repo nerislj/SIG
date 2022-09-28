@@ -102,6 +102,18 @@ public class AutenticacaoBean {
 
 		return false;
 	}
+	
+	public boolean temPermissoesPorUnidadeCodigo(List<Long> permissoes) {
+		for (Long permissao : permissoes) {
+			
+		
+			if (usuarioLogado.getUnidade().getCodigo() == permissao.longValue()) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 
 	public void alterarSenha() {
 		try {

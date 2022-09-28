@@ -92,15 +92,20 @@
 }
 
 .ui-icon {
+	display: inline-flex !important;
 	width: 16px !important;
 	font-size: 16px !important;
 }
+.value {
+        font-weight: bold;
+    }
+
 </style>
 
 
 
 		<p:tabView id="tabView"
-			rendered="#{autenticacaoBean.temPermissoes([1, 13, 17, 18])}">
+			>
 			<p:tab title="Contratos">
 				<h:form id="formularioContratos">
 					<h:panelGroup id="painelDados" layout="block">
@@ -125,7 +130,7 @@
 								<f:facet name="header">
 									<h3>CONTRATOS</h3>
 
-									<p:commandButton value="Adicionar Novo Contrato"
+									<p:commandButton value="Adicionar Novo Contrato" rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}"
 										title="Adicionar Novo Contrato"
 										actionListener="#{contratoTerceirizadoBean.listar}"
 										style="align: center;
@@ -136,7 +141,7 @@
 										icon="pi pi-plus-circle"
 										oncomplete="PF('dialogoNovoContrato').show();"
 										update="tabView:formularioContratos:listaContratos :contrato:dadosForm"
-										rendered="#{autenticacaoBean.temPermissoes([1, 13])}">
+										>
 
 									</p:commandButton>
 
@@ -157,6 +162,12 @@
 									style="width: 4%; text-align: center;">
 									<h:outputText value="#{contrato.nContrato}" />
 								</p:column>
+								
+								<p:column headerText="Empresa"
+									style="width: 4%; text-align: center;">
+									<h:outputText value="#{contrato.empresaTerceirizada.pessoaJuridica.nomeFantasia}" />
+								</p:column>
+								
 
 								<p:column headerText="Número SGPE"
 									style="width: 4%; text-align: center;">
@@ -200,7 +211,7 @@
 
 								<p:column headerText="Ações"
 									style="width: 3%; text-align: center;"
-									rendered="#{autenticacaoBean.temPermissoes([1, 13])}">
+									rendered="#{contratoTerceirizadoBean.ciretran == true and contratoTerceirizadoBean.citran == true}">
 
 
 									<p:commandButton title="Adicionar funcionário"
@@ -216,7 +227,7 @@
 
 									</p:commandButton>
 
-									<p:commandButton title="Editar contrato"
+									<p:commandButton title="Editar contrato" rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}"
 										actionListener="#{contratoTerceirizadoBean.editar}"
 										icon="pi pi-pencil"
 										onclick="PF('dialogoNovoContrato').show();"
@@ -227,7 +238,7 @@
 											type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 									</p:commandButton>
 
-									<p:commandButton title="Remover"
+									<p:commandButton title="Remover" rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}"
 										actionListener="#{contratoTerceirizadoBean.excluirContrato}"
 										icon="pi pi-times"
 										style="align: center; background: #F59E9C;border-width: 0 3px 0 3px;color: #000000;"
@@ -300,7 +311,7 @@
 
 										<p:column headerText="Ações"
 											style="width: 4%; text-align: center;"
-											rendered="#{autenticacaoBean.temPermissoes([1, 13])}">
+											rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}">
 
 
 											<p:commandButton title="Férias/Afastamento/Inconsistências"
@@ -632,7 +643,7 @@
 
 						<p:commandButton value="Cancelar"
 							update="tabView:formularioContratos:painelDados"
-							oncomplete="PF('dialogoNovoContrato').hide();" />
+							oncomplete="PF('dialogoNovoFuncionario').hide();" />
 
 					</h:panelGrid>
 
@@ -869,18 +880,15 @@
 							<h:outputText value="#{evento.dias}" />
 						</p:column>
 
-						
-						
-						<p:column headerText="Cadastrado Por" sortBy="#{evento.usuarioCadastro.pessoa.nomeCompleto}"
-							filterBy="#{evento.usuarioCadastro.pessoa.nomeCompleto}" style="width: 20%; text-align: center;">
-							<h:outputText value="#{evento.usuarioCadastro.pessoa.nomeCompleto}" />
+
+
+						<p:column headerText="Cadastrado Por"
+							sortBy="#{evento.usuarioCadastro.pessoa.nomeCompleto}"
+							filterBy="#{evento.usuarioCadastro.pessoa.nomeCompleto}"
+							style="width: 20%; text-align: center;">
+							<h:outputText
+								value="#{evento.usuarioCadastro.pessoa.nomeCompleto}" />
 						</p:column>
-
-
-
-
-
-
 
 
 

@@ -194,7 +194,7 @@
 
 
 		<h:form id="formlista"
-			rendered="#{autenticacaoBean.temPermissoes([1, 13])}">
+			rendered="#{contratoTerceirizadoBean.ciretran == true and contratoTerceirizadoBean.citran == true}">
 			<p:panel header="Empresas - Listagem">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true"

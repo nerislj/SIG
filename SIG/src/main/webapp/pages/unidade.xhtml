@@ -22,6 +22,11 @@
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 						</p:commandButton>
 					</f:facet>
+					
+					<p:column headerText="Código" sortBy="#{unidade.codigo}"
+						filterBy="#{unidade.codigo}">
+						<h:outputText value="#{unidade.codigo}" />
+					</p:column>
 
 					<p:column headerText="Nome" sortBy="#{unidade.unidadeNome}"
 						filterBy="#{unidade.unidadeNome}">

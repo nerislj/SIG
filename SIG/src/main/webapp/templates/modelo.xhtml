@@ -157,7 +157,7 @@ $(window).bind('beforeunload', function() {
 
 					</p:submenu>
 
-					<p:submenu label="Ofícios">
+					<p:submenu label="Ofícios" rendered="#{autenticacaoBean.temPermissoesPorUnidadeCodigo([1,2,3])}">
 						<p:menuitem value="Novo Ofício" icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/oficio.xhtml" />
 						<p:menuitem value="Saída Ofício" icon="ui-icon-transferthick-e-w"
@@ -178,7 +178,7 @@ $(window).bind('beforeunload', function() {
 
 					</p:submenu>
 
-					<p:submenu label="Frota">
+					<p:submenu label="Frota" rendered="#{autenticacaoBean.temPermissoesPorUnidadeCodigo([1,2,3])}">
 						<p:menuitem value="Veículo" icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/frotaveiculo.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1,25])}" />
@@ -277,20 +277,20 @@ $(window).bind('beforeunload', function() {
 
 					</p:submenu>
 
-					<p:submenu rendered="#{autenticacaoBean.temPermissoes([1])}"
+					<p:submenu rendered="#{contratoTerceirizadoBean.ciretran == true and contratoTerceirizadoBean.citran == true}"
 					label="Controle Terceirizados">
-						<p:menuitem value="Empresas" icon="ui-icon-document"
+						<p:menuitem value="Empresas" icon="ui-icon-document" rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}"
 							url="/Sistema_Integrado_de_Gestão/pages/contrato/empresaterceirizada.xhtml" />
-						<p:menuitem value="Cargo Funcionários" icon="ui-icon-document"
+						<p:menuitem value="Cargo Funcionários" icon="ui-icon-document" rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}"
 							url="/Sistema_Integrado_de_Gestão/pages/contrato/cargoterceirizado.xhtml" />
 						<p:menuitem value="Funcionários" icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/contrato/funcionarioterceirizado.xhtml" />
 						<p:menuitem value="Contratos" icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/contrato/controlecontrato.xhtml" />
 						<p:menuitem value="Relatório Eventos" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/contrato/relatorioevento.xhtml" />
+							url="/Sistema_Integrado_de_Gestão/pages/contrato/relatorioevento.xhtml" rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}" />
 							<p:menuitem value="Relatório Funcionários" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/contrato/relatoriocontratoxfuncionario.xhtml" />
+							url="/Sistema_Integrado_de_Gestão/pages/contrato/relatoriocontratoxfuncionario.xhtml" rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}" />
 
 					</p:submenu>
 
