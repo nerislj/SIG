@@ -210,13 +210,13 @@
 							itemLabel="#{situacao.descricao}" />
 					</p:selectOneMenu>
 
-					<p:column headerText="Descrição"
-						sortBy="#{processoCetranBean.historicoProcesso.descricao}"
-						filterBy="#{processoCetranBean.historicoProcesso.descricao}"
-						filterMatchMode="contains">
-						<h:outputText
-							value="#{processoCetranBean.historicoProcesso.descricao}" />
-					</p:column>
+					
+					<p:outputLabel value="Observação: " />
+					<p:inputTextarea maxlength="255"
+						value="#{processoCetranBean.historicoProcesso.descricao}" counter="display"
+						counterTemplate="Restam {0} Caracteres." />
+					<h:outputText />
+					<h:outputText id="display" />
 
 
 

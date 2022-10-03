@@ -126,6 +126,7 @@ public class ProcessoCetranDAO extends GenericDAO<ProcessoCetran> {
 				historicoSaida.setDataDistribuicao(historicoProcessoCetran.getDataDistribuicao());
 				historicoSaida.setDataJulgamento(historicoProcessoCetran.getDataJulgamento());
 				historicoSaida.setDataCadastro(new Date());
+				historicoSaida.setDescricao(historicoProcessoCetran.getDescricao());
 				historicoSaida.setDataAtualizado(new Date());
 
 				sessao.save(historicoSaida);

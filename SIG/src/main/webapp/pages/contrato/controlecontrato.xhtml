@@ -244,7 +244,7 @@
 										style="align: center; background: #F59E9C;border-width: 0 3px 0 3px;color: #000000;"
 										update=":mensagem tabView:formularioContratos:painelDados">
 										<p:confirm header="Confirmação"
-											message="Deseja excluir o Funcionário?" icon="ui-icon-alert" />
+											message="Deseja remover o Funcionário?" icon="ui-icon-alert" />
 										<f:attribute name="contratoSelecionado" value="#{contrato}" />
 										<f:actionListener
 											type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
@@ -253,15 +253,10 @@
 
 								</p:column>
 
-
-
-
-
-
 								<p:rowExpansion>
 									<p:dataTable id="listaFuncionarios"
 										emptyMessage="Nenhum funcionário encontrado."
-										paginator="false"
+										paginator="true"
 										value="#{contratoTerceirizadoBean.listaContratoRelacoes}"
 										var="relacao" rows="10">
 
@@ -311,10 +306,10 @@
 
 										<p:column headerText="Ações"
 											style="width: 4%; text-align: center;"
-											rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}">
+											>
 
 
-											<p:commandButton title="Férias/Afastamento/Inconsistências"
+											<p:commandButton title="Férias/Afastamento/Inconsistências" rendered="#{contratoTerceirizadoBean.ciretran == true and contratoTerceirizadoBean.citran == true}"
 												actionListener="#{contratoTerceirizadoBean.novoEvento}"
 												icon="pi pi-calendar"
 												onclick="PF('dialogoFeriasAfastamentoInconsistencias').show();"
@@ -328,13 +323,13 @@
 
 											</p:commandButton>
 
-											<p:commandButton title="Remover"
+											<p:commandButton title="Remover" rendered="#{contratoTerceirizadoBean.ciretran == true and contratoTerceirizadoBean.citran == true}"
 												actionListener="#{contratoTerceirizadoBean.excluir}"
 												icon="pi pi-times"
 												style="align: center; background: #F59E9C;border-width: 0 3px 0 3px;color: #000000;"
 												update=":mensagem tabView:formularioContratos:painelDados">
 												<p:confirm header="Confirmação"
-													message="Deseja excluir o Funcionário?"
+													message="Deseja remover o Funcionário?"
 													icon="ui-icon-alert" />
 												<f:attribute name="funcionarioSelecionado"
 													value="#{relacao}" />

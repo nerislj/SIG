@@ -146,6 +146,13 @@
 						style="width: 15%; text-align: center;">
 						<h:outputText value="#{hist.situacao.descricao}" />
 					</p:column>
+					
+						<p:column headerText="Observação" sortBy="#{hist.descricao}"
+						filterBy="#{hist.descricao}"
+						style="width: 15%; text-align: center;">
+						<h:outputText value="#{hist.descricao}" />
+					</p:column>
+					
 
 					<p:column headerText="Alterado Por"
 						sortBy="#{hist.usuarioCadastro.pessoa.nomeCompleto}"

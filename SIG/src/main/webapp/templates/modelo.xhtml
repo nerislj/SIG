@@ -277,7 +277,7 @@ $(window).bind('beforeunload', function() {
 
 					</p:submenu>
 
-					<p:submenu rendered="#{contratoTerceirizadoBean.ciretran == true and contratoTerceirizadoBean.citran == true}"
+					<p:submenu rendered="#{contratoTerceirizadoBean.mostrarModuloParaGerentes == true}"
 					label="Controle Terceirizados">
 						<p:menuitem value="Empresas" icon="ui-icon-document" rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}"
 							url="/Sistema_Integrado_de_Gestão/pages/contrato/empresaterceirizada.xhtml" />
