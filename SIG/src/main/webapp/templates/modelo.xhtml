@@ -43,7 +43,7 @@ $(window).bind('beforeunload', function() {
 		</f:facet>
 	</p:ajaxStatus>
 
-	<p:growl id="mensagem" />
+	<p:growl id="mensagem" life="8000" />
 
 
 
@@ -298,10 +298,11 @@ $(window).bind('beforeunload', function() {
 						<p:menuitem value="Histórico Funcionários" icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/contrato/relatoriocontratoxfuncionario.xhtml"
 							rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}" />
-							<p:menuitem value="Funcionários Ativos" icon="ui-icon-document"
+						<p:menuitem value="Funcionários Ativos" icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/contrato/funcionariosativos.xhtml"
 							rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}" />
-						<p:menuitem value="Usuários Claims" icon="ui-icon-contact" rendered="#{autenticacaoBean.temPermissoes([1])}"
+						<p:menuitem value="Usuários Claims" icon="ui-icon-contact"
+							rendered="#{autenticacaoBean.temPermissoes([1])}"
 							url="/Sistema_Integrado_de_Gestão/pages/contrato/userclaimscontrato.xhtml" />
 					</p:submenu>
 

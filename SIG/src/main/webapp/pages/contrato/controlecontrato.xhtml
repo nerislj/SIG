@@ -273,7 +273,7 @@
 										</p:column>
 
 
-										<p:column headerText="Cargo">
+										<p:column headerText="Cargo Funcionário">
 											<h:outputText
 												value="#{relacao.funcionarioTerceirizado.cargoTerceirizado.descricao}"
 												rendered="#{relacao.funcionarioTerceirizado.tipoEvento.substituto == null}" />
@@ -281,28 +281,30 @@
 												value="#{relacao.funcionarioTerceirizado.tipoEvento.substituto.cargoTerceirizado.descricao}"
 												rendered="#{relacao.funcionarioTerceirizado.tipoEvento.substituto != null}" />
 										</p:column>
-
-										<p:column headerText="Setor">
+										
+										<p:column headerText="Unidade Funcionário">
 											<h:outputText
-												rendered="#{relacao.funcionarioTerceirizado.tipoEvento.substituto == null}"
-												value="#{relacao.funcionarioTerceirizado.setor.setor} - #{relacao.funcionarioTerceirizado.setor.setorNome}" />
+												value="#{relacao.funcionarioTerceirizado.unidade.unidadeNome}"
+												rendered="#{relacao.funcionarioTerceirizado.tipoEvento.substituto == null}" />
 											<h:outputText
-												rendered="#{relacao.funcionarioTerceirizado.tipoEvento.substituto != null}"
-												value="#{relacao.funcionarioTerceirizado.tipoEvento.substituto.setor.setor} - #{relacao.funcionarioTerceirizado.tipoEvento.substituto.setor.setorNome}" />
+												value="#{relacao.funcionarioTerceirizado.tipoEvento.substituto.unidade.unidadeNome}"
+												rendered="#{relacao.funcionarioTerceirizado.tipoEvento.substituto != null}" />
 										</p:column>
 
-										<p:column headerText="Cadastrado Por">
+										
+
+										<p:column headerText="Cadastrado Por" style="width: 15%;">
 											<h:outputText
 												value="#{relacao.usuarioCadastro.pessoa.nomeCompleto}" />
 										</p:column>
 
-										<p:column headerText="Data Cadastro">
+										<p:column headerText="Data Cadastro" style="width: 7%;">
 											<h:outputText value="#{relacao.dataCadastro}">
 												<f:convertDateTime pattern="dd/MM/yyyy" />
 											</h:outputText>
 										</p:column>
 
-										<p:column headerText="Status">
+										<p:column headerText="Status" style="width: 7%;">
 											<h:outputText value="#{relacao.status}" />
 										</p:column>
 
@@ -846,12 +848,7 @@
 							<h:outputText value="#{evento.colaborador.pessoa.nomeCompleto}" />
 						</p:column>
 
-						<p:column headerText="Setor"
-							sortBy="#{evento.colaborador.setor.setorNome}"
-							filterBy="#{evento.colaborador.setor.setorNome}"
-							style="width: 20%; text-align: center;">
-							<h:outputText value="#{evento.colaborador.unidade.unidadeNome}" />
-						</p:column>
+					
 
 						<p:column headerText="Data"
 							style="width: 20%; text-align: center;">

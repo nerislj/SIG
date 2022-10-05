@@ -40,11 +40,7 @@ public class FuncionarioTerceirizado extends GenericDomainContrato {
    @ManyToOne
    @JoinColumn
    private Unidade unidade;
-   @ManyToOne
-   @JoinColumn(
-      nullable = false
-   )
-   private Setor setor;
+   
    @Temporal(TemporalType.DATE)
    @Column(
       nullable = false
@@ -91,13 +87,7 @@ public class FuncionarioTerceirizado extends GenericDomainContrato {
       this.unidade = unidade;
    }
 
-   public Setor getSetor() {
-      return this.setor;
-   }
-
-   public void setSetor(Setor setor) {
-      this.setor = setor;
-   }
+  
 
    public Date getDataCadastro() {
       return this.dataCadastro;

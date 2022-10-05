@@ -50,6 +50,7 @@ public class ContratoRelacaoDAO extends GenericDAO<ContratoRelacao> {
 
 		return var4;
 	}
+	
 
 	public void salvarFuncionarioHist(ContratoRelacao contratoRelacao, ContratoHistFuncionario funcionarioHist) {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
