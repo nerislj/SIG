@@ -16,22 +16,26 @@ import br.gov.sc.sgi.util.HibernateUtil;
 public class ContratoTerceirizadoDAO extends GenericDAO<ContratoTerceirizado> {
 	
 	
-	public List<ContratoTerceirizado> listarPorUnidadeUsuarioLogado(Unidade unidade) {
-	      Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 
-	      List var6;
-	      try {
-	         Criteria consulta = sessao.createCriteria(ContratoTerceirizado.class);
-	         consulta.add(Restrictions.eq("unidade", unidade));
-	         consulta.addOrder(Order.asc("codigo"));
-	         List<FuncionarioTerceirizado> resultado = consulta.list();
-	         var6 = resultado;
-	      } catch (RuntimeException var9) {
-	         throw var9;
-	      } finally {
-	         sessao.close();
-	      }
+	
+	  @SuppressWarnings("unchecked")
+		public List<ContratoTerceirizado> listarPorClaims(List<String> unidades) {
 
-	      return var6;
-	   }
+			Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+			try {
+
+				Criteria consulta = sessao.createCriteria(ContratoTerceirizado.class);
+				consulta.createAlias("unidade", "u");
+				consulta.add(Restrictions.in("u.unidadeNome", unidades));
+
+				List<ContratoTerceirizado> resultado = consulta.list();
+
+				return resultado;
+
+			} catch (RuntimeException erro) {
+				throw erro;
+			} finally {
+				sessao.close();
+			}
+		}
 }

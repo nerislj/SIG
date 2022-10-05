@@ -1,6 +1,7 @@
 /* Decompiler 4ms, total 154ms, lines 45 */
 package br.gov.sc.contrato.dao;
 
+import br.gov.sc.contrato.domain.ContratoTerceirizado;
 import br.gov.sc.contrato.domain.EmpresaTerceirizada;
 import br.gov.sc.contrato.domain.EventoTerceirizado;
 import br.gov.sc.contrato.domain.FuncionarioTerceirizado;
@@ -52,14 +53,15 @@ public class EventoTerceirizadoDAO extends GenericDAO<EventoTerceirizado> {
 	   
 		   
 
-   public List<EventoTerceirizado> listarPorEmpresa(EmpresaTerceirizada empresa, String tipoEvento, Date dateIni, Date dateFini) {
+   public List<EventoTerceirizado> listarPorEmpresa(ContratoTerceirizado contrato, String tipoEvento, Date dateIni, Date dateFini) {
       Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 
       List var9;
       try {
          Criteria consulta = sessao.createCriteria(EventoTerceirizado.class);
-         if (empresa != null) {
-            consulta.add(Restrictions.eq("empresaTerceirizada", empresa));
+         if (contrato != null) {
+        	 
+             consulta.add(Restrictions.eq("contratoTerceirizado", contrato));
             consulta.add(Restrictions.eq("tipoEvento", tipoEvento));
             if (dateIni != null || dateFini != null) {
                if (dateIni.equals(dateFini)) {

@@ -62,9 +62,23 @@ public class EventoTerceirizado extends GenericDomainContrato {
    )
    private Usuario usuarioCadastro;
    
+   @OneToOne
+   @JoinColumn(
+      nullable = false
+   )
+   private ContratoTerceirizado contratoTerceirizado;
+   
    
 
-   public Usuario getUsuarioCadastro() {
+   public ContratoTerceirizado getContratoTerceirizado() {
+	return contratoTerceirizado;
+}
+
+public void setContratoTerceirizado(ContratoTerceirizado contratoTerceirizado) {
+	this.contratoTerceirizado = contratoTerceirizado;
+}
+
+public Usuario getUsuarioCadastro() {
 	return usuarioCadastro;
 }
 

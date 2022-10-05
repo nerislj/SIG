@@ -17,17 +17,17 @@
 			<h:form id="formcadastro">
 				<h:panelGrid id="cadastro" columns="2" style="margin: 0 auto;">
 
-					<p:outputLabel for="empresa" value="Empresa: " />
-					<p:selectOneMenu id="empresa" filter="true" required="true" style="width:165px"
-						requiredMessage="O campo empresa é obrigatório"
+					<p:outputLabel for="contrato" value="Contrato: " />
+					<p:selectOneMenu id="contrato" filter="true" required="true" style="width:165px"
+						requiredMessage="O campo contrato é obrigatório"
 						converter="omnifaces.SelectItemsConverter"
-						value="#{contratoTerceirizadoBean.contratoTerceirizado.empresaTerceirizada}">
+						value="#{contratoTerceirizadoBean.contratoTerceirizado}">
 						<f:selectItem noSelectionOption="true"
-							itemLabel="Selecione uma empresa" />
+							itemLabel="Selecione um contrato" />
 						<f:selectItems
-							value="#{contratoTerceirizadoBean.listaEmpresasTerceirizadas}"
-							var="empresa" itemValue="#{empresa}"
-							itemLabel="#{empresa.pessoaJuridica.nomeFantasia}" />
+							value="#{contratoTerceirizadoBean.listaContratosTerceirizados}"
+							var="contrato" itemValue="#{contrato}"
+							itemLabel="#{contrato.nContrato} - #{contrato.municipio.nome}" />
 
 					</p:selectOneMenu>
 					
@@ -35,6 +35,8 @@
 						<p:selectOneMenu id="tipo" style="width:165px" required="true"
 							value="#{contratoTerceirizadoBean.eventoTerceirizado.tipoEvento}"
 							requiredMessage="O campo Tipo é obrigatório">
+							<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione um evento" />
 							<f:selectItem itemValue="Férias" itemLabel="Férias" />
 							<f:selectItem itemValue="Afastamento" itemLabel="Afastamento" />
 							<f:selectItem itemValue="Inconsistência"

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+
+
+
+		<p:panel header="Relatório Contrato x Funcionário">
+
+
+			<h:form id="formcadastro">
+				<h:panelGrid id="cadastro" columns="2" style="margin: 0 auto;">
+
+
+					<p:outputLabel for="funcionario" value="Funcionário: " />
+					<p:selectOneMenu id="funcionario" filter="true" style="width:165px"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{contratoTerceirizadoBean.funcionarioSelecionado}">
+						<f:selectItem noSelectionOption="true" itemLabel="TODOS"
+							itemValue="" />
+						<f:selectItems
+							value="#{contratoTerceirizadoBean.listaFuncionarios}"
+							var="funcionario" itemValue="#{funcionario}"
+							itemLabel="#{funcionario.pessoa.nomeCompleto}" />
+
+					</p:selectOneMenu>
+
+					<p:outputLabel for="situacao" value="Situação: " />
+					<p:selectOneMenu id="situacao" filter="true"
+						value="#{contratoTerceirizadoBean.contratoRelacao.status}">
+						<f:selectItem noSelectionOption="true" itemValue=""
+							itemLabel="TODOS" />
+						<f:selectItem noSelectionOption="true" itemValue="Substituto"
+							itemLabel="Substituto" />
+						<f:selectItem noSelectionOption="true" itemValue="Ativo"
+							itemLabel="Ativo" />
+						
+
+					</p:selectOneMenu>
+
+					<p:outputLabel for="dataInicial" value="Data Inicial: " />
+					<p:calendar id="dataInicial" readonlyInput="false" required="true" requiredMessage="Campo Data Inicial é obrigatório!"
+						yearRange="c-120:c-14" pattern="dd/MM/yyyy"
+						value="#{contratoTerceirizadoBean.dataInicial}" showIcon="true" />
+
+					<p:outputLabel for="dataFinal" value="Data Final: " />
+					<p:calendar id="dataFinal" readonlyInput="false" required="true" requiredMessage="Campo Data Final é obrigatório!"
+						yearRange="c-120:c-14" pattern="dd/MM/yyyy"
+						value="#{contratoTerceirizadoBean.dataFinal}" showIcon="true" />
+
+
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" style="margin: 0 auto;">
+					<p:commandButton value="Gerar Relatório"
+						actionListener="#{contratoTerceirizadoBean.blurRelacaoFuncionario}" 
+						update=":mensagem :formcadastro:cadastro :formlista:lista" />
+
+				</h:panelGrid>
+			</h:form>
+
+
+		</p:panel>
+
+		<h:form id="formlista">
+
+
+
+			<p:panel header="Contratos">
+				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+					paginator="true"
+					value="#{contratoTerceirizadoBean.listaContratoRelacoes}"
+					var="relacao" rows="10">
+
+					<p:column headerText="Empresa"
+						sortBy="#{relacao.contratoTerceirizado.empresaTerceirizada.pessoaJuridica.nomeFantasia}"
+						filterBy="#{relacao.contratoTerceirizado.empresaTerceirizada.pessoaJuridica.nomeFantasia}"
+						style="width: 20%; text-align: center;">
+						<h:outputText
+							value="#{relacao.contratoTerceirizado.empresaTerceirizada.pessoaJuridica.nomeFantasia}" />
+					</p:column>
+
+					<p:column headerText="Nº Contrato"
+						sortBy="#{relacao.contratoTerceirizado.nContrato}"
+						filterBy="#{relacao.contratoTerceirizado.nContrato}"
+						style="width: 20%; text-align: center;">
+						<h:outputText value="#{relacao.contratoTerceirizado.nContrato}" />
+					</p:column>
+
+
+					<p:column headerText="Funcionário"
+						sortBy="#{relacao.funcionarioTerceirizado.pessoa.nomeCompleto}"
+						filterBy="#{relacao.funcionarioTerceirizado.pessoa.nomeCompleto}"
+						style="width: 20%; text-align: center;">
+						<h:outputText
+							value="#{relacao.funcionarioTerceirizado.pessoa.nomeCompleto}" />
+					</p:column>
+
+					<p:column headerText="Movimentação" sortBy="#{relacao.status}"
+						filterBy="#{relacao.status}" style="width: 20%; text-align: center;">
+						<h:outputText value="#{relacao.status}" />
+					</p:column>
+
+					<p:column headerText="Data Cadastro" sortBy="#{relacao.dataCadastro}"
+						filterBy="#{relacao.dataCadastro}"
+						style="width: 20%; text-align: center;">
+						<h:outputText value="#{relacao.dataCadastro}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Cadastrado Por"
+						sortBy="#{relacao.usuarioLogado.pessoa.nomeCompleto}"
+						filterBy="#{relacao.usuarioLogado.pessoa.nomeCompleto}"
+						style="width: 20%; text-align: center;">
+						<h:outputText value="#{relacao.usuarioCadastro.pessoa.nomeCompleto}" />
+					</p:column>
+
+
+
+
+
+
+
+
+
+
+
+
+
+				</p:dataTable>
+
+
+
+			</p:panel>
+
+		</h:form>
+
+
+
+
+
+
+	</ui:define>
+</ui:composition>

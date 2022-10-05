@@ -96,16 +96,15 @@
 	width: 16px !important;
 	font-size: 16px !important;
 }
-.value {
-        font-weight: bold;
-    }
 
+.value {
+	font-weight: bold;
+}
 </style>
 
 
 
-		<p:tabView id="tabView"
-			>
+		<p:tabView id="tabView">
 			<p:tab title="Contratos">
 				<h:form id="formularioContratos">
 					<h:panelGroup id="painelDados" layout="block">
@@ -130,7 +129,8 @@
 								<f:facet name="header">
 									<h3>CONTRATOS</h3>
 
-									<p:commandButton value="Adicionar Novo Contrato" rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}"
+									<p:commandButton value="Adicionar Novo Contrato"
+										rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}"
 										title="Adicionar Novo Contrato"
 										actionListener="#{contratoTerceirizadoBean.listar}"
 										style="align: center;
@@ -140,8 +140,7 @@
     color: #000000;"
 										icon="pi pi-plus-circle"
 										oncomplete="PF('dialogoNovoContrato').show();"
-										update="tabView:formularioContratos:listaContratos :contrato:dadosForm"
-										>
+										update="tabView:formularioContratos:listaContratos :contrato:dadosForm">
 
 									</p:commandButton>
 
@@ -152,22 +151,24 @@
 									listener="#{contratoTerceirizadoBean.onRowToggleFuncionarios}"
 									update="tabView:formularioContratos:listaContratos listaFuncionarios " />
 								<p:column headerText="Funcionários"
-									style="width: 2%; text-align: center;">
+									style="width: 3%; text-align: center;">
 									<p:rowToggler />
 
 
 
 								</p:column>
-								<p:column headerText="Contrato"
+								<p:column headerText="Contrato" sortBy="#{contrato.nContrato}"
+						filterBy="#{contrato.nContrato}"
 									style="width: 4%; text-align: center;">
 									<h:outputText value="#{contrato.nContrato}" />
 								</p:column>
-								
+
 								<p:column headerText="Empresa"
 									style="width: 4%; text-align: center;">
-									<h:outputText value="#{contrato.empresaTerceirizada.pessoaJuridica.nomeFantasia}" />
+									<h:outputText
+										value="#{contrato.empresaTerceirizada.pessoaJuridica.nomeFantasia}" />
 								</p:column>
-								
+
 
 								<p:column headerText="Número SGPE"
 									style="width: 4%; text-align: center;">
@@ -220,14 +221,15 @@
 										onclick="PF('dialogoNovoFuncionario').show();"
 										style="align: center;background: #8FBC8F;border-width: 0 3px 0 3px;color: #000000;
 "
-										update=":mensagem tabView:formularioContratos:painelDados funcionario:dadosFormFunc">
+										update=":mensagem funcionario:dadosFormFunc">
 										<f:attribute name="contratoSelecionado" value="#{contrato}" />
 										<f:actionListener
 											type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 
 									</p:commandButton>
 
-									<p:commandButton title="Editar contrato" rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}"
+									<p:commandButton title="Editar contrato"
+										rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}"
 										actionListener="#{contratoTerceirizadoBean.editar}"
 										icon="pi pi-pencil"
 										onclick="PF('dialogoNovoContrato').show();"
@@ -238,13 +240,14 @@
 											type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 									</p:commandButton>
 
-									<p:commandButton title="Remover" rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}"
+									<p:commandButton title="Excluir"
+										rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}"
 										actionListener="#{contratoTerceirizadoBean.excluirContrato}"
 										icon="pi pi-times"
 										style="align: center; background: #F59E9C;border-width: 0 3px 0 3px;color: #000000;"
 										update=":mensagem tabView:formularioContratos:painelDados">
 										<p:confirm header="Confirmação"
-											message="Deseja remover o Funcionário?" icon="ui-icon-alert" />
+											message="Deseja Excluir o Contrato?" icon="ui-icon-alert" />
 										<f:attribute name="contratoSelecionado" value="#{contrato}" />
 										<f:actionListener
 											type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
@@ -255,8 +258,7 @@
 
 								<p:rowExpansion>
 									<p:dataTable id="listaFuncionarios"
-										emptyMessage="Nenhum funcionário encontrado."
-										paginator="true"
+										emptyMessage="Nenhum funcionário encontrado." paginator="true"
 										value="#{contratoTerceirizadoBean.listaContratoRelacoes}"
 										var="relacao" rows="10">
 
@@ -305,11 +307,11 @@
 										</p:column>
 
 										<p:column headerText="Ações"
-											style="width: 4%; text-align: center;"
-											>
+											style="width: 4%; text-align: center;">
 
 
-											<p:commandButton title="Férias/Afastamento/Inconsistências" rendered="#{contratoTerceirizadoBean.ciretran == true and contratoTerceirizadoBean.citran == true}"
+											<p:commandButton title="Férias/Afastamento/Inconsistências"
+												rendered="#{contratoTerceirizadoBean.ciretran == true and contratoTerceirizadoBean.citran == true}"
 												actionListener="#{contratoTerceirizadoBean.novoEvento}"
 												icon="pi pi-calendar"
 												onclick="PF('dialogoFeriasAfastamentoInconsistencias').show();"
@@ -323,20 +325,21 @@
 
 											</p:commandButton>
 
-											<p:commandButton title="Remover" rendered="#{contratoTerceirizadoBean.ciretran == true and contratoTerceirizadoBean.citran == true}"
-												actionListener="#{contratoTerceirizadoBean.excluir}"
-												icon="pi pi-times"
-												style="align: center; background: #F59E9C;border-width: 0 3px 0 3px;color: #000000;"
-												update=":mensagem tabView:formularioContratos:painelDados">
-												<p:confirm header="Confirmação"
-													message="Deseja remover o Funcionário?"
-													icon="ui-icon-alert" />
+											<p:commandButton title="Remover"
+												rendered="#{contratoTerceirizadoBean.ciretran == true and contratoTerceirizadoBean.citran == true}"
+												actionListener="#{contratoTerceirizadoBean.carregaRelacao}"
+												icon="pi pi-times" onclick="PF('dlg2').show();"
+												style="align: center;background: #F59E9C;border-width: 0 3px 0 3px;color: #000000;"
+												update=":mensagem formularioCancelar:listaRemover">
 												<f:attribute name="funcionarioSelecionado"
 													value="#{relacao}" />
 												<f:actionListener
 													type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 
+
 											</p:commandButton>
+
+
 
 										</p:column>
 
@@ -356,6 +359,14 @@
 							</p:dataTable>
 
 							<p:confirmDialog global="true">
+
+								<p:outputLabel value="Observação: " />
+								<p:inputTextarea maxlength="255"
+									value="#{processoCetranBean.historicoProcesso.descricao}"
+									counter="display" counterTemplate="Restam {0} Caracteres." />
+								<h:outputText />
+								<h:outputText id="display" />
+
 								<p:commandButton value="Sim" type="button"
 									styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
 								<p:commandButton value="Não" type="button"
@@ -720,7 +731,8 @@
 
 						<p:datePicker id="dataEvento" yearRange="c-120:c-14" size="50"
 							pattern="dd/MM/yyyy" selectionMode="range"
-							value="#{contratoTerceirizadoBean.dataEvento}"
+							value="#{contratoTerceirizadoBean.dataEvento}" required="true"
+							requiredMessage="Campo Data Evento é obrigatório"
 							readonlyInput="true" showOn="">
 							<p:ajax event="dateSelect"
 								update="feriasAfastamentoInconsistencias:dadosFormSubs funcSubstituto, dataSubstituto, :formlista:lista"
@@ -782,6 +794,7 @@
 							rendered="#{contratoTerceirizadoBean.mostrarSubstituto == true}"
 							value="Data Substituição:" />
 						<p:datePicker id="dataSubstituto" yearRange="c-120:c-14"
+							required="true" requiredMessage="Campo Data Evento é obrigatório"
 							rendered="#{contratoTerceirizadoBean.mostrarSubstituto == true}"
 							pattern="dd/MM/yyyy" selectionMode="range" size="50"
 							value="#{contratoTerceirizadoBean.dataSubstituto}"
@@ -901,6 +914,50 @@
 
 
 		</p:dialog>
+
+		<p:dialog header="Remover" widgetVar="dlg2" minHeight="40">
+
+			<h:form id="formularioCancelar">
+
+
+
+
+
+				<p:panelGrid id="listaRemover" columns="2"
+					styleClass="showcase-text-align-center">
+
+
+
+					<p:outputLabel value="Informe o motivo" style="font-weight: bold;" />
+					<p:inputTextarea maxlength="255"
+						value="#{contratoTerceirizadoBean.contratoHistFuncionario.observacao}"
+						readonly="false" required="true"
+						requiredMessage="O Campo motivo é obrigatório" />
+
+
+
+				</p:panelGrid>
+
+
+				<center>
+					<h:panelGrid columns="2">
+						<p:commandButton value="Salvar"
+							actionListener="#{contratoTerceirizadoBean.excluir}"
+							update=":mensagem tabView:formularioContratos:listaContratos tabView:formularioContratos:painelDados formlista:lista"
+							oncomplete="PF('dlg2').hide();" />
+						<p:commandButton value="Cancelar" oncomplete="PF('dlg2').hide();" />
+					</h:panelGrid>
+
+				</center>
+
+
+
+
+
+			</h:form>
+
+		</p:dialog>
+
 
 
 

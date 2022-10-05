@@ -16,30 +16,31 @@
 
 			<h:form id="formcadastro">
 				<h:panelGrid id="cadastro" columns="2" style="margin: 0 auto;">
-
-					<p:outputLabel for="empresa" value="Empresa: " />
-					<p:selectOneMenu id="empresa" filter="true" required="true"
-						style="width:165px"
-						requiredMessage="O campo empresa é obrigatório"
+				
+				<p:outputLabel for="empresa" value="Contrato: " />
+					<p:selectOneMenu id="empresa" filter="true"  style="width:165px"
+						
 						converter="omnifaces.SelectItemsConverter"
-						value="#{contratoTerceirizadoBean.contratoTerceirizado.empresaTerceirizada}">
+						value="#{contratoTerceirizadoBean.contratoTerceirizado}">
 						<f:selectItem noSelectionOption="true"
-							itemLabel="Selecione uma empresa" />
+							itemLabel="TODOS" />
 						<f:selectItems
-							value="#{contratoTerceirizadoBean.listaEmpresasTerceirizadas}"
-							var="empresa" itemValue="#{empresa}"
-							itemLabel="#{empresa.pessoaJuridica.nomeFantasia}" />
+							value="#{contratoTerceirizadoBean.listaContratosTerceirizados}"
+							var="contrato" itemValue="#{contrato}"
+							itemLabel="#{contrato.nContrato} - #{contrato.municipio.nome}" />
 
 					</p:selectOneMenu>
 
+					
+
 					<p:outputLabel for="funcionario" value="Funcionário: " />
-					<p:selectOneMenu id="funcionario" filter="true" required="true"
+					<p:selectOneMenu id="funcionario" filter="true" 
 						style="width:165px"
-						requiredMessage="O campo funcionário é obrigatório"
+						
 						converter="omnifaces.SelectItemsConverter"
 						value="#{contratoTerceirizadoBean.contratoHistFuncionario.funcionarioTerceirizado}">
 						<f:selectItem noSelectionOption="true"
-							itemLabel="Selecione uma funcionário" />
+							itemLabel="TODOS" itemValue="" />
 						<f:selectItems
 							value="#{contratoTerceirizadoBean.listaFuncionarios}"
 							var="funcionario" itemValue="#{funcionario}"

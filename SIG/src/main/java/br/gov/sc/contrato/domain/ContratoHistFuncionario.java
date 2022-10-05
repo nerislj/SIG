@@ -23,7 +23,7 @@ public class ContratoHistFuncionario extends GenericDomainContrato {
 	private ContratoTerceirizado contratoTerceirizado;
 	@Column(length = 255, nullable = false)
 	private String status;
-	@Column(length = 255, nullable = false)
+	@Column(length = 255)
 	private String observacao;
 	@OneToOne
 	@JoinColumn(nullable = false)

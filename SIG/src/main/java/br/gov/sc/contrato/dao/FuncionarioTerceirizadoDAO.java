@@ -1,7 +1,10 @@
 /* Decompiler 4ms, total 154ms, lines 61 */
 package br.gov.sc.contrato.dao;
 
+import br.gov.sc.codet.domain.HistoricoProcessoCODET;
+import br.gov.sc.codet.domain.Processo;
 import br.gov.sc.contrato.domain.FuncionarioTerceirizado;
+import br.gov.sc.contrato.domain.UserClaimsContrato;
 import br.gov.sc.sgi.domain.PessoaFisica;
 import br.gov.sc.sgi.domain.Unidade;
 import br.gov.sc.sgi.util.HibernateUtil;
@@ -40,22 +43,33 @@ public class FuncionarioTerceirizadoDAO extends GenericDAO<FuncionarioTerceiriza
       return var5;
    }
 
-   public List<FuncionarioTerceirizado> listarPorUnidadeUsuarioLogado(Unidade unidade) {
-      Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+  
+  
+   
+ 
+   
+   @SuppressWarnings("unchecked")
+	public List<FuncionarioTerceirizado> listarPorClaims(List<String> unidades) {
 
-      List var6;
-      try {
-         Criteria consulta = sessao.createCriteria(FuncionarioTerceirizado.class);
-         consulta.add(Restrictions.eq("unidade", unidade));
-         consulta.addOrder(Order.asc("codigo"));
-         List<FuncionarioTerceirizado> resultado = consulta.list();
-         var6 = resultado;
-      } catch (RuntimeException var9) {
-         throw var9;
-      } finally {
-         sessao.close();
-      }
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+		try {
 
-      return var6;
-   }
+			Criteria consulta = sessao.createCriteria(FuncionarioTerceirizado.class);
+			consulta.createAlias("unidade", "u");
+			consulta.add(Restrictions.in("u.unidadeNome", unidades));
+
+			List<FuncionarioTerceirizado> resultado = consulta.list();
+
+			return resultado;
+
+		} catch (RuntimeException erro) {
+			throw erro;
+		} finally {
+			sessao.close();
+		}
+	}
+	   
+  
+   
+ 
 }
