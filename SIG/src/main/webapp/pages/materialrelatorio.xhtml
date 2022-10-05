@@ -8,8 +8,8 @@
 	template="/templates/modelo.xhtml">
 
 	<ui:define name="conteudo">
-	
-	<h:outputStylesheet name="primeicons/primeicons.css"
+
+		<h:outputStylesheet name="primeicons/primeicons.css"
 			library="primefaces" />
 
 		<script type="text/javascript">
@@ -37,11 +37,12 @@
 
 					<p:outputLabel for="centro" value="Centro de Custo: " />
 					<p:selectOneMenu id="centro" filter="true"
-						value="#{relatorioMaterialBean.materialSaida.materialCentroDeCusto}">
+						value="#{relatorioMaterialBean.materialCentroDeCusto}" converter="genericGEAPODOMAIN">
 						<f:selectItem noSelectionOption="true" itemValue=""
 							itemLabel="Todos" />
-						<f:selectItems value="#{relatorioMaterialBean.listaSaida}"
-							var="centro" itemValue="#{centro}" itemLabel="#{centro.materialCentroDeCusto.unidade.unidadeNome}" />
+						<f:selectItems value="#{relatorioMaterialBean.listaCusto}"
+							var="materialCentroDeCusto" itemValue="#{materialCentroDeCusto}"
+							itemLabel="#{materialCentroDeCusto.centroCog} - #{materialCentroDeCusto.centroSigla} - #{materialCentroDeCusto.unidade.unidadeNome}" />
 
 
 					</p:selectOneMenu>
@@ -57,8 +58,6 @@
 							itemLabel="#{mat.material.toUpperCase()}" />
 
 					</p:selectOneMenu>
-
-
 
 					<p:outputLabel value="Ano: " />
 					<p:selectOneMenu id="ano"
@@ -93,9 +92,7 @@
 		<h:form id="formlista">
 
 
-
 			<p:panel header="Materiais">
-
 
 
 				<p:dataTable id="lista" var="mat"
@@ -144,7 +141,8 @@
 					</p:column>
 
 					<p:column headerText="Centro de Custo">
-						<h:outputText value="#{mat.materialCentroDeCusto.unidade.unidadeNome} - #{mat.materialCentroDeCusto.centroSigla}" />
+						<h:outputText
+							value="#{mat.materialCentroDeCusto.unidade.unidadeNome} - #{mat.materialCentroDeCusto.centroSigla}" />
 					</p:column>
 
 					<p:column headerText="Data">
@@ -152,17 +150,17 @@
 							<f:convertDateTime pattern="dd/MM/yyyy" />
 						</h:outputText>
 					</p:column>
-					
+
 					<p:column headerText="Ressalva">
-						
-						
+
+
 						<h:outputText rendered="#{mat.ressalva != null}"
-												value="#{mat.ressalva}" />
-												<h:outputText rendered="#{mat.ressalva == null}"
-												value="Sem Ressalva" />
-						
+							value="#{mat.ressalva}" />
+						<h:outputText rendered="#{mat.ressalva == null}"
+							value="Sem Ressalva" />
+
 					</p:column>
-					
+
 					<p:column headerText="Status">
 						<h:outputText
 							value="#{mat.materialStatus.materialStatus.toUpperCase()}" />
@@ -205,24 +203,23 @@
 				<p:dataTable id="lista2" var="mat"
 					value="#{relatorioMaterialBean.listaMateriaisSaida}"
 					sortBy="#{mat.material.material}" expandableRowGroups="false"
-					emptyMessage="Nenhum registro encontrado."
-					>
+					emptyMessage="Nenhum registro encontrado.">
 
 					<f:facet name="header">
             TOTAL ANUAL 
            
            
            <h:outputText value="#{relatorioMaterialBean.ano.oficioAno}" />
-					
-        </f:facet>
 
-					
+					</f:facet>
+
+
 					<p:headerRow>
 
 
 
-						<p:column style="float: center" >
-							
+						<p:column style="float: center">
+
 
 							<h:outputText value="#{mat.material.material}" />
 
@@ -237,7 +234,7 @@
 					</p:headerRow>
 
 
-					
+
 
 
 				</p:dataTable>

@@ -17,6 +17,7 @@ import br.gov.sc.codet.domain.Processo;
 import br.gov.sc.codet.domain.SetorAtual;
 import br.gov.sc.codet.domain.SituacaoProcesso;
 import br.gov.sc.geapo.domain.Material;
+import br.gov.sc.geapo.domain.MaterialCentroCusto;
 import br.gov.sc.geapo.domain.MaterialEntrada;
 import br.gov.sc.geapo.domain.MaterialSaida;
 import br.gov.sc.geapo.domain.MaterialSaidaHist;
@@ -367,7 +368,7 @@ public class MaterialSaidaDAO extends GenericDAO<MaterialSaida> {
 	}
 
 	@SuppressWarnings({ "unchecked" })
-	public List<MaterialSaida> listarRelatorioMaterial(Setor setor, int anoHoje, Material material)
+	public List<MaterialSaida> listarRelatorioMaterial(MaterialCentroCusto materialCentroDeCusto, int anoHoje, Material material)
 			throws ParseException {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 		try {
@@ -384,20 +385,21 @@ public class MaterialSaidaDAO extends GenericDAO<MaterialSaida> {
 			System.out.println("sDateS " + sDateS);
 			System.out.println("eDateS " + eDateS);
 
-			System.out.println("setor " + setor);
+			System.out.println("materialCentroDeCusto " + materialCentroDeCusto);
+			System.out.println("valor mat"+material);
 
-			if (setor != null && material == null) {
+			if (materialCentroDeCusto != null && material == null) {
 				
 				consulta.createAlias("materialStatus", "t");
 				consulta.add(Restrictions.eq("t.materialStatus", "aprovado"));
-				consulta.add(Restrictions.eq("setorAbertura", setor));
+				consulta.add(Restrictions.eq("materialCentroDeCusto", materialCentroDeCusto));
 
 				consulta.add(Restrictions.ge("dataCadastro", sDateF));
 				consulta.add(Restrictions.lt("dataCadastro", eDateF));
 
 			}
 
-			if (material != null && setor == null) {
+			if (material != null && materialCentroDeCusto == null) {
 
 				consulta.createAlias("materialStatus", "t");
 				consulta.add(Restrictions.eq("t.materialStatus", "aprovado"));
@@ -407,11 +409,11 @@ public class MaterialSaidaDAO extends GenericDAO<MaterialSaida> {
 				consulta.add(Restrictions.lt("dataCadastro", eDateF));
 			}
 
-			if (material != null && setor != null) {
+			if (material != null && materialCentroDeCusto != null) {
 
 				consulta.createAlias("materialStatus", "t");
 				consulta.add(Restrictions.eq("t.materialStatus", "aprovado"));
-				consulta.add(Restrictions.eq("setorAbertura", setor));
+				consulta.add(Restrictions.eq("materialCentroDeCusto", materialCentroDeCusto));
 
 				consulta.add(Restrictions.eq("material", material));
 
@@ -419,7 +421,7 @@ public class MaterialSaidaDAO extends GenericDAO<MaterialSaida> {
 				consulta.add(Restrictions.lt("dataCadastro", eDateF));
 			}
 
-			if (setor == null && material == null) {
+			if (materialCentroDeCusto == null && material == null) {
 
 				consulta.createAlias("materialStatus", "t");
 				consulta.add(Restrictions.eq("t.materialStatus", "aprovado"));

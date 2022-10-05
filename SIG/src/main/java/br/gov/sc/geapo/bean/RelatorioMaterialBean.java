@@ -11,6 +11,7 @@ import javax.faces.bean.ViewScoped;
 
 import org.omnifaces.util.Messages;
 
+import br.gov.sc.geapo.dao.MaterialCentroCustoDAO;
 import br.gov.sc.geapo.dao.MaterialDAO;
 import br.gov.sc.geapo.dao.MaterialSaidaDAO;
 import br.gov.sc.geapo.dao.MaterialStatusDAO;
@@ -34,6 +35,7 @@ public class RelatorioMaterialBean implements Serializable {
 	private Setor setorAtual;
 	private Unidade unidade;
 	private MaterialStatus statusMaterial;
+	private MaterialCentroCusto materialCentroDeCusto;
 
 	private String setorAtualString;
 	private String situacaoProcessoString;
@@ -44,6 +46,7 @@ public class RelatorioMaterialBean implements Serializable {
 	private List<Unidade> listaUnidades;
 	private List<MaterialStatus> listaStatus;
 	private List<MaterialSaida> listaSaida;
+	private List<MaterialCentroCusto> listaCusto;
 
 	private Date dataInicial;
 	private String dateIni;
@@ -53,7 +56,23 @@ public class RelatorioMaterialBean implements Serializable {
 	private OficioAno Ano;
 	private int anoHoje;
 	
+	
 
+	public MaterialCentroCusto getMaterialCentroDeCusto() {
+		return materialCentroDeCusto;
+	}
+
+	public void setMaterialCentroDeCusto(MaterialCentroCusto materialCentroDeCusto) {
+		this.materialCentroDeCusto = materialCentroDeCusto;
+	}
+
+	public List<MaterialCentroCusto> getListaCusto() {
+		return listaCusto;
+	}
+
+	public void setListaCusto(List<MaterialCentroCusto> listaCusto) {
+		this.listaCusto = listaCusto;
+	}
 
 	public List<MaterialSaida> getListaSaida() {
 		return listaSaida;
@@ -124,18 +143,20 @@ public class RelatorioMaterialBean implements Serializable {
 		try {
 
 			UnidadeDAO uniDAO = new UnidadeDAO();
-			
+
 			MaterialStatusDAO statusDAO = new MaterialStatusDAO();
 			MaterialDAO materialDAO = new MaterialDAO();
 			MaterialSaidaDAO materialSaidaDAO = new MaterialSaidaDAO();
+			MaterialCentroCustoDAO materialCentroCustoDAO = new MaterialCentroCustoDAO();
 
 			listaUnidades = uniDAO.listar();
 			listaSaida = materialSaidaDAO.listar();
 			listaStatus = statusDAO.listar();
 			listaMateriais = materialDAO.listar();
-			
-			
+			listaCusto = materialCentroCustoDAO.listar();
+
 			materialSaida = new MaterialSaida();
+			materialCentroDeCusto = new MaterialCentroCusto();
 			// EDIÇÃO HISTORICO BEAN
 
 		} catch (RuntimeException erro) {
@@ -146,102 +167,81 @@ public class RelatorioMaterialBean implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	
-	
 
-	
-	
 	@SuppressWarnings("deprecation")
 	public int brandSubtotal(String brand, int dataCadastro) {
-		
-		
-	    return listaMateriaisSaida.stream().filter(c -> c.getMaterial().getMaterial().equals(brand) && c.getDataCadastro().getMonth()+1 == dataCadastro).mapToInt(c -> c.getQuantidade()).sum();
-	    
-	  
+
+		return listaMateriaisSaida.stream().filter(
+				c -> c.getMaterial().getMaterial().equals(brand) && c.getDataCadastro().getMonth() + 1 == dataCadastro)
+				.mapToInt(c -> c.getQuantidade()).sum();
+
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	public int subTotalAnual(String brand) {
-		
-		
-	    return listaMateriaisSaida.stream().filter(c -> c.getMaterial().getMaterial().equals(brand)).mapToInt(c -> c.getQuantidade()).sum();
-	    
-	  
+
+		return listaMateriaisSaida.stream().filter(c -> c.getMaterial().getMaterial().equals(brand))
+				.mapToInt(c -> c.getQuantidade()).sum();
+
 	}
-	 public String getTotalAno() {
-	        int total = 0;
-	 
-	        for(MaterialSaida sale :listaMateriaisSaida) {
-	            total += sale.getQuantidade();
-	        }
-	 
-	        return new DecimalFormat("###").format(total);
-	    }
+
+	public String getTotalAno() {
+		int total = 0;
+
+		for (MaterialSaida sale : listaMateriaisSaida) {
+			total += sale.getQuantidade();
+		}
+
+		return new DecimalFormat("###").format(total);
+	}
 
 	@SuppressWarnings("static-access")
 	public void blurProcessos() {
 
-		MaterialSaidaDAO materialSaidaDAO = new MaterialSaidaDAO();
-		SetorDAO setorDAO = new SetorDAO();
-		UnidadeDAO unidadeDAO = new UnidadeDAO();
-		MaterialStatusDAO statusDAO = new MaterialStatusDAO();
-		MaterialDAO materialDAO = new MaterialDAO();
 		
+		MaterialSaidaDAO materialSaidaDAO = new MaterialSaidaDAO();
+		MaterialDAO materialDAO = new MaterialDAO();
+
 		int anoHoje = new Date().getYear() + 1900;
 
 		try {
 
-			
 			if (materialSaida.getMaterial() != null) {
 				System.out.println("MATERIAL");
 
 				material = materialDAO.carregarMaterial(materialSaida.getMaterial().getMaterial());
 
-				
-				
-				listaMateriaisSaida = materialSaidaDAO.listarRelatorioMaterial(setorAtual,
-						Ano.getOficioAno(), material);
-				
+				listaMateriaisSaida = materialSaidaDAO.listarRelatorioMaterial(materialCentroDeCusto, Ano.getOficioAno(),
+						material);
+
 				if (listaMateriaisSaida.equals(null)) {
 					Messages.addGlobalError("Não existe dados com os campos fornecidos!");
 				}
 				System.out.println(listaMateriaisSaida);
-			} 
+				
+			}
 
-			
-
-			
-			if (materialSaida.getMaterial() != null
-					) {
+			if (materialSaida.getMaterial() != null) {
 				System.out.println("OS DOIS");
 
-				
 				material = materialDAO.carregarMaterial(materialSaida.getMaterial().getMaterial());
 
-				
-				
-				listaMateriaisSaida = materialSaidaDAO.listarRelatorioMaterial(setorAtual,
-						Ano.getOficioAno(), material);
-				
+				listaMateriaisSaida = materialSaidaDAO.listarRelatorioMaterial(materialCentroDeCusto, Ano.getOficioAno(),
+						material);
+
 				if (listaMateriaisSaida.isEmpty()) {
 					Messages.addGlobalError("Não existe dados com os campos fornecidos!");
 				}
 				System.out.println(listaMateriaisSaida);
-				
-				
-				
-			} else {
-				
-				System.out.println("TODOS");
-				listaMateriaisSaida = materialSaidaDAO.listarRelatorioMaterial(setorAtual,
-						Ano.getOficioAno(), material);
-			}
 
+			} else {
+
+				System.out.println("TODOS");
+				listaMateriaisSaida = materialSaidaDAO.listarRelatorioMaterial(materialCentroDeCusto, Ano.getOficioAno(),
+						material);
+			}
 			
 		
-			
-
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
