@@ -116,6 +116,8 @@
 							rendered="#{credenciadoEmpBean.exibePainelDados}">
 							 -->
 						<p:panelGrid columns="1" layout="grid">
+						
+						
 
 							<p:dataTable id="listaContratos"
 								emptyMessage="Nenhum contrato encontrado." paginator="true"
@@ -176,7 +178,7 @@
 								</p:column>
 
 								<p:column headerText="Unidade"
-									style="width: 5%; text-align: center;">
+									style="width: 6%; text-align: center;">
 									<h:outputText value="#{contrato.unidade.unidadeNome}" />
 								</p:column>
 
@@ -189,7 +191,7 @@
 
 
 								<p:column headerText="Quantidade"
-									style="width: 9%; text-align: center;">
+									style="width: 3%; text-align: center;">
 									<h:outputText value="#{contrato.qtdFuncionarios}" />
 								</p:column>
 
@@ -199,7 +201,7 @@
 								</p:column>
 
 								<p:column headerText="H/Dia"
-									style="width: 5%; text-align: center;">
+									style="width: 3%; text-align: center;">
 									<h:outputText value="#{contrato.hrContrato}" />
 								</p:column>
 
@@ -211,7 +213,7 @@
 								</p:column>
 
 								<p:column headerText="Ações"
-									style="width: 3%; text-align: center;"
+									style="width: 4%; text-align: center;"
 									rendered="#{contratoTerceirizadoBean.ciretran == true and contratoTerceirizadoBean.citran == true}">
 
 
@@ -262,7 +264,7 @@
 										value="#{contratoTerceirizadoBean.listaContratoRelacoes}"
 										var="relacao" rows="10">
 
-										<p:column headerText="Funcionário">
+										<p:column headerText="Funcionário" style="width: 7%; text-align: center;">
 											<h:outputText
 												rendered="#{relacao.funcionarioTerceirizado.tipoEvento.substituto == null}"
 												value="#{relacao.funcionarioTerceirizado.pessoa.nomeCompleto}" />
@@ -273,7 +275,7 @@
 										</p:column>
 
 
-										<p:column headerText="Cargo Funcionário">
+										<p:column headerText="Cargo Funcionário" style="width: 7%; text-align: center;">
 											<h:outputText
 												value="#{relacao.funcionarioTerceirizado.cargoTerceirizado.descricao}"
 												rendered="#{relacao.funcionarioTerceirizado.tipoEvento.substituto == null}" />
@@ -282,7 +284,7 @@
 												rendered="#{relacao.funcionarioTerceirizado.tipoEvento.substituto != null}" />
 										</p:column>
 										
-										<p:column headerText="Unidade Funcionário">
+										<p:column headerText="Unidade Funcionário" style="width: 7%; text-align: center;">
 											<h:outputText
 												value="#{relacao.funcionarioTerceirizado.unidade.unidadeNome}"
 												rendered="#{relacao.funcionarioTerceirizado.tipoEvento.substituto == null}" />
@@ -293,23 +295,23 @@
 
 										
 
-										<p:column headerText="Cadastrado Por" style="width: 15%;">
+										<p:column headerText="Cadastrado Por" style="width: 7%;">
 											<h:outputText
 												value="#{relacao.usuarioCadastro.pessoa.nomeCompleto}" />
 										</p:column>
 
-										<p:column headerText="Data Cadastro" style="width: 7%;">
+										<p:column headerText="Data Cadastro" style="width: 3%;">
 											<h:outputText value="#{relacao.dataCadastro}">
 												<f:convertDateTime pattern="dd/MM/yyyy" />
 											</h:outputText>
 										</p:column>
 
-										<p:column headerText="Status" style="width: 7%;">
+										<p:column headerText="Status" style="width: 3%;">
 											<h:outputText value="#{relacao.status}" />
 										</p:column>
 
 										<p:column headerText="Ações"
-											style="width: 4%; text-align: center;">
+											style="width: 3%; text-align: center;">
 
 
 											<p:commandButton title="Férias/Afastamento/Inconsistências"

@@ -165,6 +165,9 @@
 					<p:inputMask id="cepEnd" mask="99.999-999" maxlength="11" size="50"
 						value="#{funcionarioTerceirizadoBean.pessoa.cep}" required="true"
 						requiredMessage="O campo CEP é obrigatório">
+						<f:ajax event="blur" execute="@this"
+							render="estado cidade endResi"
+							listener="#{funcionarioTerceirizadoBean.pesquisaCep}"></f:ajax>
 					</p:inputMask>
 
 					<p:outputLabel value="Endereço Residência: " />

@@ -31,9 +31,9 @@ import br.gov.sc.sgi.domain.Usuario;
 public class RequerenteBean implements Serializable {
 
 	private Requerente requerente;
-	
+
 	private ProcessoCetran processoCetran;
-	
+
 	private List<ProcessoCetran> listaProcessos;
 
 	private List<TipoRequerente> listaTipoRequerentes;
@@ -46,18 +46,16 @@ public class RequerenteBean implements Serializable {
 	private boolean mostrarCpf;
 	private boolean mostrarCnpj;
 	private boolean mostrarOrg;
-	
 
 	@PostConstruct
 	public void listar() {
 		try {
 			HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 			usuarioLogado = (Usuario) sessao.getAttribute("usuario");
-			
 
 			RequerenteDAO requerenteDAO = new RequerenteDAO();
 			TipoRequerenteDAO tipoRequerenteDAO = new TipoRequerenteDAO();
-			
+
 			listaRequerentes = requerenteDAO.listarTudo();
 			listaTipoRequerentes = tipoRequerenteDAO.listarTudo();
 			/*
@@ -81,20 +79,18 @@ public class RequerenteBean implements Serializable {
 	public void salvar() {
 		try {
 
-			
-			
 			for (TipoRequerente customer : listaTipoRequerentes) {
 				if (customer.getDescricao().equals("EMPRESA") & filtro == 1) {
 					System.out.println("TIPO REQUERENTE " + customer);
 					requerente.setTipoRequerente(customer);
 				}
-				
+
 				if (customer.getDescricao().equals("PESSOA") & filtro == 2) {
 					System.out.println(customer);
 					System.out.println("TIPO REQUERENTE " + customer);
 					requerente.setTipoRequerente(customer);
 				}
-				
+
 				if (customer.getDescricao().equals("ORGANIZAÇÃO") & filtro == 3) {
 					System.out.println(customer);
 					System.out.println("TIPO REQUERENTE " + customer);
@@ -102,14 +98,9 @@ public class RequerenteBean implements Serializable {
 				}
 			}
 
-			
-			
-
-			
-			
 			RequerenteDAO requerenteDAO = new RequerenteDAO();
 			requerenteDAO.salvarProcesso(requerente, processoCetran, usuarioLogado);
-			
+
 			ProcessoCetranDAO processoDAO = new ProcessoCetranDAO();
 			listaProcessos = processoDAO.listarTudo(requerente);
 			RequerenteBean.this.listar();
@@ -125,13 +116,16 @@ public class RequerenteBean implements Serializable {
 	public void excluir(ActionEvent evento) {
 
 		try {
-
-			processoCetran = (ProcessoCetran) evento.getComponent().getAttributes().get("processoSelecionado");	
-
 			ProcessoCetranDAO processoDAO = new ProcessoCetranDAO();
+
+			processoCetran = (ProcessoCetran) evento.getComponent().getAttributes().get("processoSelecionado");
+			
+			requerente = processoCetran.getRequerente();
+
 			processoDAO.excluir(processoCetran);
 
-			RequerenteBean.this.listar();
+			
+			listaProcessos = processoDAO.listarTudo(requerente);
 
 			Messages.addGlobalInfo("Processo removido com sucesso.");
 		} catch (RuntimeException erro) {
@@ -140,23 +134,22 @@ public class RequerenteBean implements Serializable {
 		}
 	}
 
-	
 	public void habilitar() {
 		if (filtro == 1) {
-			
+
 			mostrarCpf = false;
 			mostrarCnpj = true;
 			mostrarOrg = false;
-			
+
 			listaProcessos = new ArrayList<ProcessoCetran>();
-		
 			
+
 		}
 		if (filtro == 2) {
 			mostrarCpf = true;
 			mostrarCnpj = false;
 			mostrarOrg = false;
-			
+
 			listaProcessos = new ArrayList<ProcessoCetran>();
 			
 		}
@@ -164,64 +157,53 @@ public class RequerenteBean implements Serializable {
 			mostrarCpf = false;
 			mostrarCnpj = false;
 			mostrarOrg = true;
-			
+
 			listaProcessos = new ArrayList<ProcessoCetran>();
 			
 		}
-	
-		
-		
-	}
-	
-	public void buscarCPFCNPJ() {
-		
-	
-			RequerenteDAO requerenteDAO = new RequerenteDAO();
-			requerente = requerenteDAO.carregarCpf(requerente.getCpf(), requerente.getCnpj());
-			
-			ProcessoCetranDAO processoDAO = new ProcessoCetranDAO();
 
-			listaProcessos = processoDAO.listarTudo(requerente);
-			
-			System.out.println(listaProcessos);
-			
-	
-		
-		
-		
+	}
+
+	public void buscarCPFCNPJ() {
+
+		RequerenteDAO requerenteDAO = new RequerenteDAO();
+		requerente = requerenteDAO.carregarCpf(requerente.getCpf(), requerente.getCnpj());
+
+		ProcessoCetranDAO processoDAO = new ProcessoCetranDAO();
+
+		listaProcessos = processoDAO.listarTudo(requerente);
+
+		System.out.println(listaProcessos);
+
 	}
 
 	public void editar(ActionEvent evento) {
-		
+
 		processoCetran = (ProcessoCetran) evento.getComponent().getAttributes().get("processoSelecionado");
 		requerente = processoCetran.getRequerente();
-		
-		
-		if(requerente.getCpf() == processoCetran.getRequerente().getCpf()) {
+
+		if (requerente.getCpf() == processoCetran.getRequerente().getCpf()) {
 			filtro = 2;
-			
+
 			mostrarCpf = true;
 			mostrarCnpj = false;
 			mostrarOrg = false;
-			
-		} else if(requerente.getCnpj() == processoCetran.getRequerente().getCnpj()) {
+
+		} else if (requerente.getCnpj() == processoCetran.getRequerente().getCnpj()) {
 			filtro = 1;
-			
+
 			mostrarCpf = false;
 			mostrarCnpj = true;
 			mostrarOrg = false;
-			
+
 		} else {
 			filtro = 3;
-			
+
 			mostrarCpf = false;
 			mostrarCnpj = false;
 			mostrarOrg = true;
 		}
-		
-		
-		
-		
+
 	}
 
 	public Requerente getRequerente() {
@@ -303,11 +285,5 @@ public class RequerenteBean implements Serializable {
 	public void setListaProcessos(List<ProcessoCetran> listaProcessos) {
 		this.listaProcessos = listaProcessos;
 	}
-
-	
-
-	
-
-	
 
 }
