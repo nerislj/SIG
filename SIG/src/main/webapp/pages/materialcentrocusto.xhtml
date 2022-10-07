@@ -40,19 +40,13 @@
 
 					<p:column headerText="Sigla" sortBy="#{material.centroSigla}"
 						filterBy="#{material.centroSigla}"
-						style="width: 70px; text-align: center;">
+						style="width: 100px; text-align: center;">
 						<h:outputText value="#{material.centroSigla}" />
 					</p:column>
 
 					<p:column headerText="Opções"
 						style="width: 70px; text-align: center;">
-						<p:commandButton icon="ui-icon-trash"
-							actionListener="#{materialCentroCustoBean.excluir}"
-							update=":mensagem :formlista:lista">
-							<p:confirm header="Confirmação"
-								message="Deseja excluir o Centro de custo?" icon="ui-icon-alert" />
-							<f:attribute name="materialcentroSelecionado" value="#{material}" />
-						</p:commandButton>
+						
 
 						<p:commandButton icon="ui-icon-pencil"
 							actionListener="#{materialCentroCustoBean.editar}"
@@ -100,7 +94,7 @@
 
 
 					<p:outputLabel value="Sigla:" />
-					<p:inputText maxlength="10" size="12"
+					<p:inputText maxlength="15" size="20"
 						value="#{materialCentroCustoBean.materialCentroCusto.centroSigla}"
 						required="true" style="text-transform: uppercase"
 						requiredMessage="O campo Nome é obrigatório" />
