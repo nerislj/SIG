@@ -56,7 +56,7 @@
 						<f:selectItem itemLabel="Jurídica" itemValue="1" />
 						<f:selectItem itemLabel="Organização" itemValue="3" />
 						<p:ajax event="change"
-							update="pnlPessoa, pnlCpfOUCnpj, :formcadastro:nome, :formlista:lista"
+							update="pnlPessoa, pnlCpfOUCnpj, :formlista:lista"
 							process="@this" listener="#{requerenteBean.habilitar()}" />
 
 
@@ -80,7 +80,7 @@
 						<p:inputMask mask="99999999999" id="cpf" size="25"
 							rendered="#{requerenteBean.mostrarCpf}"
 							value="#{requerenteBean.requerente.cpf}">
-							<p:ajax event="blur" listener="#{requerenteBean.buscarCPFCNPJ}"
+							<p:ajax event="keyup" delay="1500" listener="#{requerenteBean.buscarCPFCNPJ}"
 								update="formcadastro:nome, :formlista:lista" />
 							<f:validator validatorId="CpfValidator" />
 						</p:inputMask>
@@ -88,7 +88,7 @@
 						<p:inputMask mask="99999999999999" id="cnpj" size="25"
 							rendered="#{requerenteBean.mostrarCnpj}"
 							value="#{requerenteBean.requerente.cnpj}">
-							<p:ajax event="blur" listener="#{requerenteBean.buscarCPFCNPJ}"
+							<p:ajax event="keyup" delay="1500" listener="#{requerenteBean.buscarCPFCNPJ}"
 								update="formcadastro:nome, :formlista:lista" />
 							<f:validator validatorId="ValidatorCNPJ" />
 						</p:inputMask>
