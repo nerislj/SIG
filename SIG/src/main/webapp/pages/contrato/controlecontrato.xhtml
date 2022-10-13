@@ -6,6 +6,15 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	template="/templates/modelo.xhtml">
+	
+	
+	<ui:define name="metadata">
+		<f:metadata>
+
+			<f:event listener="#{contratoTerceirizadoBean.ContratoTerceirizadoListas}" 
+				type="preRenderView" />
+		</f:metadata>
+	</ui:define>
 
 	<ui:define name="conteudo">
 
@@ -165,47 +174,55 @@
 									<h:outputText value="#{contrato.nContrato}" />
 								</p:column>
 
-								<p:column headerText="Empresa"
+								<p:column headerText="Empresa" sortBy="#{contrato.empresaTerceirizada.pessoaJuridica.nomeFantasia}"
+						filterBy="#{contrato.empresaTerceirizada.pessoaJuridica.nomeFantasia}"
 									style="width: 4%; text-align: center;">
 									<h:outputText
 										value="#{contrato.empresaTerceirizada.pessoaJuridica.nomeFantasia}" />
 								</p:column>
 
 
-								<p:column headerText="Número SGPE"
+								<p:column headerText="Número SGPE" sortBy="#{contrato.nSGPE}"
+						filterBy="#{contrato.nSGPE}"
 									style="width: 4%; text-align: center;">
 									<h:outputText value="#{contrato.nSGPE}" />
 								</p:column>
 
-								<p:column headerText="Unidade"
+								<p:column headerText="Unidade" sortBy="#{contrato.unidade.unidadeNome}"
+						filterBy="#{contrato.unidade.unidadeNome}"
 									style="width: 6%; text-align: center;">
 									<h:outputText value="#{contrato.unidade.unidadeNome}" />
 								</p:column>
 
 
-								<p:column headerText="Município"
+								<p:column headerText="Município" sortBy="#{contrato.municipio.nome}"
+						filterBy="#{contrato.municipio.nome}"
 									style="width: 4%; text-align: center;">
 									<h:outputText value="#{contrato.municipio.nome}" />
 								</p:column>
 
 
 
-								<p:column headerText="Quantidade"
+								<p:column headerText="Quantidade" sortBy="#{contrato.qtdFuncionarios}"
+						filterBy="#{contrato.qtdFuncionarios}"
 									style="width: 3%; text-align: center;">
 									<h:outputText value="#{contrato.qtdFuncionarios}" />
 								</p:column>
 
-								<p:column headerText="Atividade"
+								<p:column headerText="Atividade" sortBy="#{contrato.cargoTerceirizado.descricao}"
+						filterBy="#{contrato.cargoTerceirizado.descricao}"
 									style="width: 5%; text-align: center;">
 									<h:outputText value="#{contrato.cargoTerceirizado.descricao}" />
 								</p:column>
 
-								<p:column headerText="H/Dia"
+								<p:column headerText="H/Dia" sortBy="#{contrato.hrContrato}"
+						filterBy="#{contrato.hrContrato}"
 									style="width: 3%; text-align: center;">
 									<h:outputText value="#{contrato.hrContrato}" />
 								</p:column>
 
-								<p:column headerText="Valor NF"
+								<p:column headerText="Valor NF" sortBy="#{contrato.valorNF}"
+						filterBy="#{contrato.valorNF}"
 									style="width: 5%; text-align: center;">
 									<h:outputText value="#{contrato.valorNF}">
 										<f:convertNumber type="currency" />
@@ -734,6 +751,7 @@
 
 
 						<p:datePicker id="dataEvento" yearRange="c-120:c-14" size="50"
+						
 							pattern="dd/MM/yyyy" selectionMode="range"
 							value="#{contratoTerceirizadoBean.dataEvento}" required="true"
 							requiredMessage="Campo Data Evento é obrigatório"

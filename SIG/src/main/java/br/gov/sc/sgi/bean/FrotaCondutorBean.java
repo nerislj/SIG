@@ -80,6 +80,7 @@ public class FrotaCondutorBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("forotacondutor bean");
 			FrotaCondutorDAO frotaCondutorDAO = new FrotaCondutorDAO();
 			FrotaCondutores = frotaCondutorDAO.listar();
 

@@ -41,6 +41,7 @@ public class CredencialTipoBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("AQUI CREDENCIADOTIPO BEAN");
 			CredencialTipoDAO credencialtipoDAO = new CredencialTipoDAO();
 			listaTipos = credencialtipoDAO.listar();
 		} catch (RuntimeException erro) {

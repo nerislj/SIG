@@ -48,7 +48,7 @@ public class PessoaFisica extends GenericDomain {
 	private String cep;
 
 	@SerializedName("logradouro")
-	@Column(length = 50, nullable = false)
+	@Column(length = 255, nullable = false)
 	private String endereco;
 
 	@Column(length = 50)

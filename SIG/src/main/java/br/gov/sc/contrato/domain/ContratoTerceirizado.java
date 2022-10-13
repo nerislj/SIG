@@ -75,12 +75,12 @@ public class ContratoTerceirizado extends GenericDomainContrato {
       nullable = false
    )
    private Date dataCadastro;
-   @OneToMany(
-      fetch = FetchType.LAZY,
-      mappedBy = "contratoTerceirizado"
-   )
-   @Fetch(FetchMode.SUBSELECT)
-   private List<ContratoRelacao> contratoRelacao;
+   //@OneToMany(
+   //   fetch = FetchType.LAZY,
+   //   mappedBy = "contratoTerceirizado"
+  // )
+   //@Fetch(FetchMode.SUBSELECT)
+   //private List<ContratoRelacao> contratoRelacao;
 
    public EmpresaTerceirizada getEmpresaTerceirizada() {
       return this.empresaTerceirizada;
@@ -154,13 +154,7 @@ public class ContratoTerceirizado extends GenericDomainContrato {
       this.dataCadastro = dataCadastro;
    }
 
-   public List<ContratoRelacao> getContratoRelacao() {
-      return this.contratoRelacao;
-   }
-
-   public void setContratoRelacao(List<ContratoRelacao> contratoRelacao) {
-      this.contratoRelacao = contratoRelacao;
-   }
+  
 
    public BigDecimal getValorNF() {
       return this.valorNF;

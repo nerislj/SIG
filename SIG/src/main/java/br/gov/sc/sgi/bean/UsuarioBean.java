@@ -106,13 +106,18 @@ public class UsuarioBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
-			UsuarioDAO usuarioDAO = new UsuarioDAO();
-			Usuarios = usuarioDAO.listar();
+			System.out.println("AQUI USUARIO BEAN");
+			
 
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar listar os Usuários.");
 			erro.printStackTrace();
 		}
+	}
+	
+	public void listarUsuarios() {
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		Usuarios = usuarioDAO.listar();
 	}
 
 	public void novo() {

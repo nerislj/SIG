@@ -40,6 +40,7 @@ public class ConselheiroBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("aqui conselheirobean");
 			ConselheiroDAO conselheiroDAO = new ConselheiroDAO();
 			RepresentacaoDAO representacaoDAO = new RepresentacaoDAO();
 		

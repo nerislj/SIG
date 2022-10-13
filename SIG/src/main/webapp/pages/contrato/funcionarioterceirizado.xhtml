@@ -6,6 +6,14 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	template="/templates/modelo.xhtml">
+	
+	<ui:define name="metadata">
+		<f:metadata>
+
+			<f:event listener="#{funcionarioTerceirizadoBean.listarFuncionariosTerceirizados}" 
+				type="preRenderView" />
+		</f:metadata>
+	</ui:define>
 
 
 	<style type="text/css">
@@ -171,7 +179,7 @@
 					</p:inputMask>
 
 					<p:outputLabel value="Endereço Residência: " />
-					<p:inputText maxlength="50" size="50" id="endResi"
+					<p:inputText maxlength="255" size="50" id="endResi"
 						value="#{funcionarioTerceirizadoBean.pessoa.endereco}"
 						required="true"
 						requiredMessage="O campo Endereço Residência é obrigatório"
@@ -215,8 +223,8 @@
 					<h:outputText value="" />
 
 
-					<p:outputLabel for="unidade" value="Unidade " />
-					<p:selectOneMenu id="unidade" filter="true" style="width:380px"
+					<p:outputLabel for="unidade" value="Unidade * " />
+					<p:selectOneMenu id="unidade" filter="true" style="width:380px" required="true"
 						requiredMessage="O campo Unidade é obrigatório"
 						converter="omnifaces.SelectItemsConverter"
 						value="#{funcionarioTerceirizadoBean.funcionarioTerceirizado.unidade}">
@@ -231,7 +239,7 @@
 
 
 					<p:outputLabel value="Cargo: " />
-					<p:selectOneMenu id="cargo" filter="true" style="width:380px"
+					<p:selectOneMenu id="cargo" filter="true" style="width:380px" required="true"
 						requiredMessage="O campo Cargo é obrigatório"
 						converter="omnifaces.SelectItemsConverter"
 						value="#{funcionarioTerceirizadoBean.funcionarioTerceirizado.cargoTerceirizado}">

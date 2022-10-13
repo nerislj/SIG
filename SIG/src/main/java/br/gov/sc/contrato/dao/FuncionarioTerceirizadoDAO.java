@@ -1,20 +1,18 @@
 /* Decompiler 4ms, total 154ms, lines 61 */
 package br.gov.sc.contrato.dao;
 
-import br.gov.sc.codet.domain.HistoricoProcessoCODET;
-import br.gov.sc.codet.domain.Processo;
-import br.gov.sc.contrato.domain.FuncionarioTerceirizado;
-import br.gov.sc.contrato.domain.UserClaimsContrato;
-import br.gov.sc.sgi.domain.PessoaFisica;
-import br.gov.sc.sgi.domain.Unidade;
-import br.gov.sc.sgi.util.HibernateUtil;
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.SimpleExpression;
+
+import br.gov.sc.contrato.domain.FuncionarioTerceirizado;
+import br.gov.sc.sgi.domain.PessoaFisica;
+import br.gov.sc.sgi.util.HibernateUtil;
 
 public class FuncionarioTerceirizadoDAO extends GenericDAO<FuncionarioTerceirizado> {
    public static PessoaFisica carregarCpf(String cpf) {

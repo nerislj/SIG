@@ -53,6 +53,7 @@ public class CredencialVeiculoBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("AQUI CREDENCIADOVEICULO BEAN");
 
 			HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 			usuarioLogado = (Usuario) sessao.getAttribute("usuario");

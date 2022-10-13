@@ -40,6 +40,7 @@ public class CredencialStatusBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("AQUI CREDENCIADOSTATUS BEAN");
 			CredencialStatusDAO credencialstatusDAO = new CredencialStatusDAO();
 			listaStatus = credencialstatusDAO.listar();
 		} catch (RuntimeException erro) {

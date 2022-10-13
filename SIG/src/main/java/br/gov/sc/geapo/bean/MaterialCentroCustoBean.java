@@ -51,6 +51,7 @@ public class MaterialCentroCustoBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("materialcentro de custo bean");
 			MaterialCentroCustoDAO MaterialCentroCustoDAO = new MaterialCentroCustoDAO();
 			listaCusto = MaterialCentroCustoDAO.listar();
 		} catch (RuntimeException erro) {
@@ -117,5 +118,8 @@ public class MaterialCentroCustoBean implements Serializable {
 	public void editar(ActionEvent evento) {
 		MaterialCentroCusto = (MaterialCentroCusto) evento.getComponent().getAttributes()
 				.get("materialcentroSelecionado");
+		
+		UnidadeDAO unidadeDAO = new UnidadeDAO();
+		listaUnidades = unidadeDAO.listar();
 	}
 }

@@ -33,6 +33,7 @@ public class RepresentacaoBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("aqui representacaobean");
 			RepresentacaoDAO representacaoDAO = new RepresentacaoDAO();
 			
 			listaRepresentacoes = representacaoDAO.listarTudo();

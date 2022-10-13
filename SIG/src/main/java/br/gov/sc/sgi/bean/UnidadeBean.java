@@ -40,6 +40,7 @@ public class UnidadeBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("unidade bean");
 			UnidadeDAO unidadeDAO = new UnidadeDAO();
 			unidades = unidadeDAO.listar();
 		} catch (RuntimeException erro) {

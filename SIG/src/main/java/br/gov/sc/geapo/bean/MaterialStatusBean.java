@@ -41,6 +41,7 @@ public class MaterialStatusBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("materialstatus bean");
 			MaterialStatusDAO materialstatusDAO = new MaterialStatusDAO();
 			listaStatus = materialstatusDAO.listar();
 		} catch (RuntimeException erro) {

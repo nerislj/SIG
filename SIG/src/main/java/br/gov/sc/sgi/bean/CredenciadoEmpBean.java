@@ -151,29 +151,29 @@ public class CredenciadoEmpBean implements Serializable {
 		}
 
 	}
-	
+
 	@SuppressWarnings("static-access")
 	public void blurCredenciado() {
 
 		CredenciadoEmpDAO credenciadoEmpDAO = new CredenciadoEmpDAO();
 		empresa = credenciadoEmpDAO.carregarCredenciadoEmp(credenciadoPesquisaPorNome);
-		
+
 		empresa.setCnpj(credenciadoPesquisaPorNome);
 
 		System.out.println("VALOR credenciadoPesquisaPorNome " + credenciadoPesquisaPorNome);
 
-		
 	}
-	
-	 public List<CredenciadoEmp> completeTheme(String query) {
-	        String queryLowerCase = query.toLowerCase();
-	        
-	        CredenciadoEmpDAO credenciadoDAO = new CredenciadoEmpDAO();
-			
-			
-	        List<CredenciadoEmp> allThemes = credenciadoDAO.listar();
-	        return allThemes.stream().filter(t -> t.getPessoaJuridica().getNomeFantasia().toLowerCase().startsWith(queryLowerCase)).collect(Collectors.toList());
-	    }
+
+	public List<CredenciadoEmp> completeTheme(String query) {
+		String queryLowerCase = query.toLowerCase();
+
+		CredenciadoEmpDAO credenciadoDAO = new CredenciadoEmpDAO();
+
+		List<CredenciadoEmp> allThemes = credenciadoDAO.listar();
+		return allThemes.stream()
+				.filter(t -> t.getPessoaJuridica().getNomeFantasia().toLowerCase().startsWith(queryLowerCase))
+				.collect(Collectors.toList());
+	}
 
 	public int getFiltro() {
 		return filtro;
@@ -466,6 +466,8 @@ public class CredenciadoEmpBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("AQUI CREDENCIADOEMP BEAN");
+
 			HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 			usuarioLogado = (Usuario) sessao.getAttribute("usuario");
 
@@ -475,17 +477,6 @@ public class CredenciadoEmpBean implements Serializable {
 			pessoa = new PessoaFisica();
 
 			credenciadoEmpHist = new CredenciadoEmpHist();
-
-			CredenciadoEmpDAO credenciadoDAO = new CredenciadoEmpDAO();
-			credenciados = credenciadoDAO.listar();
-
-			credenciadosValidadeDesc = credenciadoDAO.listarValidadeDesc();
-
-			CredencialStatusDAO statusDAO = new CredencialStatusDAO();
-			credencialStatus = statusDAO.listar("tipoStatus");
-
-			CredencialEmpTipoDAO tipoDAO = new CredencialEmpTipoDAO();
-			CredencialEmpTipos = tipoDAO.listar("tipocredencial");
 
 			SGPE = new CredenciadoSGPE();
 			obs = new CredenciadoEmpObs();
@@ -509,9 +500,6 @@ public class CredenciadoEmpBean implements Serializable {
 
 			estado = new Estado();
 
-			EstadoDAO estadoDAO = new EstadoDAO();
-			Estados = estadoDAO.listar("sigla");
-
 			mostrarNãoVirtual = false;
 
 			Cidades = new ArrayList<>();
@@ -520,6 +508,22 @@ public class CredenciadoEmpBean implements Serializable {
 			Messages.addGlobalError("Ocorreu um erro ao tentar listar os Credenciado.");
 			erro.printStackTrace();
 		}
+	}
+
+	public void listasCredenciadoEmpBean() {
+		CredenciadoEmpDAO credenciadoDAO = new CredenciadoEmpDAO();
+		credenciados = credenciadoDAO.listar();
+
+		credenciadosValidadeDesc = credenciadoDAO.listarValidadeDesc();
+
+		CredencialStatusDAO statusDAO = new CredencialStatusDAO();
+		credencialStatus = statusDAO.listar("tipoStatus");
+
+		CredencialEmpTipoDAO tipoDAO = new CredencialEmpTipoDAO();
+		CredencialEmpTipos = tipoDAO.listar("tipocredencial");
+
+		EstadoDAO estadoDAO = new EstadoDAO();
+		Estados = estadoDAO.listar("sigla");
 	}
 
 	@SuppressWarnings("deprecation")
@@ -554,78 +558,68 @@ public class CredenciadoEmpBean implements Serializable {
 	 * "Ocorreu um erro ao tentar buscar as Pessoas."); erro.printStackTrace(); } }
 	 */
 
-	//public void carregarEmpresaNova() {
-	//	System.out.println(empresa.getCnpj());
-	//	empresa.setCnpj(empresa.getCnpj());
-	//}
+	// public void carregarEmpresaNova() {
+	// System.out.println(empresa.getCnpj());
+	// empresa.setCnpj(empresa.getCnpj());
+	// }
 
 	public void salvar() {
 		try {
 			PessoaJuridicaDAO pessoaJuridicaDAO = new PessoaJuridicaDAO();
 			CredenciadoEmpDAO credenciadoDAO = new CredenciadoEmpDAO();
-			
-			
 
-			if(credenciado2 == null && filtro == 2) {
-				
-				//credenciado.setPessoaJuridica(empresa);
-				//credenciado.setDataCadastro(new Date());
-				//credenciadoDAO.merge(credenciado);
-				
-			
-				
+			if (credenciado2.getCodigo() == null && filtro == 2) {
+
+				// credenciado.setPessoaJuridica(empresa);
+				// credenciado.setDataCadastro(new Date());
+				// credenciadoDAO.merge(credenciado);
+
+				System.out.println("entrou");
+
 				empresa.setCredenciadoEmpVirtual("Não");
 
 				pessoaJuridicaDAO.merge(empresa);
-				
+
 				empresa = credenciadoDAO.carregaEmpresa(empresa.getCnpj());
-				
+
 				System.out.println(empresa + " empresa credenciado2 == null && filtro == 2");
-			
-				credenciadoDAO.salvarCredenciadoPrimeiroCadastro(credenciado, empresa, credenciadoEmpHist, usuarioLogado);
-				
-				
-				
-			
+
+				credenciadoDAO.salvarCredenciadoPrimeiroCadastro(credenciado, empresa, credenciadoEmpHist,
+						usuarioLogado);
+
 			} else if (credenciado2 != null && filtro == 2) {
-				
+
 				System.out.println(empresa + " empresa");
-			
-				//credenciado.setPessoaJuridica(empresa);
-				//credenciado.setDataCadastro(new Date());
-				//credenciadoDAO.merge(credenciado);
+
+				// credenciado.setPessoaJuridica(empresa);
+				// credenciado.setDataCadastro(new Date());
+				// credenciadoDAO.merge(credenciado);
 				System.out.println(credenciado2 + " credenciado");
-				
+
 				credenciado2.setDataCadastro(new Date());
 				credenciado2.setVencimentoCredencial(credenciado.getVencimentoCredencial());
 				credenciado2.setCredencialStatus(credenciado.getCredencialStatus());
 				credenciado2.setCredencialTipo(credenciado.getCredencialTipo());
 				credenciado2.setPessoaJuridica(empresa);
-			
-				
-				
-				
+
 				credenciadoDAO.merge(credenciado2);
-				
+
 				empresa.setCredenciadoEmpVirtual("Não");
 
 				pessoaJuridicaDAO.merge(empresa);
-				
+
 				System.out.println(credenciado2 + " credenciado BEAN");
 				credenciadoDAO.salvarCredenciado(credenciado2, empresa, credenciadoEmpHist, usuarioLogado);
 			}
-			
-			if(filtro == 1) {
-				
+
+			if (filtro == 1) {
+
 				empresa.setCredenciadoEmpVirtual("Sim");
 
 				pessoaJuridicaDAO.merge(empresa);
-				
+
 			}
 
-				
-			
-			
 			CredenciadoEmpBean.this.listar();
 
 			Messages.addGlobalInfo("Credenciado cadastrado com sucesso!");
@@ -675,8 +669,7 @@ public class CredenciadoEmpBean implements Serializable {
 		CredenciadoEmpDAO credenciadoDAO = new CredenciadoEmpDAO();
 		CidadeDAO municipioDAO = new CidadeDAO();
 		exibePainelDados = true;
-	
-		
+
 		try {
 
 			empresa = PessoaJuridicaDAO.carregarCnpj(empresa.getCnpj());
@@ -684,6 +677,13 @@ public class CredenciadoEmpBean implements Serializable {
 			if (empresa.getCredenciadoEmpVirtual() == null || empresa.getCredenciadoEmpVirtual().equals("Não")) {
 				credenciado2 = credenciadoDAO.loadCredenciado(empresa);
 				credenciado = credenciadoDAO.loadCredenciado(empresa);
+				
+				if(credenciado == null) {
+					credenciado = new CredenciadoEmp();
+				}
+				if(credenciado2 == null) {
+					credenciado2 = new CredenciadoEmp();
+				}
 			}
 			if (empresa.getEstadoEndereco() != null) {
 				Cidades = municipioDAO.buscarPorEstado(empresa.getEstadoEndereco().getCodigo());
@@ -1269,11 +1269,5 @@ public class CredenciadoEmpBean implements Serializable {
 	public void setCredenciadoPesquisaPorNome(String credenciadoPesquisaPorNome) {
 		this.credenciadoPesquisaPorNome = credenciadoPesquisaPorNome;
 	}
-
-	
-
-	
-
-	
 
 }

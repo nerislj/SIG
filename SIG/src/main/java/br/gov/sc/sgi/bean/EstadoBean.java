@@ -40,6 +40,7 @@ public class EstadoBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("aqui estadobean");
 			EstadoDAO estadoDAO = new EstadoDAO();
 			Estados = estadoDAO.listar();
 		} catch (RuntimeException erro) {

@@ -74,6 +74,7 @@ public class PessoaJuridicaBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("pessoajuridica bean");
 			PessoaJuridicaDAO empresaDAO = new PessoaJuridicaDAO();
 			empresas = empresaDAO.listar();
 		} catch (RuntimeException erro) {

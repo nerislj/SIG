@@ -124,6 +124,7 @@ public class RelatorioProcessoBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("relatorico processo codet");
 
 			SetorAtualDAO setorDAO = new SetorAtualDAO();
 			SituacaoProcessoDAO situacaoDAO = new SituacaoProcessoDAO();

@@ -82,6 +82,7 @@ public class DocSGPEBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("docsgpe bean");
 			HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 			usuarioLogado = (Usuario) sessao.getAttribute("usuario");
 

@@ -172,6 +172,7 @@ public class FrotaViagemBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("frota viagem bean");
 			HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 			usuarioLogado = (Usuario) sessao.getAttribute("usuario");
 

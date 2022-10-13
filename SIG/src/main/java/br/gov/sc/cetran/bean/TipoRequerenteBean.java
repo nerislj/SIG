@@ -31,6 +31,7 @@ public class TipoRequerenteBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("aqui tiporequerentebean");
 			TipoRequerenteDAO TipoRequerenteDAO = new TipoRequerenteDAO();
 			
 			listatipoRequerentes = TipoRequerenteDAO.listarTudo();

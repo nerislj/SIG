@@ -44,6 +44,7 @@ public class NomenclaturaProcessoBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("aqui nomenclaturabean");
 			NomenclaturaProcessoDAO nomenclaturaProcessoDAO = new NomenclaturaProcessoDAO();
 			listaNomenclaturasProcessos = nomenclaturaProcessoDAO.listar();
 		} catch (RuntimeException erro) {

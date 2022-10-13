@@ -107,11 +107,14 @@ public class OficioBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("oficiobean");
 			HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 			usuarioLogado = (Usuario) sessao.getAttribute("usuario");
 
 			OficioDAO oficioDAO = new OficioDAO();
 			OficioAnoDAO oficioanoDAO = new OficioAnoDAO();
+			
+			System.out.println("e AQUI? Oficio");
 
 			Anos = oficioanoDAO.loadAnos();
 

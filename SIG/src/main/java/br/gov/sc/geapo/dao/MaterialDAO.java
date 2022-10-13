@@ -49,9 +49,11 @@ public class MaterialDAO extends GenericDAO<Material>{
 			
 			
 			
-			sessao.save(material);
+	
 						
 			sessao.save(materialEntrada);
+			
+		
 			
 			//sessao.update(materialEntrada);
 

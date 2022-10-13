@@ -41,6 +41,7 @@ public class RecursoMultaTiposBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("recursomultatipo bean");
 			RecursoMultaTiposDAO recursomultatipoDAO = new RecursoMultaTiposDAO();
 			recursomultatipos = recursomultatipoDAO.listar();
 		} catch (RuntimeException erro) {

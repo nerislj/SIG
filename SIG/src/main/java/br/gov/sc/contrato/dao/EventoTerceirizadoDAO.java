@@ -18,10 +18,7 @@ public class EventoTerceirizadoDAO extends GenericDAO<EventoTerceirizado> {
 
 		      List var9;
 		      
-		    System.out.println(colaborador);
-		    System.out.println(tipoEvento);
-		    System.out.println(dateIni);
-		    System.out.println(dateFini);
+		  
 		      try {
 		         Criteria consulta = sessao.createCriteria(EventoTerceirizado.class);
 		         if (colaborador != null) {

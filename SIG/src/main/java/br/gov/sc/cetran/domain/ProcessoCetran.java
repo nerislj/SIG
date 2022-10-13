@@ -61,7 +61,7 @@ public class ProcessoCetran extends GenericDomainCetran {
 	@JoinColumn(nullable = true)
 	private Usuario usuarioCadastro;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "processoCetran")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "processoCetran")
 	@Fetch(FetchMode.SUBSELECT)
 	private List<HistoricoProcesso> historicoProcesso;
 

@@ -120,7 +120,7 @@ System.out.println(consulta);
 	
 
 			credenciado.setDataCadastro(new Date());
-		
+			
 			credenciado.setPessoaJuridica(empresa);
 			
 			sessao.save(credenciado);

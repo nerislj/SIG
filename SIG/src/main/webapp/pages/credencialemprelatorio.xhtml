@@ -6,6 +6,15 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	template="/templates/modelo.xhtml">
+	
+	<ui:define name="metadata">
+
+		<f:metadata>
+
+			<f:event listener="#{credenciadoEmpBean.listasCredenciadoEmpBean}"
+				type="preRenderView" />
+		</f:metadata>
+	</ui:define>
 
 	<ui:define name="conteudo">
 		<style type="text/css">

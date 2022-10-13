@@ -40,6 +40,7 @@ public class UsuarioStatusBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("usuariostatus bean");
 			UsuarioStatusDAO usuariostatusDAO = new UsuarioStatusDAO();
 			ListaStatus = usuariostatusDAO.listar();
 		} catch (RuntimeException erro) {

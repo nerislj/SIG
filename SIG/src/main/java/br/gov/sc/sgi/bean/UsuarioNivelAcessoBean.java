@@ -72,6 +72,7 @@ public class UsuarioNivelAcessoBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("usuarionivelacesso bean");
 			UsuarioNivelAcessoDAO acessoDAO = new UsuarioNivelAcessoDAO();
 			acessos = acessoDAO.listar();
 

@@ -38,15 +38,13 @@ public class HistoricoProcessoBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
-
+System.out.println("aqui historicoprocesso bean");
 			ConselheiroDAO conselheiroDAO = new ConselheiroDAO();
 			listaConselheiros = conselheiroDAO.listarTudo();
 
-			HistoricoProcessoDAO HistoricoProcessoDAO = new HistoricoProcessoDAO();
-			listaHistoricoProcessos = HistoricoProcessoDAO.listar();
+		
 			
-			int anoHoje = new Date().getYear() + 1900;
-			listaHistoricoProcessosAVencer = HistoricoProcessoDAO.listarPorData(anoHoje);
+			
 
 			historicoProcesso = new HistoricoProcesso();
 
@@ -55,6 +53,22 @@ public class HistoricoProcessoBean implements Serializable {
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar listar a HistoricoProcesso.");
 			erro.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void listarHistoricoProcessos() {
+		HistoricoProcessoDAO HistoricoProcessoDAO = new HistoricoProcessoDAO();
+		listaHistoricoProcessos = HistoricoProcessoDAO.listar();
+	}
+	public void listarHistoricoProcessosAVencer() {
+		HistoricoProcessoDAO HistoricoProcessoDAO = new HistoricoProcessoDAO();
+		
+		try {
+			int anoHoje = new Date().getYear() + 1900;
+			listaHistoricoProcessosAVencer = HistoricoProcessoDAO.listarPorData(anoHoje);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

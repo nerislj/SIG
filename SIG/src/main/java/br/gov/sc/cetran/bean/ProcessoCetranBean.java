@@ -1,8 +1,6 @@
 package br.gov.sc.cetran.bean;
 
-import java.io.IOException;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -10,7 +8,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
@@ -28,12 +25,7 @@ import br.gov.sc.cetran.domain.HistoricoProcesso;
 import br.gov.sc.cetran.domain.ProcessoAno;
 import br.gov.sc.cetran.domain.ProcessoCetran;
 import br.gov.sc.cetran.domain.Situacao;
-import br.gov.sc.geapo.domain.MaterialSaidaRelacao;
-import br.gov.sc.sgi.dao.OficioAnoDAO;
-import br.gov.sc.sgi.dao.OficioDAO;
-import br.gov.sc.sgi.domain.OficioAno;
 import br.gov.sc.sgi.domain.Usuario;
-import util.JSFUtil;
 
 @SuppressWarnings("serial")
 @ManagedBean
@@ -65,6 +57,9 @@ public class ProcessoCetranBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+				
+
+System.out.println("PROCESSO CETRAN");
 			ProcessoAnoDAO processoanoDAO = new ProcessoAnoDAO();
 
 			anos = processoanoDAO.loadAnos();
@@ -75,16 +70,8 @@ public class ProcessoCetranBean implements Serializable {
 			usuarioLogado = (Usuario) sessao.getAttribute("usuario");
 			
 			
-			ConselheiroDAO conselheiroDAO = new ConselheiroDAO();
-			listaConselheiros = conselheiroDAO.listarTudo();
 			
-			SituacaoDAO situacaoDAO = new SituacaoDAO();
-			listaSituacoes = situacaoDAO.listarTudo();
 			
-			ProcessoCetranDAO ProcessoCetranDAO = new ProcessoCetranDAO();
-		
-
-			listaProcessosCetran = ProcessoCetranDAO.listar();
 		
 			
 			
@@ -96,17 +83,7 @@ public class ProcessoCetranBean implements Serializable {
 			listaHistoricoProcesso = new ArrayList<>();
 			
 		
-			
-			
-			
-			
-		
-		
-			
-				
-				
-				
-				
+						
 			
 			
 		} catch (Exception erro) {
@@ -117,8 +94,30 @@ public class ProcessoCetranBean implements Serializable {
 	
 	
 
-	
+	public void listarProcessos() {
+		ProcessoCetranDAO ProcessoCetranDAO = new ProcessoCetranDAO();
+		
 
+		listaProcessosCetran = ProcessoCetranDAO.listar();
+		
+		ConselheiroDAO conselheiroDAO = new ConselheiroDAO();
+		listaConselheiros = conselheiroDAO.listarTudo();
+	
+	
+	
+		SituacaoDAO situacaoDAO = new SituacaoDAO();
+		listaSituacoes = situacaoDAO.listarTudo();
+	}
+
+	public void listarConselheiros() {
+		ConselheiroDAO conselheiroDAO = new ConselheiroDAO();
+		listaConselheiros = conselheiroDAO.listarTudo();
+	}
+	
+	public void listarSituacoes() {
+		SituacaoDAO situacaoDAO = new SituacaoDAO();
+		listaSituacoes = situacaoDAO.listarTudo();
+	}
 
 
 	public void novo() {
@@ -126,6 +125,7 @@ public class ProcessoCetranBean implements Serializable {
 		listaHistoricoProcesso = new ArrayList<HistoricoProcesso>();
 		
 	}
+	
 
 	public void salvar() {
 		try {
@@ -162,6 +162,8 @@ public class ProcessoCetranBean implements Serializable {
 		ProcessoCetran processo = (ProcessoCetran) evento.getComponent().getAttributes().get("processoSelecionado");
 		
 		System.out.println("Processo selecionado " + processo.getRecorrido());
+		
+	
 
 		int achou = -1;
 		for (int posicao = 0; posicao < listaHistoricoProcesso.size(); posicao++) {
@@ -229,6 +231,8 @@ public class ProcessoCetranBean implements Serializable {
 	}
 	
 	public void vincularConselheiro() {
+		
+	
 		
 		
 		try {
@@ -355,9 +359,6 @@ public class ProcessoCetranBean implements Serializable {
 
 	
 	
-
-
-
 
 
 	

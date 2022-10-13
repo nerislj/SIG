@@ -23,7 +23,7 @@ public class UserClaimsContratoDAO extends GenericDAO<UserClaimsContrato> {
 	         Criteria consulta = sessao.createCriteria(UserClaimsContrato.class);
 	         
 	         
-	        	 System.out.println(usuario + " usuario");
+	
 	      
 	         consulta.add(Restrictions.eq("usuario", usuario));
 	         consulta.addOrder(Order.asc("codigo"));

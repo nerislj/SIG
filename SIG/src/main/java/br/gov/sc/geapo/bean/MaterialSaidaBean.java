@@ -81,6 +81,7 @@ public class MaterialSaidaBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("materialsaida bean");
 			HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 			usuarioLogado = (Usuario) sessao.getAttribute("usuario");
 

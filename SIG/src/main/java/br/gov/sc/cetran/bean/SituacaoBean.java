@@ -31,6 +31,7 @@ public class SituacaoBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("aqui situacaobean");
 			SituacaoDAO situacaoDAO = new SituacaoDAO();
 			
 			listaSituacoes = situacaoDAO.listarTudo();

@@ -141,7 +141,7 @@ public class RelatorioMaterialBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
-
+System.out.println("relatoriomaterial bean");
 			UnidadeDAO uniDAO = new UnidadeDAO();
 
 			MaterialStatusDAO statusDAO = new MaterialStatusDAO();

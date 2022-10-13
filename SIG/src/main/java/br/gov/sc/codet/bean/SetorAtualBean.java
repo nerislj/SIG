@@ -40,6 +40,7 @@ public class SetorAtualBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("setor atual codet bean");
 			SetorAtualDAO setorDAO = new SetorAtualDAO();
 			listaSetoresAtuais = setorDAO.listar();
 		} catch (RuntimeException erro) {

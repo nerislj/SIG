@@ -77,6 +77,7 @@ public class PessoaBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("pessoabean");
 			PessoaDAO pessoaDAO = new PessoaDAO();
 			pessoas = pessoaDAO.listar();
 		} catch (RuntimeException erro) {

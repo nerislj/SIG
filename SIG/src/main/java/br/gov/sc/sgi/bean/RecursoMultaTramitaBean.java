@@ -178,7 +178,7 @@ public class RecursoMultaTramitaBean implements Serializable {
 	@PostConstruct
 	public void novo() {
 		try {
-
+System.out.println("recursomultatramita bean");
 			HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 			usuario = (Usuario) sessao.getAttribute("usuario");
 

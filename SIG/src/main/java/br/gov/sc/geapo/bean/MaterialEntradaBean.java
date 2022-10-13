@@ -107,6 +107,7 @@ public class MaterialEntradaBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("materialentrada bean");
 			materialEntradaHist = new MaterialEntradaHist();
 
 			MaterialEntradaDAO materialEntradaDAO = new MaterialEntradaDAO();

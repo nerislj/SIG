@@ -311,6 +311,9 @@ public class CredenciadoBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			
+			System.out.println("AQUI CREDENCIADO BEAN");
+			
 			HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 			usuarioLogado = (Usuario) sessao.getAttribute("usuario");
 			
@@ -350,6 +353,8 @@ public class CredenciadoBean implements Serializable {
 			Cidades = new ArrayList<>();
 
 			credenciadosValidadeDesc = credenciadoDAO.listarValidadeDesc();
+			
+			
 
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar listar os Credenciado.");

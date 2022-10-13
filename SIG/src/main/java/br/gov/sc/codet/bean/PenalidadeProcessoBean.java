@@ -44,6 +44,7 @@ public class PenalidadeProcessoBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("penalidadeprocesso bean");
 			PenalidadeProcessoDAO penalidadeDAO = new PenalidadeProcessoDAO();
 			listaPenalidadesProcesso = penalidadeDAO.listar();
 		} catch (RuntimeException erro) {

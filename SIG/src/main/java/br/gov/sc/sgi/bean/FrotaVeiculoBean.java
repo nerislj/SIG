@@ -77,6 +77,7 @@ public class FrotaVeiculoBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("frota veiculo bean");
 			HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 			usuarioLogado = (Usuario) sessao.getAttribute("usuario");
 			

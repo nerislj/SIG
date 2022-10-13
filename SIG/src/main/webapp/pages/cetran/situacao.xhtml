@@ -6,6 +6,15 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	template="/templates/modelo.xhtml">
+	
+	<ui:define name="metadata">
+
+		<f:metadata>
+
+			<f:event listener="#{processoCetranBean.listarSituacoes}" 
+				type="preRenderView" />
+		</f:metadata>
+	</ui:define>
 
 	<ui:define name="conteudo">
 		<h:form id="formlista" rendered="#{autenticacaoBean.temPermissoes([1, 27])}">

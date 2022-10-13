@@ -51,6 +51,7 @@ public class SetorBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("setor beAN");
 			SetorDAO setorDAO = new SetorDAO();
 			Setores = setorDAO.listar();
 			UnidadeDAO unidadeDAO = new UnidadeDAO();

@@ -51,6 +51,7 @@ public class CidadeBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("aqui cidadebean");
 			CidadeDAO cidadeDAO = new CidadeDAO();
 			Cidades = cidadeDAO.listar();
 		} catch (RuntimeException erro) {

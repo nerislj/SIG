@@ -40,6 +40,7 @@ public class FrotaUnidadeBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("frota unidade bean");
 			FrotaUnidadeDAO frotaUnidadeDAO = new FrotaUnidadeDAO();
 			frotaUnidades = frotaUnidadeDAO.listar();
 		} catch (RuntimeException erro) {

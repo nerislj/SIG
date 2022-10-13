@@ -49,6 +49,7 @@ public class SituacaoProcessoBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("situacao rpocesso codet");
 			SituacaoProcessoDAO situacaoProcessoDAO = new SituacaoProcessoDAO();
 			listaSituacoesProcessos = situacaoProcessoDAO.listar();
 		} catch (RuntimeException erro) {

@@ -7,13 +7,24 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	template="/templates/modelo.xhtml">
 
+	<ui:define name="metadata">
+
+		<f:metadata>
+
+			<f:event
+				listener="#{userClaimsContratoBean.listaruserClaimsContratos}"
+				type="preRenderView" />
+		</f:metadata>
+	</ui:define>
+
 	<ui:define name="conteudo">
 		<h:form id="formlista">
 			<p:panel header="Usuario - Listagem"
 				rendered="#{autenticacaoBean.temPermissoes([1])}">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
-					paginator="true" value="#{userClaimsContratoBean.listauserClaimsContratos}" var="usuario"
-					rows="10">
+					paginator="true"
+					value="#{userClaimsContratoBean.listauserClaimsContratos}"
+					var="usuario" rows="10">
 					<f:facet name="header">
 						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
 							actionListener="#{userClaimsContratoBean.novo()}"
@@ -29,12 +40,14 @@
 						<h:outputText value="#{usuario.usuario.pessoa.cpf}" />
 					</p:column>
 
-					<p:column headerText="Nome" sortBy="#{usuario.usuario.pessoa.nomeCompleto}"
+					<p:column headerText="Nome"
+						sortBy="#{usuario.usuario.pessoa.nomeCompleto}"
 						filterBy="#{usuario.usuario.pessoa.nomeCompleto}">
 						<h:outputText value="#{usuario.usuario.pessoa.nomeCompleto}" />
 					</p:column>
 
-					<p:column headerText="Unidade" sortBy="#{usuario.unidade.unidadeNome}"
+					<p:column headerText="Unidade"
+						sortBy="#{usuario.unidade.unidadeNome}"
 						filterBy="#{usuario.unidade.unidadeNome}"
 						style="width: 8%; text-align: center;">
 						<h:outputText value="#{usuario.unidade.unidadeNome}" />
@@ -46,7 +59,7 @@
 						<h:outputText value="#{usuario.ativo}" />
 					</p:column>
 
-					
+
 
 					<p:column headerText="Opções"
 						style="width: 6%; text-align: center;">
@@ -92,12 +105,12 @@
 						requiredMessage="O campo Usuário é obrigatório">
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione um Usuário" />
-						<f:selectItems value="#{userClaimsContratoBean.listaUsuarios}" var="usuarios"
-							itemValue="#{usuarios}"
+						<f:selectItems value="#{userClaimsContratoBean.listaUsuarios}"
+							var="usuarios" itemValue="#{usuarios}"
 							itemLabel="#{usuarios.pessoa.cpf} - #{usuarios.pessoa.nomeCompleto}" />
 					</p:selectOneMenu>
 
-					
+
 					<p:outputLabel for="unidade" value="Unidade " />
 					<p:selectOneMenu id="unidade" filter="true"
 						requiredMessage="O campo Unidade é obrigatório"
@@ -108,10 +121,10 @@
 						<f:selectItems value="#{userClaimsContratoBean.listaUnidades}"
 							var="unidade" itemValue="#{unidade}"
 							itemLabel="#{unidade.unidadeNome}" />
-						
+
 					</p:selectOneMenu>
 
-					
+
 
 				</h:panelGrid>
 

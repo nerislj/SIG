@@ -14,6 +14,7 @@ import org.hibernate.annotations.QueryHints;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import br.gov.sc.cetran.domain.Conselheiro;
 import br.gov.sc.cetran.domain.HistoricoProcesso;
 import br.gov.sc.cetran.domain.ProcessoCetran;
 import br.gov.sc.cetran.domain.Requerente;
@@ -138,6 +139,21 @@ public class ProcessoCetranDAO extends GenericDAO<ProcessoCetran> {
 			if (transacao != null) {
 				transacao.rollback();
 			}
+			throw erro;
+		} finally {
+			sessao.close();
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ProcessoCetran> listarTudo() {
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+		try {
+			Query query = sessao.createQuery("from ProcessoCetran"); //You will get Weayher object
+			List<ProcessoCetran> list = query.list(); //You are accessing  as list<WeatherModel>
+
+			return list;
+		} catch (RuntimeException erro) {
 			throw erro;
 		} finally {
 			sessao.close();

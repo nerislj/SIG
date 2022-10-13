@@ -38,6 +38,7 @@ public class CargoTerceirizadoBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("AQUI CARGOTERCEIRIZADO");
 			CargoTerceirizadoDAO cargoDAO = new CargoTerceirizadoDAO();
 			this.listaCargosTerceirizado = cargoDAO.listar();
 		} catch (RuntimeException var2) {

@@ -41,6 +41,7 @@ public class AutenticacaoBean {
 
 	@PostConstruct
 	public void iniciar() {
+		System.out.println("aqui atenticacaobean");
 		usuario = new Usuario();
 		usuario.setPessoa(new PessoaFisica());
 	}

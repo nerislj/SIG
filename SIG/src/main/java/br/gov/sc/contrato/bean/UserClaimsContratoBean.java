@@ -54,19 +54,25 @@ public class UserClaimsContratoBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
-			UnidadeDAO unidadeDAO = new UnidadeDAO();
-			listaUnidades = unidadeDAO.listar();
+			System.out.println("aqui userclaim contrato");
 			
-			UsuarioDAO usuarioDAO = new UsuarioDAO();
-			listaUsuarios = usuarioDAO.listar();
 			
-			UserClaimsContratoDAO userClaimsDAO = new UserClaimsContratoDAO();
-			listauserClaimsContratos = userClaimsDAO.listar();
 		} catch (RuntimeException var2) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar listar os Claims.", new Object[0]);
 			var2.printStackTrace();
 		}
 
+	}
+	
+	public void listaruserClaimsContratos() {
+		UserClaimsContratoDAO userClaimsDAO = new UserClaimsContratoDAO();
+		listauserClaimsContratos = userClaimsDAO.listar();
+		
+		UnidadeDAO unidadeDAO = new UnidadeDAO();
+		listaUnidades = unidadeDAO.listar();
+		
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		listaUsuarios = usuarioDAO.listar();
 	}
 
 	public void novo() {

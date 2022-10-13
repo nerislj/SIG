@@ -42,6 +42,7 @@ public class MaterialTipoBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("material tipo bean");
 			MaterialTipoDAO materialtipoDAO = new MaterialTipoDAO();
 			listaTipos = materialtipoDAO.listar();
 		} catch (RuntimeException erro) {

@@ -70,6 +70,7 @@ public class MaterialBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+			System.out.println("materialbean");
 			MaterialDAO materialDAO = new MaterialDAO();
 			MaterialTipoDAO materialTipoDAO = new MaterialTipoDAO();
 			
@@ -100,8 +101,19 @@ public class MaterialBean implements Serializable {
 			
 			material.setMaterial(material.getMaterial().toUpperCase());
 			
+			System.out.println(material.getMaterial().toUpperCase() + "salvar material");
+			
+			materialDAO.merge(material);
+			
+			material = materialDAO.carregarMaterial(material.getMaterial());
+			
 			
 			materialDAO.salvarEntradaEstoque(materialEntrada, material, materialTipo);
+			
+			
+			
+			
+			
 			
 			MaterialEntradaDAO materialEntradaDAO = new MaterialEntradaDAO();
 			setListaEntradaMateriais(materialEntradaDAO.listar());

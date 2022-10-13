@@ -34,16 +34,19 @@
 		<!-- Echo all executed SQL to stdout -->
 		<property name="show_sql">false</property>
 		<property name="format_sql">false</property>
+		<property name="use_sql_comments">false</property>
+
+
 		
 
-	
-	
+
+
 		<!-- Drop and re-create the database schema on startup -->
 		<!-- create (limpa tudo e cria do zero)- update (tenta manter os dados 
 			e atualizar) - validate (valida os dados e se estiver fora, da erro) -->
 		<property name="hbm2ddl.auto">update</property>
-		
-		
+
+
 
 		<!-- Mapeamento das Entidades -->
 		<mapping class="br.gov.sc.sgi.domain.Cidade" />
@@ -103,16 +106,16 @@
 		<mapping class="br.gov.sc.geapo.domain.MaterialTipo" />
 		<mapping class="br.gov.sc.geapo.domain.MaterialCentroCusto" />
 		<mapping class="br.gov.sc.geapo.domain.MaterialSaidaRelacao" />
-		
-		<mapping class="br.gov.sc.cetran.domain.ProcessoAno" /> 
-		<mapping class="br.gov.sc.cetran.domain.Situacao" /> 
-		<mapping class="br.gov.sc.cetran.domain.Representacao" /> 
-		<mapping class="br.gov.sc.cetran.domain.TipoRequerente" /> 
-		<mapping class="br.gov.sc.cetran.domain.Conselheiro" /> 
-		<mapping class="br.gov.sc.cetran.domain.Requerente" /> 
+
+		<mapping class="br.gov.sc.cetran.domain.ProcessoAno" />
+		<mapping class="br.gov.sc.cetran.domain.Situacao" />
+		<mapping class="br.gov.sc.cetran.domain.Representacao" />
+		<mapping class="br.gov.sc.cetran.domain.TipoRequerente" />
+		<mapping class="br.gov.sc.cetran.domain.Conselheiro" />
+		<mapping class="br.gov.sc.cetran.domain.Requerente" />
 		<mapping class="br.gov.sc.cetran.domain.ProcessoCetran" />
 		<mapping class="br.gov.sc.cetran.domain.HistoricoProcesso" />
-		
+
 		<mapping class="br.gov.sc.codet.domain.NomenclaturaProcesso" />
 		<mapping class="br.gov.sc.codet.domain.SituacaoProcesso" />
 		<mapping class="br.gov.sc.codet.domain.PenalidadeProcesso" />
@@ -121,16 +124,19 @@
 		<mapping class="br.gov.sc.codet.domain.PartesProcesso" />
 		<mapping class="br.gov.sc.codet.domain.HistoricoProcessoCODET" />
 		<mapping class="br.gov.sc.codet.domain.Processo" />
-		
+
 		<mapping class="br.gov.sc.contrato.domain.EmpresaTerceirizada" />
 		<mapping class="br.gov.sc.contrato.domain.CargoTerceirizado" />
-		<mapping class="br.gov.sc.contrato.domain.FuncionarioTerceirizado" />
+		<mapping
+			class="br.gov.sc.contrato.domain.FuncionarioTerceirizado" />
 		<mapping class="br.gov.sc.contrato.domain.EventoTerceirizado" />
 		<mapping class="br.gov.sc.contrato.domain.ContratoRelacao" />
-		<mapping class="br.gov.sc.contrato.domain.ContratoTerceirizado" />
-		<mapping class="br.gov.sc.contrato.domain.ContratoHistFuncionario" />
+		<mapping
+			class="br.gov.sc.contrato.domain.ContratoTerceirizado" />
+		<mapping
+			class="br.gov.sc.contrato.domain.ContratoHistFuncionario" />
 		<mapping class="br.gov.sc.contrato.domain.UserClaimsContrato" />
-		
+
 
 
 	</session-factory>
