@@ -28,7 +28,6 @@ import br.gov.sc.sgi.domain.Usuario;
 
 @SuppressWarnings("serial")
 @Entity
-@NamedEntityGraph(name= "processocetran_graph", attributeNodes = @NamedAttributeNode("historicoProcesso"))
 public class ProcessoCetran extends GenericDomainCetran {
 	
 

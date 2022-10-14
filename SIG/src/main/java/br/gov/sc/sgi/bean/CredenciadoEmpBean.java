@@ -568,7 +568,7 @@ public class CredenciadoEmpBean implements Serializable {
 			PessoaJuridicaDAO pessoaJuridicaDAO = new PessoaJuridicaDAO();
 			CredenciadoEmpDAO credenciadoDAO = new CredenciadoEmpDAO();
 
-			if (credenciado2.getCodigo() == null && filtro == 2) {
+			if (credenciado2 == null && filtro == 2) {
 
 				// credenciado.setPessoaJuridica(empresa);
 				// credenciado.setDataCadastro(new Date());
