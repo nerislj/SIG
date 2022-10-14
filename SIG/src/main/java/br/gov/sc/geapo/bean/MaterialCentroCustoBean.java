@@ -53,7 +53,7 @@ public class MaterialCentroCustoBean implements Serializable {
 		try {
 			System.out.println("materialcentro de custo bean");
 			MaterialCentroCustoDAO MaterialCentroCustoDAO = new MaterialCentroCustoDAO();
-			listaCusto = MaterialCentroCustoDAO.listar();
+			listaCusto = MaterialCentroCustoDAO.listar("centroCog");
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar listar os Tipos.");
 			erro.printStackTrace();
