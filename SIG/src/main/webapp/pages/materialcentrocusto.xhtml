@@ -10,7 +10,7 @@
 	<ui:define name="conteudo">
 		<h:form id="formlista"
 			rendered="#{autenticacaoBean.temPermissoes([1, 25])}">
-			
+
 			<p:panel header="Centro de Custo - Listagem">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{materialCentroCustoBean.listaCusto}"
@@ -26,9 +26,9 @@
 
 					<p:column headerText="Unidade"
 						filterBy="#{material.unidade.unidadeNome}"
-						sortBy="#{material.unidade.unidadeNome}" style="width: 200px; text-align: center;">
-						<h:outputText
-							value="#{material.unidade.unidadeNome}" />
+						sortBy="#{material.unidade.unidadeNome}"
+						style="width: 200px; text-align: center;">
+						<h:outputText value="#{material.unidade.unidadeNome}" />
 
 					</p:column>
 
@@ -46,11 +46,11 @@
 
 					<p:column headerText="Opções"
 						style="width: 70px; text-align: center;">
-						
+
 
 						<p:commandButton icon="ui-icon-pencil"
 							actionListener="#{materialCentroCustoBean.editar}"
-							update=":formcadastro:cadastro"
+							update=":formcadastro:cadastro :formlista:lista"
 							oncomplete="PF('dialogo').show();">
 							<f:attribute name="materialcentroSelecionado" value="#{material}" />
 							<f:actionListener
@@ -79,7 +79,8 @@
 					<p:selectOneMenu filter="true"
 						value="#{materialCentroCustoBean.materialCentroCusto.unidade}"
 						converter="omnifaces.SelectItemsConverter">
-						<f:selectItem noSelectionOption="true" itemLabel="Selecione uma Unidade" />
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma Unidade" />
 						<f:selectItems value="#{materialCentroCustoBean.listaUnidades}"
 							var="unidade" itemValue="#{unidade}"
 							itemLabel="#{unidade.unidadeNome}" />
@@ -96,8 +97,7 @@
 					<p:outputLabel value="Sigla:" />
 					<p:inputText maxlength="15" size="20"
 						value="#{materialCentroCustoBean.materialCentroCusto.centroSigla}"
-						required="true" style="text-transform: uppercase"
-						requiredMessage="O campo Nome é obrigatório" />
+						required="true" requiredMessage="O campo Sigla é obrigatório" />
 
 				</h:panelGrid>
 
@@ -106,7 +106,9 @@
 						actionListener="#{materialCentroCustoBean.salvar()}"
 						update=":mensagem :formcadastro:cadastro :formlista:lista"
 						oncomplete="PF('dialogo').hide();" />
-					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+					<p:commandButton value="Fechar"
+						update=":formcadastro:cadastro :formlista:lista"
+						oncomplete="PF('dialogo').hide();" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>
