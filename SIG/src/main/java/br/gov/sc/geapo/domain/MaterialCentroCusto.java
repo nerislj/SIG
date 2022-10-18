@@ -14,7 +14,7 @@ public class MaterialCentroCusto extends GenericDomain {
 	@Column(length = 1000, nullable = false, unique = true)
 	private String centroCog;
 
-	@Column(length = 25, nullable = false)
+	@Column(length = 50, nullable = false)
 	private String centroSigla;
 
 	@ManyToOne

@@ -14,7 +14,7 @@
 			<p:panel header="Centro de Custo - Listagem">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{materialCentroCustoBean.listaCusto}"
-					var="material" rows="10" style="width: 40%; padding-left: 25%; ">
+					var="material" rows="10" style="width: 55%; padding-left: 25%; ">
 					<f:facet name="header">
 						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
 							actionListener="#{materialCentroCustoBean.novo()}"
@@ -40,7 +40,7 @@
 
 					<p:column headerText="Sigla" sortBy="#{material.centroSigla}"
 						filterBy="#{material.centroSigla}"
-						style="width: 100px; text-align: center;">
+						style="width: 200px; text-align: center;">
 						<h:outputText value="#{material.centroSigla}" />
 					</p:column>
 
@@ -95,7 +95,7 @@
 
 
 					<p:outputLabel value="Sigla:" />
-					<p:inputText maxlength="15" size="20"
+					<p:inputText maxlength="40" size="30"
 						value="#{materialCentroCustoBean.materialCentroCusto.centroSigla}"
 						required="true" requiredMessage="O campo Sigla é obrigatório" />
 
