@@ -6,13 +6,16 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	template="/templates/modelo.xhtml">
-	
-	
+
+
 	<ui:define name="metadata">
 		<f:metadata>
 
-			<f:event listener="#{contratoTerceirizadoBean.ContratoTerceirizadoListas}" 
+			<f:event
+				listener="#{contratoTerceirizadoBean.ContratoTerceirizadoListas}"
 				type="preRenderView" />
+				
+				
 		</f:metadata>
 	</ui:define>
 
@@ -125,8 +128,8 @@
 							rendered="#{credenciadoEmpBean.exibePainelDados}">
 							 -->
 						<p:panelGrid columns="1" layout="grid">
-						
-						
+
+
 
 							<p:dataTable id="listaContratos"
 								emptyMessage="Nenhum contrato encontrado." paginator="true"
@@ -169,13 +172,14 @@
 
 								</p:column>
 								<p:column headerText="Contrato" sortBy="#{contrato.nContrato}"
-						filterBy="#{contrato.nContrato}"
+									filterBy="#{contrato.nContrato}"
 									style="width: 4%; text-align: center;">
 									<h:outputText value="#{contrato.nContrato}" />
 								</p:column>
 
-								<p:column headerText="Empresa" sortBy="#{contrato.empresaTerceirizada.pessoaJuridica.nomeFantasia}"
-						filterBy="#{contrato.empresaTerceirizada.pessoaJuridica.nomeFantasia}"
+								<p:column headerText="Empresa"
+									sortBy="#{contrato.empresaTerceirizada.pessoaJuridica.nomeFantasia}"
+									filterBy="#{contrato.empresaTerceirizada.pessoaJuridica.nomeFantasia}"
 									style="width: 4%; text-align: center;">
 									<h:outputText
 										value="#{contrato.empresaTerceirizada.pessoaJuridica.nomeFantasia}" />
@@ -183,46 +187,50 @@
 
 
 								<p:column headerText="Número SGPE" sortBy="#{contrato.nSGPE}"
-						filterBy="#{contrato.nSGPE}"
+									filterBy="#{contrato.nSGPE}"
 									style="width: 4%; text-align: center;">
 									<h:outputText value="#{contrato.nSGPE}" />
 								</p:column>
 
-								<p:column headerText="Unidade" sortBy="#{contrato.unidade.unidadeNome}"
-						filterBy="#{contrato.unidade.unidadeNome}"
+								<p:column headerText="Unidade"
+									sortBy="#{contrato.unidade.unidadeNome}"
+									filterBy="#{contrato.unidade.unidadeNome}"
 									style="width: 6%; text-align: center;">
 									<h:outputText value="#{contrato.unidade.unidadeNome}" />
 								</p:column>
 
 
-								<p:column headerText="Município" sortBy="#{contrato.municipio.nome}"
-						filterBy="#{contrato.municipio.nome}"
+								<p:column headerText="Município"
+									sortBy="#{contrato.municipio.nome}"
+									filterBy="#{contrato.municipio.nome}"
 									style="width: 4%; text-align: center;">
 									<h:outputText value="#{contrato.municipio.nome}" />
 								</p:column>
 
 
 
-								<p:column headerText="Quantidade" sortBy="#{contrato.qtdFuncionarios}"
-						filterBy="#{contrato.qtdFuncionarios}"
+								<p:column headerText="Quantidade"
+									sortBy="#{contrato.qtdFuncionarios}"
+									filterBy="#{contrato.qtdFuncionarios}"
 									style="width: 3%; text-align: center;">
 									<h:outputText value="#{contrato.qtdFuncionarios}" />
 								</p:column>
 
-								<p:column headerText="Atividade" sortBy="#{contrato.cargoTerceirizado.descricao}"
-						filterBy="#{contrato.cargoTerceirizado.descricao}"
+								<p:column headerText="Atividade"
+									sortBy="#{contrato.cargoTerceirizado.descricao}"
+									filterBy="#{contrato.cargoTerceirizado.descricao}"
 									style="width: 5%; text-align: center;">
 									<h:outputText value="#{contrato.cargoTerceirizado.descricao}" />
 								</p:column>
 
 								<p:column headerText="H/Dia" sortBy="#{contrato.hrContrato}"
-						filterBy="#{contrato.hrContrato}"
+									filterBy="#{contrato.hrContrato}"
 									style="width: 3%; text-align: center;">
 									<h:outputText value="#{contrato.hrContrato}" />
 								</p:column>
 
 								<p:column headerText="Valor NF" sortBy="#{contrato.valorNF}"
-						filterBy="#{contrato.valorNF}"
+									filterBy="#{contrato.valorNF}"
 									style="width: 5%; text-align: center;">
 									<h:outputText value="#{contrato.valorNF}">
 										<f:convertNumber type="currency" />
@@ -281,7 +289,8 @@
 										value="#{contratoTerceirizadoBean.listaContratoRelacoes}"
 										var="relacao" rows="10">
 
-										<p:column headerText="Funcionário" style="width: 7%; text-align: center;">
+										<p:column headerText="Funcionário"
+											style="width: 7%; text-align: center;">
 											<h:outputText
 												rendered="#{relacao.funcionarioTerceirizado.tipoEvento.substituto == null}"
 												value="#{relacao.funcionarioTerceirizado.pessoa.nomeCompleto}" />
@@ -292,7 +301,8 @@
 										</p:column>
 
 
-										<p:column headerText="Cargo Funcionário" style="width: 7%; text-align: center;">
+										<p:column headerText="Cargo Funcionário"
+											style="width: 7%; text-align: center;">
 											<h:outputText
 												value="#{relacao.funcionarioTerceirizado.cargoTerceirizado.descricao}"
 												rendered="#{relacao.funcionarioTerceirizado.tipoEvento.substituto == null}" />
@@ -300,8 +310,9 @@
 												value="#{relacao.funcionarioTerceirizado.tipoEvento.substituto.cargoTerceirizado.descricao}"
 												rendered="#{relacao.funcionarioTerceirizado.tipoEvento.substituto != null}" />
 										</p:column>
-										
-										<p:column headerText="Unidade Funcionário" style="width: 7%; text-align: center;">
+
+										<p:column headerText="Unidade Funcionário"
+											style="width: 7%; text-align: center;">
 											<h:outputText
 												value="#{relacao.funcionarioTerceirizado.unidade.unidadeNome}"
 												rendered="#{relacao.funcionarioTerceirizado.tipoEvento.substituto == null}" />
@@ -310,7 +321,7 @@
 												rendered="#{relacao.funcionarioTerceirizado.tipoEvento.substituto != null}" />
 										</p:column>
 
-										
+
 
 										<p:column headerText="Cadastrado Por" style="width: 7%;">
 											<h:outputText
@@ -337,7 +348,9 @@
 												icon="pi pi-calendar"
 												onclick="PF('dialogoFeriasAfastamentoInconsistencias').show();"
 												style="align: center;background: #ffecb3;border-width: 0 3px 0 3px;color: #000000;"
-												update=":mensagem tabView:formularioContratos:painelDados feriasAfastamentoInconsistencias:dadosFormFeriasAfastamentoInconsistencias formlista:lista">
+												update=":mensagem tabView:formularioContratos:painelDados feriasAfastamentoInconsistencias:dadosFormFeriasAfastamentoInconsistencias, feriasAfastamentoInconsistencias:dadosFormInco,
+feriasAfastamentoInconsistencias:dadosFormDiasPergunta,
+feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista">
 												<f:attribute name="funcionarioSelecionado"
 													value="#{relacao}" />
 												<f:actionListener
@@ -741,9 +754,10 @@
 							<f:selectItem itemValue="Inconsistência"
 								itemLabel="Inconsistência" />
 							<p:ajax event="change"
-								update="feriasAfastamentoInconsistencias:dadosFormSubs funcSubstituto, dataSubstituto, :formlista:lista"
-								process="@this,dataEvento"
-								listener="#{contratoTerceirizadoBean.carregarListaEventosPorFuncionario()}" />
+								update="feriasAfastamentoInconsistencias:dadosFormSubs, feriasAfastamentoInconsistencias:dadosFormInco, feriasAfastamentoInconsistencias:dadosFormDiasPergunta horas, motivo, dias, lbPessoa, funcSubstituto, dataSubstituto, :formlista:lista"
+								process="@this"
+								listener="#{contratoTerceirizadoBean.mostrarCamposPorTipo()}" />
+								
 						</p:selectOneMenu>
 
 
@@ -751,26 +765,50 @@
 
 
 						<p:datePicker id="dataEvento" yearRange="c-120:c-14" size="50"
-						
 							pattern="dd/MM/yyyy" selectionMode="range"
 							value="#{contratoTerceirizadoBean.dataEvento}" required="true"
 							requiredMessage="Campo Data Evento é obrigatório"
 							readonlyInput="true" showOn="">
 							<p:ajax event="dateSelect"
-								update="feriasAfastamentoInconsistencias:dadosFormSubs funcSubstituto, dataSubstituto, :formlista:lista"
-								process="@this,tipo"
+								update="feriasAfastamentoInconsistencias:dadosFormSubs, funcSubstituto, dataSubstituto, :formlista:lista"
+								process="@this"
 								listener="#{contratoTerceirizadoBean.carregarListaEventosPorFuncionario()}" />
 						</p:datePicker>
+						
+					</p:panelGrid>
+					
+					
+					
+					
+					<p:panelGrid id="dadosFormInco" columns="2" layout="tabular"
+						style="margin: 0 auto;" styleClass="ui-noborder">
+					
+						<p:outputLabel value="Horas" rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == true}" /> 
 
-						<p:outputLabel value="Dias" />
+						<p:inputText id="horas" size="50" rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == true}"
+							value="#{contratoTerceirizadoBean.eventoTerceirizado.horas}" />
 
-						<p:inputText id="dias" size="50"
+						<p:outputLabel value="Motivo: " rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == true}" />
+						<p:inputTextarea id="motivo" maxlength="255" rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == true}"
+							value="#{contratoTerceirizadoBean.eventoTerceirizado.motivo}"
+							counter="display" counterTemplate="Restam {0} Caracteres." />
+						<h:outputText />
+						<h:outputText id="display" />
+						
+						</p:panelGrid>
+						
+						<p:panelGrid id="dadosFormDiasPergunta" columns="2" layout="tabular"
+						style="margin: 0 auto;" styleClass="ui-noborder">
+						
+							<p:outputLabel value="Dias" rendered="#{contratoTerceirizadoBean.mostrarDiasePergunta == true}" />
+
+						<p:inputText id="dias" size="50" rendered="#{contratoTerceirizadoBean.mostrarDiasePergunta == true}"
 							value="#{contratoTerceirizadoBean.eventoTerceirizado.dias}" />
 
 
-						<h:outputLabel id="lbPessoa" value="Possuí Substituto?: * "
+						<h:outputLabel id="lbPessoa" value="Possuí Substituto?: * " rendered="#{contratoTerceirizadoBean.mostrarDiasePergunta == true}"
 							for="pessoa" />
-						<p:selectOneRadio id="pessoa"
+						<p:selectOneRadio id="pessoa"  rendered="#{contratoTerceirizadoBean.mostrarDiasePergunta == true}"
 							value="#{contratoTerceirizadoBean.filtro}" required="true"
 							requiredMessage="Campo Possuí Substitudo é obrigatório.">
 
@@ -778,21 +816,20 @@
 							<f:selectItem itemLabel="Sim" itemValue="1" />
 
 							<p:ajax event="change"
-								update="feriasAfastamentoInconsistencias:dadosFormSubs funcSubstituto, dataSubstituto"
+								update="feriasAfastamentoInconsistencias:dadosFormSubs, funcSubstituto, dataSubstituto"
 								process="@this"
 								listener="#{contratoTerceirizadoBean.habilitar()}" />
 
 
 						</p:selectOneRadio>
-
-
-
-
-					</p:panelGrid>
+						
+						</p:panelGrid>
+						
 
 					<p:panelGrid id="dadosFormSubs" columns="2" layout="tabular"
 						style="margin: 0 auto;" styleClass="ui-noborder">
-
+						
+					
 
 						<p:outputLabel value="Substituto: "
 							rendered="#{contratoTerceirizadoBean.mostrarSubstituto == true}" />
@@ -868,7 +905,7 @@
 							<h:outputText value="#{evento.colaborador.pessoa.nomeCompleto}" />
 						</p:column>
 
-					
+
 
 						<p:column headerText="Data"
 							style="width: 20%; text-align: center;">

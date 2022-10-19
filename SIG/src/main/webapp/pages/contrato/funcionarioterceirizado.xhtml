@@ -6,11 +6,15 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	template="/templates/modelo.xhtml">
-	
+
 	<ui:define name="metadata">
 		<f:metadata>
 
-			<f:event listener="#{funcionarioTerceirizadoBean.listarFuncionariosTerceirizados}" 
+			<f:event
+				listener="#{funcionarioTerceirizadoBean.listarFuncionariosTerceirizados}"
+				type="preRenderView" />
+				<f:event
+				listener="#{funcionarioTerceirizadoBean.popularUnidades}"
 				type="preRenderView" />
 		</f:metadata>
 	</ui:define>
@@ -224,8 +228,8 @@
 
 
 					<p:outputLabel for="unidade" value="Unidade * " />
-					<p:selectOneMenu id="unidade" filter="true" style="width:380px" required="true"
-						requiredMessage="O campo Unidade é obrigatório"
+					<p:selectOneMenu id="unidade" filter="true" style="width:380px"
+						required="true" requiredMessage="O campo Unidade é obrigatório"
 						converter="omnifaces.SelectItemsConverter"
 						value="#{funcionarioTerceirizadoBean.funcionarioTerceirizado.unidade}">
 						<f:selectItem noSelectionOption="true"
@@ -233,14 +237,26 @@
 						<f:selectItems value="#{funcionarioTerceirizadoBean.unidades}"
 							var="unidade" itemValue="#{unidade}"
 							itemLabel="#{unidade.unidadeNome}" />
+						<p:ajax listener="#{funcionarioTerceirizadoBean.popularUnidades}" 
+							update=":dadosForm:setor" />
+					</p:selectOneMenu>
 
+					<p:outputLabel for="setor" value="Setor: " />
+					<p:selectOneMenu id="setor" filter="true" style="width:380px"
+						requiredMessage="O campo Setor é obrigatório"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{funcionarioTerceirizadoBean.funcionarioTerceirizado.setor}"> 
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione um setor" />
+						<f:selectItems value="#{funcionarioTerceirizadoBean.setores}"
+							var="setor" itemValue="#{setor}" itemLabel="#{setor.setor}" />
 					</p:selectOneMenu>
 
 
 
 					<p:outputLabel value="Cargo: " />
-					<p:selectOneMenu id="cargo" filter="true" style="width:380px" required="true"
-						requiredMessage="O campo Cargo é obrigatório"
+					<p:selectOneMenu id="cargo" filter="true" style="width:380px"
+						required="true" requiredMessage="O campo Cargo é obrigatório"
 						converter="omnifaces.SelectItemsConverter"
 						value="#{funcionarioTerceirizadoBean.funcionarioTerceirizado.cargoTerceirizado}">
 						<f:selectItem noSelectionOption="true"
@@ -296,13 +312,20 @@
 						sortBy="#{funcionario.pessoa.nomeCompleto}"
 						filterBy="#{funcionario.pessoa.nomeCompleto}"
 						style="width: 70px; text-align: center;">
-						<h:outputText value="#{funcionario.pessoa.nomeCompleto}" />
+						<h:outputText value="#{funcionario.pessoa.nomeCompleto.toUpperCase()}" />
 					</p:column>
 					<p:column headerText="Unidade"
 						sortBy="#{funcionario.unidade.unidadeNome}"
 						filterBy="#{funcionario.unidade.unidadeNome}"
 						style="width: 70px; text-align: center;">
 						<h:outputText value="#{funcionario.unidade.unidadeNome}" />
+					</p:column>
+					
+					<p:column headerText="Setor"
+						sortBy="#{funcionario.setor.setorNome}"
+						filterBy="#{funcionario.setor.setorNome}"
+						style="width: 70px; text-align: center;">
+						<h:outputText value="#{funcionario.setor.setorNome} - #{funcionario.setor.setor}" />
 					</p:column>
 
 					<p:column headerText="Cargo"
@@ -314,8 +337,10 @@
 					
 					
 
-					<p:column headerText="Usuário Cadastro" 
-					style="width: 70px; text-align: center;">
+
+
+					<p:column headerText="Usuário Cadastro"
+						style="width: 70px; text-align: center;">
 						<h:outputText
 							value="#{funcionario.usuarioCadastro.pessoa.nomeCompleto}" />
 					</p:column>
