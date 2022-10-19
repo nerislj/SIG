@@ -331,7 +331,7 @@ $(window).bind('beforeunload', function() {
 		<p:dialog header="Alterar Senha" widgetVar="alterasenha"
 			draggable="false" resizable="false" modal="true" closable="false">
 			<h:form id="formalterasenha">
-				<h:panelGrid id="cadastro" columns="2">
+				<h:panelGrid id="cadastro" columns="1">
 
 					<p:outputLabel value="Usuário: " rendered="false" />
 					<p:selectOneMenu value="#{autenticacaoBean.usuarioLogado}"
@@ -342,15 +342,20 @@ $(window).bind('beforeunload', function() {
 							itemLabel="#{autenticacaoBean.usuarioLogado.pessoa.nomeCompleto}"
 							itemValue="#{autenticacaoBean.usuarioLogado}" rendered="false" />
 					</p:selectOneMenu>
-
-					<p:outputLabel for="senha" value="Senha:" />
+			
+					<p:outputLabel
+					value="Informe uma senha de 4 a 10 caracteres."
+					style="background: #db8a8a; color: #000000" />
+					
+					
+					<p:outputLabel for="senha" value="Senha:" />					
 					<p:password id="senha" maxlength="10" size="8"
 						value="#{autenticacaoBean.usuarioLogado.senha}" feedback="true"
 						promptLabel="Favor inserir nova senha." weakLabel="Fraco"
 						goodLabel="Normal" strongLabel="Forte" required="true"
 						match="confirmaSenha"
 						requiredMessage="O campo Senha é obrigatório."
-						validatorMessage="Informe uma senha de 4 a 10 caracteres.">
+						validatorMessage="Informe uma senha de 4 a 10 caracteres." >
 						<f:validateLength minimum="4" maximum="10" />
 					</p:password>
 
