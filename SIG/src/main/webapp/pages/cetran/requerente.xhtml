@@ -130,9 +130,15 @@
 						style="text-transform:uppercase;margin: 0 auto;"
 						requiredMessage="O campo Recorrido é obrigatório" />
 
-					<p:outputLabel value="Número:" />
+					<p:outputLabel value="DetranNet:" />
 					<p:inputText id="numero"
 						value="#{requerenteBean.processoCetran.numero}"
+						style="text-transform:uppercase;margin: 0 auto;"
+						requiredMessage="O campo Número é obrigatório" />
+						
+						<p:outputLabel value="SGPE:" />
+					<p:inputText id="sgpe"
+						value="#{requerenteBean.processoCetran.sgpe}"
 						style="text-transform:uppercase;margin: 0 auto;"
 						requiredMessage="O campo Número é obrigatório" />
 
@@ -194,7 +200,7 @@
 			<p:panel header="Requerente - Listagem">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{requerenteBean.listaProcessos}"
-					var="processo" rows="10" style="margin: 0 auto;">
+					var="processo" rows="11" style="margin: 0 auto;">
 					<f:facet name="header">
 						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
 							actionListener="#{requerenteBean.novo()}"
@@ -213,9 +219,14 @@
 						<h:outputText value="#{processo.recorrido}" />
 					</p:column>
 
-					<p:column headerText="Número" sortBy="#{processo.numero}"
+					<p:column headerText="DetranNet" sortBy="#{processo.numero}"
 						filterBy="#{processo.numero}">
 						<h:outputText value="#{processo.numero}" />
+					</p:column>
+					
+					<p:column headerText="SGPE" sortBy="#{processo.sgpe}"
+						filterBy="#{processo.sgpe}">
+						<h:outputText value="#{processo.sgpe}" />
 					</p:column>
 
 

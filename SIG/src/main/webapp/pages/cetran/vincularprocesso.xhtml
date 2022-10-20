@@ -61,10 +61,16 @@
 
 					</p:column>
 
-					<p:column headerText="Nº Processo" sortBy="#{processo.numero}"
+					<p:column headerText="DetranNet" sortBy="#{processo.numero}"
 						filterBy="#{processo.numero}"
 						style="width: 15%; text-align: center;">
 						<h:outputText value="#{processo.numero}" />
+					</p:column>
+					
+					<p:column headerText="SGPE" sortBy="#{processo.sgpe}"
+						filterBy="#{processo.sgpe}"
+						style="width: 15%; text-align: center;">
+						<h:outputText value="#{processo.sgpe}" />
 					</p:column>
 
 					<p:column headerText="Placa" sortBy="#{processo.placa}"

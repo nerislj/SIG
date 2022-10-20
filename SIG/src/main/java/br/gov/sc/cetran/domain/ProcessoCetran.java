@@ -9,18 +9,14 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedAttributeNode;
-import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Nationalized;
 
-import br.gov.sc.sgi.domain.RastreioRelacao;
 import br.gov.sc.sgi.domain.Usuario;
 
 
@@ -36,6 +32,9 @@ public class ProcessoCetran extends GenericDomainCetran {
 	
 	@Column(length = 50)
 	private String numero;
+	
+	@Column (length = 50)
+	private String sgpe;
 	
 	@Column(length = 50, nullable = false)
 	private String placa;
@@ -65,6 +64,14 @@ public class ProcessoCetran extends GenericDomainCetran {
 	private List<HistoricoProcesso> historicoProcesso;
 
 	
+
+	public String getSgpe() {
+		return sgpe;
+	}
+
+	public void setSgpe(String sgpe) {
+		this.sgpe = sgpe;
+	}
 
 	public List<HistoricoProcesso> getHistoricoProcesso() {
 		return historicoProcesso;
