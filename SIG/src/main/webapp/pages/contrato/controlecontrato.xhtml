@@ -770,7 +770,7 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista">
 							requiredMessage="Campo Data Evento é obrigatório"
 							readonlyInput="true" showOn="">
 							<p:ajax event="dateSelect"
-								update="feriasAfastamentoInconsistencias:dadosFormSubs, funcSubstituto, dataSubstituto, :formlista:lista"
+								update="feriasAfastamentoInconsistencias:dadosFormSubs, funcSubstituto, dataSubstituto, :formlista:lista, feriasAfastamentoInconsistencias:dadosFormDiasPergunta dias"
 								process="@this"
 								listener="#{contratoTerceirizadoBean.carregarListaEventosPorFuncionario()}" />
 						</p:datePicker>
@@ -858,9 +858,6 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista">
 							pattern="dd/MM/yyyy" selectionMode="range" size="50"
 							value="#{contratoTerceirizadoBean.dataSubstituto}"
 							readonlyInput="true" showOn="" />
-
-
-
 
 					</p:panelGrid>
 

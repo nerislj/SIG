@@ -294,12 +294,15 @@ $(window).bind('beforeunload', function() {
 							url="/Sistema_Integrado_de_Gestão/pages/contrato/funcionarioterceirizado.xhtml" />
 						<p:menuitem value="Contratos" icon="ui-icon-plusthick"
 							url="/Sistema_Integrado_de_Gestão/pages/contrato/controlecontrato.xhtml" />
+								<p:menuitem value="Setor Unidade" icon="ui-icon-plusthick"
+							url="/Sistema_Integrado_de_Gestão/pages/contrato/setorunidades.xhtml" />
+							
 						<p:menuitem value="Relatório Eventos" icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/contrato/relatorioevento.xhtml"
-							rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}" />
+							 />
 						<p:menuitem value="Histórico Funcionários" icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/contrato/relatoriocontratoxfuncionario.xhtml"
-							rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}" />
+							 />
 						<p:menuitem value="Funcionários Ativos" icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/contrato/funcionariosativos.xhtml"
 							rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}" />
@@ -311,7 +314,6 @@ $(window).bind('beforeunload', function() {
 					<p:submenu label="Solicitações">
 						<p:menuitem value="Acessos" icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/acessos.xhtml" />
-
 					</p:submenu>
 
 					<f:facet name="options">

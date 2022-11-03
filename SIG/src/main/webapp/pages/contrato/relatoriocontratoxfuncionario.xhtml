@@ -35,7 +35,7 @@
 						<f:selectItems
 							value="#{contratoTerceirizadoBean.listaContratosTerceirizados}"
 							var="contrato" itemValue="#{contrato}"
-							itemLabel="#{contrato.nContrato} - #{contrato.municipio.nome}" />
+							itemLabel="#{contrato.municipio.nome} - #{contrato.nContrato} - #{contrato.empresaTerceirizada.pessoaJuridica.nomeFantasia}" />
 
 					</p:selectOneMenu>
 
@@ -129,8 +129,8 @@
 					</p:column>
 
 					<p:column headerText="Cadastrado Por"
-						sortBy="#{hist.usuarioLogado.pessoa.nomeCompleto}"
-						filterBy="#{hist.usuarioLogado.pessoa.nomeCompleto}"
+						sortBy="#{hist.usuarioCadastro.pessoa.nomeCompleto}"
+						filterBy="#{hist.usuarioCadastro.pessoa.nomeCompleto}"
 						style="width: 20%; text-align: center;">
 						<h:outputText value="#{hist.usuarioCadastro.pessoa.nomeCompleto}" />
 					</p:column>

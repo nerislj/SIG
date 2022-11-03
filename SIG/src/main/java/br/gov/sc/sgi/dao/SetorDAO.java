@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
 import br.gov.sc.codet.domain.SetorAtual;
+import br.gov.sc.contrato.domain.ContratoTerceirizado;
 import br.gov.sc.sgi.domain.Setor;
 import br.gov.sc.sgi.util.HibernateUtil;
 
@@ -38,6 +39,27 @@ public class SetorDAO extends GenericDAO<Setor>{
 		
 
 		return (Setor) criteria.setMaxResults(1).uniqueResult();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Setor> listarPorClaims(List<String> unidades) {
+
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+		try {
+
+			Criteria consulta = sessao.createCriteria(Setor.class);
+			consulta.createAlias("unidade", "u");
+			consulta.add(Restrictions.in("u.unidadeNome", unidades));
+
+			List<Setor> resultado = consulta.list();
+
+			return resultado;
+
+		} catch (RuntimeException erro) {
+			throw erro;
+		} finally {
+			sessao.close();
+		}
 	}
 	
 }

@@ -29,13 +29,31 @@
 					<p:selectOneMenu id="contrato" filter="true" required="true" style="width:165px"
 						requiredMessage="O campo contrato é obrigatório"
 						converter="omnifaces.SelectItemsConverter"
-						value="#{contratoTerceirizadoBean.contratoTerceirizado}">
+						value="#{contratoTerceirizadoBean.nContrato}"> 
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione um contrato" />
 						<f:selectItems
-							value="#{contratoTerceirizadoBean.listaContratosTerceirizados}"
+							value="#{contratoTerceirizadoBean.listaContratosTerceirizadosPorContratoEmpresa}"
 							var="contrato" itemValue="#{contrato}"
-							itemLabel="#{contrato.nContrato} - #{contrato.empresaTerceirizada.pessoaJuridica.nomeFantasia} - #{contrato.unidade.unidadeNome}" />
+							itemLabel="#{contrato}" />
+							
+							<f:ajax event="change" execute="@this"
+							render="empresa"
+							listener="#{contratoTerceirizadoBean.ContratoTerceirizadoListas}"></f:ajax>
+
+					</p:selectOneMenu>
+					
+					<p:outputLabel for="empresa" value="Empresa: " />
+					<p:selectOneMenu id="empresa" filter="true" required="true" style="width:165px"
+						requiredMessage="O campo empresa é obrigatório"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{contratoTerceirizadoBean.empresaTerceiriza}">  
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma empresa" />
+						<f:selectItems
+							value="#{contratoTerceirizadoBean.listaEmpresasTerceirizadasPorContrato}"
+							var="empresa" itemValue="#{empresa}"
+							itemLabel="#{empresa}" />
 
 					</p:selectOneMenu>
 					

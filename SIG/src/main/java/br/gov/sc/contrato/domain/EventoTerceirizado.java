@@ -58,12 +58,6 @@ public class EventoTerceirizado extends GenericDomainContrato {
 	@Column(length = 255)
 	private String horas;
 
-	
-	
-	
-
-
-
 	public String getMotivo() {
 		return motivo;
 	}

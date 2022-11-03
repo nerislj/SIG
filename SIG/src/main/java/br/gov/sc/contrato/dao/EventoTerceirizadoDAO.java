@@ -6,7 +6,10 @@ import br.gov.sc.contrato.domain.EmpresaTerceirizada;
 import br.gov.sc.contrato.domain.EventoTerceirizado;
 import br.gov.sc.contrato.domain.FuncionarioTerceirizado;
 import br.gov.sc.sgi.util.HibernateUtil;
+
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -17,6 +20,8 @@ public class EventoTerceirizadoDAO extends GenericDAO<EventoTerceirizado> {
 		      Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 
 		      List var9;
+		      
+
 		      
 		  
 		      try {
@@ -50,15 +55,16 @@ public class EventoTerceirizadoDAO extends GenericDAO<EventoTerceirizado> {
 	   
 		   
 
-   public List<EventoTerceirizado> listarPorEmpresa(ContratoTerceirizado contrato, String tipoEvento, Date dateIni, Date dateFini) {
+   public List<EventoTerceirizado> listarPorEmpresa(String nContrato, String tipoEvento, Date dateIni, Date dateFini) {
       Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 
       List var9;
       try {
          Criteria consulta = sessao.createCriteria(EventoTerceirizado.class);
-         if (contrato != null) {
+         if (nContrato != null) {
         	 
-             consulta.add(Restrictions.eq("contratoTerceirizado", contrato));
+        	 consulta.createAlias("contratoTerceirizado", "c");
+             consulta.add(Restrictions.eq("c.nContrato", nContrato));
             consulta.add(Restrictions.eq("tipoEvento", tipoEvento));
             if (dateIni != null || dateFini != null) {
                if (dateIni.equals(dateFini)) {

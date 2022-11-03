@@ -1,12 +1,16 @@
 package br.gov.sc.sgi.bean;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.servlet.http.HttpServletRequest;
 
 import org.omnifaces.util.Messages;
 
@@ -53,6 +57,7 @@ public class SetorBean implements Serializable {
 		try {
 			System.out.println("setor beAN");
 			SetorDAO setorDAO = new SetorDAO();
+			
 			Setores = setorDAO.listar();
 			UnidadeDAO unidadeDAO = new UnidadeDAO();
 			Unidades = unidadeDAO.listar();
@@ -66,12 +71,14 @@ public class SetorBean implements Serializable {
 		setor = new Setor();
 	}
 
-	public void salvar() {
+	public void salvar() throws IOException {
 		try {
 			SetorDAO setorDAO = new SetorDAO();
 			setorDAO.merge(setor);
 
-			SetorBean.this.listar();
+		
+			 ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+			    ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
 
 			Messages.addGlobalInfo("Setor cadastrado com Sucesso!");
 		} catch (RuntimeException erro) {
@@ -80,7 +87,7 @@ public class SetorBean implements Serializable {
 		}
 	}
 
-	public void excluir(ActionEvent evento) {
+	public void excluir(ActionEvent evento) throws IOException {
 
 		try {
 			setor = (Setor) evento.getComponent().getAttributes().get("setorSelecionado");
@@ -88,7 +95,8 @@ public class SetorBean implements Serializable {
 			SetorDAO setorDAO = new SetorDAO();
 			setorDAO.excluir(setor);
 
-			SetorBean.this.listar();
+			 ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+			    ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
 
 			Messages.addGlobalInfo("Setor removido com sucesso.");
 		} catch (RuntimeException erro) {
