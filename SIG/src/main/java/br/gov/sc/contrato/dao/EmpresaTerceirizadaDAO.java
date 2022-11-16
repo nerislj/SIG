@@ -3,7 +3,10 @@ package br.gov.sc.contrato.dao;
 
 import br.gov.sc.contrato.domain.ContratoTerceirizado;
 import br.gov.sc.contrato.domain.EmpresaTerceirizada;
+import br.gov.sc.sgi.domain.Oficio;
 import br.gov.sc.sgi.domain.PessoaJuridica;
+import br.gov.sc.sgi.domain.Setor;
+import br.gov.sc.sgi.domain.Unidade;
 import br.gov.sc.sgi.util.HibernateUtil;
 
 import java.util.List;
@@ -11,6 +14,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -56,5 +60,18 @@ public class EmpresaTerceirizadaDAO extends GenericDAO<EmpresaTerceirizada> {
 		} finally {
 			sessao.close();
 		}
+	}
+   
+   
+
+	public EmpresaTerceirizada carregaEmpresaPorNome(String empresa) throws Exception {
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+		Criteria criteria = sessao.createCriteria(EmpresaTerceirizada.class);
+		
+		
+		criteria.createAlias("pessoaJuridica", "ep");
+		criteria.add(Restrictions.eq("ep.nomeFantasia", empresa));
+
+		return (EmpresaTerceirizada) criteria.setMaxResults(1).uniqueResult();
 	}
 }

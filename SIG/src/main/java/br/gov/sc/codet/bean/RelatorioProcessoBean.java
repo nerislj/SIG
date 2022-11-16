@@ -277,7 +277,7 @@ public class RelatorioProcessoBean implements Serializable {
 		pdf.open();
 		pdf.setPageSize(PageSize.A4.rotate());
 
-		String logo = "http://localhost:8080/Sistema_Integrado_de_Gest%C3%A3o/resources/images/detran-logo.png";
+		String logo = "http://localhost/Sistema_Integrado_de_Gest%C3%A3o/resources/images/detran-logo.png";
 
 		System.out.println(logo);
 

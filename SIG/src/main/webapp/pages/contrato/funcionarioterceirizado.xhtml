@@ -249,7 +249,7 @@
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione um setor" />
 						<f:selectItems value="#{funcionarioTerceirizadoBean.setores}"
-							var="setor" itemValue="#{setor}" itemLabel="#{setor.setor}" />
+							var="setor" itemValue="#{setor}" itemLabel="#{setor.setorNome}" />
 					</p:selectOneMenu>
 
 
@@ -325,7 +325,7 @@
 						sortBy="#{funcionario.setor.setorNome}"
 						filterBy="#{funcionario.setor.setorNome}"
 						style="width: 70px; text-align: center;">
-						<h:outputText value="#{funcionario.setor.setorNome} - #{funcionario.setor.setor}" />
+						<h:outputText value="#{funcionario.setor.setorNome}" />
 					</p:column>
 
 					<p:column headerText="Cargo"

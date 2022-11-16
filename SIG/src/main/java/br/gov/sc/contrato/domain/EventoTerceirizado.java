@@ -10,6 +10,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.exolab.castor.types.DateTime;
+
 import br.gov.sc.sgi.domain.Usuario;
 
 @SuppressWarnings("serial")
@@ -36,8 +38,8 @@ public class EventoTerceirizado extends GenericDomainContrato {
 	@Temporal(TemporalType.DATE)
 	@Column
 	private Date dataSubstitutoFinal;
-	@Column(length = 30)
-	private Integer dias;
+	@Column(length = 255)
+	private String dias;
 	@Temporal(TemporalType.DATE)
 	@Column(nullable = false)
 	private Date dataCadastro;
@@ -55,8 +57,23 @@ public class EventoTerceirizado extends GenericDomainContrato {
 	@Column(length = 255)
 	private String motivo;
 
+	
 	@Column(length = 255)
 	private String horas;
+	
+	
+
+	
+
+	
+
+	public String getHoras() {
+		return horas;
+	}
+
+	public void setHoras(String horas) {
+		this.horas = horas;
+	}
 
 	public String getMotivo() {
 		return motivo;
@@ -66,13 +83,7 @@ public class EventoTerceirizado extends GenericDomainContrato {
 		this.motivo = motivo;
 	}
 
-	public String getHoras() {
-		return horas;
-	}
 
-	public void setHoras(String horas) {
-		this.horas = horas;
-	}
 
 	public ContratoTerceirizado getContratoTerceirizado() {
 		return contratoTerceirizado;
@@ -119,11 +130,13 @@ public class EventoTerceirizado extends GenericDomainContrato {
 		this.substituto = substituto;
 	}
 
-	public Integer getDias() {
-		return this.dias;
+	
+
+	public String getDias() {
+		return dias;
 	}
 
-	public void setDias(Integer dias) {
+	public void setDias(String dias) {
 		this.dias = dias;
 	}
 

@@ -6,11 +6,12 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	template="/templates/modelo.xhtml">
-	
-		<ui:define name="metadata">
+
+	<ui:define name="metadata">
 		<f:metadata>
 
-			<f:event listener="#{contratoTerceirizadoBean.ContratoTerceirizadoListas}" 
+			<f:event
+				listener="#{contratoTerceirizadoBean.ContratoTerceirizadoListas}"
 				type="preRenderView" />
 		</f:metadata>
 	</ui:define>
@@ -26,56 +27,55 @@
 				<h:panelGrid id="cadastro" columns="2" style="margin: 0 auto;">
 
 					<p:outputLabel for="contrato" value="Contrato: " />
-					<p:selectOneMenu id="contrato" filter="true" required="true" style="width:165px"
+					<p:selectOneMenu id="contrato" filter="true" required="true"
+						style="width:165px"
 						requiredMessage="O campo contrato é obrigatório"
 						converter="omnifaces.SelectItemsConverter"
-						value="#{contratoTerceirizadoBean.nContrato}"> 
+						value="#{contratoTerceirizadoBean.nContrato}">
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione um contrato" />
 						<f:selectItems
 							value="#{contratoTerceirizadoBean.listaContratosTerceirizadosPorContratoEmpresa}"
-							var="contrato" itemValue="#{contrato}"
-							itemLabel="#{contrato}" />
-							
-							<f:ajax event="change" execute="@this"
-							render="empresa"
+							var="contrato" itemValue="#{contrato}" itemLabel="#{contrato}" />
+
+						<f:ajax event="change" execute="@this" render="empresa"
 							listener="#{contratoTerceirizadoBean.ContratoTerceirizadoListas}"></f:ajax>
 
 					</p:selectOneMenu>
-					
+
 					<p:outputLabel for="empresa" value="Empresa: " />
-					<p:selectOneMenu id="empresa" filter="true" required="true" style="width:165px"
+					<p:selectOneMenu id="empresa" filter="true" required="true"
+						style="width:165px"
 						requiredMessage="O campo empresa é obrigatório"
 						converter="omnifaces.SelectItemsConverter"
-						value="#{contratoTerceirizadoBean.empresaTerceiriza}">  
+						value="#{contratoTerceirizadoBean.empresaTerceiriza}">
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione uma empresa" />
 						<f:selectItems
 							value="#{contratoTerceirizadoBean.listaEmpresasTerceirizadasPorContrato}"
-							var="empresa" itemValue="#{empresa}"
-							itemLabel="#{empresa}" />
+							var="empresa" itemValue="#{empresa}" itemLabel="#{empresa}" />
 
 					</p:selectOneMenu>
-					
-					<p:outputLabel value="Tipo Evento: *" />
-						<p:selectOneMenu id="tipo" style="width:165px" required="true"
-							value="#{contratoTerceirizadoBean.eventoTerceirizado.tipoEvento}"
-							requiredMessage="O campo Tipo é obrigatório">
-							<f:selectItem noSelectionOption="true"
-							itemLabel="Selecione um evento" />
-							<f:selectItem itemValue="Férias" itemLabel="Férias" />
-							<f:selectItem itemValue="Afastamento" itemLabel="Afastamento" />
-							<f:selectItem itemValue="Inconsistência"
-								itemLabel="Inconsistência" />
-						</p:selectOneMenu>
 
-					<p:outputLabel for="dataInicial" value="Data Inicial: *" />
-					<p:calendar id="dataInicial" readonlyInput="false"
+					<p:outputLabel value="Tipo Evento: *" />
+					<p:selectOneMenu id="tipo" style="width:165px" required="true"
+						value="#{contratoTerceirizadoBean.tipoEvento}"
+						requiredMessage="O campo Tipo é obrigatório">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione um evento" />
+						<f:selectItem itemValue="Férias" itemLabel="Férias" />
+						<f:selectItem itemValue="Afastamento" itemLabel="Afastamento" />
+						<f:selectItem itemValue="Inconsistência"
+							itemLabel="Inconsistência" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="dataInicial" value="Data Inicial:" />
+					<p:calendar id="dataInicial" readonlyInput="false" required="true"
 						yearRange="c-120:c-14" pattern="dd/MM/yyyy"
 						value="#{contratoTerceirizadoBean.dataInicial}" showIcon="true" />
 
-					<p:outputLabel for="dataFinal" value="Data Final: *" />
-					<p:calendar id="dataFinal" readonlyInput="false"
+					<p:outputLabel for="dataFinal" value="Data Final:" />
+					<p:calendar id="dataFinal" readonlyInput="false" required="true"
 						yearRange="c-120:c-14" pattern="dd/MM/yyyy"
 						value="#{contratoTerceirizadoBean.dataFinal}" showIcon="true" />
 
@@ -99,14 +99,13 @@
 
 
 			<p:panel header="Eventos">
-				<p:dataTable id="lista"
-					emptyMessage="Nenhum registro encontrado."
+				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true"
 					value="#{contratoTerceirizadoBean.listaEventosTerceirizados}"
 					var="evento" rows="10">
 
-
 					<p:column headerText="Colaborador"
+						rendered="#{contratoTerceirizadoBean.mostrarTabelaRelatorioEventos == true}"
 						sortBy="#{evento.colaborador.pessoa.nomeCompleto}"
 						filterBy="#{evento.colaborador.pessoa.nomeCompleto}"
 						style="width: 20%; text-align: center;">
@@ -114,13 +113,16 @@
 					</p:column>
 
 					<p:column headerText="Setor"
+						rendered="#{contratoTerceirizadoBean.mostrarTabelaRelatorioEventos == true}"
 						sortBy="#{evento.colaborador.setor.setorNome}"
 						filterBy="#{evento.colaborador.setor.setorNome}"
 						style="width: 20%; text-align: center;">
 						<h:outputText value="#{evento.colaborador.unidade.unidadeNome}" />
 					</p:column>
 
-					<p:column headerText="Data" style="width: 20%; text-align: center;">
+					<p:column headerText="Data"
+						rendered="#{contratoTerceirizadoBean.mostrarTabelaRelatorioEventos == true}"
+						style="width: 20%; text-align: center;">
 						<h:outputText
 							value="#{evento.dataEventoInicial.date}/#{evento.dataEventoInicial.month+1}/#{evento.dataEventoInicial.year+1900} - #{evento.dataEventoFinal.date}/#{evento.dataEventoFinal.month+1}/#{evento.dataEventoFinal.year+1900}">
 							<f:convertDateTime pattern="dd/MM/yyyy" />
@@ -128,6 +130,7 @@
 					</p:column>
 
 					<p:column headerText="Substituto"
+						rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == false and contratoTerceirizadoBean.mostrarTabelaRelatorioEventos == true}"
 						sortBy="#{evento.substituto.pessoa.nomeCompleto}"
 						filterBy="#{evento.substituto.pessoa.nomeCompleto}"
 						style="width: 20%; text-align: center;">
@@ -137,36 +140,96 @@
 							rendered="#{evento.substituto.pessoa.nomeCompleto==null}" />
 					</p:column>
 
-					<p:column headerText="Data" style="width: 20%; text-align: center;">
-						<h:outputText rendered="#{evento.substituto.pessoa.nomeCompleto==null}"
+					<p:column headerText="Data" style="width: 20%; text-align: center;"
+						rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == false and contratoTerceirizadoBean.mostrarTabelaRelatorioEventos == true}">
+						<h:outputText
+							rendered="#{evento.substituto.pessoa.nomeCompleto==null}"
 							value="#{evento.dataEventoInicial.date}/#{evento.dataEventoInicial.month+1}/#{evento.dataEventoInicial.year+1900} - #{evento.dataEventoFinal.date}/#{evento.dataEventoFinal.month+1}/#{evento.dataEventoFinal.year+1900}" />
-<h:outputText rendered="#{evento.substituto.pessoa.nomeCompleto!=null}"
+						<h:outputText
+							rendered="#{evento.substituto.pessoa.nomeCompleto!=null}"
 							value="#{evento.dataSubstitutoInicial.date}/#{evento.dataSubstitutoInicial.month+1}/#{evento.dataSubstitutoInicial.year+1900} - #{evento.dataSubstitutoFinal.date}/#{evento.dataSubstitutoFinal.month+1}/#{evento.dataSubstitutoFinal.year+1900}" />
 
 
 					</p:column>
-					
-					<p:column headerText="Dias"
-						sortBy="#{evento.dias}"
-						filterBy="#{evento.dias}"
-						style="width: 20%; text-align: center;">
+
+					<p:column headerText="Dias" sortBy="#{evento.dias}"
+						rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == false and contratoTerceirizadoBean.mostrarTabelaRelatorioEventos == true}"
+						filterBy="#{evento.dias}" style="width: 20%; text-align: center;">
 						<h:outputText value="#{evento.dias}" />
 					</p:column>
 
+					<p:column headerText="Horas" sortBy="#{evento.horas}"
+						rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == true and contratoTerceirizadoBean.mostrarTabelaRelatorioEventos == true}"
+						filterBy="#{evento.horas}" style="width: 20%; text-align: center;">
+						<h:outputText value="#{evento.horas}" />
+					</p:column>
 
-
-
+					<p:column headerText="Motivo" sortBy="#{evento.motivo}"
+						rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == true and contratoTerceirizadoBean.mostrarTabelaRelatorioEventos == true}"
+						filterBy="#{evento.motivo}"
+						style="width: 20%; text-align: center;">
+						<h:outputText value="#{evento.motivo}" />
+					</p:column>
+					
 					
 
+
+
+							<p:column headerText="Opções"
+							style="width: 5%; text-align: center;">
+
+
+
+							<p:commandButton icon="ui-icon-trash"
+								actionListener="#{contratoTerceirizadoBean.excluirEventoPaginaRelatorio}" 
+								update=":mensagem formlista:lista">
+								<p:confirm header="Confirmação"
+									message="Deseja excluir o Evento?" icon="ui-icon-alert" />
+								<f:attribute name="eventoSelecionado" value="#{evento}" />
+							</p:commandButton>
+						</p:column>
+
+
+
+
+
+					<f:facet name="footer">
+						<div style="padding-top: 5px;">
+
+
+
+							<h:commandLink style="padding: .3em 1em;" 
+								styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-button-text ui-c"
+								action="#{contratoTerceirizadoBean.gerarRelatorio}"
+								update=":mensagem formlista:lista"
+								target="_new" value="Imprimir Relatório ">
+								<p:graphicImage library="images" name="pdf.png" width="11" />
+							</h:commandLink>
+
+
+
+
+						</div>
+					</f:facet>
 
 
 
 
 
 				</p:dataTable>
+				
+					<p:confirmDialog global="true">
+
+								<p:commandButton value="Sim" type="button"
+									styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+								<p:commandButton value="Não" type="button"
+									styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+							</p:confirmDialog>
 
 
 			</p:panel>
+
+
 
 		</h:form>
 

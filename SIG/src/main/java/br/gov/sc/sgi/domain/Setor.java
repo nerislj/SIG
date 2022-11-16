@@ -12,7 +12,7 @@ public class Setor extends GenericDomain {
 	@Column(length = 50)
 	private String setorNome;
 
-	@Column(length = 20)
+	@Column(length = 255)
 	private String setor;
 
 	@ManyToOne

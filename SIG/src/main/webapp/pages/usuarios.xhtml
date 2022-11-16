@@ -57,7 +57,7 @@
 					<p:column headerText="Setor" sortBy="#{usuario.setor.setor}"
 						filterBy="#{usuario.setor.setor}"
 						style="width: 10%; text-align: center;">
-						<h:outputText value="#{usuario.setor.setor}" />
+						<h:outputText value="#{usuario.setor.setor} - #{usuario.setor.setorNome}" />
 					</p:column>
 
 					<p:column headerText="Perfil" sortBy="#{usuario.nivelAcesso.nivel}"
@@ -148,7 +148,7 @@
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione um setor" />
 						<f:selectItems value="#{usuarioBean.setores}" var="setor"
-							itemValue="#{setor}" itemLabel="#{setor.setor}" />
+							itemValue="#{setor}" itemLabel="#{setor.setor} - #{setor.setorNome}" />
 						<p:ajax listener="#{usuarioBean.popularNivel}"
 							update=":formcadastro:perfil" />
 					</p:selectOneMenu>

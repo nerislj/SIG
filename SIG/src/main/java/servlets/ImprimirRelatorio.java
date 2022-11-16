@@ -78,6 +78,23 @@ public class ImprimirRelatorio extends HttpServlet {
 			if (request.getParameter("id") != null && !request.getParameter("id").equals("0")) {
 				parameters.put("ID", request.getParameter("id"));
 			}
+			
+			//CONTRATO TERCEIRIZADO
+			if (request.getParameter("dataInicial") != null && !request.getParameter("dataInicial").equals("0")) {
+				parameters.put("DATAINICIAL", request.getParameter("dataInicial"));
+			}
+			if (request.getParameter("dataFinal") != null && !request.getParameter("dataFinal").equals("0")) {
+				parameters.put("DATAFINAL", request.getParameter("dataFinal"));
+			}
+			if (request.getParameter("empresaNome") != null && !request.getParameter("empresaNome").equals("0")) {
+				parameters.put("EMPRESA", String.format(request.getParameter("empresaNome")));
+			}
+			if (request.getParameter("nContrato") != null && !request.getParameter("nContrato").equals("0")) {
+				parameters.put("NCONTRATO", request.getParameter("nContrato"));
+			}
+			if (request.getParameter("tipoEvento") != null && !request.getParameter("tipoEvento").equals("0")) {
+				parameters.put("TIPOEVENTO", request.getParameter("tipoEvento"));
+			}
 			/*
 			 * if (request.getParameter("instrutorId2") != null &&
 			 * !request.getParameter("instrutorId2").equals("0")){

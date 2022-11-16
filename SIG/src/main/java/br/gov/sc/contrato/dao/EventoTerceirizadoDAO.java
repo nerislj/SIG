@@ -5,6 +5,9 @@ import br.gov.sc.contrato.domain.ContratoTerceirizado;
 import br.gov.sc.contrato.domain.EmpresaTerceirizada;
 import br.gov.sc.contrato.domain.EventoTerceirizado;
 import br.gov.sc.contrato.domain.FuncionarioTerceirizado;
+import br.gov.sc.sgi.domain.Oficio;
+import br.gov.sc.sgi.domain.Setor;
+import br.gov.sc.sgi.domain.Unidade;
 import br.gov.sc.sgi.util.HibernateUtil;
 
 import java.util.Calendar;
@@ -13,6 +16,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 public class EventoTerceirizadoDAO extends GenericDAO<EventoTerceirizado> {
@@ -55,7 +59,7 @@ public class EventoTerceirizadoDAO extends GenericDAO<EventoTerceirizado> {
 	   
 		   
 
-   public List<EventoTerceirizado> listarPorEmpresa(String nContrato, String tipoEvento, Date dateIni, Date dateFini) {
+   public List<EventoTerceirizado> listarPorEmpresa(String nContrato, String empresaTerceiriza, String tipoEvento, Date dateIni, Date dateFini) {
       Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 
       List var9;
@@ -65,6 +69,9 @@ public class EventoTerceirizadoDAO extends GenericDAO<EventoTerceirizado> {
         	 
         	 consulta.createAlias("contratoTerceirizado", "c");
              consulta.add(Restrictions.eq("c.nContrato", nContrato));
+             consulta.createAlias("empresaTerceirizada", "e");
+             consulta.createAlias("e.pessoaJuridica", "pJ");
+             consulta.add(Restrictions.eq("pJ.nomeFantasia", empresaTerceiriza));
             consulta.add(Restrictions.eq("tipoEvento", tipoEvento));
             if (dateIni != null || dateFini != null) {
                if (dateIni.equals(dateFini)) {
@@ -88,4 +95,16 @@ public class EventoTerceirizadoDAO extends GenericDAO<EventoTerceirizado> {
 
       return var9;
    }
+   
+   /* NÃO EDITAR O LOAD LAST!!!!!!!!!!!!!!! */
+	
+	public EventoTerceirizado loadLast(FuncionarioTerceirizado funcSelecionado) throws Exception {
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+		Criteria criteria = sessao.createCriteria(EventoTerceirizado.class);
+		criteria.addOrder(Order.desc("codigo"));
+		criteria.add(Restrictions.eq("colaborador", funcSelecionado));
+		
+
+		return (EventoTerceirizado) criteria.setMaxResults(1).uniqueResult();
+	}
 }

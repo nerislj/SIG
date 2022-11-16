@@ -14,8 +14,8 @@
 			<f:event
 				listener="#{contratoTerceirizadoBean.ContratoTerceirizadoListas}"
 				type="preRenderView" />
-				
-				
+
+
 		</f:metadata>
 	</ui:define>
 
@@ -290,6 +290,8 @@
 										var="relacao" rows="10">
 
 										<p:column headerText="Funcionário"
+											sortBy="#{relacao.funcionarioTerceirizado.pessoa.nomeCompleto}"
+											filterBy="#{relacao.funcionarioTerceirizado.pessoa.nomeCompleto}"
 											style="width: 7%; text-align: center;">
 											<h:outputText
 												rendered="#{relacao.funcionarioTerceirizado.tipoEvento.substituto == null}"
@@ -393,13 +395,6 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista">
 							</p:dataTable>
 
 							<p:confirmDialog global="true">
-
-								<p:outputLabel value="Observação: " />
-								<p:inputTextarea maxlength="255"
-									value="#{processoCetranBean.historicoProcesso.descricao}"
-									counter="display" counterTemplate="Restam {0} Caracteres." />
-								<h:outputText />
-								<h:outputText id="display" />
 
 								<p:commandButton value="Sim" type="button"
 									styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
@@ -641,7 +636,8 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista">
 								itemLabel="Selecione um funcionário" />
 							<f:selectItems
 								value="#{contratoTerceirizadoBean.listaFuncionarios}" var="func"
-								itemValue="#{func}" itemLabel="#{func.pessoa.nomeCompleto}" />
+								itemValue="#{func}"
+								itemLabel="#{func.pessoa.nomeCompleto.toUpperCase()}" />
 
 							<p:ajax event="change" update="cpf, dataNascimento, rg"
 								process="@this"
@@ -725,7 +721,8 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista">
 
 
 		<p:dialog widgetVar="dialogoFeriasAfastamentoInconsistencias"
-			draggable="false" resizable="false" modal="true" closable="false">
+			draggable="false" resizable="false" modal="true" closable="false"
+			positionType="absolute">
 			<f:facet name="header">
 
 				<h:outputText value="Férias/Afastamento/Inconsistência" />
@@ -754,10 +751,15 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista">
 							<f:selectItem itemValue="Inconsistência"
 								itemLabel="Inconsistência" />
 							<p:ajax event="change"
-								update="feriasAfastamentoInconsistencias:dadosFormSubs, feriasAfastamentoInconsistencias:dadosFormInco, feriasAfastamentoInconsistencias:dadosFormDiasPergunta horas, motivo, dias, lbPessoa, funcSubstituto, dataSubstituto, :formlista:lista"
+								update="feriasAfastamentoInconsistencias:dadosFormSubs, 
+								feriasAfastamentoInconsistencias:dadosFormInco, 
+								feriasAfastamentoInconsistencias:dadosFormDiasPergunta horas, 
+								feriasAfastamentoInconsistencias:dadosFormDiasPergunta, 
+								feriasAfastamentoInconsistencias:dadosFormDiasPergunta horas2, 
+								motivo, dias, lbPessoa, funcSubstituto, dataSubstituto, :formlista:lista"
 								process="@this"
 								listener="#{contratoTerceirizadoBean.mostrarCamposPorTipo()}" />
-								
+
 						</p:selectOneMenu>
 
 
@@ -770,45 +772,80 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista">
 							requiredMessage="Campo Data Evento é obrigatório"
 							readonlyInput="true" showOn="">
 							<p:ajax event="dateSelect"
-								update="feriasAfastamentoInconsistencias:dadosFormSubs, funcSubstituto, dataSubstituto, :formlista:lista, feriasAfastamentoInconsistencias:dadosFormDiasPergunta dias"
+								update="feriasAfastamentoInconsistencias:dadosFormSubs, 
+								feriasAfastamentoInconsistencias:dadosFormDiasPergunta, 
+								funcSubstituto, dataSubstituto, 
+								:formlista:lista, 
+								feriasAfastamentoInconsistencias:dadosFormDiasPergunta dias, 
+								feriasAfastamentoInconsistencias:dadosFormDiasPergunta horas2"
 								process="@this"
 								listener="#{contratoTerceirizadoBean.carregarListaEventosPorFuncionario()}" />
 						</p:datePicker>
-						
+
 					</p:panelGrid>
-					
-					
-					
-					
+
+
+
+
+
 					<p:panelGrid id="dadosFormInco" columns="2" layout="tabular"
 						style="margin: 0 auto;" styleClass="ui-noborder">
-					
-						<p:outputLabel value="Horas" rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == true}" /> 
 
-						<p:inputText id="horas" size="50" rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == true}"
-							value="#{contratoTerceirizadoBean.eventoTerceirizado.horas}" />
+						<p:outputLabel value="Horas"
+							rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == true}" />
 
-						<p:outputLabel value="Motivo: " rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == true}" />
-						<p:inputTextarea id="motivo" maxlength="255" rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == true}"
+
+
+						<p:inputMask size="50" id="horas"
+							rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == true}"
+							value="#{contratoTerceirizadoBean.eventoTerceirizado.horas}"
+							mask="99:99" />
+
+
+
+
+
+						<p:outputLabel value="Motivo: "
+							rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == true}" />
+						<p:inputTextarea id="motivo" maxlength="255"
+							rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == true}"
 							value="#{contratoTerceirizadoBean.eventoTerceirizado.motivo}"
 							counter="display" counterTemplate="Restam {0} Caracteres." />
 						<h:outputText />
 						<h:outputText id="display" />
-						
-						</p:panelGrid>
-						
-						<p:panelGrid id="dadosFormDiasPergunta" columns="2" layout="tabular"
-						style="margin: 0 auto;" styleClass="ui-noborder">
-						
-							<p:outputLabel value="Dias" rendered="#{contratoTerceirizadoBean.mostrarDiasePergunta == true}" />
 
-						<p:inputText id="dias" size="50" rendered="#{contratoTerceirizadoBean.mostrarDiasePergunta == true}"
+					</p:panelGrid>
+
+					<p:panelGrid id="dadosFormDiasPergunta" columns="2"
+						layout="tabular" style="margin: 0 auto;" styleClass="ui-noborder">
+
+
+						<p:outputLabel value="Dias"
+							rendered="#{contratoTerceirizadoBean.mostrarDiasePergunta == true}" />
+
+						<p:inputText id="dias" size="50"
+							rendered="#{contratoTerceirizadoBean.mostrarDiasePergunta == true}"
 							value="#{contratoTerceirizadoBean.eventoTerceirizado.dias}" />
 
 
-						<h:outputLabel id="lbPessoa" value="Possuí Substituto?: * " rendered="#{contratoTerceirizadoBean.mostrarDiasePergunta == true}"
+						<p:outputLabel value="Horas"
+							rendered="#{contratoTerceirizadoBean.mostrarDiaseHoras == true}" />
+
+
+
+						<p:inputMask size="50" id="horas2"
+							rendered="#{contratoTerceirizadoBean.mostrarDiaseHoras == true}"
+							value="#{contratoTerceirizadoBean.eventoTerceirizado.horas}"
+							mask="99:99" />
+
+
+
+
+						<h:outputLabel id="lbPessoa" value="Possuí Substituto?: * "
+							rendered="#{contratoTerceirizadoBean.mostrarDiasePergunta == true}"
 							for="pessoa" />
-						<p:selectOneRadio id="pessoa"  rendered="#{contratoTerceirizadoBean.mostrarDiasePergunta == true}"
+						<p:selectOneRadio id="pessoa"
+							rendered="#{contratoTerceirizadoBean.mostrarDiasePergunta == true}"
 							value="#{contratoTerceirizadoBean.filtro}" required="true"
 							requiredMessage="Campo Possuí Substitudo é obrigatório.">
 
@@ -822,14 +859,14 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista">
 
 
 						</p:selectOneRadio>
-						
-						</p:panelGrid>
-						
+
+					</p:panelGrid>
+
 
 					<p:panelGrid id="dadosFormSubs" columns="2" layout="tabular"
 						style="margin: 0 auto;" styleClass="ui-noborder">
-						
-					
+
+
 
 						<p:outputLabel value="Substituto: "
 							rendered="#{contratoTerceirizadoBean.mostrarSubstituto == true}" />
@@ -868,8 +905,7 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista">
 					<h:panelGrid columns="2" style="margin: 0 auto;">
 						<p:commandButton value="Salvar"
 							actionListener="#{contratoTerceirizadoBean.salvarEvento()}"
-							update=":mensagem tabView:formularioContratos:painelDados"
-							oncomplete="PF('dialogoFeriasAfastamentoInconsistencias').hide();"
+							update=":mensagem tabView:formularioContratos:painelDados formlista:lista"
 							style="background: #01B50D;" />
 
 						<p:commandButton value="Cancelar"
@@ -889,6 +925,7 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista">
 
 
 				<p:panel header="Eventos">
+
 					<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 						paginator="true"
 						value="#{contratoTerceirizadoBean.listaEventosTerceirizadosPorFuncionario}"
@@ -899,7 +936,8 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista">
 							sortBy="#{evento.colaborador.pessoa.nomeCompleto}"
 							filterBy="#{evento.colaborador.pessoa.nomeCompleto}"
 							style="width: 20%; text-align: center;">
-							<h:outputText value="#{evento.colaborador.pessoa.nomeCompleto}" />
+							<h:outputText
+								value="#{evento.colaborador.pessoa.nomeCompleto.toUpperCase()}" />
 						</p:column>
 
 
@@ -913,6 +951,7 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista">
 						</p:column>
 
 						<p:column headerText="Substituto"
+							rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == false}"
 							sortBy="#{evento.substituto.pessoa.nomeCompleto}"
 							filterBy="#{evento.substituto.pessoa.nomeCompleto}"
 							style="width: 20%; text-align: center;">
@@ -923,6 +962,7 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista">
 						</p:column>
 
 						<p:column headerText="Data"
+							rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == false}"
 							style="width: 20%; text-align: center;">
 							<h:outputText
 								rendered="#{evento.substituto.pessoa.nomeCompleto==null}"
@@ -935,8 +975,23 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista">
 						</p:column>
 
 						<p:column headerText="Dias" sortBy="#{evento.dias}"
+							rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == false}"
 							filterBy="#{evento.dias}" style="width: 20%; text-align: center;">
 							<h:outputText value="#{evento.dias}" />
+						</p:column>
+
+						<p:column headerText="Horas" sortBy="#{evento.horas}"
+							rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == true or contratoTerceirizadoBean.mostrarDiaseHoras == true}"
+							filterBy="#{evento.horas}"
+							style="width: 20%; text-align: center;">
+							<h:outputText value="#{evento.horas}" />
+						</p:column>
+
+						<p:column headerText="Motivo" sortBy="#{evento.motivo}"
+							rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == true}"
+							filterBy="#{evento.motivo}"
+							style="width: 20%; text-align: center;">
+							<h:outputText value="#{evento.motivo}" />
 						</p:column>
 
 
@@ -950,10 +1005,27 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista">
 						</p:column>
 
 
+						<p:column headerText="Opções"
+							style="width: 5%; text-align: center;">
+
+
+
+							<p:commandButton icon="ui-icon-trash"
+								actionListener="#{contratoTerceirizadoBean.excluirEvento}"
+								update=":mensagem feriasAfastamentoInconsistencias:dadosFormFeriasAfastamentoInconsistencias, feriasAfastamentoInconsistencias:dadosFormInco,
+feriasAfastamentoInconsistencias:dadosFormDiasPergunta,
+feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista">
+								<p:confirm header="Confirmação"
+									message="Deseja excluir o Evento?" icon="ui-icon-alert" />
+								<f:attribute name="eventoSelecionado" value="#{evento}" />
+							</p:commandButton>
+						</p:column>
+
 
 
 
 					</p:dataTable>
+
 
 
 				</p:panel>

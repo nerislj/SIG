@@ -33,10 +33,6 @@
 						<h:outputText value="#{setor.setorNome}" />
 					</p:column>
 
-					<p:column headerText="Sigla SGPE" sortBy="#{setor.setor}"
-						filterBy="#{setor.setor}">
-						<h:outputText value="#{setor.setor}" />
-					</p:column>
 
 					<p:column headerText="Opções">
 						<p:commandButton icon="ui-icon-trash"
@@ -86,19 +82,38 @@
 							itemLabel="#{unidade.unidadeNome}" />
 					</p:selectOneMenu>
 
-					<p:outputLabel value="Sigla SGPE:" />
-					<p:inputText maxlength="50" size="30"
-						value="#{setorBean.setor.setor}" />
-
 					<p:outputLabel value="Setor:" />
 					<p:selectOneMenu value="#{setorBean.setor.setorNome}"
 						style="width:215px">
 						<f:selectItem itemLabel="Selecione o Setor" itemValue="" />
-						<f:selectItem itemLabel="VEÍCULOS" itemValue="VEÍCULOS" />
-						<f:selectItem itemLabel="CNH" itemValue="CNH" />
-						<f:selectItem itemLabel="PENALIDADE" itemValue="PENALIDADE" />
-						<f:selectItem itemLabel="MULTA" itemValue="MULTA" />
+						<f:selectItem itemLabel="ATENDIMENTO" itemValue="ATENDIMENTO" />
+						<f:selectItem itemLabel="CALL CENTER" itemValue="CALL CENTER" />
+						<f:selectItem itemLabel="CETRAN" itemValue="CETRAN" />
+						<f:selectItem itemLabel="CONTRATOS" itemValue="CONTRATOS" />
+						<f:selectItem itemLabel="COORD. DEFESA E AUTUAÇÃO"
+							itemValue="COORD. DEFESA E AUTUAÇÃO" />
+						<f:selectItem itemLabel="CORREGEDORIA" itemValue="CORREGEDORIA" />
+						<f:selectItem itemLabel="CREDENCIAMENTO"
+							itemValue="CREDENCIAMENTO" />
+						<f:selectItem itemLabel="EDUCAÇÃO" itemValue="EDUCAÇÃO" />
+						<f:selectItem itemLabel="GABINETE" itemValue="GABINETE" />
+						<f:selectItem itemLabel="GER. APOIO OPERACIONAL"
+							itemValue="GER. APOIO OPERACIONAL" />
+						<f:selectItem itemLabel="GER. FINANCEIRO"
+							itemValue="GER. FINANCEIRO" />
+						<f:selectItem itemLabel="GER. PLANEJAMENTO"
+							itemValue="GER. PLANEJAMENTO" />
+						<f:selectItem itemLabel="HABILITAÇÃO" itemValue="HABILITAÇÃO" />
+						<f:selectItem itemLabel="INFORMÁTICA" itemValue="INFORMÁTICA" />
+						<f:selectItem itemLabel="JARI" itemValue="JARI" />
+						<f:selectItem itemLabel="JURIDICO" itemValue="JURIDICO" />
+						<f:selectItem itemLabel="LEILÃO" itemValue="LEILÃO" />
+						<f:selectItem itemLabel="MULTA- SUSPENSÃO - CASSAÇÃO"
+							itemValue="MULTA - SUSPENSÃO - CASSAÇÃO" />
+						<f:selectItem itemLabel="PATRIMONIO" itemValue="PATRIMONIO" />
+						<f:selectItem itemLabel="PENALIDADES" itemValue="PENALIDADES" />
 						<f:selectItem itemLabel="PROTOCOLO" itemValue="PROTOCOLO" />
+						<f:selectItem itemLabel="VEICULOS" itemValue="VEICULOS" />
 
 					</p:selectOneMenu>
 
