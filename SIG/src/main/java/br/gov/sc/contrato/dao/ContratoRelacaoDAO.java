@@ -89,7 +89,7 @@ public class ContratoRelacaoDAO extends GenericDAO<ContratoRelacao> {
 			System.out.println(funcionario + " funcionario");
 			System.out.println(contratoRelacao.getStatus() + " contratoRelacao.getStatus()");
 			
-			if (contratoRelacao.getStatus().isBlank()) {
+			if (contratoRelacao.getStatus().equals("")) {
 				contratoRelacao.setStatus(null);
 				System.out.println(contratoRelacao.getStatus() + " contratoRelacao.getStatus() DENTRO IF");
 			}

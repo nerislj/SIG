@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+
+	<ui:define name="metadata">
+		<f:metadata>
+
+			<f:event
+				listener="#{contratoTerceirizadoBean.listarFuncionariosSubs}"
+				type="preRenderView" />
+
+			<f:event
+				listener="#{contratoTerceirizadoBean.ContratoTerceirizadoListas}"
+				type="preRenderView" />
+
+
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="conteudo">
+		<h:form id="formlista">
+			<p:panel header="Substituições - Listagem">
+				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+					value="#{contratoTerceirizadoBean.listaHistFuncionariosSubstitutos}"
+					var="sub" reflow="true" rows="10" paginator="true">
+
+
+					<p:column headerText="Contrato"
+						sortBy="#{sub.contratoTerceirizado.nContrato}"
+						filterBy="#{sub.contratoTerceirizado.nContrato}">
+						<h:outputText
+							value="#{sub.contratoTerceirizado.nContrato} - #{sub.contratoTerceirizado.empresaTerceirizada.pessoaJuridica.nomeFantasia} - #{sub.contratoTerceirizado.unidade.unidadeNome}" />
+					</p:column>
+
+					<p:column headerText="Substituto"
+						sortBy="#{sub.funcionarioTerceirizado.pessoa.nomeCompleto.toUpperCase()}"
+						filterBy="#{sub.funcionarioTerceirizado.pessoa.nomeCompleto.toUpperCase()}">
+						<h:outputText
+							value="#{sub.funcionarioTerceirizado.pessoa.nomeCompleto.toUpperCase()}" />
+					</p:column>
+
+					<p:column headerText="Motivo" sortBy="#{sub.observacao}"
+						filterBy="#{sub.observacao}">
+						<h:outputText value="#{sub.observacao}" />
+					</p:column>
+
+					<p:column headerText="Por"
+						sortBy="#{sub.usuarioCadastro.pessoa.nomeCompleto}"
+						filterBy="#{sub.usuarioCadastro.pessoa.nomeCompleto}">
+						<h:outputText value="#{sub.usuarioCadastro.pessoa.nomeCompleto}" />
+					</p:column>
+
+					<p:column headerText="Data Cadastro" style="width: 5%;">
+						<h:outputText value="#{sub.dataCadastro}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+
+
+
+
+
+				</p:dataTable>
+
+
+			</p:panel>
+		</h:form>
+
+
+	</ui:define>
+</ui:composition>

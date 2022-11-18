@@ -78,6 +78,27 @@ public class ContratoHistFuncionarioDAO extends GenericDAO<ContratoHistFuncionar
 
 		return var9;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ContratoHistFuncionario> listarSubs(String status) {
+
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+		try {
+
+			Criteria consulta = sessao.createCriteria(ContratoHistFuncionario.class);
+			
+			consulta.add(Restrictions.eq("status", status));
+
+			List<ContratoHistFuncionario> resultado = consulta.list();
+
+			return resultado;
+
+		} catch (RuntimeException erro) {
+			throw erro;
+		} finally {
+			sessao.close();
+		}
+	}
 
 	
 }

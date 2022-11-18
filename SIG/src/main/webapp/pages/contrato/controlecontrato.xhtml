@@ -294,33 +294,24 @@
 											filterBy="#{relacao.funcionarioTerceirizado.pessoa.nomeCompleto}"
 											style="width: 7%; text-align: center;">
 											<h:outputText
-												rendered="#{relacao.funcionarioTerceirizado.tipoEvento.substituto == null}"
 												value="#{relacao.funcionarioTerceirizado.pessoa.nomeCompleto}" />
 
-											<h:outputText
-												rendered="#{relacao.funcionarioTerceirizado.tipoEvento.substituto != null}"
-												value="#{relacao.funcionarioTerceirizado.tipoEvento.substituto.pessoa.nomeCompleto}" />
+
 										</p:column>
 
 
 										<p:column headerText="Cargo Funcionário"
 											style="width: 7%; text-align: center;">
 											<h:outputText
-												value="#{relacao.funcionarioTerceirizado.cargoTerceirizado.descricao}"
-												rendered="#{relacao.funcionarioTerceirizado.tipoEvento.substituto == null}" />
-											<h:outputText
-												value="#{relacao.funcionarioTerceirizado.tipoEvento.substituto.cargoTerceirizado.descricao}"
-												rendered="#{relacao.funcionarioTerceirizado.tipoEvento.substituto != null}" />
+												value="#{relacao.funcionarioTerceirizado.cargoTerceirizado.descricao}" />
+
 										</p:column>
 
 										<p:column headerText="Unidade Funcionário"
 											style="width: 7%; text-align: center;">
 											<h:outputText
-												value="#{relacao.funcionarioTerceirizado.unidade.unidadeNome}"
-												rendered="#{relacao.funcionarioTerceirizado.tipoEvento.substituto == null}" />
-											<h:outputText
-												value="#{relacao.funcionarioTerceirizado.tipoEvento.substituto.unidade.unidadeNome}"
-												rendered="#{relacao.funcionarioTerceirizado.tipoEvento.substituto != null}" />
+												value="#{relacao.funcionarioTerceirizado.unidade.unidadeNome}" />
+
 										</p:column>
 
 
@@ -350,6 +341,23 @@
 												icon="pi pi-calendar"
 												onclick="PF('dialogoFeriasAfastamentoInconsistencias').show();"
 												style="align: center;background: #ffecb3;border-width: 0 3px 0 3px;color: #000000;"
+												update=":mensagem tabView:formularioContratos:painelDados feriasAfastamentoInconsistencias:dadosFormFeriasAfastamentoInconsistencias, feriasAfastamentoInconsistencias:dadosFormInco,
+feriasAfastamentoInconsistencias:dadosFormDiasPergunta,
+feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista">
+												<f:attribute name="funcionarioSelecionado"
+													value="#{relacao}" />
+												<f:actionListener
+													type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+
+
+											</p:commandButton>
+
+											<p:commandButton title="Substituir"
+												rendered="#{contratoTerceirizadoBean.ciretran == true and contratoTerceirizadoBean.citran == true}"
+												actionListener="#{contratoTerceirizadoBean.carregaRelacao}"
+												icon="ui-icon-transferthick-e-w"
+												onclick="PF('dlgSubs').show();"
+												style="align: center;background: #4997d0;border-width: 0 3px 0 3px;color: #000000;"
 												update=":mensagem tabView:formularioContratos:painelDados feriasAfastamentoInconsistencias:dadosFormFeriasAfastamentoInconsistencias, feriasAfastamentoInconsistencias:dadosFormInco,
 feriasAfastamentoInconsistencias:dadosFormDiasPergunta,
 feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista">
@@ -690,34 +698,7 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista">
 
 
 
-		<p:dialog header="Parte - Cadastro" widgetVar="dialogo"
-			draggable="false" resizable="false" modal="true" closable="false">
-			<h:form id="formcadastro">
-				<h:panelGrid id="cadastro" columns="2">
 
-					<p:outputLabel value="Credenciado: " />
-					<p:selectOneMenu filter="true"
-						value="#{contratoBean.partecontrato.credenciado}"
-						converter="omnifaces.SelectItemsConverter" required="true"
-						requiredMessage="O campo Credenciado é obrigatório">
-						<f:selectItem noSelectionOption="true"
-							itemLabel="Selecione um Credenciado" />
-						<f:selectItems value="#{contratoBean.listaCredenciados}"
-							var="cred" itemValue="#{cred}"
-							itemLabel="#{cred.pessoa.cpf} - #{cred.pessoa.nomeCompleto}" />
-					</p:selectOneMenu>
-
-				</h:panelGrid>
-
-				<h:panelGrid columns="2">
-					<p:commandButton value="Salvar"
-						actionListener="#{contratoBean.salvarParte()}"
-						update=":mensagem :formcadastro:cadastro"
-						oncomplete="PF('dialogo').hide();" />
-					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
-				</h:panelGrid>
-			</h:form>
-		</p:dialog>
 
 
 		<p:dialog widgetVar="dialogoFeriasAfastamentoInconsistencias"
@@ -903,12 +884,12 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista">
 					<br />
 					<br />
 					<h:panelGrid columns="2" style="margin: 0 auto;">
-						<p:commandButton value="Salvar"
+						<p:commandButton value="Salvar Evento"
 							actionListener="#{contratoTerceirizadoBean.salvarEvento()}"
 							update=":mensagem tabView:formularioContratos:painelDados formlista:lista"
 							style="background: #01B50D;" />
 
-						<p:commandButton value="Cancelar"
+						<p:commandButton value="Voltar"
 							update="tabView:formularioContratos:painelDados"
 							oncomplete="PF('dialogoFeriasAfastamentoInconsistencias').hide();" />
 
@@ -1072,6 +1053,99 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista">
 					</h:panelGrid>
 
 				</center>
+
+
+
+
+
+			</h:form>
+
+		</p:dialog>
+
+		<p:dialog header="Substituir" widgetVar="dlgSubs" minHeight="40">
+
+			<h:form id="formularioSubs">
+
+
+
+
+
+				<p:panel header="Novo Funcionário Substituto">
+
+					<p:panelGrid id="dadosFormSubs" columns="1" layout="tabular"
+						style="margin: 0 auto;" styleClass="ui-noborder">
+
+
+						<p:outputLabel value="Funcionário: " style="font-weight: bold;" />
+						<p:selectOneMenu id="func" filter="true" style="width:320px;"
+							requiredMessage="O campo Funcionário é obrigatório"
+							converter="omnifaces.SelectItemsConverter"
+							value="#{contratoTerceirizadoBean.funcionarioSelecionado}">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione um funcionário" />
+							<f:selectItems
+								value="#{contratoTerceirizadoBean.listaFuncionarios}" var="func"
+								itemValue="#{func}"
+								itemLabel="#{func.pessoa.nomeCompleto.toUpperCase()}" />
+
+							<p:ajax event="change" update="cpf, dataNascimento, rg"
+								process="@this"
+								listener="#{contratoTerceirizadoBean.dadosFuncSelecionado()}" />
+
+						</p:selectOneMenu>
+
+
+
+
+						<h:outputText value="CPF:" style="font-weight: bold;" />
+						<h:outputText id="cpf"
+							value="#{contratoTerceirizadoBean.pessoa.cpf}" />
+
+						<h:outputText value="RG:" style="font-weight: bold;" />
+						<h:outputText id="rg"
+							value="#{contratoTerceirizadoBean.pessoa.rg} #{contratoTerceirizadoBean.pessoa.rgOrgaoEmissor}" />
+
+						<h:outputText value="Data Nascimento:" style="font-weight: bold;" />
+						<h:outputText id="dataNascimento"
+							value="#{contratoTerceirizadoBean.pessoa.dataNascimento}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+
+
+						<p:outputLabel value="Informe o motivo da Substituição: *"
+							style="font-weight: bold;" />
+						<p:inputTextarea maxlength="255" rows="5" cols="50"
+							value="#{contratoTerceirizadoBean.contratoHistFuncionario.observacao}"
+							readonly="false" required="true" counter="display"
+							autoResize="false" counterTemplate="Restam {0} Caracteres."
+							requiredMessage="O Campo motivo é obrigatório" />
+
+						<h:outputText id="display" />
+
+
+
+
+
+					</p:panelGrid>
+
+					<br />
+					<br />
+					<h:panelGrid columns="2" style="margin: 0 auto;">
+						<p:commandButton value="Salvar"
+							actionListener="#{contratoTerceirizadoBean.salvarSubstituto()}"
+							update=":mensagem tabView:formularioContratos:painelDados"
+							oncomplete="PF('dlgSubs').hide();" style="background: #01B50D;">
+
+						</p:commandButton>
+
+						<p:commandButton value="Cancelar"
+							update="tabView:formularioContratos:painelDados"
+							oncomplete="PF('dlgSubs').hide();" />
+
+					</h:panelGrid>
+
+				</p:panel>
+
 
 
 

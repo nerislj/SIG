@@ -771,6 +771,8 @@ public class CredenciadoEmpBean implements Serializable {
 			relacaoProprietario = new CredencialRelacaoProp();
 
 			CredenciadoEmpBean.this.buscar();
+			pessoa = new PessoaFisica();
+			proprietario = new PessoaFisica();
 
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar incluir o Proprietário.");
@@ -864,6 +866,8 @@ public class CredenciadoEmpBean implements Serializable {
 				relacaoFuncionario = new CredencialRelacaoCred();
 
 				CredenciadoEmpBean.this.buscar();
+				pessoa = new PessoaFisica();
+				funcionario = new Credenciado();
 
 			} else {
 

@@ -13,6 +13,7 @@
 
 			<f:event listener="#{credenciadoEmpBean.listasCredenciadoEmpBean}"
 				type="preRenderView" />
+					
 		</f:metadata>
 	</ui:define>
 
@@ -1154,7 +1155,7 @@
 					</p:inputText>
 
 					<p:outputLabel value="Nome Completo:" />
-					<p:inputText maxlength="50" size="30"
+					<p:inputText id="nomeCompleto" maxlength="50" size="30"
 						disabled="#{credenciadoEmpBean.funcionario.pessoa.nomeCompleto != null}"
 						value="#{credenciadoEmpBean.funcionario.pessoa.nomeCompleto}"
 						required="true"
@@ -1167,7 +1168,7 @@
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
 						actionListener="#{credenciadoEmpBean.adicionaFuncionario}"
-						update=":mensagem tabView:formularioEmpresas:lista3 tabView:formularioEmpresas:lista33"
+						update=":mensagem tabView:formularioEmpresas:lista3 tabView:formularioEmpresas:lista33 func:cpf func:nomeCompleto"
 						oncomplete="PF('dialogofunc').hide();" />
 					<p:commandButton value="Fechar"
 						oncomplete="PF('dialogofunc').hide();" />
@@ -1193,7 +1194,7 @@
 					</p:inputText>
 
 					<p:outputLabel value="Nome Completo:" />
-					<p:inputText maxlength="50" size="30"
+					<p:inputText id="nomeCompleto" maxlength="50" size="30"
 						disabled="#{credenciadoEmpBean.proprietario.cpf != null}"
 						value="#{credenciadoEmpBean.proprietario.nomeCompleto}"
 						required="true"
@@ -1206,7 +1207,7 @@
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
 						actionListener="#{credenciadoEmpBean.adicionaProprietario}"
-						update=":mensagem tabView:formularioEmpresas:listaProp"
+						update=":mensagem tabView:formularioEmpresas:listaProp :prop:cpf prop:nomeCompleto"
 						oncomplete="PF('dialogoprop').hide();" />
 					<p:commandButton value="Fechar"
 						oncomplete="PF('dialogoprop').hide();" />
