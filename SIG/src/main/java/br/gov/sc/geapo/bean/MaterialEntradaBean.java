@@ -17,6 +17,7 @@ import org.omnifaces.util.Messages;
 
 import br.gov.sc.geapo.dao.MaterialDAO;
 import br.gov.sc.geapo.dao.MaterialEntradaDAO;
+import br.gov.sc.geapo.dao.MaterialEntradaHistDAO;
 import br.gov.sc.geapo.dao.MaterialTipoDAO;
 import br.gov.sc.geapo.domain.Material;
 import br.gov.sc.geapo.domain.MaterialEntrada;
@@ -38,6 +39,8 @@ public class MaterialEntradaBean implements Serializable {
 	private Usuario usuarioLogado;
 
 	private MaterialEntradaHist materialEntradaHist;
+	
+	private List<MaterialEntradaHist> listamaterialEntradaHist;
 
 	private List<MaterialEntrada> listaEntradaMateriais;
 
@@ -47,6 +50,16 @@ public class MaterialEntradaBean implements Serializable {
 
 	private List<Material> listaMateriais;
 	private List<MaterialTipo> listaTipos;
+	
+	
+
+	public List<MaterialEntradaHist> getListamaterialEntradaHist() {
+		return listamaterialEntradaHist;
+	}
+
+	public void setListamaterialEntradaHist(List<MaterialEntradaHist> listamaterialEntradaHist) {
+		this.listamaterialEntradaHist = listamaterialEntradaHist;
+	}
 
 	public MaterialEntradaHist getMaterialEntradaHist() {
 		return materialEntradaHist;
@@ -234,10 +247,22 @@ public class MaterialEntradaBean implements Serializable {
 		}
 	}
 	
-	public void excluir(ActionEvent evento) {
+	public void excluir(ActionEvent evento) throws Exception {
 
 		try {
 			materialEntrada = (MaterialEntrada) evento.getComponent().getAttributes().get("materialSelecionado");
+			
+			MaterialEntradaHistDAO histDAO = new MaterialEntradaHistDAO();
+			
+			listamaterialEntradaHist = histDAO.listarPorMaterialEntrada(materialEntrada);
+			while(listamaterialEntradaHist.size()!=0) {
+				materialEntradaHist = histDAO.loadLast(materialEntrada);
+				
+				
+				System.out.println( materialEntradaHist + " materialEntradaHist");
+				histDAO.excluir(materialEntradaHist);
+			}
+			
 
 			MaterialEntradaDAO materialEntradaDAO = new MaterialEntradaDAO();
 			materialEntradaDAO.excluir(materialEntrada);

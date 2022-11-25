@@ -13,15 +13,16 @@
 			<f:event
 				listener="#{contratoTerceirizadoBean.ContratoTerceirizadoListas}"
 				type="preRenderView" />
-				
-				
-				
+
+
+
 		</f:metadata>
 	</ui:define>
 
 	<ui:define name="conteudo">
 
-
+		<h:outputStylesheet name="primeicons/primeicons.css"
+			library="primefaces" />
 
 		<p:panel header="Relatório Férias/Afastamento/Inconsistências">
 
@@ -59,6 +60,18 @@
 							var="empresa" itemValue="#{empresa}" itemLabel="#{empresa}" />
 
 					</p:selectOneMenu>
+
+					<p:outputLabel for="setor" value="Unidade " />
+					<p:selectOneMenu id="setor" filter="true" style="width:165px"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{contratoTerceirizadoBean.setorRelatorio}">
+						<f:selectItem noSelectionOption="true" itemLabel="Todos" />
+						<f:selectItems value="#{funcionarioTerceirizadoBean.unidades}"
+							var="unidade" itemValue="#{unidade.unidadeNome}"
+							itemLabel="#{unidade.unidadeNome}" />
+
+					</p:selectOneMenu>
+
 
 					<p:outputLabel value="Tipo Evento: *" />
 					<p:selectOneMenu id="tipo" style="width:165px" required="true"
@@ -103,24 +116,48 @@
 
 			<p:panel header="Eventos">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
-					paginator="true"
+					paginator="true" expandableRowGroups="true"
+					sortBy="#{evento.colaborador.unidade.unidadeNome}"
 					value="#{contratoTerceirizadoBean.listaEventosTerceirizados}"
-					var="evento" rows="10">
+					var="evento" rows="30">
 
-					<p:column headerText="Colaborador"
+   
+					<p:headerRow>
+						<p:column colspan="7">
+							<h:outputText value="Data: " />
+							<h:outputText
+								value="#{contratoTerceirizadoBean.dataInicial.date}/#{contratoTerceirizadoBean.dataInicial.month+1}/#{contratoTerceirizadoBean.dataInicial.year+1900} à #{contratoTerceirizadoBean.dataFinal.date}/#{contratoTerceirizadoBean.dataFinal.month+1}/#{contratoTerceirizadoBean.dataFinal.year+1900}">
+								<f:convertDateTime pattern="MM/yyyy" />
+							</h:outputText>
+
+							<h:outputText value=" Unidade: " />
+
+
+							<h:outputText value="#{evento.colaborador.unidade.unidadeNome}" />
+
+
+
+
+
+						</p:column>
+					</p:headerRow>
+					
+						
+
+					<p:column headerText="Colaborador" id="colaborador"
 						rendered="#{contratoTerceirizadoBean.mostrarTabelaRelatorioEventos == true}"
 						sortBy="#{evento.colaborador.pessoa.nomeCompleto}"
 						filterBy="#{evento.colaborador.pessoa.nomeCompleto}"
 						style="width: 20%; text-align: center;">
-						<h:outputText value="#{evento.colaborador.pessoa.nomeCompleto}" />
+						<h:outputText for="colaborador" value="#{evento.colaborador.pessoa.nomeCompleto}" />
 					</p:column>
 
-					<p:column headerText="Setor"
+					<p:column headerText="Setor" id="setor"
 						rendered="#{contratoTerceirizadoBean.mostrarTabelaRelatorioEventos == true}"
 						sortBy="#{evento.colaborador.setor.setorNome}"
 						filterBy="#{evento.colaborador.setor.setorNome}"
 						style="width: 20%; text-align: center;">
-						<h:outputText value="#{evento.colaborador.unidade.unidadeNome}" />
+						<h:outputText for="setor" value="#{evento.colaborador.unidade.unidadeNome}" />
 					</p:column>
 
 					<p:column headerText="Data"
@@ -166,6 +203,8 @@
 						filterBy="#{evento.horas}" style="width: 20%; text-align: center;">
 						<h:outputText value="#{evento.horas}" />
 					</p:column>
+					
+			
 
 					<p:column headerText="Motivo" sortBy="#{evento.motivo}"
 						rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == true and contratoTerceirizadoBean.mostrarTabelaRelatorioEventos == true}"
@@ -173,25 +212,54 @@
 						style="width: 20%; text-align: center;">
 						<h:outputText value="#{evento.motivo}" />
 					</p:column>
-					
-					
 
 
 
-							<p:column headerText="Opções"
-							style="width: 5%; text-align: center;">
+
+
+					<p:column headerText="Opções" 
+						style="width: 5%; text-align: center;">
 
 
 
-							<p:commandButton icon="ui-icon-trash"
-								actionListener="#{contratoTerceirizadoBean.excluirEventoPaginaRelatorio}" 
-								update=":mensagem formlista:lista">
-								<p:confirm header="Confirmação"
-									message="Deseja excluir o Evento?" icon="ui-icon-alert" />
-								<f:attribute name="eventoSelecionado" value="#{evento}" />
-							</p:commandButton>
+						<p:commandButton icon="ui-icon-trash"
+							actionListener="#{contratoTerceirizadoBean.excluirEventoPaginaRelatorio}"
+							update=":mensagem formlista:lista">
+							<p:confirm header="Confirmação"
+								message="Deseja excluir o Evento?" icon="ui-icon-alert" />
+							<f:attribute name="eventoSelecionado" value="#{evento}" />
+						</p:commandButton>
+					</p:column>
+
+
+
+					<p:summaryRow>
+
+						<p:column colspan="3"
+							rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == true and contratoTerceirizadoBean.mostrarTabelaRelatorioEventos == true}"
+							style="text-align:center; background: #b7d8b7 !important;
+	border: 1px solid #2E8B57 !important;
+	border-width: 0 4px 0 4px !important;
+	color: #212121 !important;">
+
 						</p:column>
 
+						<p:column colspan="5"
+							rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == true and contratoTerceirizadoBean.mostrarTabelaRelatorioEventos == true}"
+							style="text-align:left;background: #b7d8b7 !important;
+	border: 1px solid #2E8B57 !important;
+	border-width: 0 4px 0 4px !important;
+	color: #212121 !important;">
+							<h:outputText
+								value="Total Horas: #{contratoTerceirizadoBean.brandSubTotalHoras(evento.horas, evento.colaborador.unidade.unidadeNome)}">
+
+							</h:outputText>
+
+
+
+
+						</p:column>
+					</p:summaryRow>
 
 
 
@@ -200,17 +268,17 @@
 						<div style="padding-top: 5px;">
 
 
-
-							<h:commandLink style="padding: .3em 1em;" 
+<h:commandLink style="padding: .3em 1em;"
 								styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-button-text ui-c"
-								action="#{contratoTerceirizadoBean.gerarRelatorio}"
+								action="#{contratoTerceirizadoBean.gerarRelatorioEventos}" 
 								update=":mensagem formlista:lista"
 								target="_new" value="Imprimir Relatório ">
 								<p:graphicImage library="images" name="pdf.png" width="11" />
 							</h:commandLink>
+							
+						
 
-
-
+						
 
 						</div>
 					</f:facet>
@@ -220,14 +288,17 @@
 
 
 				</p:dataTable>
-				
-					<p:confirmDialog global="true">
 
-								<p:commandButton value="Sim" type="button"
-									styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-								<p:commandButton value="Não" type="button"
-									styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-							</p:confirmDialog>
+
+
+
+				<p:confirmDialog global="true">
+
+					<p:commandButton value="Sim" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="Não" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
 
 
 			</p:panel>

@@ -352,22 +352,7 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista">
 
 											</p:commandButton>
 
-											<p:commandButton title="Substituir"
-												rendered="#{contratoTerceirizadoBean.ciretran == true and contratoTerceirizadoBean.citran == true}"
-												actionListener="#{contratoTerceirizadoBean.carregaRelacao}"
-												icon="ui-icon-transferthick-e-w"
-												onclick="PF('dlgSubs').show();"
-												style="align: center;background: #4997d0;border-width: 0 3px 0 3px;color: #000000;"
-												update=":mensagem tabView:formularioContratos:painelDados feriasAfastamentoInconsistencias:dadosFormFeriasAfastamentoInconsistencias, feriasAfastamentoInconsistencias:dadosFormInco,
-feriasAfastamentoInconsistencias:dadosFormDiasPergunta,
-feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista">
-												<f:attribute name="funcionarioSelecionado"
-													value="#{relacao}" />
-												<f:actionListener
-													type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
-
-
-											</p:commandButton>
+											
 
 											<p:commandButton title="Remover"
 												rendered="#{contratoTerceirizadoBean.ciretran == true and contratoTerceirizadoBean.citran == true}"

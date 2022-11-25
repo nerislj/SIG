@@ -34,6 +34,11 @@
 						<h:outputText value="#{material.material.material}" />
 					</p:column>
 					
+					<p:column headerText="Cod Material" sortBy="#{material.material.codigoMaterial}"
+						filterBy="#{material.material.codigoMaterial}" style="width: 70px; text-align: center;">
+						<h:outputText value="#{material.material.codigoMaterial}" />
+					</p:column>
+					
 					<p:column headerText="Total/Estoque" sortBy="#{material.quantidade}"
 						filterBy="#{material.quantidade}" style="width: 70px; text-align: center;">
 						<h:outputText value="#{material.quantidade}" />
@@ -41,10 +46,10 @@
 					
 
 					<p:column headerText="Opções" style="width: 70px; text-align: center;" 
-					rendered="#{autenticacaoBean.temPermissoes([1, 21])}">
+					>
 						
 
-						<p:commandButton icon="ui-icon-pencil" value="Total/Estoque"
+						<p:commandButton icon="ui-icon-pencil" 
 							actionListener="#{materialEntradaBean.editar}"
 							update=":formedicao:edicao"
 							oncomplete="PF('dialogoEdicao').show();" 
@@ -52,6 +57,14 @@
 							<f:attribute name="materialSelecionado" value="#{material}" />
 							<f:actionListener
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+						
+						<p:commandButton icon="ui-icon-trash"
+							actionListener="#{materialEntradaBean.excluir}"
+							update=":mensagem :formlista:lista">
+							<p:confirm header="Confirmação"
+								message="Deseja excluir o Material Estoque?" icon="ui-icon-alert" />
+							<f:attribute name="materialSelecionado" value="#{material}" />
 						</p:commandButton>
 
 					</p:column>
@@ -159,8 +172,12 @@
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
 						actionListener="#{materialEntradaBean.salvarEdicao()}"
-						update=":mensagem :formedicao:edicao :formlista:lista" />
+						update=":mensagem :formedicao:edicao :formlista:lista"
+						oncomplete="PF('dialogoEdicao').hide();" />
 					<p:commandButton value="Fechar" oncomplete="PF('dialogoEdicao').hide();" />
+					
+					
+						
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>

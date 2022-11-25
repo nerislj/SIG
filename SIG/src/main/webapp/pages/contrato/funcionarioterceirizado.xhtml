@@ -227,7 +227,7 @@
 					<h:outputText value="" />
 
 
-					<p:outputLabel for="unidade" value="Unidade * " />
+					<p:outputLabel for="unidade" value="Unidade: " />
 					<p:selectOneMenu id="unidade" filter="true" style="width:380px"
 						required="true" requiredMessage="O campo Unidade é obrigatório"
 						converter="omnifaces.SelectItemsConverter"
@@ -243,6 +243,7 @@
 
 					<p:outputLabel for="setor" value="Setor: " />
 					<p:selectOneMenu id="setor" filter="true" style="width:380px"
+					required="true" 
 						requiredMessage="O campo Setor é obrigatório"
 						converter="omnifaces.SelectItemsConverter"
 						value="#{funcionarioTerceirizadoBean.funcionarioTerceirizado.setor}"> 

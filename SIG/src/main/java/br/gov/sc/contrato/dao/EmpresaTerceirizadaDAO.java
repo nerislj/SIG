@@ -74,4 +74,5 @@ public class EmpresaTerceirizadaDAO extends GenericDAO<EmpresaTerceirizada> {
 
 		return (EmpresaTerceirizada) criteria.setMaxResults(1).uniqueResult();
 	}
+	
 }
