@@ -75,4 +75,15 @@ public class EmpresaTerceirizadaDAO extends GenericDAO<EmpresaTerceirizada> {
 		return (EmpresaTerceirizada) criteria.setMaxResults(1).uniqueResult();
 	}
 	
+	public EmpresaTerceirizada carregaEmpresaPorCOD(Long empresa) throws Exception {
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+		Criteria criteria = sessao.createCriteria(EmpresaTerceirizada.class);
+		
+		
+		
+		criteria.add(Restrictions.eq("codigo", empresa));
+
+		return (EmpresaTerceirizada) criteria.setMaxResults(1).uniqueResult();
+	}
+	
 }

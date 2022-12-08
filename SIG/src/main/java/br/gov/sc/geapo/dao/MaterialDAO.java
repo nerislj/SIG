@@ -9,6 +9,7 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import br.gov.sc.contrato.domain.ContratoTerceirizado;
 import br.gov.sc.geapo.domain.Material;
 import br.gov.sc.geapo.domain.MaterialEntrada;
 import br.gov.sc.geapo.domain.MaterialTipo;
@@ -80,5 +81,20 @@ public class MaterialDAO extends GenericDAO<Material>{
 
 		return (Material) criteria.setMaxResults(1).uniqueResult();
 	}
+	
+	 @SuppressWarnings("unchecked")
+		public List<Material> listarPorOrdemASC() {
+			Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+			try {
+				Criteria consulta = sessao.createCriteria(Material.class);
+				consulta.addOrder(Order.asc("material"));
+				List<Material> resultado = consulta.list();
+				return resultado;
+			} catch (RuntimeException erro) {
+				throw erro;
+			} finally {
+				sessao.close();
+			}
+		}
 	
 }

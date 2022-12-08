@@ -66,8 +66,7 @@ $(window).bind('beforeunload', function() {
 
 				<p:menubar>
 
-					<p:menuitem value="Inicio"
-						url="/Sistema_Integrado_de_Gestão/pages/principal.xhtml" />
+					<p:menuitem value="Inicio" url="/Sistema_Integrado_de_Gestão/pages/principal.xhtml" />
 
 					<p:submenu label="Sistema">
 						<p:menuitem value="Alterar Senha" icon="ui-icon-key"
@@ -79,20 +78,13 @@ $(window).bind('beforeunload', function() {
 
 					<p:submenu label="Cadastros"
 						rendered="#{autenticacaoBean.temPermissoes([1])}">
-						<p:menuitem value="Estado"
-							url="/Sistema_Integrado_de_Gestão/pages/estado.xhtml" />
-						<p:menuitem value="Cidade"
-							url="/Sistema_Integrado_de_Gestão/pages/cidade.xhtml" />
-						<p:menuitem value="Pessoas"
-							url="/Sistema_Integrado_de_Gestão/pages/pessoas.xhtml" />
-						<p:menuitem value="Empresas"
-							url="/Sistema_Integrado_de_Gestão/pages/empresas.xhtml" />
-						<p:menuitem value="Usuários"
-							url="/Sistema_Integrado_de_Gestão/pages/usuarios.xhtml" />
-						<p:menuitem value="Unidade"
-							url="/Sistema_Integrado_de_Gestão/pages/unidade.xhtml" />
-						<p:menuitem value="Setor"
-							url="/Sistema_Integrado_de_Gestão/pages/setor.xhtml" />
+						<p:menuitem value="Estado" url="/Sistema_Integrado_de_Gestão/pages/estado.xhtml" />
+						<p:menuitem value="Cidade" url="/Sistema_Integrado_de_Gestão/pages/cidade.xhtml" />
+						<p:menuitem value="Pessoas" url="/Sistema_Integrado_de_Gestão/pages/pessoas.xhtml" />
+						<p:menuitem value="Empresas" url="/Sistema_Integrado_de_Gestão/pages/empresas.xhtml" />
+						<p:menuitem value="Usuários" url="/Sistema_Integrado_de_Gestão/pages/usuarios.xhtml" />
+						<p:menuitem value="Unidade" url="/Sistema_Integrado_de_Gestão/pages/unidade.xhtml" />
+						<p:menuitem value="Setor" url="/Sistema_Integrado_de_Gestão/pages/setor.xhtml" />
 						<p:menuitem value="Usuário Nível Acesso"
 							url="/Sistema_Integrado_de_Gestão/pages/usuarionivelacesso.xhtml" />
 						<p:menuitem value="Usuário Status"
@@ -277,8 +269,6 @@ $(window).bind('beforeunload', function() {
 							icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/codet/relatorioprocesso.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 13])}" />
-
-
 					</p:submenu>
 
 					<p:submenu
@@ -298,6 +288,7 @@ $(window).bind('beforeunload', function() {
 							url="/Sistema_Integrado_de_Gestão/pages/contrato/setorunidades.xhtml" />
 
 						<p:menuitem value="Substituições" icon="ui-icon-transferthick-e-w"
+							rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}"
 							url="/Sistema_Integrado_de_Gestão/pages/contrato/substituicoesfuncionarios.xhtml" />
 
 						<p:menuitem value="Relatório Eventos" icon="ui-icon-document"

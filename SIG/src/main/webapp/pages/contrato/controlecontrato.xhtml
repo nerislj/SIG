@@ -352,7 +352,7 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista">
 
 											</p:commandButton>
 
-											
+
 
 											<p:commandButton title="Remover"
 												rendered="#{contratoTerceirizadoBean.ciretran == true and contratoTerceirizadoBean.citran == true}"
@@ -872,7 +872,8 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista">
 						<p:commandButton value="Salvar Evento"
 							actionListener="#{contratoTerceirizadoBean.salvarEvento()}"
 							update=":mensagem tabView:formularioContratos:painelDados formlista:lista"
-							style="background: #01B50D;" />
+							style="background: #01B50D;"
+							oncomplete="PF('dialogoFeriasAfastamentoInconsistencias').hide();" />
 
 						<p:commandButton value="Voltar"
 							update="tabView:formularioContratos:painelDados"

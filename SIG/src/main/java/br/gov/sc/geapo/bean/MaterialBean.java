@@ -78,7 +78,7 @@ public class MaterialBean implements Serializable {
 			materialEntrada = new MaterialEntrada();
 			
 			
-			listaMateriais = materialDAO.listar();
+			listaMateriais = materialDAO.listarPorOrdemASC();
 			listaTipos = materialTipoDAO.listar();
 			
 		} catch (RuntimeException erro) {
@@ -132,6 +132,8 @@ public class MaterialBean implements Serializable {
 
 		try {
 			material = (Material) evento.getComponent().getAttributes().get("materialSelecionado");
+			
+			
 
 			MaterialDAO materialDAO = new MaterialDAO();
 			materialDAO.excluir(material);

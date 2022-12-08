@@ -162,4 +162,21 @@ public class MaterialEntradaDAO extends GenericDAO<MaterialEntrada>{
 		}
 	}
 	
+	 @SuppressWarnings("unchecked")
+		public List<MaterialEntrada> listarPorOrdemASC() {
+			Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+			try {
+				Criteria consulta = sessao.createCriteria(MaterialEntrada.class);
+				
+				consulta.createAlias("material", "m");
+				consulta.addOrder(Order.asc("m.material"));
+				List<MaterialEntrada> resultado = consulta.list();
+				return resultado;
+			} catch (RuntimeException erro) {
+				throw erro;
+			} finally {
+				sessao.close();
+			}
+		}
+	
 }

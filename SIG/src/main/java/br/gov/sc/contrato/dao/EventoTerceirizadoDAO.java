@@ -20,7 +20,10 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 public class EventoTerceirizadoDAO extends GenericDAO<EventoTerceirizado> {
@@ -59,45 +62,47 @@ public class EventoTerceirizadoDAO extends GenericDAO<EventoTerceirizado> {
 	}
 
 	public List<EventoTerceirizado> listarPorEmpresa(String nContrato, String empresaTerceiriza, String setorRelatorio,
-			String tipoEvento, Date dateIni, Date dateFini) throws ParseException {
+			String tipoEvento, Date dateIni, Date dateFini, List<Unidade> unidades) throws ParseException {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 
 		List var9;
 		try {
 			Criteria consulta = sessao.createCriteria(EventoTerceirizado.class);
-			
-			
-			
-			if (nContrato != null) {
-				
-			
-				
-				System.out.println(dateIni + " date1");
-				System.out.println(dateFini + " date2");
 
-				consulta.createAlias("contratoTerceirizado", "c");
+		
+			if (nContrato != null) {
+				consulta.createCriteria("contratoTerceirizado", "c");
+
+				// consulta.add(Restrictions.in("c.codigo", contratos));
+
+				// System.out.println(contratos + "contratoscontratoscontratoscontratos");
+
+
 				consulta.add(Restrictions.eq("c.nContrato", nContrato));
 				consulta.createAlias("empresaTerceirizada", "e");
 				consulta.createAlias("e.pessoaJuridica", "pJ");
 				consulta.add(Restrictions.eq("pJ.nomeFantasia", empresaTerceiriza));
 				consulta.add(Restrictions.eq("tipoEvento", tipoEvento));
-				
-				
-				if(setorRelatorio.isEmpty()) {
+
+				// consulta.createAlias("c.unidade", "un");
+
+				if (setorRelatorio.isEmpty()) {
+
+					consulta.add(Restrictions.in("c.unidade", unidades));
+
 					
-	             
+
 				} else {
-					System.out.println("ENTROU" + setorRelatorio);
-					consulta.createAlias("colaborador", "func");
-					consulta.createAlias("func.unidade", "un");
-		             consulta.add(Restrictions.eq("un.unidadeNome", setorRelatorio));
+				
+
+					consulta.createAlias("c.unidade", "un");
+					consulta.add(Restrictions.eq("un.unidadeNome", setorRelatorio));
 				}
 				if (dateIni != null || dateFini != null) {
 					if (dateIni.equals(dateFini)) {
 						consulta.add(Restrictions.eq("dataEventoInicial", dateIni));
 					} else {
-						
-						
+
 						consulta.add(Restrictions.ge("dataEventoInicial", dateIni));
 						consulta.add(Restrictions.le("dataEventoFinal", dateFini));
 					}
@@ -114,48 +119,44 @@ public class EventoTerceirizadoDAO extends GenericDAO<EventoTerceirizado> {
 
 		return var9;
 	}
-	
-	
+
 	public List<EventoTerceirizado> listarPorEmpresaPDF(String nContrato, Long empresaTerceiriza, Long setorRelatorio,
-			String tipoEvento, Date dateIni, Date dateFini) throws ParseException {
+			String tipoEvento, Date dateIni, Date dateFini, List<Unidade> unidades) throws ParseException {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 
 		List var9;
 		try {
 			Criteria consulta = sessao.createCriteria(EventoTerceirizado.class);
-			
-			
-			
+
 			if (nContrato != null) {
-				
-			
-				
+
 				System.out.println(dateIni + " date1");
 				System.out.println(dateFini + " date2");
 
-				consulta.createAlias("contratoTerceirizado", "c");
+				consulta.createCriteria("contratoTerceirizado", "c");
 				consulta.add(Restrictions.eq("c.nContrato", nContrato));
-				
-				System.out.println("ENTROU DAO " +empresaTerceiriza);
+
+				System.out.println("ENTROU DAO " + empresaTerceiriza);
 				consulta.add(Restrictions.eq("empresaTerceirizada.codigo", empresaTerceiriza));
 				consulta.add(Restrictions.eq("tipoEvento", tipoEvento));
-				
-				
-				if(setorRelatorio==null) {
-					
-	             
+
+				if (setorRelatorio == null) {
+
+					consulta.add(Restrictions.in("c.unidade", unidades));
+
+					System.out.println("ENTROU isEmpty");
+
 				} else {
-					System.out.println("ENTROU DAO " + setorRelatorio);
-					consulta.createAlias("colaborador", "func");
-					consulta.createAlias("func.unidade", "un");
-		             consulta.add(Restrictions.eq("un.codigo", setorRelatorio));
+					System.out.println("ENTROU" + setorRelatorio);
+
+					consulta.createAlias("c.unidade", "un");
+					consulta.add(Restrictions.eq("un.unidadeNome", setorRelatorio));
 				}
 				if (dateIni != null || dateFini != null) {
 					if (dateIni.equals(dateFini)) {
 						consulta.add(Restrictions.eq("dataEventoInicial", dateIni));
 					} else {
-						
-						
+
 						consulta.add(Restrictions.ge("dataEventoInicial", dateIni));
 						consulta.add(Restrictions.le("dataEventoFinal", dateFini));
 					}
@@ -183,10 +184,5 @@ public class EventoTerceirizadoDAO extends GenericDAO<EventoTerceirizado> {
 
 		return (EventoTerceirizado) criteria.setMaxResults(1).uniqueResult();
 	}
-	
 
-	
-
-	
-	
 }

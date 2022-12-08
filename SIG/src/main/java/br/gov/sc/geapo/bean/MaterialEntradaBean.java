@@ -9,8 +9,10 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.omnifaces.util.Messages;
@@ -18,10 +20,12 @@ import org.omnifaces.util.Messages;
 import br.gov.sc.geapo.dao.MaterialDAO;
 import br.gov.sc.geapo.dao.MaterialEntradaDAO;
 import br.gov.sc.geapo.dao.MaterialEntradaHistDAO;
+import br.gov.sc.geapo.dao.MaterialSaidaRelacaoDAO;
 import br.gov.sc.geapo.dao.MaterialTipoDAO;
 import br.gov.sc.geapo.domain.Material;
 import br.gov.sc.geapo.domain.MaterialEntrada;
 import br.gov.sc.geapo.domain.MaterialEntradaHist;
+import br.gov.sc.geapo.domain.MaterialSaidaRelacao;
 import br.gov.sc.geapo.domain.MaterialTipo;
 import br.gov.sc.sgi.domain.Usuario;
 
@@ -31,7 +35,7 @@ import br.gov.sc.sgi.domain.Usuario;
 public class MaterialEntradaBean implements Serializable {
 
 	private MaterialEntrada materialEntrada;
-	
+
 	private MaterialEntrada materialEntradaFront;
 
 	private Material material;
@@ -39,7 +43,7 @@ public class MaterialEntradaBean implements Serializable {
 	private Usuario usuarioLogado;
 
 	private MaterialEntradaHist materialEntradaHist;
-	
+
 	private List<MaterialEntradaHist> listamaterialEntradaHist;
 
 	private List<MaterialEntrada> listaEntradaMateriais;
@@ -50,8 +54,17 @@ public class MaterialEntradaBean implements Serializable {
 
 	private List<Material> listaMateriais;
 	private List<MaterialTipo> listaTipos;
-	
-	
+
+	private MaterialSaidaRelacao saidaRelacao;
+	private List<MaterialSaidaRelacao> listasaidaRelacao;
+
+	public MaterialSaidaRelacao getSaidaRelacao() {
+		return saidaRelacao;
+	}
+
+	public void setSaidaRelacao(MaterialSaidaRelacao saidaRelacao) {
+		this.saidaRelacao = saidaRelacao;
+	}
 
 	public List<MaterialEntradaHist> getListamaterialEntradaHist() {
 		return listamaterialEntradaHist;
@@ -124,7 +137,7 @@ public class MaterialEntradaBean implements Serializable {
 			materialEntradaHist = new MaterialEntradaHist();
 
 			MaterialEntradaDAO materialEntradaDAO = new MaterialEntradaDAO();
-			listaEntradaMateriais = materialEntradaDAO.listar();
+			listaEntradaMateriais = materialEntradaDAO.listarPorOrdemASC();
 
 			listarMaior = materialEntradaDAO.listarMaior();
 
@@ -142,7 +155,7 @@ public class MaterialEntradaBean implements Serializable {
 	public void novo() {
 
 		materialEntrada = new MaterialEntrada();
-		
+
 		materialEntradaFront = new MaterialEntrada();
 
 	}
@@ -151,20 +164,24 @@ public class MaterialEntradaBean implements Serializable {
 		try {
 			HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 			usuarioLogado = (Usuario) sessao.getAttribute("usuario");
-			
+
 			MaterialEntradaDAO materialEntradaDAO = new MaterialEntradaDAO();
 
 			Material material = materialEntradaFront.getMaterial();
 
 			MaterialTipo tipoMaterial = materialEntradaFront.getMaterialTipo();
+			
+		
 
 			materialEntrada = materialEntradaDAO.iniciarMaterialEntrada(material.getMaterial(),
 					tipoMaterial.getTipomaterial());
+			
+			if(materialEntrada!=null) {
 
 			System.out.println("MATERIAL ENTRADA QUANTIDADE FRONT _ " + materialEntradaFront.getQuantidade());
-			
+
 			System.out.println("MATERIAL ENTRADA QUANTIDADE BANCO _ " + materialEntrada.getQuantidade());
-			
+
 			System.out.println("Variavel materialEntrada " + materialEntrada);
 
 			materialEntrada.setDataCadastro(new Date());
@@ -174,7 +191,6 @@ public class MaterialEntradaBean implements Serializable {
 			materialEntradaDAO.loadLast(materialEntrada.getMaterial());
 
 			n = (n + materialEntradaDAO.loadLast(materialEntrada.getMaterial()).getQuantidade());
-			
 
 			materialEntrada.setQuantidade(n);
 
@@ -189,7 +205,17 @@ public class MaterialEntradaBean implements Serializable {
 
 			materialEntradaDAO.salvarEntradaHist(materialEntrada, material, materialEntradaHist, usuarioLogado);
 
-			listaEntradaMateriais = materialEntradaDAO.listar();
+			listaEntradaMateriais = materialEntradaDAO.listarPorOrdemASC();
+			} else {
+				materialEntrada = new MaterialEntrada();
+				materialEntrada.setDataCadastro(new Date());
+				materialEntrada.setMaterial(materialEntradaFront.getMaterial());
+				materialEntrada.setMaterialTipo(materialEntradaFront.getMaterialTipo());
+				materialEntrada.setQuantidade(materialEntradaFront.getQuantidade());
+				materialEntradaDAO.merge(materialEntrada);
+				
+				listaEntradaMateriais = materialEntradaDAO.listarPorOrdemASC();
+			}
 
 			Messages.addGlobalInfo("Material Entrada cadastrado com Sucesso!");
 		} catch (RuntimeException erro) {
@@ -198,12 +224,11 @@ public class MaterialEntradaBean implements Serializable {
 		}
 	}
 
-	
 	public void salvarEdicao() throws Exception {
 		try {
 			HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 			usuarioLogado = (Usuario) sessao.getAttribute("usuario");
-			
+
 			MaterialEntradaDAO materialEntradaDAO = new MaterialEntradaDAO();
 
 			Material material = materialEntradaFront.getMaterial();
@@ -214,9 +239,9 @@ public class MaterialEntradaBean implements Serializable {
 					tipoMaterial.getTipomaterial());
 
 			System.out.println("MATERIAL ENTRADA QUANTIDADE FRONT EDICAO _ " + materialEntradaFront.getQuantidade());
-			
+
 			System.out.println("MATERIAL ENTRADA QUANTIDADE BANCO EDICAO _ " + materialEntrada.getQuantidade());
-			
+
 			System.out.println("Variavel materialEntrada " + materialEntrada);
 
 			materialEntrada.setDataCadastro(new Date());
@@ -238,7 +263,7 @@ public class MaterialEntradaBean implements Serializable {
 
 			materialEntradaDAO.salvarEntradaHist(materialEntrada, material, materialEntradaHist, usuarioLogado);
 
-			listaEntradaMateriais = materialEntradaDAO.listar();
+			listaEntradaMateriais = materialEntradaDAO.listarPorOrdemASC();
 
 			Messages.addGlobalInfo("Material Entrada cadastrado com Sucesso!");
 		} catch (RuntimeException erro) {
@@ -246,31 +271,55 @@ public class MaterialEntradaBean implements Serializable {
 			erro.printStackTrace();
 		}
 	}
-	
+
 	public void excluir(ActionEvent evento) throws Exception {
 
 		try {
 			materialEntrada = (MaterialEntrada) evento.getComponent().getAttributes().get("materialSelecionado");
-			
-			MaterialEntradaHistDAO histDAO = new MaterialEntradaHistDAO();
-			
-			listamaterialEntradaHist = histDAO.listarPorMaterialEntrada(materialEntrada);
-			while(listamaterialEntradaHist.size()!=0) {
-				materialEntradaHist = histDAO.loadLast(materialEntrada);
-				
-				
-				System.out.println( materialEntradaHist + " materialEntradaHist");
-				histDAO.excluir(materialEntradaHist);
-			}
-			
 
+			MaterialEntradaHistDAO histDAO = new MaterialEntradaHistDAO();
+			MaterialSaidaRelacaoDAO relacaoDAO = new MaterialSaidaRelacaoDAO();
 			MaterialEntradaDAO materialEntradaDAO = new MaterialEntradaDAO();
+
+			listasaidaRelacao = relacaoDAO.listarPorMaterialEntrada(materialEntrada);
+			while (listasaidaRelacao.size() != 0) {
+
+				saidaRelacao = relacaoDAO.loadLast(materialEntrada);
+
+				if (saidaRelacao != null) {
+					relacaoDAO.excluir(saidaRelacao);
+				}else {
+					listaEntradaMateriais = materialEntradaDAO.listarPorOrdemASC();
+					break;
+				}
+
+			}
+
+			listamaterialEntradaHist = histDAO.listarPorMaterialEntrada(materialEntrada);
+			while (listamaterialEntradaHist.size() != 0) {
+
+				materialEntradaHist = histDAO.loadLast(materialEntrada);
+
+				if (materialEntradaHist != null) {
+
+					histDAO.excluir(materialEntradaHist);
+				}else {
+					listaEntradaMateriais = materialEntradaDAO.listarPorOrdemASC();
+					break;
+				}
+
+			}
+
+			
 			materialEntradaDAO.excluir(materialEntrada);
 
 			materialEntrada = new MaterialEntrada();
-			listaEntradaMateriais = materialEntradaDAO.listar();
+			listaEntradaMateriais = materialEntradaDAO.listarPorOrdemASC();
 
 			Messages.addGlobalInfo("Material removido com sucesso.");
+			
+			 ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+			    ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar excluir o Status.");
 			erro.printStackTrace();
@@ -278,10 +327,9 @@ public class MaterialEntradaBean implements Serializable {
 	}
 
 	public void editar(ActionEvent evento) {
-		
-			materialEntradaFront = (MaterialEntrada) evento.getComponent().getAttributes().get("materialSelecionado");
-			
-		
+
+		materialEntradaFront = (MaterialEntrada) evento.getComponent().getAttributes().get("materialSelecionado");
+
 	}
 
 	public void popular() {
@@ -320,6 +368,14 @@ public class MaterialEntradaBean implements Serializable {
 
 	public void setMaterialEntradaFront(MaterialEntrada materialEntradaFront) {
 		this.materialEntradaFront = materialEntradaFront;
+	}
+
+	public List<MaterialSaidaRelacao> getListasaidaRelacao() {
+		return listasaidaRelacao;
+	}
+
+	public void setListasaidaRelacao(List<MaterialSaidaRelacao> listasaidaRelacao) {
+		this.listasaidaRelacao = listasaidaRelacao;
 	}
 
 }

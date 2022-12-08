@@ -32,8 +32,41 @@ public class ContratoTerceirizadoDAO extends GenericDAO<ContratoTerceirizado> {
 				Criteria consulta = sessao.createCriteria(ContratoTerceirizado.class);
 				consulta.createAlias("unidade", "u");
 				consulta.add(Restrictions.in("u.unidadeNome", unidades));
+				
+				
 
 				List<ContratoTerceirizado> resultado = consulta.list();
+
+				return resultado;
+
+			} catch (RuntimeException erro) {
+				throw erro;
+			} finally {
+				sessao.close();
+			}
+		}
+	  
+	  @SuppressWarnings("unchecked")
+		public List<ContratoTerceirizado> listarPorClaimsNomeEmpresa(List<String> unidades) {
+
+			Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+			try {
+
+				Criteria consulta = sessao.createCriteria(ContratoTerceirizado.class);
+				
+				
+				 ProjectionList projList = Projections.projectionList();
+				    projList.add(Projections.distinct(Projections.property("nContrato")));
+				 
+				    consulta.createAlias("unidade", "u");
+					consulta.add(Restrictions.in("u.unidadeNome", unidades));
+					
+					System.out.println(unidades + "unidadesunidadesunidadesunidadesunidadesunidadesunidadesunidades");
+				    consulta.setProjection(projList);
+
+				List<ContratoTerceirizado> resultado = consulta.list();
+				
+				System.out.println(resultado + "resultadoresultadoresultadoresultado");
 
 				return resultado;
 

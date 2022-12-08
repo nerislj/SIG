@@ -40,4 +40,6 @@ public class UserClaimsContratoDAO extends GenericDAO<UserClaimsContrato> {
 	      return var6;
 	   }
 	 
+	
+	 
 }

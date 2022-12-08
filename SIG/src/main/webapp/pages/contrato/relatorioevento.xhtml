@@ -83,6 +83,8 @@
 						<f:selectItem itemValue="Afastamento" itemLabel="Afastamento" />
 						<f:selectItem itemValue="Inconsistência"
 							itemLabel="Inconsistência" />
+
+
 					</p:selectOneMenu>
 
 					<p:outputLabel for="dataInicial" value="Data Inicial:" />
@@ -117,11 +119,11 @@
 			<p:panel header="Eventos">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true" expandableRowGroups="true"
-					sortBy="#{evento.colaborador.unidade.unidadeNome}"
+					sortBy="#{evento.contratoTerceirizado.unidade.unidadeNome}"
 					value="#{contratoTerceirizadoBean.listaEventosTerceirizados}"
 					var="evento" rows="30">
 
-   
+
 					<p:headerRow>
 						<p:column colspan="7">
 							<h:outputText value="Data: " />
@@ -133,7 +135,8 @@
 							<h:outputText value=" Unidade: " />
 
 
-							<h:outputText value="#{evento.colaborador.unidade.unidadeNome}" />
+							<h:outputText
+								value="#{evento.contratoTerceirizado.unidade.unidadeNome}" />
 
 
 
@@ -141,23 +144,25 @@
 
 						</p:column>
 					</p:headerRow>
-					
-						
+
+
 
 					<p:column headerText="Colaborador" id="colaborador"
 						rendered="#{contratoTerceirizadoBean.mostrarTabelaRelatorioEventos == true}"
 						sortBy="#{evento.colaborador.pessoa.nomeCompleto}"
 						filterBy="#{evento.colaborador.pessoa.nomeCompleto}"
 						style="width: 20%; text-align: center;">
-						<h:outputText for="colaborador" value="#{evento.colaborador.pessoa.nomeCompleto}" />
+						<h:outputText for="colaborador"
+							value="#{evento.colaborador.pessoa.nomeCompleto}" />
 					</p:column>
 
 					<p:column headerText="Setor" id="setor"
 						rendered="#{contratoTerceirizadoBean.mostrarTabelaRelatorioEventos == true}"
-						sortBy="#{evento.colaborador.setor.setorNome}"
-						filterBy="#{evento.colaborador.setor.setorNome}"
+						sortBy="#{evento.contratoTerceirizado.unidade.unidadeNome}"
+						filterBy="#{evento.contratoTerceirizado.unidade.unidadeNome}"
 						style="width: 20%; text-align: center;">
-						<h:outputText for="setor" value="#{evento.colaborador.unidade.unidadeNome}" />
+						<h:outputText for="setor"
+							value="#{evento.contratoTerceirizado.unidade.unidadeNome}" />
 					</p:column>
 
 					<p:column headerText="Data"
@@ -199,12 +204,12 @@
 					</p:column>
 
 					<p:column headerText="Horas" sortBy="#{evento.horas}"
-						rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == true and contratoTerceirizadoBean.mostrarTabelaRelatorioEventos == true}"
+						rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == true or contratoTerceirizadoBean.mostrarDiaseHoras == true}"
 						filterBy="#{evento.horas}" style="width: 20%; text-align: center;">
 						<h:outputText value="#{evento.horas}" />
 					</p:column>
-					
-			
+
+
 
 					<p:column headerText="Motivo" sortBy="#{evento.motivo}"
 						rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == true and contratoTerceirizadoBean.mostrarTabelaRelatorioEventos == true}"
@@ -217,8 +222,9 @@
 
 
 
-					<p:column headerText="Opções" 
-						style="width: 5%; text-align: center;">
+					<p:column headerText="Opções"
+						style="width: 5%; text-align: center;"
+						rendered="#{contratoTerceirizadoBean.mostrarTabelaRelatorioEventos == true}">
 
 
 
@@ -235,7 +241,7 @@
 
 					<p:summaryRow>
 
-						<p:column colspan="3"
+						<p:column colspan="4"
 							rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == true and contratoTerceirizadoBean.mostrarTabelaRelatorioEventos == true}"
 							style="text-align:center; background: #b7d8b7 !important;
 	border: 1px solid #2E8B57 !important;
@@ -251,7 +257,7 @@
 	border-width: 0 4px 0 4px !important;
 	color: #212121 !important;">
 							<h:outputText
-								value="Total Horas: #{contratoTerceirizadoBean.brandSubTotalHoras(evento.horas, evento.colaborador.unidade.unidadeNome)}">
+								value="Total Horas: #{contratoTerceirizadoBean.brandSubTotalHoras(evento.horas, evento.contratoTerceirizado.unidade.unidadeNome)}">
 
 							</h:outputText>
 
@@ -259,6 +265,34 @@
 
 
 						</p:column>
+						
+						
+							<p:column colspan="5"
+							rendered="#{contratoTerceirizadoBean.mostrarAfastamento == true and contratoTerceirizadoBean.mostrarTabelaRelatorioEventos == true}"
+							style="text-align:center; background: #b7d8b7 !important;
+	border: 1px solid #2E8B57 !important;
+	border-width: 0 4px 0 4px !important;
+	color: #212121 !important;">
+
+						</p:column>
+
+						<p:column colspan="5"
+							rendered="#{contratoTerceirizadoBean.mostrarAfastamento == true and contratoTerceirizadoBean.mostrarTabelaRelatorioEventos == true}"
+							style="text-align:left;background: #b7d8b7 !important;
+	border: 1px solid #2E8B57 !important;
+	border-width: 0 4px 0 4px !important;
+	color: #212121 !important;">
+							<h:outputText
+								value="Total: #{contratoTerceirizadoBean.brandSubTotalAfastamentoDias(evento.contratoTerceirizado.unidade.unidadeNome)}">
+
+							</h:outputText>
+
+
+
+
+						</p:column>
+						
+						
 					</p:summaryRow>
 
 
@@ -268,17 +302,18 @@
 						<div style="padding-top: 5px;">
 
 
-<h:commandLink style="padding: .3em 1em;"
+							<h:commandLink style="padding: .3em 1em;"
+								rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == true or contratoTerceirizadoBean.mostrarAfastamento == true}"
 								styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-button-text ui-c"
-								action="#{contratoTerceirizadoBean.gerarRelatorioEventos}" 
-								update=":mensagem formlista:lista"
-								target="_new" value="Imprimir Relatório ">
+								action="#{contratoTerceirizadoBean.gerarRelatorioEventos}"
+								update=":mensagem formlista:lista" target="_new"
+								value="Imprimir Relatório ">
 								<p:graphicImage library="images" name="pdf.png" width="11" />
 							</h:commandLink>
-							
-						
 
-						
+
+
+
 
 						</div>
 					</f:facet>
