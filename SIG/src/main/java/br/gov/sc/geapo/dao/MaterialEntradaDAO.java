@@ -118,11 +118,9 @@ public class MaterialEntradaDAO extends GenericDAO<MaterialEntrada>{
 
 		consulta.add(Restrictions.eq("material", material));
 
-		if (consulta.setMaxResults(1).uniqueResult().equals(null)) {
-			return null;
-		} else {
+		
 			return (MaterialEntrada) consulta.setMaxResults(1).uniqueResult();
-		}
+		
 	}
 	
 	
@@ -178,5 +176,36 @@ public class MaterialEntradaDAO extends GenericDAO<MaterialEntrada>{
 				sessao.close();
 			}
 		}
+	 
+	 
+	 @SuppressWarnings("unchecked")
+		public List<MaterialEntrada> listarPorMaterialEntrada(Long material) {
+			Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+			try {
+				Criteria consulta = sessao.createCriteria(MaterialEntrada.class);
+				
+				consulta.add(Restrictions.eq("codigo", material));
+				
+
+				List<MaterialEntrada> resultado = consulta.list();
+
+				return resultado;
+
+			} catch (RuntimeException erro) {
+				throw erro;
+			} finally {
+				sessao.close();
+			}
+		}
+	 
+	 public MaterialEntrada loadLastExcluir(Long material) throws Exception {
+			Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+			Criteria criteria = sessao.createCriteria(MaterialEntrada.class);
+			
+			criteria.add(Restrictions.eq("codigo", material));
+
+			return (MaterialEntrada) criteria.setMaxResults(1).uniqueResult();
+		}
+		
 	
 }

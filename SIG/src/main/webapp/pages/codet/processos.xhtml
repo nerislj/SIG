@@ -43,9 +43,10 @@
 	/* offset left by half the width of your element */
 	position: relative; /* use or dont' use depending on element parent */
 }
+
 .customPanelGrid .ui-panelgrid-content {
-        align-items: center;
-    }
+	align-items: center;
+}
 </style>
 
 
@@ -122,7 +123,7 @@
 										style="background: #01B50D;"
 										actionListener="#{processoBean.adicionaProcesso}"
 										oncomplete="PF('dialogoAdicionarProcesso').show();"
-										update="processo:processo tabView:formularioEmpresas:listaCorregedoria processo:tabViewProcesso:listaFases processo:tabViewProcesso:listaPartes processo:tabViewProcesso:listaHistorico"
+										update="processo:processo tabView:formularioEmpresas:listaCorregedoria processo:tabViewProcesso:listaFases processo:tabViewProcesso:listaPartes processo:tabViewProcesso:listaHistorico :processo:processoAcusado :processo:processoSituacaoSetor"
 										rendered="#{autenticacaoBean.temPermissoes([1, 13])}">
 
 									</p:commandButton>
@@ -159,7 +160,7 @@
 								<p:column headerText="Acusado"
 									style="width: 9%; text-align: center;">
 									<h:outputText
-										value="#{processo.credenciadoPJ.pessoaJuridica.nomeFantasia} #{processo.credenciadoPJ.pessoaJuridica.cnpj}" />
+										value="#{processo.credenciadoPJ.pessoaJuridica.nomeFantasia} - #{processo.credenciadoPJ.pessoaJuridica.razaoSocial} #{processo.credenciado.pessoa.nomeCompleto}" />
 								</p:column>
 
 								<p:column headerText="Situação Atual"
@@ -169,16 +170,14 @@
 
 								<p:column headerText="Setor Atual"
 									style="width: 5%; text-align: center;">
-									<h:outputText
-												rendered="#{processo.setorAtual.descricao!=null}"
-												value="#{processo.setorAtual.descricao}" />
-									
-									<h:outputText
-												rendered="#{processo.setorAtual.descricao==null}"
-												value="ARQUIVO" />
+									<h:outputText rendered="#{processo.setorAtual.descricao!=null}"
+										value="#{processo.setorAtual.descricao}" />
+
+									<h:outputText rendered="#{processo.setorAtual.descricao==null}"
+										value="ARQUIVO" />
 								</p:column>
-								
-								
+
+
 
 								<p:column headerText="Ações"
 									style="width: 3%; text-align: center;"
@@ -188,7 +187,7 @@
 										icon="ui-icon-zoomin"
 										onclick="PF('dialogoAdicionarProcesso').show();"
 										style="align: center;"
-										update=":mensagem tabView:formularioEmpresas:painelDados :processo:processo processo:tabViewProcesso:listaFases processo:tabViewProcesso:listaPartes :processo:processo processo:tabViewProcesso:listaHistorico">
+										update=":mensagem tabView:formularioEmpresas:painelDados :processo:processo processo:tabViewProcesso:listaFases processo:tabViewProcesso:listaPartes :processo:processo processo:processoSituacaoSetor processo:tabViewProcesso:listaHistorico">
 										<f:attribute name="processoSelecionado" value="#{processo}" />
 										<f:actionListener
 											type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
@@ -199,7 +198,7 @@
 
 								<p:rowExpansion>
 									<p:dataTable id="listaPartes"
-										emptyMessage="Nenhuma parte encontrada." paginator="false"
+										emptyMessage="Nenhuma parte encontrada." paginator="true"
 										value="#{processoBean.listaPartesProcessos}" var="parte"
 										rows="10">
 
@@ -214,14 +213,24 @@
 
 										<p:column headerText="Credenciado">
 
+											<h:outputText rendered="#{parte.credenciado==null}"
+												value="CNPJ: #{parte.credenciadoEmpresa.pessoaJuridica.cnpj} - Nome Fantasia: #{parte.credenciadoEmpresa.pessoaJuridica.nomeFantasia} - Razão Social: #{parte.credenciadoEmpresa.pessoaJuridica.razaoSocial}" />
+											<h:outputText rendered="#{parte.credenciadoEmpresa==null}"
+												value="#{parte.credenciado.pessoa.nomeCompleto} - CPF: #{parte.credenciado.pessoa.cpf}" />
+
+
+
+
+
+										</p:column>
+
+										<p:column headerText="Município">
 
 											<h:outputText rendered="#{parte.credenciado==null}"
-												value="#{parte.credenciadoEmpresa.pessoaJuridica.nomeFantasia} #{parte.credenciadoEmpresa.pessoaJuridica.cnpj}" />
-											<h:outputText rendered="#{parte.credenciadoEmpresa==null}"
-												value="#{parte.credenciado.pessoa.nomeCompleto} #{parte.credenciado.pessoa.cpf}" />
+												value="#{parte.credenciadoEmpresa.pessoaJuridica.municipioEndereco.nome}" />
 
 
-
+											<h:outputText rendered="#{parte.credenciado!=null}" value=" " />
 
 
 										</p:column>
@@ -258,7 +267,9 @@
 										</p:column>
 
 										<p:column headerText="Última alteração">
-											<h:outputText value="#{parte.dataCadastro}" />
+											<h:outputText value="#{parte.dataCadastro}">
+												<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+											</h:outputText>
 										</p:column>
 
 										<p:column headerText="Alterado Por">
@@ -492,7 +503,7 @@
 
 		<p:dialog widgetVar="dialogoAdicionarProcesso" draggable="false"
 			resizable="true" modal="true" closable="true" responsive="true"
-			height="700px" width="60%">
+			height="700px" width="70%">
 			<f:facet name="header">
 
 				<h:outputText id="someDialogHeader" value="Acusado" />
@@ -505,21 +516,69 @@
 
 				<p:panel header="Processo">
 
-					<h:panelGrid id="processo" columns="2" style="margin: 0 auto;"
-						styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid id="processoAcusado" columns="1" layout="grid"
+						styleClass="showcase-text-align-center ui-panelgrid-blank ui-fluid"
+						columnClasses="ui-g-12 ui-md-6 ui-lg-3, ui-g-12 ui-md-6 ui-lg-3, ui-g-12 ui-md-6 ui-lg-3, ui-g-12 ui-md-6 ui-lg-3">
 
 
-						<p:outputLabel value="Acusado: " />
-						<p:selectOneMenu value="#{processoBean.processo.credenciadoPJ}"
-							required="true" filter="true"
-							requiredMessage="O campo empresa é obrigatório"
-							converter="omnifaces.SelectItemsConverter" style="color: red;">
-							<f:selectItem noSelectionOption="true"
-								itemLabel="Selecione um acusado" />
-							<f:selectItems value="#{processoBean.listaEmpresasCredenciadas}"
-								var="empresa" itemValue="#{empresa}"
-								itemLabel="#{empresa.pessoaJuridica.nomeFantasia} #{empresa.pessoaJuridica.cnpj}" />
-						</p:selectOneMenu>
+
+
+						<h:outputLabel id="lbPessoa" value="Acusado: " for="cred" />
+						<p:selectOneRadio id="cred" value="#{processoBean.filtro}">
+
+							<f:selectItem itemLabel="Credenciado" itemValue="1" />
+							<f:selectItem itemLabel="Empresa Credenciada" itemValue="2" />
+
+							<p:ajax event="change"
+								update="pnlCredenciado, pnlEmpresa, :processo:processoAcusado"
+								process="@this" listener="#{processoBean.habilitarParte()}" />
+
+
+						</p:selectOneRadio>
+
+						<p:outputPanel id="pnlCredenciado">
+							<p:outputLabel value="Acusado Credenciado: "
+								rendered="#{processoBean.isCredenciado}" />
+							<p:selectOneMenu filter="true" filterMatchMode="contains"
+								style="color: red;width: 100% !important"
+								rendered="#{processoBean.isCredenciado}"
+								value="#{processoBean.processo.credenciado}"
+								converter="omnifaces.SelectItemsConverter" required="true"
+								requiredMessage="O campo Credenciado é obrigatório">
+								<f:selectItem noSelectionOption="true"
+									itemLabel="Selecione um Credenciado" />
+								<f:selectItems value="#{processoBean.listaCredenciados}"
+									var="cred" itemValue="#{cred}"
+									itemLabel="CPF: #{cred.pessoa.cpf} - Nome: #{cred.pessoa.nomeCompleto} - Credencial: #{cred.numeroRegistro}" />
+							</p:selectOneMenu>
+
+						</p:outputPanel>
+
+						<p:outputPanel id="pnlEmpresa">
+							<p:outputLabel value="Acusado Empresa: "
+								rendered="#{processoBean.isEmpresa}" />
+							<p:selectOneMenu filter="true" filterMatchMode="contains"
+								style="color: red;width: 100% !important"
+								rendered="#{processoBean.isEmpresa}"
+								value="#{processoBean.processo.credenciadoPJ}"
+								converter="omnifaces.SelectItemsConverter" required="true"
+								requiredMessage="O campo Empresa é obrigatório">
+								<f:selectItem noSelectionOption="true"
+									itemLabel="Selecione uma empresa" />
+								<f:selectItems value="#{processoBean.listaEmpresasCredenciadas}"
+									var="empresa" itemValue="#{empresa}"
+									itemLabel="Nome Fantasia: #{empresa.pessoaJuridica.nomeFantasia} - CNPJ: #{empresa.pessoaJuridica.cnpj} - Razão Social: #{empresa.pessoaJuridica.razaoSocial} - Tipo Cred: #{empresa.credencialTipo.tipocredencial} - Município: #{empresa.pessoaJuridica.municipioEndereco.nome}" />
+							</p:selectOneMenu>
+
+						</p:outputPanel>
+
+					</p:panelGrid>
+
+					<p:panelGrid id="processo" columns="2" layout="grid"
+						styleClass="showcase-text-align-center ui-panelgrid-blank ui-fluid"
+						columnClasses="ui-g-12 ui-md-6 ui-lg-3, ui-g-12 ui-md-6 ui-lg-3, ui-g-12 ui-md-6 ui-lg-3, ui-g-12 ui-md-6 ui-lg-3">
+
+
 
 
 						<p:outputLabel value="Nomenclatura: " />
@@ -535,23 +594,22 @@
 						</p:selectOneMenu>
 
 						<p:outputLabel for="button2" value="Data Instauração: " />
-						<p:calendar id="button2" readonlyInput="true"
+						<p:calendar id="button2" readonlyInput="false" mask="99/99/9999"
 							value="#{processoBean.processo.dataInstauracao}" showIcon="true" />
 
 						<p:outputLabel value="Número Processo: " />
-						<p:inputText placeholder="003/16"
-							value="#{processoBean.processo.numProcesso}"
-							style="text-transform:uppercase;">
+						<p:inputText placeholder="003/16" style="text-transform:uppercase"
+							value="#{processoBean.processo.numProcesso}">
 						</p:inputText>
 
 						<p:outputLabel value="Número SGPE: " />
 						<p:inputText placeholder="003/16 sgpe"
-							value="#{processoBean.processo.numSGPE}"
-							style="text-transform:uppercase;">
+							style="text-transform:uppercase;"
+							value="#{processoBean.processo.numSGPE}">
 						</p:inputText>
-						
+
 						<p:outputLabel value="Situação:" />
-						<p:selectOneMenu style="width: 100% !important" value="#{processoBean.processo.situacao}"
+						<p:selectOneMenu value="#{processoBean.processo.situacao}"
 							required="true" filter="true"
 							requiredMessage="O campo Situação é obrigatório"
 							converter="omnifaces.SelectItemsConverter">
@@ -561,44 +619,49 @@
 								var="situacao" itemValue="#{situacao}"
 								itemLabel="#{situacao.descricao}" />
 
-							<p:ajax event="change" update="pnlSetorAtual processo:processoSituacaoSetor"
+							<p:ajax event="change"
+								update="pnlSetorAtual processo:processoSituacaoSetor"
 								process="@this" listener="#{processoBean.habilitar()}" />
 
 						</p:selectOneMenu>
 
 
-					</h:panelGrid>
-					
+					</p:panelGrid>
 
-					<p:panelGrid id="processoSituacaoSetor" columns="2" 
-                 style="margin: 0 auto; width: auto;"
-						styleClass="ui-panelgrid-blank ui-fluid">
+					<br />
+					<br />
+					<br />
 
-						
+
+					<p:panelGrid id="processoSituacaoSetor" columns="2" layout="grid"
+						styleClass="showcase-text-align-center ui-panelgrid-blank ui-fluid"
+						columnClasses="ui-g-12 ui-md-6 ui-lg-3, ui-g-12 ui-md-6 ui-lg-3, ui-g-12 ui-md-6 ui-lg-3, ui-g-12 ui-md-6 ui-lg-3">
+
+
 
 
 						<p:outputLabel rendered="#{processoBean.arquivado == false}"
 							value="Setor Atual: " />
 						<p:selectOneMenu rendered="#{processoBean.arquivado == false}"
 							id="pnlSetorAtual" value="#{processoBean.processo.setorAtual}"
-							 filter="true"
-							
-							converter="omnifaces.SelectItemsConverter">
+							filter="true" converter="omnifaces.SelectItemsConverter">
 							<f:selectItem noSelectionOption="true"
 								itemLabel="Selecione um setor atual" />
 							<f:selectItems value="#{processoBean.listaSetorAtuais}"
 								var="setorAtual" itemValue="#{setorAtual}"
 								itemLabel="#{setorAtual.descricao}" />
 						</p:selectOneMenu>
-						
-						
+
+
 
 
 					</p:panelGrid>
-					
-					
 
-					
+
+					<br />
+					<br />
+					<br />
+
 
 					<h:panelGrid columns="2" style="margin: 0 auto;">
 						<p:commandButton value="Gravar Processo" icon="pi pi-save"
@@ -628,7 +691,7 @@
 
 						<p:panel header="Partes">
 
-							
+
 							<p:dataTable id="listaPartes"
 								emptyMessage="Nenhum registro encontrado." paginator="true"
 								value="#{processoBean.listaPartesProcessos}" var="parte"
@@ -663,7 +726,7 @@
 
 
 
-								<p:ajax event="cellEdit" 
+								<p:ajax event="cellEdit"
 									listener="#{processoBean.cellEditEvent}" />
 
 
@@ -672,7 +735,7 @@
 
 
 									<h:outputText rendered="#{parte.credenciado==null}"
-										value="#{parte.credenciadoEmpresa.pessoaJuridica.nomeFantasia} #{parte.credenciadoEmpresa.pessoaJuridica.cnpj}" />
+										value="#{parte.credenciadoEmpresa.pessoaJuridica.nomeFantasia} #{parte.credenciado.pessoa.nomeCompleto}" />
 									<h:outputText rendered="#{parte.credenciadoEmpresa==null}"
 										value="#{parte.credenciado.pessoa.nomeCompleto} #{parte.credenciado.pessoa.cpf}" />
 
@@ -731,7 +794,9 @@
 								</p:column>
 
 								<p:column headerText="Última alteração">
-									<h:outputText value="#{parte.dataCadastro}" />
+									<h:outputText value="#{parte.dataCadastro}">
+										<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+									</h:outputText>
 								</p:column>
 
 								<p:column headerText="Alterado Por">
@@ -825,7 +890,9 @@
 								<p:column headerText="Data" style="width:4%">
 
 
-									<h:outputText value="#{fases.dataCadastro}" />
+									<h:outputText value="#{fases.dataCadastro}">
+										<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+									</h:outputText>
 
 
 
@@ -976,7 +1043,9 @@
 
 								<p:column headerText="Data Cadastro"
 									style="width: 70px; text-align: center;">
-									<h:outputText value="#{hist.dataCadastro}" />
+									<h:outputText value="#{hist.dataCadastro}">
+										<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+									</h:outputText>
 								</p:column>
 
 
@@ -1024,26 +1093,66 @@
 
 
 		<p:dialog header="Parte - Cadastro" widgetVar="dialogo"
-			draggable="false" resizable="false" modal="true" closable="false">
+			draggable="false" resizable="true" modal="true" closable="true"
+			responsive="true" height="500px" width="70%">
 			<h:form id="formcadastro">
-				<h:panelGrid id="cadastro" columns="2">
+				<p:panelGrid id="cadastro" columns="1" layout="grid"
+					styleClass="showcase-text-align-center ui-panelgrid-blank ui-fluid"
+					columnClasses="ui-g-12 ui-md-6 ui-lg-3, ui-g-12 ui-md-6 ui-lg-3, ui-g-12 ui-md-6 ui-lg-3, ui-g-12 ui-md-6 ui-lg-3">
 
-					<p:outputLabel value="Credenciado: " />
-					<p:selectOneMenu filter="true"
-						value="#{processoBean.parteProcesso.credenciado}"
-						converter="omnifaces.SelectItemsConverter" required="true"
-						requiredMessage="O campo Credenciado é obrigatório">
-						<f:selectItem noSelectionOption="true"
-							itemLabel="Selecione um Credenciado" />
-						<f:selectItems value="#{processoBean.listaCredenciados}"
-							var="cred" itemValue="#{cred}"
-							itemLabel="#{cred.pessoa.cpf} - #{cred.pessoa.nomeCompleto}" />
-					</p:selectOneMenu>
+					<h:outputLabel id="lbPessoa" value="Parte: * " for="parte" />
+					<p:selectOneRadio id="parte" value="#{processoBean.filtro}"
+						required="true" requiredMessage="Campo [Parte] é obrigatório.">
 
-				</h:panelGrid>
+						<f:selectItem itemLabel="Credenciado" itemValue="1" />
+						<f:selectItem itemLabel="Empresa Credenciada" itemValue="2" />
+
+						<p:ajax event="change"
+							update="pnlCredenciado, pnlEmpresa, :formcadastro:parte"
+							process="@this" listener="#{processoBean.habilitarParte()}" />
+
+
+					</p:selectOneRadio>
+
+					<p:outputPanel id="pnlCredenciado">
+						<p:outputLabel value="Credenciado: "
+							rendered="#{processoBean.isCredenciado}" />
+						<p:selectOneMenu filter="true" filterMatchMode="contains"
+							rendered="#{processoBean.isCredenciado}"
+							value="#{processoBean.parteProcesso.credenciado}"
+							converter="omnifaces.SelectItemsConverter" required="true"
+							requiredMessage="O campo Credenciado é obrigatório">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione um Credenciado" />
+							<f:selectItems value="#{processoBean.listaCredenciados}"
+								var="cred" itemValue="#{cred}"
+								itemLabel="CPF: #{cred.pessoa.cpf} - Nome: #{cred.pessoa.nomeCompleto} - Credencial: #{cred.numeroRegistro}" />
+						</p:selectOneMenu>
+
+					</p:outputPanel>
+
+					<p:outputPanel id="pnlEmpresa">
+						<p:outputLabel value="Empresa: "
+							rendered="#{processoBean.isEmpresa}" />
+						<p:selectOneMenu filter="true" filterMatchMode="contains"
+							rendered="#{processoBean.isEmpresa}"
+							value="#{processoBean.parteProcesso.credenciadoEmpresa}"
+							converter="omnifaces.SelectItemsConverter" required="true"
+							requiredMessage="O campo Empresa é obrigatório">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione uma empresa" />
+							<f:selectItems value="#{processoBean.listaEmpresasCredenciadas}"
+								var="empresa" itemValue="#{empresa}"
+								itemLabel="Nome Fantasia: #{empresa.pessoaJuridica.nomeFantasia} - CNPJ: #{empresa.pessoaJuridica.cnpj} - Razão Social: #{empresa.pessoaJuridica.razaoSocial} - Tipo Cred: #{empresa.credencialTipo.tipocredencial} - Município: #{empresa.pessoaJuridica.municipioEndereco.nome}" />
+						</p:selectOneMenu>
+
+					</p:outputPanel>
+
+				</p:panelGrid>
 
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
+						style="margin: 0 auto; width: auto;"
 						actionListener="#{processoBean.salvarParte()}"
 						update=":mensagem :formcadastro:cadastro processo:tabViewProcesso:listaPartes"
 						oncomplete="PF('dialogo').hide();" />

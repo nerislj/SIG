@@ -58,7 +58,7 @@ public class ProcessoDAO extends GenericDAO<Processo> {
 
 	@SuppressWarnings("unchecked")
 	public List<Processo> listarProcessos(String campoDigitado, Credenciado cpf, Credenciado numeroCredencial,
-			CredenciadoEmp empresaCNPJ) {
+			CredenciadoEmp empresaCNPJ, Credenciado credenciado) {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 		try {
 			Criteria consulta = sessao.createCriteria(Processo.class);
@@ -67,7 +67,8 @@ public class ProcessoDAO extends GenericDAO<Processo> {
 
 				consulta.addOrder(Order.desc("codigo"));
 				consulta.add(Restrictions.disjunction()
-
+						
+						.add(Restrictions.eq("credenciado", credenciado))
 						.add(Restrictions.eq("credenciadoPJ", empresaCNPJ))
 						.add(Restrictions.eq("numProcesso", campoDigitado))
 						.add(Restrictions.eq("numSGPE", campoDigitado)));
@@ -78,6 +79,7 @@ public class ProcessoDAO extends GenericDAO<Processo> {
 
 				consulta.add(Restrictions.disjunction().add(Restrictions.eq("e.credenciado", cpf))
 						.add(Restrictions.eq("e.credenciado", numeroCredencial))
+						.add(Restrictions.eq("credenciado", credenciado))
 						.add(Restrictions.eq("credenciadoPJ", empresaCNPJ))
 						.add(Restrictions.eq("numProcesso", campoDigitado))
 						.add(Restrictions.eq("numSGPE", campoDigitado)));
@@ -151,8 +153,14 @@ public class ProcessoDAO extends GenericDAO<Processo> {
 
 			System.out.println(parteProcesso);
 
+			if(processo.getCredenciado()!=null) {
+				parteProcesso.setCredenciado(processo.getCredenciado());
+			} else {
+				parteProcesso.setCredenciadoEmpresa(processo.getCredenciadoPJ());
+			}
+			
 			parteProcesso.setProcesso(processo);
-			parteProcesso.setCredenciadoEmpresa(processo.getCredenciadoPJ());
+			//parteProcesso.setCredenciadoEmpresa(processo.getCredenciadoPJ());
 			parteProcesso.setDataCadastro(new Date());
 			parteProcesso.setUsuarioCadastro(usuarioLogado);
 
@@ -283,6 +291,28 @@ public class ProcessoDAO extends GenericDAO<Processo> {
 
 			consulta.addOrder(Order.desc("codigo"));
 			consulta.add(Restrictions.eq("credenciadoPJ", credenciadoPJ));
+			consulta.add(Restrictions.eq("nomenclatura", nomenclatura));
+			consulta.add(Restrictions.eq("situacao", situacao));
+
+			return (Processo) consulta.setMaxResults(1).uniqueResult();
+
+		} catch (RuntimeException erro) {
+			throw erro;
+		} finally {
+			sessao.close();
+		}
+	}
+	
+	public static Processo carregaProcessoUltimoCredenciado(Credenciado credenciado, NomenclaturaProcesso nomenclatura,
+			SituacaoProcesso situacao) {
+
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+
+		try {
+			Criteria consulta = sessao.createCriteria(Processo.class);
+
+			consulta.addOrder(Order.desc("codigo"));
+			consulta.add(Restrictions.eq("credenciado", credenciado));
 			consulta.add(Restrictions.eq("nomenclatura", nomenclatura));
 			consulta.add(Restrictions.eq("situacao", situacao));
 

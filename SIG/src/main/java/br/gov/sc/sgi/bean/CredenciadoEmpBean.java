@@ -510,11 +510,36 @@ public class CredenciadoEmpBean implements Serializable {
 		}
 	}
 
-	public void listasCredenciadoEmpBean() {
+	public void listasCredenciadoVisaoGeral() {
 		CredenciadoEmpDAO credenciadoDAO = new CredenciadoEmpDAO();
 		credenciados = credenciadoDAO.listar();
 
+		//credenciadosValidadeDesc = credenciadoDAO.listarValidadeDesc();
+
+		CredencialStatusDAO statusDAO = new CredencialStatusDAO();
+		credencialStatus = statusDAO.listar("tipoStatus");
+
+		CredencialEmpTipoDAO tipoDAO = new CredencialEmpTipoDAO();
+		CredencialEmpTipos = tipoDAO.listar("tipocredencial");
+
+		EstadoDAO estadoDAO = new EstadoDAO();
+		Estados = estadoDAO.listar("sigla");
+	}
+	
+	public void listasCredenciadoRelatorio() {
+		CredenciadoEmpDAO credenciadoDAO = new CredenciadoEmpDAO();
+		
+
 		credenciadosValidadeDesc = credenciadoDAO.listarValidadeDesc();
+
+		
+	}
+	
+	public void listasCredenciadoCadastro() {
+		CredenciadoEmpDAO credenciadoDAO = new CredenciadoEmpDAO();
+		//credenciados = credenciadoDAO.listar();
+
+		//credenciadosValidadeDesc = credenciadoDAO.listarValidadeDesc();
 
 		CredencialStatusDAO statusDAO = new CredencialStatusDAO();
 		credencialStatus = statusDAO.listar("tipoStatus");

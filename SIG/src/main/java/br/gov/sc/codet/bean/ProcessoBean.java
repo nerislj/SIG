@@ -84,6 +84,20 @@ public class ProcessoBean implements Serializable {
 
 	private Boolean exibePainelDados;
 	private Boolean arquivado;
+	
+	private int filtro;
+	private Boolean isCredenciado;
+	private Boolean isEmpresa;
+	
+	
+
+	public int getFiltro() {
+		return filtro;
+	}
+
+	public void setFiltro(int filtro) {
+		this.filtro = filtro;
+	}
 
 	public List<Credenciado> getListaCredenciados() {
 		return listaCredenciados;
@@ -150,11 +164,7 @@ public class ProcessoBean implements Serializable {
 			SetorAtualDAO setorAtualDAO = new SetorAtualDAO();
 			PenalidadeProcessoDAO penalidadeDAO = new PenalidadeProcessoDAO();
 
-			CredenciadoDAO credenciadoDAO = new CredenciadoDAO();
-			CredenciadoEmpDAO empresaCredenciadaDAO = new CredenciadoEmpDAO();
-
-			listaCredenciados = credenciadoDAO.listar();
-			listaEmpresasCredenciadas = empresaCredenciadaDAO.listar();
+		
 
 			listaPenalidadesProcessos = penalidadeDAO.listar();
 
@@ -167,6 +177,30 @@ public class ProcessoBean implements Serializable {
 			erro.printStackTrace();
 		}
 	}
+	
+	public void habilitarParte() {
+		if (filtro == 1) {
+
+			isEmpresa = false;
+			isCredenciado = true;
+			
+
+			
+			
+
+		}
+		if (filtro == 2) {
+			isCredenciado = false;
+			isEmpresa = true;
+			
+
+		
+			
+		}
+		
+
+	}
+
 
 	public void onRowToggle(ToggleEvent event) {
 		PartesProcessoDAO partesDAO = new PartesProcessoDAO();
@@ -260,17 +294,28 @@ public class ProcessoBean implements Serializable {
 
 			if (processoDoBanco == null && processo.getCodigo() == null) {
 				System.out.println("ENTROU AQUI processoDoBanco.equals(null)");
+				
+				
+				
 				ProcessoDAO.merge(processo);
+				
+				if(processo.getCredenciado()!=null) {
+					processo = ProcessoDAO.carregaProcessoUltimoCredenciado(processo.getCredenciado(), processo.getNomenclatura(),
+							processo.getSituacao());
+				
+				} else {
+					processo = ProcessoDAO.carregaProcessoUltimo(processo.getCredenciadoPJ(), processo.getNomenclatura(),
+							processo.getSituacao());
+				}
 
-				processo = ProcessoDAO.carregaProcessoUltimo(processo.getCredenciadoPJ(), processo.getNomenclatura(),
-						processo.getSituacao());
+				
 
 				ProcessoDAO.salvarFasesEPartes(fasesProcesso, processo, usuarioLogado, parteProcesso);
 
 				listaFases = fasesDAO.listarPorProcesso(processo);
 				listaPartesProcessos = partesDAO.listarPorProcesso(processo);
 				listaProcessos = ProcessoDAO.listarProcessos(campoDaBusca, credenciado, credenciadoCredencial,
-						processo.getCredenciadoPJ());
+						processo.getCredenciadoPJ(), processo.getCredenciado());
 
 				Messages.addGlobalInfo("Processo cadastrado com Sucesso!");
 
@@ -290,8 +335,12 @@ public class ProcessoBean implements Serializable {
 				Messages.addGlobalInfo("Processo cadastrado com Sucesso!");
 			}
 
-			listaFases = fasesDAO.listarPorProcesso(processo);
-			listaPartesProcessos = partesDAO.listarPorProcesso(processo);
+			//Não precisa listar pq ele fecha
+			//listaFases = fasesDAO.listarPorProcesso(processo);
+			//listaPartesProcessos = partesDAO.listarPorProcesso(processo);
+			
+			processo = new Processo();
+			
 
 		} catch (RuntimeException erro) {
 
@@ -353,6 +402,12 @@ public class ProcessoBean implements Serializable {
 	}
 
 	public void adicionaProcesso() {
+		
+		CredenciadoDAO credenciadoDAO = new CredenciadoDAO();
+		CredenciadoEmpDAO empresaCredenciadaDAO = new CredenciadoEmpDAO();
+
+		listaCredenciados = credenciadoDAO.listar();
+		listaEmpresasCredenciadas = empresaCredenciadaDAO.listar();
 
 		listaProcessos = new ArrayList<>();
 		listaPartesProcessos = new ArrayList<>();
@@ -417,7 +472,7 @@ public class ProcessoBean implements Serializable {
 				listaProcessos = processoDAO.listarCampoDigitadoNULL();
 			} else {
 				listaProcessos = processoDAO.listarProcessos(campoDaBusca, credenciado, credenciadoCredencial,
-						empresaPJ);
+						empresaPJ, credenciado);
 			}
 			System.out.println(listaProcessos + " listaProcessos");
 
@@ -458,7 +513,11 @@ public class ProcessoBean implements Serializable {
 
 			PartesProcessoDAO parteDAO = new PartesProcessoDAO();
 
+			if(parteProcesso.getCredenciadoEmpresa()!=null) {
+				parteProcesso.setCredenciadoEmpresa(parteProcesso.getCredenciadoEmpresa());
+			}else {
 			parteProcesso.setCredenciadoEmpresa(null);
+			}
 			parteProcesso.setCredenciado(parteProcesso.getCredenciado());
 			parteProcesso.setDataCadastro(new Date());
 			parteProcesso.setUsuarioCadastro(usuarioLogado);
@@ -657,6 +716,22 @@ public class ProcessoBean implements Serializable {
 
 	public void setSetorAtualCodigo(SetorAtual setorAtualCodigo) {
 		this.setorAtualCodigo = setorAtualCodigo;
+	}
+
+	public Boolean getIsCredenciado() {
+		return isCredenciado;
+	}
+
+	public void setIsCredenciado(Boolean isCredenciado) {
+		this.isCredenciado = isCredenciado;
+	}
+
+	public Boolean getIsEmpresa() {
+		return isEmpresa;
+	}
+
+	public void setIsEmpresa(Boolean isEmpresa) {
+		this.isEmpresa = isEmpresa;
 	}
 
 }

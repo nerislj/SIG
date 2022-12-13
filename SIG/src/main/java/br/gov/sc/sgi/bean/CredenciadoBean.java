@@ -17,6 +17,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -327,32 +328,24 @@ public class CredenciadoBean implements Serializable {
 			pessoa = new PessoaFisica();
 
 			CredenciadoDAO credenciadoDAO = new CredenciadoDAO();
-			credenciados = credenciadoDAO.listar();
+			//credenciados = credenciadoDAO.listar();
 
-			CredencialStatusDAO statusDAO = new CredencialStatusDAO();
-			credencialStatus = statusDAO.listar("tipoStatus");
-
-			CredencialTipoDAO tipoDAO = new CredencialTipoDAO();
-			credencialTipos = tipoDAO.listar("tipocredencial");
+		
 
 			CredenciadoSGPEDAO sgpeDAO = new CredenciadoSGPEDAO();
-			SGPEs = sgpeDAO.listar("codigo");
+			//SGPEs = sgpeDAO.listar("codigo");
 
 			SGPE = new CredenciadoSGPE();
 
 			Doc = new CredenciadoDocAdic();
 
 			PessoaDAO pessoaDAO = new PessoaDAO();
-			pessoas = pessoaDAO.listar();
+			//pessoas = pessoaDAO.listar();
 
 			estado = new Estado();
 
-			EstadoDAO estadoDAO = new EstadoDAO();
-			Estados = estadoDAO.listar("sigla");
-
-			Cidades = new ArrayList<>();
-
-			credenciadosValidadeDesc = credenciadoDAO.listarValidadeDesc();
+			
+			//credenciadosValidadeDesc = credenciadoDAO.listarValidadeDesc();
 			
 			
 
@@ -360,6 +353,11 @@ public class CredenciadoBean implements Serializable {
 			Messages.addGlobalError("Ocorreu um erro ao tentar listar os Credenciado.");
 			erro.printStackTrace();
 		}
+	}
+	
+	public void listasRelatorio() {
+		CredenciadoDAO credenciadoDAO = new CredenciadoDAO();
+		credenciadosValidadeDesc = credenciadoDAO.listarValidadeDesc();
 	}
 
 	/*
@@ -591,6 +589,18 @@ public class CredenciadoBean implements Serializable {
 
 		CidadeDAO municipioDAO = new CidadeDAO();
 		exibePainelDados = true;
+		
+		EstadoDAO estadoDAO = new EstadoDAO();
+		Estados = estadoDAO.listar("sigla");
+
+		Cidades = new ArrayList<>();
+		
+		CredencialStatusDAO statusDAO = new CredencialStatusDAO();
+		credencialStatus = statusDAO.listar("tipoStatus");
+
+		CredencialTipoDAO tipoDAO = new CredencialTipoDAO();
+		credencialTipos = tipoDAO.listar("tipocredencial");
+
 
 		try {
 			pessoa = PessoaDAO.carregarCpf(pessoa.getCpf());
@@ -602,7 +612,7 @@ public class CredenciadoBean implements Serializable {
 			Messages.addGlobalWarn("Pessoa não credenciada");
 			if (pessoa == null) {
 				estado = new Estado();
-				EstadoDAO estadoDAO = new EstadoDAO();
+				
 				Estados = estadoDAO.listar("sigla");
 				Cidades = new ArrayList<>();
 			} else if (pessoa.getEstadoEndereco() != null) {

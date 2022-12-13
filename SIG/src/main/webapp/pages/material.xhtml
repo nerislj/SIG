@@ -67,6 +67,17 @@
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 						</p:commandButton>
 						
+						<p:commandButton icon="ui-icon-trash" immediate="true"
+							actionListener="#{materialBean.excluir}"
+							update=":mensagem :formlista:lista">
+							<p:confirm header="Confirmação"
+								message="Deseja excluir o Material?" icon="ui-icon-alert" />
+							<f:attribute name="materialSelecionado" value="#{material}" />
+							<f:actionListener
+											type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+						
+						
 						
 
 					</p:column>

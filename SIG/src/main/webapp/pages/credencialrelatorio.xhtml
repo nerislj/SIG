@@ -7,6 +7,17 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	template="/templates/modelo.xhtml">
 
+
+<ui:define name="metadata">
+
+		<f:metadata>
+
+			<f:event listener="#{credenciadoBean.listasRelatorio}"
+				type="preRenderView" />
+					
+		</f:metadata>
+	</ui:define>
+	
 	<ui:define name="conteudo">
 		<style type="text/css">
 .vencida {

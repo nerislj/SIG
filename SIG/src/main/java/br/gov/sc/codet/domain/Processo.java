@@ -17,6 +17,7 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import br.gov.sc.sgi.domain.Credenciado;
 import br.gov.sc.sgi.domain.CredenciadoEmp;
 
 @SuppressWarnings("serial")
@@ -51,6 +52,10 @@ public class Processo extends GenericDomain {
 	@JoinColumn(name = "credenciadoPJ_codigo")
 	private CredenciadoEmp credenciadoPJ;
 	
+	@ManyToOne
+	@JoinColumn(name = "credenciado_codigo")
+	private Credenciado credenciado;
+	
 	@OneToMany(mappedBy = "processo")
 	@Fetch(FetchMode.SUBSELECT)
 	private List<PartesProcesso> partesProcesso;
@@ -67,6 +72,14 @@ public class Processo extends GenericDomain {
 	
 
 	
+
+	public Credenciado getCredenciado() {
+		return credenciado;
+	}
+
+	public void setCredenciado(Credenciado credenciado) {
+		this.credenciado = credenciado;
+	}
 
 	public NomenclaturaProcesso getNomenclatura() {
 		return nomenclatura;

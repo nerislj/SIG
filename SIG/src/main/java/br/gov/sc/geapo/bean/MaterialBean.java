@@ -8,15 +8,22 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.servlet.http.HttpServletRequest;
 
 import org.omnifaces.util.Messages;
 
 import br.gov.sc.geapo.dao.MaterialDAO;
 import br.gov.sc.geapo.dao.MaterialEntradaDAO;
+import br.gov.sc.geapo.dao.MaterialEntradaHistDAO;
+import br.gov.sc.geapo.dao.MaterialSaidaRelacaoDAO;
 import br.gov.sc.geapo.dao.MaterialTipoDAO;
 import br.gov.sc.geapo.domain.Material;
 import br.gov.sc.geapo.domain.MaterialEntrada;
+import br.gov.sc.geapo.domain.MaterialEntradaHist;
+import br.gov.sc.geapo.domain.MaterialSaidaRelacao;
 import br.gov.sc.geapo.domain.MaterialTipo;
 
 @SuppressWarnings("serial")
@@ -32,6 +39,50 @@ public class MaterialBean implements Serializable {
 	private List<MaterialEntrada> listaEntradaMateriais;
 	private List<Material> listaMateriais;
 	private List<MaterialTipo> listaTipos;
+	
+	private MaterialEntradaHist materialEntradaHist;
+
+	private List<MaterialEntradaHist> listamaterialEntradaHist;
+
+
+
+
+	
+
+	public MaterialEntradaHist getMaterialEntradaHist() {
+		return materialEntradaHist;
+	}
+
+	public void setMaterialEntradaHist(MaterialEntradaHist materialEntradaHist) {
+		this.materialEntradaHist = materialEntradaHist;
+	}
+
+	public List<MaterialEntradaHist> getListamaterialEntradaHist() {
+		return listamaterialEntradaHist;
+	}
+
+	public void setListamaterialEntradaHist(List<MaterialEntradaHist> listamaterialEntradaHist) {
+		this.listamaterialEntradaHist = listamaterialEntradaHist;
+	}
+
+	public MaterialSaidaRelacao getSaidaRelacao() {
+		return saidaRelacao;
+	}
+
+	public void setSaidaRelacao(MaterialSaidaRelacao saidaRelacao) {
+		this.saidaRelacao = saidaRelacao;
+	}
+
+	public List<MaterialSaidaRelacao> getListasaidaRelacao() {
+		return listasaidaRelacao;
+	}
+
+	public void setListasaidaRelacao(List<MaterialSaidaRelacao> listasaidaRelacao) {
+		this.listasaidaRelacao = listasaidaRelacao;
+	}
+
+	private MaterialSaidaRelacao saidaRelacao;
+	private List<MaterialSaidaRelacao> listasaidaRelacao;
 	
 	
 
@@ -128,12 +179,72 @@ public class MaterialBean implements Serializable {
 		}
 	}
 
-	public void excluir(ActionEvent evento) {
+	
+	public void excluir(ActionEvent evento) throws Exception {
 
 		try {
+			
+			MaterialEntradaHistDAO histDAO = new MaterialEntradaHistDAO();
+			MaterialSaidaRelacaoDAO relacaoDAO = new MaterialSaidaRelacaoDAO();
+			MaterialEntradaDAO materialEntradaDAO = new MaterialEntradaDAO();
+			
+		
 			material = (Material) evento.getComponent().getAttributes().get("materialSelecionado");
 			
+			materialEntrada = materialEntradaDAO.carregaMaterialEntrada(material);
 			
+			if(materialEntrada!=null) {
+				listaEntradaMateriais = materialEntradaDAO.listarPorMaterialEntrada(materialEntrada.getCodigo());
+				while (listaEntradaMateriais.size() != 0) {
+
+					materialEntrada = materialEntradaDAO.loadLastExcluir(materialEntrada.getCodigo());
+
+					if (materialEntrada != null) {
+
+						materialEntradaDAO.excluir(materialEntrada);
+					}else {
+						listaEntradaMateriais = materialEntradaDAO.listarPorOrdemASC();
+						break;
+					}
+
+				}
+				
+				
+				listasaidaRelacao = relacaoDAO.listarPorMaterialEntrada(materialEntrada);
+				while (listasaidaRelacao.size() != 0) {
+
+					saidaRelacao = relacaoDAO.loadLast(materialEntrada);
+
+					if (saidaRelacao != null) {
+						relacaoDAO.excluir(saidaRelacao);
+					}else {
+						listaEntradaMateriais = materialEntradaDAO.listarPorOrdemASC();
+						break;
+					}
+
+				}
+
+				listamaterialEntradaHist = histDAO.listarPorMaterialEntrada(materialEntrada);
+				while (listamaterialEntradaHist.size() != 0) {
+
+					materialEntradaHist = histDAO.loadLast(materialEntrada);
+
+					if (materialEntradaHist != null) {
+
+						histDAO.excluir(materialEntradaHist);
+					}else {
+						listaEntradaMateriais = materialEntradaDAO.listarPorOrdemASC();
+						break;
+					}
+
+				}
+			} 
+			
+			
+			
+		
+		
+	
 
 			MaterialDAO materialDAO = new MaterialDAO();
 			materialDAO.excluir(material);
@@ -142,6 +253,9 @@ public class MaterialBean implements Serializable {
 			listaMateriais = materialDAO.listar();
 
 			Messages.addGlobalInfo("Material removido com sucesso.");
+			
+			 ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+			    ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar excluir o Material.");
 			erro.printStackTrace();

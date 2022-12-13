@@ -1,28 +1,35 @@
 @CHARSET "UTF-8";
 
-
-body{
-	
-background: url('../resources/images/bg-sig-branco.png');
- background-repeat: no-repeat;
-    background-size:100%;
-    bottom: 0;
-    color: black;
-    left: 0;
-    overflow: auto;
-    padding: 3em;
-    position: absolute;
-    right: 0;
-    text-align: center;
-    top: 0;
-    background-size: cover;
+body {
+	background: url('../resources/images/bg-sig-branco.png');
+	background-repeat: no-repeat;
+	background-size: 100%;
+	bottom: 0;
+	color: black;
+	left: 0;
+	overflow: auto;
+	padding: 3em;
+	position: absolute;
+	right: 0;
+	text-align: center;
+	top: 0;
+	background-size: cover;
 }
+
 .imagemCentralizada {
 	display: block;
 	width: 100%;
 }
 
-
+.rodape img {
+	text-align: center;
+	padding-top: 10px;
+	opacity: 0.5;
+	filter: alpha(opacity = 50); /* For IE8 and earlier */
+	margin-top: -190px;
+	margin-left: -60px;
+	
+}
 
 .divTopo {
 	padding-bottom: 5px;
@@ -40,10 +47,7 @@ background: url('../resources/images/bg-sig-branco.png');
 	background: #EA5C5C;
 }
 
-
-
 .divLogo {
-	
 	display: block;
 	position: absolute;
 	top: 50%;
@@ -74,15 +78,14 @@ background: url('../resources/images/bg-sig-branco.png');
 	left: 50%;
 	margin-top: 50px;
 	z-index: 999;
-	
 }
 
 .divEntrarButton {
 	width: 245px;
 	height: 50px;
 	margin-left: -150px;
-	background-image:none;
-	background-color:#569d11;
+	background-image: none;
+	background-color: #569d11;
 	color: white;
 }
 
@@ -95,5 +98,3 @@ background: url('../resources/images/bg-sig-branco.png');
 	margin-left: -150px;
 	z-index: 999;
 }
-
-

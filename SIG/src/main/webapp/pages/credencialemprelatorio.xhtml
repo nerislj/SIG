@@ -7,14 +7,16 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	template="/templates/modelo.xhtml">
 	
-	<ui:define name="metadata">
+		<ui:define name="metadata">
 
 		<f:metadata>
 
-			<f:event listener="#{credenciadoEmpBean.listasCredenciadoEmpBean}"
+			<f:event listener="#{credenciadoEmpBean.listasCredenciadoRelatorio}"
 				type="preRenderView" />
+					
 		</f:metadata>
 	</ui:define>
+
 
 	<ui:define name="conteudo">
 		<style type="text/css">

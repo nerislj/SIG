@@ -34,9 +34,6 @@ public class MaterialEntrada extends GenericDomain {
 	@Column(length = 30, nullable = false)
 	private Integer quantidade;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "materialEntrada")
-	@Fetch(FetchMode.SUBSELECT)
-	private List<MaterialSaidaRelacao> materialSaidaRelacao;
 	
 
 	
@@ -73,14 +70,7 @@ public class MaterialEntrada extends GenericDomain {
 		this.quantidade = quantidade;
 	}
 
-	public List<MaterialSaidaRelacao> getMaterialSaidaRelacao() {
-		return materialSaidaRelacao;
-	}
-
-	public void setMaterialSaidaRelacao(List<MaterialSaidaRelacao> materialSaidaRelacao) {
-		this.materialSaidaRelacao = materialSaidaRelacao;
-	}
-
+	
 	
 
 	
