@@ -71,6 +71,7 @@ public class ProcessoDAO extends GenericDAO<Processo> {
 						.add(Restrictions.eq("credenciado", credenciado))
 						.add(Restrictions.eq("credenciadoPJ", empresaCNPJ))
 						.add(Restrictions.eq("numProcesso", campoDigitado))
+						.add(Restrictions.like("numProcesso", campoDigitado))
 						.add(Restrictions.eq("numSGPE", campoDigitado)));
 
 			} else {
@@ -81,6 +82,60 @@ public class ProcessoDAO extends GenericDAO<Processo> {
 						.add(Restrictions.eq("e.credenciado", numeroCredencial))
 						.add(Restrictions.eq("credenciado", credenciado))
 						.add(Restrictions.eq("credenciadoPJ", empresaCNPJ))
+						.add(Restrictions.eq("numProcesso", campoDigitado))
+						.add(Restrictions.eq("numSGPE", campoDigitado)));
+
+			}
+			
+			
+
+			List<Processo> resultado = consulta.list();
+			return resultado;
+
+		} catch (RuntimeException erro) {
+			throw erro;
+		} finally {
+			sessao.close();
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Processo> listarProcessosConsulta(Credenciado nomeCompleto,CredenciadoEmp razao,CredenciadoEmp fantasia, String campoDigitado, Credenciado cpf, Credenciado numeroCredencial,
+			CredenciadoEmp empresaCNPJ, Credenciado credenciado) {
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+		try {
+			Criteria consulta = sessao.createCriteria(Processo.class);
+
+			if (cpf == null && numeroCredencial == null) {
+
+				consulta.addOrder(Order.desc("codigo"));
+				consulta.add(Restrictions.disjunction()
+						
+						.add(Restrictions.eq("credenciado", nomeCompleto))
+						.add(Restrictions.eq("credenciado", credenciado))
+						.add(Restrictions.eq("credenciadoPJ", empresaCNPJ))
+						.add(Restrictions.eq("credenciadoPJ", razao))
+						.add(Restrictions.eq("credenciadoPJ", fantasia))
+						.add(Restrictions.eq("numProcesso", campoDigitado))
+						.add(Restrictions.like("numProcesso", campoDigitado))
+						.add(Restrictions.eq("numSGPE", campoDigitado)));
+
+			} else {
+				consulta.addOrder(Order.desc("codigo"));
+				consulta.createAlias("partesProcesso", "e");
+
+				consulta.add(Restrictions.disjunction()
+						
+						.add(Restrictions.eq("e.credenciado", nomeCompleto))
+						.add(Restrictions.eq("e.credenciado", cpf))
+						.add(Restrictions.eq("e.credenciado", numeroCredencial))
+						.add(Restrictions.eq("credenciado", credenciado))
+						
+						.add(Restrictions.eq("e.credenciadoEmpresa", razao))
+						.add(Restrictions.eq("e.credenciadoEmpresa", fantasia))
+						.add(Restrictions.eq("credenciadoPJ", empresaCNPJ))
+						.add(Restrictions.eq("credenciadoPJ", razao))
+						.add(Restrictions.eq("credenciadoPJ", fantasia))
 						.add(Restrictions.eq("numProcesso", campoDigitado))
 						.add(Restrictions.eq("numSGPE", campoDigitado)));
 

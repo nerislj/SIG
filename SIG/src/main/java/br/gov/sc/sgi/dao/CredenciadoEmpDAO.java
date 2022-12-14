@@ -6,12 +6,15 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.omnifaces.util.Messages;
 
 import br.gov.sc.cetran.domain.Conselheiro;
 import br.gov.sc.codet.domain.NomenclaturaProcesso;
 import br.gov.sc.codet.domain.Processo;
+import br.gov.sc.sgi.domain.Credenciado;
 import br.gov.sc.sgi.domain.CredenciadoEmp;
 import br.gov.sc.sgi.domain.CredenciadoEmpHist;
 import br.gov.sc.sgi.domain.Oficio;
@@ -64,13 +67,63 @@ System.out.println(consulta);
 		consulta.add(Restrictions.eq("p.cnpj", empresa));
 
 		
-		CredenciadoEmp resultado = (CredenciadoEmp) consulta.uniqueResult(); 
+		CredenciadoEmp resultado = (CredenciadoEmp) consulta.setMaxResults(1).uniqueResult(); 
 		
 		return resultado;
 		
 		
 	} catch (RuntimeException erro) {
 		throw erro;
+	} finally {
+		sessao.close();
+	}
+	}
+	
+	public static CredenciadoEmp consultaporRazaoSocial(String razao) {
+
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+
+		try {
+		Criteria consulta = sessao.createCriteria(CredenciadoEmp.class);
+
+		consulta.createAlias("pessoaJuridica", "p");
+		consulta.add(Restrictions.like("p.razaoSocial", razao, MatchMode.ANYWHERE));
+
+		
+		CredenciadoEmp resultado = (CredenciadoEmp) consulta.setMaxResults(1).uniqueResult(); 
+		
+		return resultado;
+		
+		
+	} catch (RuntimeException erro) {
+		Messages.addGlobalInfo("Insira a Razão Social completa.");
+		throw erro;
+	} finally {
+		sessao.close();
+	}
+	}
+	
+	public static CredenciadoEmp consultaporNomeFantasia(String nomefatansia) {
+
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+
+		try {
+		Criteria consulta = sessao.createCriteria(CredenciadoEmp.class);
+
+		consulta.createAlias("pessoaJuridica", "p");
+		consulta.add(Restrictions.like("p.nomeFantasia", nomefatansia, MatchMode.ANYWHERE));
+
+		
+		CredenciadoEmp resultado = (CredenciadoEmp) consulta.setMaxResults(1).uniqueResult(); 
+		
+		return resultado;
+		
+		
+	} catch (RuntimeException erro) {
+		
+		Messages.addGlobalInfo("Insira o Nome Fantasia completo.");
+		throw erro;
+		
 	} finally {
 		sessao.close();
 	}
@@ -234,7 +287,29 @@ System.out.println(consulta);
 		return (PessoaJuridica) criteria.setMaxResults(1).uniqueResult();
 	}
 	
-	
+	@SuppressWarnings("unchecked")
+	public static List<CredenciadoEmp> consultaporProcessoCODET(CredenciadoEmp cred) {
+
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+
+		try {
+		Criteria consulta = sessao.createCriteria(CredenciadoEmp.class);
+
+		
+		consulta.add(Restrictions.eq("codigo", cred.getCodigo()));
+
+		
+		List<CredenciadoEmp> resultado = consulta.list();
+		
+		return resultado;
+		
+		
+	} catch (RuntimeException erro) {
+		throw erro;
+	} finally {
+		sessao.close();
+	}
+	}
 
 }
 

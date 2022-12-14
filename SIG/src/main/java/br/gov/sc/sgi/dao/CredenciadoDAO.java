@@ -6,8 +6,10 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.omnifaces.util.Messages;
 
 import br.gov.sc.sgi.domain.Credenciado;
 import br.gov.sc.sgi.domain.CredenciadoEmp;
@@ -102,6 +104,30 @@ System.out.println(consulta);
 	}
 	}
 	
+	public static Credenciado consultaporNomeCompleto(String nome) {
+
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+
+		try {
+		Criteria consulta = sessao.createCriteria(Credenciado.class);
+
+		consulta.createAlias("pessoa", "p");
+		consulta.add(Restrictions.like("p.nomeCompleto", nome, MatchMode.ANYWHERE));
+
+		
+		Credenciado resultado = (Credenciado) consulta.setMaxResults(1).uniqueResult(); 
+		
+		return resultado;
+		
+		
+	} catch (RuntimeException erro) {
+		Messages.addGlobalInfo("Insira a Nome Completo.");
+		throw erro;
+	} finally {
+		sessao.close();
+	}
+	}
+	
 	public static Credenciado consultaporCredencial(String numeroCredencial) {
 
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
@@ -114,6 +140,30 @@ System.out.println(consulta);
 
 		
 		Credenciado resultado = (Credenciado) consulta.setMaxResults(1).uniqueResult();
+		
+		return resultado;
+		
+		
+	} catch (RuntimeException erro) {
+		throw erro;
+	} finally {
+		sessao.close();
+	}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<Credenciado> consultaporProcessoCODET(Credenciado cred) {
+
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+
+		try {
+		Criteria consulta = sessao.createCriteria(Credenciado.class);
+
+		
+		consulta.add(Restrictions.eq("codigo", cred.getCodigo()));
+
+		
+		List<Credenciado> resultado = consulta.list();
 		
 		return resultado;
 		
