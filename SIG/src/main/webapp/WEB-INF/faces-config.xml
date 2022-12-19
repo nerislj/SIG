@@ -23,6 +23,8 @@
 		<phase-listener>br.gov.sc.sgi.util.AutenticacaoListener</phase-listener>
 	</lifecycle>
 	
+	
+	
 
 </faces-config>
 

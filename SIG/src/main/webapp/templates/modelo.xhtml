@@ -7,7 +7,17 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 <h:head>
 
-	<ui:define name="metadata" />
+	<ui:define name="metadata">
+	
+		<f:metadata>
+
+			<f:event listener="#{oficioBean.listarOficiosMenuCount}"
+				type="preRenderView" />
+		</f:metadata>
+	
+	</ui:define>
+	
+	
 
 
 	<script>
@@ -25,6 +35,8 @@ $(window).bind('beforeunload', function() {
 
 
 </script>
+
+
 
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Sistema Integrado de Gestão - DETRAN/SC</title>
@@ -159,8 +171,25 @@ $(window).bind('beforeunload', function() {
 						rendered="#{autenticacaoBean.temPermissoesPorUnidadeCodigo([1,2,3])}">
 						<p:menuitem value="Novo Ofício" icon="ui-icon-document"
 							url="/Sistema_Integrado_de_Gestão/pages/oficio.xhtml" />
-						<p:menuitem value="Saída Ofício" icon="ui-icon-transferthick-e-w"
-							url="/Sistema_Integrado_de_Gestão/pages/rastreio.xhtml" />
+							
+						
+  
+        	
+   
+							 
+					
+							<p:menuitem  icon="ui-icon-transferthick-e-w"
+							url="/Sistema_Integrado_de_Gestão/pages/rastreio.xhtml">
+            <p:outputLabel value="Saída Ofício " />
+            
+            <p:badge value="#{oficioBean.oficiosMenuCount.size()}" severity="danger">
+           
+            
+            </p:badge>
+          
+        </p:menuitem>
+					
+						
 						<p:separator style="height:7px" />
 						<p:menuitem rendered="#{autenticacaoBean.temPermissoes([1])}"
 							value="Consulta Rastreio" icon="ui-icon-search"
@@ -314,6 +343,7 @@ $(window).bind('beforeunload', function() {
 					</p:submenu>
 
 					<f:facet name="options">
+					    
 						<p:outputLabel style="margin:1px 10px 1px 1px;"
 							value="#{autenticacaoBean.usuarioLogado.pessoa.nomeCompleto}" />
 						<p:commandButton value="Logout" icon="ui-icon-power"
@@ -381,8 +411,10 @@ $(window).bind('beforeunload', function() {
 
 
 			<ui:insert name="conteudo" />
-
-
+			
+			
+	
+			
 		</div>
 	</div>
 

@@ -9,6 +9,8 @@ import org.hibernate.criterion.Restrictions;
 
 import br.gov.sc.codet.domain.FasesProcesso;
 import br.gov.sc.codet.domain.Processo;
+import br.gov.sc.geapo.domain.MaterialEntrada;
+import br.gov.sc.geapo.domain.MaterialEntradaHist;
 import br.gov.sc.sgi.util.HibernateUtil;
 
 public class FasesProcessoDAO extends GenericDAO<FasesProcesso>{
@@ -28,6 +30,15 @@ public class FasesProcessoDAO extends GenericDAO<FasesProcesso>{
 		} finally {
 			sessao.close();
 		}
+	}
+	
+	public FasesProcesso loadLast(Processo processo) throws Exception {
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+		Criteria criteria = sessao.createCriteria(FasesProcesso.class);
+		criteria.addOrder(Order.desc("codigo"));
+		criteria.add(Restrictions.eq("processo", processo));
+
+		return (FasesProcesso) criteria.setMaxResults(1).uniqueResult();
 	}
 	
 }

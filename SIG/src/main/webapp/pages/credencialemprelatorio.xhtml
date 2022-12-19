@@ -66,9 +66,7 @@
 					var="credenciado" rows="10" style="width: 100%;"
 					rowStyleClass="#{(credenciado.vencimentoCredencial le credenciadoEmpBean.convertTime(credenciadoEmpBean.dataHoje) ? 'vencida': (credenciado.vencimentoCredencial le credenciadoEmpBean.convert10Dias(credenciadoEmpBean.data10Dias) ? 'dezdias':'ok'))}">
 
-					<p:column style="width: 1px; text-align: center;">
-						<p:rowToggler />
-					</p:column>
+					
 
 
 
@@ -132,67 +130,7 @@
 						<h:outputText value="#{credenciado.credencialStatus.tipoStatus}" />
 					</p:column>
 
-					<p:rowExpansion>
-						<p:dataTable id="listaAlvara"
-							emptyMessage="Nenhum alvará encontrado."
-							value="#{credenciado.historicoAlvara}" var="alvara"
-							style="width: 80%; padding-left: 10%">
-
-							<p:column headerText="Alvará" style="width: 22%;">
-								<h:outputText value="#{alvara.alvara}" />
-							</p:column>
-
-							<p:column headerText="Data Inicio" style="width: 22%;">
-								<h:outputText
-									value="#{alvara.dataInicio.date}/#{alvara.dataInicio.month+1}/#{alvara.dataInicio.year+1900}" />
-							</p:column>
-
-							<p:column headerText="Data Fim" style="width: 22%;">
-								<h:outputText
-									value="#{alvara.dataFim.date}/#{alvara.dataFim.month+1}/#{alvara.dataFim.year+1900}" />
-							</p:column>
-
-							<p:column headerText="Data Inclusão" style="width: 22%;">
-								<h:outputText
-									value="#{alvara.dataInclusao.date}/#{alvara.dataInclusao.month+1}/#{alvara.dataInclusao.year+1900}" />
-							</p:column>
-
-							<p:column headerText="Usuário Inclusão" style="width: 22%;">
-								<h:outputText
-									value="#{alvara.usuarioCadastro.pessoa.nomeCompleto}" />
-							</p:column>
-						</p:dataTable>
-						<p:dataTable id="listaPortaria"
-							emptyMessage="Nenhuma portaria encontrado."
-							value="#{credenciado.historicoPortaria}" var="portaria"
-							style="width: 80%; padding-left: 10%">
-
-							<p:column headerText="Portaria" style="width: 22%;">
-								<h:outputText value="#{portaria.portaria}" />
-							</p:column>
-
-							<p:column headerText="Data Inicio" style="width: 22%;">
-								<h:outputText
-									value="#{portaria.dataInicio.date}/#{portaria.dataInicio.month+1}/#{portaria.dataInicio.year+1900}" />
-							</p:column>
-
-							<p:column headerText="Data Fim" style="width: 22%;">
-								<h:outputText
-									value="#{portaria.dataFim.date}/#{portaria.dataFim.month+1}/#{portaria.dataFim.year+1900}" />
-							</p:column>
-
-							<p:column headerText="Data Inclusão" style="width: 22%;">
-								<h:outputText
-									value="#{portaria.dataInclusao.date}/#{portaria.dataInclusao.month+1}/#{portaria.dataInclusao.year+1900}" />
-							</p:column>
-
-							<p:column headerText="Usuário Inclusão" style="width: 22%;">
-								<h:outputText
-									value="#{portaria.usuarioCadastro.pessoa.nomeCompleto}" />
-							</p:column>
-						</p:dataTable>
-					</p:rowExpansion>
-
+					
 
 				</p:dataTable>
 

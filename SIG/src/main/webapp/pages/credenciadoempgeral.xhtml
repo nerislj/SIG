@@ -63,14 +63,14 @@
 				
  
 						<p:outputLabel for="cred" value="Credenciado " />
-					<p:selectOneMenu id="cred" filter="true" style="width:225px"
+					<p:selectOneMenu id="cred" filter="true" filterMatchMode="contains" style="width:225px"
 						converter="omnifaces.SelectItemsConverter"
 						value="#{credenciadoEmpBean.credenciadoPesquisaPorNome}">
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione um credenciado" />
 						<f:selectItems value="#{credenciadoEmpBean.credenciados}"  
 							var="cred" itemValue="#{cred.pessoaJuridica.cnpj}"
-							itemLabel="#{cred.pessoaJuridica.nomeFantasia} - #{cred.pessoaJuridica.cnpj}" />
+							itemLabel="#{cred.pessoaJuridica.nomeFantasia} - #{cred.pessoaJuridica.razaoSocial} - #{cred.pessoaJuridica.cnpj}" />
 
 						<p:ajax event="change"
 							listener="#{credenciadoEmpBean.blurCredenciado}"

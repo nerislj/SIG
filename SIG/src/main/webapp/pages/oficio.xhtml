@@ -7,6 +7,20 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	template="/templates/modelo.xhtml"
 	xmlns:pe="http://primefaces.org/ui/extensions">
+	
+	
+	
+	<ui:define name="metadata">
+		<f:metadata>
+
+			<f:event
+				listener="#{oficioBean.listarOficios}"
+				type="preRenderView" />
+
+
+
+		</f:metadata>
+	</ui:define>
 
 	<ui:define name="conteudo">
 
@@ -261,7 +275,7 @@
 
 				</h:panelGrid>
 				<h:panelGrid columns="4">
-					<p:commandButton value="Salvar"
+					<p:commandButton value="Salvar" 
 						actionListener="#{oficioBean.salvarEditar}"
 						update=":mensagem :tabView:formlista:lista">
 					</p:commandButton>
@@ -310,7 +324,7 @@
 				<h:panelGrid columns="4">
 					<p:commandButton value="Salvar"
 						actionListener="#{oficioBean.salvar}"
-						update=":mensagem :tabView:formlista:lista :formcopie:copie"
+						update=":mensagem :tabView:formlista:lista :formcopie:copie :formMenu"
 						oncomplete="(!args.validationFailed) ? PF('dlgSalvar').show() : PF('dlgSalvar').hide()">
 					</p:commandButton>
 					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />

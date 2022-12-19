@@ -432,7 +432,7 @@ public class FrotaViagemBean implements Serializable {
 			
 			viagensPorSolicitante = viagemDAO.listarOrder(usuarioLogado);
 			
-			FrotaViagemBean.this.EnviaEmailSalvar();
+			//FrotaViagemBean.this.EnviaEmailSalvar();
 			
 			viagem = new FrotaViagem();
 

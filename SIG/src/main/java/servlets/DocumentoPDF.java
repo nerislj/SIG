@@ -545,20 +545,32 @@ public class DocumentoPDF extends HttpServlet {
 			int total = 0;
 
 			int totalDiasFinal = 0;
+			
+			
+			int days = 0;
+			long hours = 0;
+			long minute = 0;
+			long second = 0;
+			
+			
 
 			while (listaEventosTerceirizados.size() != 0) {
 				//int count = 0;
 				int j = 0;
 
 				String nome = listaEventosTerceirizados.get(j).getContratoTerceirizado().getUnidade().getUnidadeNome();
-
+				
+				
+System.out.println(nome + " nomenomenomenomenomenomenomenomenome");
 				for (int i = 0; i < listaEventosTerceirizados.size();) {
+					
+				
 
 					if (listaEventosTerceirizados.get(i).getContratoTerceirizado().getUnidade().getUnidadeNome()
 							.equals(nome)) {
 						//count++;
 
-						if (listaEventosTerceirizados.get(i).getHoras() == null) {
+						if (listaEventosTerceirizados.get(i).getHoras().equals("00:00")) {
 
 							String partesDias = listaEventosTerceirizados.get(i).getDias();
 
@@ -572,7 +584,18 @@ public class DocumentoPDF extends HttpServlet {
 							totalDias += Integer.parseInt(partesDias);
 
 						} else {
+							
+							String partesDias = listaEventosTerceirizados.get(i).getDias();
 
+							/// System.out.println(partes + "partespartespartespartes");
+							// int dias += Integer.parseInt(partes);
+
+							// System.out.println(dias + "diasdiasdiasdiasdiasdiasdias");
+
+							System.out.println("TOTAL DIAS" + partesDias);
+
+							totalDias += Integer.parseInt(partesDias);
+							
 							String[] partesHoras = listaEventosTerceirizados.get(i).getHoras().split(":");
 
 							int horas = Integer.parseInt(partesHoras[0]) * 60 + Integer.parseInt(partesHoras[1]);
@@ -585,8 +608,9 @@ public class DocumentoPDF extends HttpServlet {
 							totalMinutos += horas;
 
 							System.out.println(totalMinutos + " totalMinutos");
-
+							
 						}
+						
 
 						total = totalDias;
 
@@ -651,17 +675,23 @@ public class DocumentoPDF extends HttpServlet {
 					} else {
 						i++;
 						total = 0;
+						totalDiasFinal = 0;
+						totalDias = 0;
+						totalMinutos = 0;
 						break;
 
 					}
+					
+					
 
-					int days = (int) TimeUnit.MINUTES.toDays(totalMinutos);
-					long hours = TimeUnit.MINUTES.toHours(totalMinutos) - (days * 24);
-					long minute = TimeUnit.MINUTES.toMinutes(totalMinutos)
+					days = (int) TimeUnit.MINUTES.toDays(totalMinutos);
+					hours = TimeUnit.MINUTES.toHours(totalMinutos) - (days * 24);
+					minute = TimeUnit.MINUTES.toMinutes(totalMinutos)
 							- (TimeUnit.MINUTES.toHours(totalMinutos) * 60);
-					long second = TimeUnit.MINUTES.toSeconds(totalMinutos)
+					second = TimeUnit.MINUTES.toSeconds(totalMinutos)
 							- (TimeUnit.MINUTES.toMinutes(totalMinutos) * 60);
-
+					// System.out.println("Nome: " + nome + " Frequência: " + count);
+					
 					System.out.println(days + " days");
 					System.out.println(hours + " hours");
 					System.out.println(minute + " minute");
@@ -671,8 +701,11 @@ public class DocumentoPDF extends HttpServlet {
 
 					totalRelatorio = totalDiasFinal + " dia(s) " + hours + " hora(s) " + minute + " minuto(s)";
 
+					
+
 				}
-				// System.out.println("Nome: " + nome + " Frequência: " + count);
+				
+				
 
 				
 

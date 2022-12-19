@@ -47,4 +47,14 @@ public class PartesProcessoDAO extends GenericDAO<PartesProcesso>{
 		}
 	}
 	
+	public PartesProcesso loadLast(Processo processo) throws Exception {
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+		Criteria criteria = sessao.createCriteria(PartesProcesso.class);
+		criteria.addOrder(Order.desc("codigo"));
+		criteria.add(Restrictions.eq("processo", processo));
+
+		return (PartesProcesso) criteria.setMaxResults(1).uniqueResult();
+	}
+	
+	
 }

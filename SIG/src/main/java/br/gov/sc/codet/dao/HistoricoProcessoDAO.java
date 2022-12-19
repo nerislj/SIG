@@ -33,4 +33,14 @@ public class HistoricoProcessoDAO extends GenericDAO<HistoricoProcessoCODET>{
 		}
 	}
 	
+	public HistoricoProcessoCODET loadLast(Processo processo) throws Exception {
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+		Criteria criteria = sessao.createCriteria(HistoricoProcessoCODET.class);
+		criteria.addOrder(Order.desc("codigo"));
+		criteria.add(Restrictions.eq("processo", processo));
+
+		return (HistoricoProcessoCODET) criteria.setMaxResults(1).uniqueResult();
+	}
+	
+	
 }

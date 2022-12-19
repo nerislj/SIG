@@ -197,6 +197,15 @@
 											type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 
 									</p:commandButton>
+									
+									
+									<p:commandButton icon="ui-icon-trash"
+										actionListener="#{processoBean.excluir}"
+										update=":mensagem :mensagem tabView:formularioEmpresas:painelDados :processo:processo processo:tabViewProcesso:listaFases processo:tabViewProcesso:listaPartes :processo:processo processo:processoSituacaoSetor processo:tabViewProcesso:listaHistorico, processo:processoAcusado">
+										<p:confirm header="Confirmação" message="Deseja excluir?"
+											icon="ui-icon-alert" />
+										<f:attribute name="processoSelecionado" value="#{processo}" />
+									</p:commandButton>
 
 								</p:column>
 
@@ -272,7 +281,7 @@
 
 										<p:column headerText="Última alteração">
 											<h:outputText value="#{parte.dataCadastro}">
-												<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+												<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Fortaleza" />
 											</h:outputText>
 										</p:column>
 
@@ -294,6 +303,13 @@
 
 
 							</p:dataTable>
+							
+							<p:confirmDialog global="true">
+								<p:commandButton value="Sim" type="button"
+									styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+								<p:commandButton value="Não" type="button"
+									styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+							</p:confirmDialog>
 
 						</p:panelGrid>
 
@@ -820,7 +836,7 @@
 
 								<p:column headerText="Última alteração">
 									<h:outputText value="#{parte.dataCadastro}">
-										<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+										 <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Fortaleza" />
 									</h:outputText>
 								</p:column>
 
@@ -916,7 +932,7 @@
 
 
 									<h:outputText value="#{fases.dataCadastro}">
-										<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+										<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Fortaleza" />
 									</h:outputText>
 
 
@@ -1001,7 +1017,7 @@
 							</h:panelGrid>
 
 							<h:panelGrid columns="2" style="margin: 0 auto;">
-								<p:commandButton value="Salvar"
+								<p:commandButton value="Salvar" ajax="false"
 									actionListener="#{processoBean.salvarHistorico()}"
 									update=":mensagem processo:tabViewProcesso:listaHistorico" />
 
@@ -1069,7 +1085,7 @@
 								<p:column headerText="Data Cadastro"
 									style="width: 70px; text-align: center;">
 									<h:outputText value="#{hist.dataCadastro}">
-										<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+										<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Fortaleza" />
 									</h:outputText>
 								</p:column>
 

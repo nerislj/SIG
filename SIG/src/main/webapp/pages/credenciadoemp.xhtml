@@ -157,12 +157,12 @@
 
 
 							<p:outputLabel value="Telefone Empresa:" />
-							<p:inputMask id="telemp" mask="(99) 9999-9999" maxlength="11"
+							<p:inputMask id="telemp" mask="(99) 9999-9999" 
 								size="11" value="#{credenciadoEmpBean.empresa.telEmp}">
 							</p:inputMask>
 
 							<p:outputLabel value="Celular Empresa:" />
-							<p:inputMask id="celemp" mask="(99) 99999-9999" maxlength="11"
+							<p:inputMask id="celemp" mask="(99) 99999-9999" 
 								size="11" value="#{credenciadoEmpBean.empresa.celEmp}">
 							</p:inputMask>
 
@@ -179,7 +179,7 @@
 							<p:outputLabel value="Status: *" rendered="#{credenciadoEmpBean.mostrarNãoVirtual}" />
 							<p:selectOneMenu filter="true" rendered="#{credenciadoEmpBean.mostrarNãoVirtual}"
 								value="#{credenciadoEmpBean.credenciado.credencialStatus}"
-								converter="omnifaces.SelectItemsConverter"
+								converter="omnifaces.SelectItemsConverter" required="true"
 								requiredMessage="O campo Status é obrigatório">
 								<f:selectItem noSelectionOption="true"
 									itemLabel="Selecione um Status" />
@@ -191,7 +191,7 @@
 							<p:outputLabel value="Tipo Credencial: *" rendered="#{credenciadoEmpBean.mostrarNãoVirtual}" />
 							<p:selectOneMenu filter="true" rendered="#{credenciadoEmpBean.mostrarNãoVirtual}"
 								value="#{credenciadoEmpBean.credenciado.credencialTipo}"
-								converter="omnifaces.SelectItemsConverter"
+								converter="omnifaces.SelectItemsConverter"  required="true"
 								requiredMessage="O campo Tipo Credencial é obrigatório">
 								<f:selectItem noSelectionOption="true"
 									itemLabel="Selecione o Tipo" />
@@ -200,11 +200,21 @@
 									itemLabel="#{tipo.tipocredencial}" />
 							</p:selectOneMenu>
 
-							<p:outputLabel value="Validade: *" rendered="#{credenciadoEmpBean.mostrarNãoVirtual}" />
-							<p:calendar id="credval" maxlength="8" size="6" rendered="#{credenciadoEmpBean.mostrarNãoVirtual}"
+							
+								
+								
+								
+								<p:outputLabel value="Validade: * " rendered="#{credenciadoEmpBean.mostrarNãoVirtual}" />
+								<p:calendar id="credval" pattern="dd/MM/yyyy" mask="true"
+									size="6"  required="true"
+									rendered="#{credenciadoEmpBean.mostrarNãoVirtual}"
 								value="#{credenciadoEmpBean.credenciado.vencimentoCredencial}"
-								locale="pt_BR" pattern="dd/MM/yyyy" mask="true"
-								requiredMessage="O campo Validade é obrigatório" />
+									showOn="button"
+									
+									requiredMessage="O campo Validade é obrigatório"
+									>
+									<f:converter converterId="converterData" />
+								</p:calendar>
 
 
 							<p:outputLabel value="" />

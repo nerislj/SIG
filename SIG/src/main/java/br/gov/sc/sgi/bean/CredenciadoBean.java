@@ -27,7 +27,7 @@ import javax.servlet.http.HttpSession;
 import org.omnifaces.util.Messages;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.FlowEvent;
-import org.primefaces.model.UploadedFile;
+import org.primefaces.model.file.UploadedFile;
 
 import com.google.gson.Gson;
 
@@ -447,14 +447,14 @@ public class CredenciadoBean implements Serializable {
 
 			if (event.getFile() != null) {
 				this.imagem = event.getFile();
-				this.conteudoImagem = imagem.getContents();
+				this.conteudoImagem = imagem.getContent();
 
 				String caminho = "C:/detran-resource/Credenciados";
 
 				File file1 = new File(caminho, credenciado.getPessoa().getCpf() + "-foto.jpeg");
 
 				FileOutputStream fos = new FileOutputStream(file1);
-				fos.write(event.getFile().getContents());
+				fos.write(event.getFile().getContent());
 				fos.close();
 
 			}
@@ -474,14 +474,14 @@ public class CredenciadoBean implements Serializable {
 
 			if (event2.getFile() != null) {
 				this.imagem = event2.getFile();
-				this.conteudoImagem = imagem.getContents();
+				this.conteudoImagem = imagem.getContent();
 
 				String caminho = "C:/detran-resource/Credenciados";
 
 				File file1 = new File(caminho, credenciado.getPessoa().getCpf() + "-ass.jpeg");
 
 				FileOutputStream fos = new FileOutputStream(file1);
-				fos.write(event2.getFile().getContents());
+				fos.write(event2.getFile().getContent());
 				CredenciadoBean.this.buscarCredenciado();
 				fos.close();
 

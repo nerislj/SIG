@@ -16,7 +16,7 @@
 	<ui:define name="conteudo">
 		<h:form id="formlista">
 			<p:panel header="Consulta Rastreio - Listagem">
-				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado." rowKey="#{rastreio.codigo}"
 					paginator="true" value="#{rastreioBean.recursosmultarastreio}"
 					var="rastreio" rows="10">
 

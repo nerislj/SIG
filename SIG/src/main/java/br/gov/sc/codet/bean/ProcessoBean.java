@@ -178,19 +178,17 @@ public class ProcessoBean implements Serializable {
 	public void habilitarParte() {
 		if (filtro == 1) {
 			CredenciadoDAO credenciadoDAO = new CredenciadoDAO();
-			
 
 			listaCredenciados = credenciadoDAO.listar();
-			
+
 			isEmpresa = false;
 			isCredenciado = true;
 
 		}
 		if (filtro == 2) {
-			
+
 			CredenciadoEmpDAO empresaCredenciadaDAO = new CredenciadoEmpDAO();
 
-		
 			listaEmpresasCredenciadas = empresaCredenciadaDAO.listar();
 			isCredenciado = false;
 			isEmpresa = true;
@@ -292,18 +290,15 @@ public class ProcessoBean implements Serializable {
 			if (processoDoBanco == null && processo.getCodigo() == null) {
 				System.out.println("ENTROU AQUI processoDoBanco.equals(null)");
 
-			
-				
-				
-				if(processo.getCredenciado() == null && processo.getCredenciadoPJ() == null) {
+				if (processo.getCredenciado() == null && processo.getCredenciadoPJ() == null) {
 					Messages.addGlobalError("Acusado não selecionado!");
 				} else {
 					ProcessoDAO.merge(processo);
-					
+
 					Messages.addGlobalInfo("Processo cadastrado com sucesso!");
 				}
 				
-				
+				listaProcessos = ProcessoDAO.listarCampoDigitadoNULL();
 
 				if (processo.getCredenciado() != null) {
 					processo = ProcessoDAO.carregaProcessoUltimoCredenciado(processo.getCredenciado(),
@@ -313,17 +308,14 @@ public class ProcessoBean implements Serializable {
 					processo = ProcessoDAO.carregaProcessoUltimo(processo.getCredenciadoPJ(),
 							processo.getNomenclatura(), processo.getSituacao());
 				}
-				
-				
 
 				ProcessoDAO.salvarFasesEPartes(fasesProcesso, processo, usuarioLogado, parteProcesso);
 
 				listaFases = fasesDAO.listarPorProcesso(processo);
 				listaPartesProcessos = partesDAO.listarPorProcesso(processo);
-				listaProcessos = ProcessoDAO.listarProcessos(campoDaBusca, credenciado, credenciadoCredencial,
-						processo.getCredenciadoPJ(), processo.getCredenciado());
+				
 
-				//Messages.addGlobalInfo("Processo cadastrado com Sucesso!");
+				// Messages.addGlobalInfo("Processo cadastrado com Sucesso!");
 
 			} else if (processoDoBanco.getNumProcesso().equals(processo.getNumProcesso())
 					&& processoDoBanco.getNumSGPE().equals(processo.getNumSGPE()) && processo.getCodigo() == null) {
@@ -370,20 +362,101 @@ public class ProcessoBean implements Serializable {
 		}
 	}
 
-	public void excluir(ActionEvent evento) {
+	public void excluir(ActionEvent evento) throws Exception {
 
 		try {
 			processo = (Processo) evento.getComponent().getAttributes().get("processoSelecionado");
 
 			ProcessoDAO ProcessoDAO = new ProcessoDAO();
+			FasesProcessoDAO fasesDAO = new FasesProcessoDAO();
+			PartesProcessoDAO partesDAO = new PartesProcessoDAO();
+			HistoricoProcessoDAO histDAO = new HistoricoProcessoDAO();
+
+			 System.out.println(campoDaBusca +
+			 "campoDaBuscacampoDaBuscacampoDaBuscacampoDaBusca");
+
+			listaFases = fasesDAO.listarPorProcesso(processo);
+			while (listaFases.size() != 0) {
+
+				fasesProcesso = fasesDAO.loadLast(processo);
+
+				if (fasesProcesso != null) {
+
+					fasesDAO.excluir(fasesProcesso);
+				} else {
+					CredenciadoEmp razaoSocial = CredenciadoEmpDAO.consultaporRazaoSocial(campoDaBusca);
+					CredenciadoEmp nomeFantasia = CredenciadoEmpDAO.consultaporNomeFantasia(campoDaBusca);
+					Credenciado nomeCompleto = CredenciadoDAO.consultaporNomeCompleto(campoDaBusca);
+
+					listaProcessos = ProcessoDAO.listarProcessosConsulta(nomeCompleto, razaoSocial, nomeFantasia,
+							campoDaBusca, credenciado, credenciadoCredencial, empresaPJ, credenciado);
+					
+					break;
+				}
+
+			}
+
+			listaPartesProcessos = partesDAO.listarPorProcesso(processo);
+			while (listaPartesProcessos.size() != 0) {
+
+				parteProcesso = partesDAO.loadLast(processo);
+
+				if (parteProcesso != null) {
+
+					partesDAO.excluir(parteProcesso);
+				} else {
+					CredenciadoEmp razaoSocial = CredenciadoEmpDAO.consultaporRazaoSocial(campoDaBusca);
+					CredenciadoEmp nomeFantasia = CredenciadoEmpDAO.consultaporNomeFantasia(campoDaBusca);
+					Credenciado nomeCompleto = CredenciadoDAO.consultaporNomeCompleto(campoDaBusca);
+
+					listaProcessos = ProcessoDAO.listarProcessosConsulta(nomeCompleto, razaoSocial, nomeFantasia,
+							campoDaBusca, credenciado, credenciadoCredencial, empresaPJ, credenciado);
+					break;
+				}
+
+			}
+
+			
+			listaHistoricoProcessos = histDAO.listarPorProcesso(processo);
+			while (listaHistoricoProcessos.size() != 0) {
+
+				historicoProcesso = histDAO.loadLast(processo);
+
+				if (historicoProcesso != null) {
+
+					histDAO.excluir(historicoProcesso);
+				} else {
+					CredenciadoEmp razaoSocial = CredenciadoEmpDAO.consultaporRazaoSocial(campoDaBusca);
+					CredenciadoEmp nomeFantasia = CredenciadoEmpDAO.consultaporNomeFantasia(campoDaBusca);
+					Credenciado nomeCompleto = CredenciadoDAO.consultaporNomeCompleto(campoDaBusca);
+
+					listaProcessos = ProcessoDAO.listarProcessosConsulta(nomeCompleto, razaoSocial, nomeFantasia,
+							campoDaBusca, credenciado, credenciadoCredencial, empresaPJ, credenciado);
+					break;
+				}
+
+			}
+			
 			ProcessoDAO.excluir(processo);
 
 			processo = new Processo();
-			listaProcessos = ProcessoDAO.listar();
+			parteProcesso = new PartesProcesso();
+			historicoProcesso = new HistoricoProcessoCODET();
 
-			Messages.addGlobalInfo("Ação removida com sucesso.");
+			if (campoDaBusca.isEmpty()) {
+				listaProcessos = ProcessoDAO.listarCampoDigitadoNULL();
+			} else {
+				CredenciadoEmp razaoSocial = CredenciadoEmpDAO.consultaporRazaoSocial(campoDaBusca);
+				CredenciadoEmp nomeFantasia = CredenciadoEmpDAO.consultaporNomeFantasia(campoDaBusca);
+				Credenciado nomeCompleto = CredenciadoDAO.consultaporNomeCompleto(campoDaBusca);
+
+				listaProcessos = ProcessoDAO.listarProcessosConsulta(nomeCompleto, razaoSocial, nomeFantasia,
+						campoDaBusca, credenciado, credenciadoCredencial, empresaPJ, credenciado);
+			}
+			
+			Messages.addGlobalInfo("Processo excluído com sucesso.");
 		} catch (RuntimeException erro) {
-			Messages.addGlobalError("Ocorreu um erro ao tentar excluir a Ação.");
+			Messages.addGlobalError("Ocorreu um erro ao tentar excluir o Processo.");
 			erro.printStackTrace();
 		}
 	}
@@ -408,12 +481,13 @@ public class ProcessoBean implements Serializable {
 
 	public void adicionaProcesso() {
 
-	
-
 		listaProcessos = new ArrayList<>();
 		listaPartesProcessos = new ArrayList<>();
 		listaFases = new ArrayList<>();
 		processo = new Processo();
+		parteProcesso = new PartesProcesso();
+		historicoProcesso = new HistoricoProcessoCODET();
+		fasesProcesso = new FasesProcesso();
 
 		System.out.println(listaProcessos);
 		System.out.println(processo);
@@ -425,38 +499,32 @@ public class ProcessoBean implements Serializable {
 		FasesProcessoDAO fasesDAO = new FasesProcessoDAO();
 		PartesProcessoDAO partesDAO = new PartesProcessoDAO();
 		HistoricoProcessoDAO historicoDAO = new HistoricoProcessoDAO();
-
-	
+		
+		historicoProcesso = new HistoricoProcessoCODET();
 
 		processo = (Processo) evento.getComponent().getAttributes().get("processoSelecionado");
-		
-		if(processo.getCredenciado()!=null) {
-			CredenciadoDAO credenciadoDAO = new CredenciadoDAO();
-			
 
-			
-	
+		if (processo.getCredenciado() != null) {
+			CredenciadoDAO credenciadoDAO = new CredenciadoDAO();
+
 			filtro = 1;
 			if (filtro == 1) {
-				
+
 				listaCredenciados = credenciadoDAO.consultaporProcessoCODET(processo.getCredenciado());
 
 				isEmpresa = false;
 				isCredenciado = true;
 
 			}
-			
-		} else if(processo.getCredenciadoPJ()!=null) {
+
+		} else if (processo.getCredenciadoPJ() != null) {
 			CredenciadoEmpDAO empresaCredenciadaDAO = new CredenciadoEmpDAO();
 
-		
-		
-			
 			filtro = 2;
 			if (filtro == 2) {
-				
+
 				listaEmpresasCredenciadas = empresaCredenciadaDAO.consultaporProcessoCODET(processo.getCredenciadoPJ());
-				
+
 				isCredenciado = false;
 				isEmpresa = true;
 
@@ -495,14 +563,8 @@ public class ProcessoBean implements Serializable {
 			listaProcessos = new ArrayList<>();
 
 			empresaPJ = CredenciadoEmpDAO.consultaporCnpjString(campoDaBusca);
-			
-			
 
 			credenciado = CredenciadoDAO.consultaporCpfString(campoDaBusca);
-			
-			
-			
-			
 
 			credenciadoCredencial = CredenciadoDAO.consultaporCredencial(campoDaBusca);
 
@@ -514,15 +576,13 @@ public class ProcessoBean implements Serializable {
 			if (campoDaBusca.isEmpty()) {
 				listaProcessos = processoDAO.listarCampoDigitadoNULL();
 			} else {
-				
-				
+
 				CredenciadoEmp razaoSocial = CredenciadoEmpDAO.consultaporRazaoSocial(campoDaBusca);
 				CredenciadoEmp nomeFantasia = CredenciadoEmpDAO.consultaporNomeFantasia(campoDaBusca);
 				Credenciado nomeCompleto = CredenciadoDAO.consultaporNomeCompleto(campoDaBusca);
-				
-				
-				listaProcessos = processoDAO.listarProcessosConsulta(nomeCompleto,razaoSocial,nomeFantasia, campoDaBusca, credenciado, credenciadoCredencial,
-						empresaPJ, credenciado);
+
+				listaProcessos = processoDAO.listarProcessosConsulta(nomeCompleto, razaoSocial, nomeFantasia,
+						campoDaBusca, credenciado, credenciadoCredencial, empresaPJ, credenciado);
 			}
 			System.out.println(listaProcessos + " listaProcessos");
 
@@ -548,6 +608,8 @@ public class ProcessoBean implements Serializable {
 			histDAO.merge(historicoProcesso);
 
 			listaHistoricoProcessos = histDAO.listarPorProcesso(processo);
+			
+			historicoProcesso = new HistoricoProcessoCODET();
 
 			Messages.addGlobalInfo("Histórico cadastrado com sucesso!");
 		} catch (RuntimeException erro) {
@@ -556,7 +618,7 @@ public class ProcessoBean implements Serializable {
 		}
 
 	}
-	
+
 	public void novaParte() {
 		parteProcesso = new PartesProcesso();
 	}
@@ -577,20 +639,18 @@ public class ProcessoBean implements Serializable {
 			parteProcesso.setUsuarioCadastro(usuarioLogado);
 			parteProcesso.setProcesso(processo);
 
-			if(parteProcesso.getCredenciado() == null && parteProcesso.getCredenciadoEmpresa() == null) {
+			if (parteProcesso.getCredenciado() == null && parteProcesso.getCredenciadoEmpresa() == null) {
 				Messages.addGlobalError("Parte Processo não seleciona!");
 			} else {
 				parteDAO.merge(parteProcesso);
-				
+
 				Messages.addGlobalInfo("Parte cadastrado com sucesso!");
 			}
-			
 
 			listaPartesProcessos = parteDAO.listarPorProcesso(processo);
 
 			parteProcesso = new PartesProcesso();
 
-			
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar salvar a Parte.");
 			erro.printStackTrace();

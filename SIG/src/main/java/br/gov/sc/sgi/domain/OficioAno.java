@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 @Entity
 public class OficioAno extends GenericDomain {
 
-	@Column(unique = true)
+	@Column
 	private int oficioAno;
 
 	public int getOficioAno() {

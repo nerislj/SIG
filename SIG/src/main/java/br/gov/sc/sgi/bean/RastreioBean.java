@@ -6,9 +6,13 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.Application;
+import javax.faces.application.ViewHandler;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpSession;
@@ -27,7 +31,10 @@ import br.gov.sc.sgi.domain.Usuario;
 @SuppressWarnings("serial")
 @ManagedBean
 @SessionScoped
-public class RastreioBean implements Serializable {
+public class RastreioBean implements Serializable{
+	
+	@ManagedProperty(value = "#{OficioBean}")
+	private OficioBean oficioBean;
 
 	private Rastreio recursomultarastreio;
 	private List<Rastreio> recursosmultarastreio;
@@ -42,6 +49,16 @@ public class RastreioBean implements Serializable {
 
 	private Oficio oficio;
 	private List<Oficio> oficios;
+	
+	
+
+	public OficioBean getOficioBean() {
+		return oficioBean;
+	}
+
+	public void setOficioBean(OficioBean oficioBean) {
+		this.oficioBean = oficioBean;
+	}
 
 	public Rastreio getRecursomultarastreio() {
 		return recursomultarastreio;
@@ -132,6 +149,8 @@ public class RastreioBean implements Serializable {
 			erro.printStackTrace();
 		}
 	}
+	
+	
 
 	public void listar() {
 		try {
@@ -217,12 +236,22 @@ public class RastreioBean implements Serializable {
 				RastreioBean.this.novo();
 
 				Messages.addGlobalInfo("Saida realizada com sucesso");
+				
+				this.refresh();
 			}
 
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar finalizar a Saida");
 			erro.printStackTrace();
 		}
+	}
+	public void refresh() {
+		FacesContext context = FacesContext.getCurrentInstance();
+		Application application = context.getApplication();
+		ViewHandler viewHandler = application.getViewHandler();
+		UIViewRoot viewRoot = viewHandler.createView(context, context.getViewRoot().getViewId());
+		context.setViewRoot(viewRoot);
+		context.renderResponse();
 	}
 
 	public List<RastreioRelacao> getListaRelacao() {
@@ -231,5 +260,24 @@ public class RastreioBean implements Serializable {
 
 	public void setListaRelacao(List<RastreioRelacao> listaRelacao) {
 		this.listaRelacao = listaRelacao;
+	}
+	
+
+	
+	public Object getRowKey(Rastreio fruit) {
+	    return fruit != null ? fruit : null;
+	}
+
+	public Rastreio getRowData(String rowKey) {
+	    List<Rastreio> fruits = (List<Rastreio>) recursosmultarastreio;
+	    Integer value = Integer.valueOf(rowKey);
+
+	    for (Rastreio fruit : fruits) {
+	        if (fruit.getCodigo().equals(value)) {
+	            return fruit;
+	        }
+	    }
+
+	    return null;
 	}
 }

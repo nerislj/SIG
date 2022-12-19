@@ -44,253 +44,275 @@
 		</h:form>
 
 
-<p:panel header="Credenciado">
-		<h:form id="formulario">
-			<h:panelGroup id="cadastro" layout="block"
-				rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
+		<p:panel header="Credenciado">
+			<h:form id="formulario">
+				<h:panelGroup id="cadastro" layout="block"
+					rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
 
-				<div align="center">
-					<p:outputPanel style="display:block">
+					<div align="center">
+						<p:outputPanel style="display:block">
 
-						<h:panelGrid columns="2"
-							rendered="#{credenciadoBean.exibePainelDados}">
+							<h:panelGrid columns="2"
+								rendered="#{credenciadoBean.exibePainelDados}">
 
-							<p:outputLabel value="RG: *" />
-							<p:inputText maxlength="11" size="10"
-								disabled="#{credenciadoBean.pessoa.rg != null}"
-								value="#{credenciadoBean.pessoa.rg}" required="true"
-								requiredMessage="O campo RG é obrigatório">
+								<p:outputLabel value="RG: *" />
+								<p:inputText maxlength="11" size="10"
+									disabled="#{credenciadoBean.pessoa.rg != null}"
+									value="#{credenciadoBean.pessoa.rg}" required="true"
+									requiredMessage="O campo RG é obrigatório">
 
-								<p:keyFilter regEx="/[\d\-\.]/" preventPaste="false" />
+									<p:keyFilter regEx="/[\d\-\.]/" preventPaste="false" />
 
-							</p:inputText>
+								</p:inputText>
 
-							<p:outputLabel value="Órgão Emissor: *" />
-							<p:inputText maxlength="10" size="10"
-								disabled="#{credenciadoBean.pessoa.rgOrgaoEmissor != null}"
-								value="#{credenciadoBean.pessoa.rgOrgaoEmissor}" required="true"
-								requiredMessage="O campo Órgão Emissor é obrigatório"
-								style="text-transform:uppercase;" />
+								<p:outputLabel value="Órgão Emissor: *" />
+								<p:inputText maxlength="10" size="10"
+									disabled="#{credenciadoBean.pessoa.rgOrgaoEmissor != null}"
+									value="#{credenciadoBean.pessoa.rgOrgaoEmissor}"
+									required="true"
+									requiredMessage="O campo Órgão Emissor é obrigatório"
+									style="text-transform:uppercase;" />
 
-							<p:outputLabel value="UF RG: * " />
-							<p:selectOneMenu filter="true"
-								disabled="#{credenciadoBean.pessoa.rgEstadoEmissao != null}"
-								value="#{credenciadoBean.pessoa.rgEstadoEmissao}"
-								converter="omnifaces.SelectItemsConverter" required="true"
-								requiredMessage="O campo UF é obrigatório">
-								<f:selectItem noSelectionOption="true"
-									itemLabel="Selecione uma UF" />
-								<f:selectItems value="#{credenciadoBean.estados}" var="estado"
-									itemValue="#{estado}" itemLabel="#{estado.sigla}" />
-							</p:selectOneMenu>
+								<p:outputLabel value="UF RG: * " />
+								<p:selectOneMenu filter="true"
+									disabled="#{credenciadoBean.pessoa.rgEstadoEmissao != null}"
+									value="#{credenciadoBean.pessoa.rgEstadoEmissao}"
+									converter="omnifaces.SelectItemsConverter" required="true"
+									requiredMessage="O campo UF é obrigatório">
+									<f:selectItem noSelectionOption="true"
+										itemLabel="Selecione uma UF" />
+									<f:selectItems value="#{credenciadoBean.estados}" var="estado"
+										itemValue="#{estado}" itemLabel="#{estado.sigla}" />
+								</p:selectOneMenu>
 
-							<p:outputLabel value="Nome Completo: *" />
-							<p:inputText maxlength="50" size="30"
-								disabled="#{credenciadoBean.pessoa.nomeCompleto != null}"
-								value="#{credenciadoBean.pessoa.nomeCompleto}" required="true"
-								requiredMessage="O campo Nome Completo é obrigatório"
-								style="text-transform:uppercase;" />
+								<p:outputLabel value="Nome Completo: *" />
+								<p:inputText maxlength="50" size="30"
+									disabled="#{credenciadoBean.pessoa.nomeCompleto != null}"
+									value="#{credenciadoBean.pessoa.nomeCompleto}" required="true"
+									requiredMessage="O campo Nome Completo é obrigatório"
+									style="text-transform:uppercase;" />
 
-							<p:outputLabel value="Nome da Mãe: *" />
-							<p:inputText maxlength="50" size="30"
-								disabled="#{credenciadoBean.pessoa.nomeMae != null}"
-								value="#{credenciadoBean.pessoa.nomeMae}" required="true"
-								requiredMessage="O campo Nome da Mãe é obrigatório"
-								style="text-transform:uppercase;" />
+								<p:outputLabel value="Nome da Mãe: *" />
+								<p:inputText maxlength="50" size="30"
+									disabled="#{credenciadoBean.pessoa.nomeMae != null}"
+									value="#{credenciadoBean.pessoa.nomeMae}" required="true"
+									requiredMessage="O campo Nome da Mãe é obrigatório"
+									style="text-transform:uppercase;" />
 
-							<p:outputLabel value="Nome do Pai: *" />
-							<p:inputText maxlength="50" size="30"
-								disabled="#{credenciadoBean.pessoa.nomePai != null}"
-								value="#{credenciadoBean.pessoa.nomePai}" required="true"
-								requiredMessage="O campo Nome do Pai é obrigatório"
-								style="text-transform:uppercase;" />
-
-							<p:outputLabel value="Data Nascimento: *" />
-							<p:calendar id="dataNascimento" maxlength="8" size="6"
-								disabled="#{credenciadoBean.pessoa.dataNascimento != null}"
-								value="#{credenciadoBean.pessoa.dataNascimento}" required="true"
-								requiredMessage="O campo Data de Nascimento é obrigatório"
-								locale="pt_BR" pattern="dd/MM/yyyy" mask="true" />
-
-							<p:outputLabel value="Sexo: *" />
-							<p:selectOneMenu id="sexo" value="#{credenciadoBean.pessoa.sexo}"
-								disabled="#{credenciadoBean.pessoa.sexo != null}"
-								requiredMessage="O campo Sexo é obrigatório">
-								<f:selectItem itemValue="Feminino" itemLabel="Feminino" />
-								<f:selectItem itemValue="Masculino" itemLabel="Masculino" />
-							</p:selectOneMenu>
-							<p:outputLabel value="" />
-							<p:outputLabel value="" />
-
-
-							<p:separator />
-							<p:separator />
+								<p:outputLabel value="Nome do Pai: *" />
+								<p:inputText maxlength="50" size="30"
+									disabled="#{credenciadoBean.pessoa.nomePai != null}"
+									value="#{credenciadoBean.pessoa.nomePai}" required="true"
+									requiredMessage="O campo Nome do Pai é obrigatório"
+									style="text-transform:uppercase;" />
 
 
 
 
+								<p:outputLabel value="Data Nascimento: *" />
+								<p:calendar pattern="dd/MM/yyyy" mask="true" required="true"
+									size="6"
+									disabled="#{credenciadoBean.pessoa.dataNascimento != null}"
+									requiredMessage="O campo Data Instauração é obrigatório"
+									value="#{credenciadoBean.pessoa.dataNascimento}"
+									showOn="button">
+									<f:converter converterId="converterData" />
+								</p:calendar>
 
-							<p:outputLabel value="CEP: *" />
-							<p:inputMask id="cep_endereco" mask="99.999-999" maxlength="11"
-								size="11" value="#{credenciadoBean.pessoa.cep}" required="true"
-								requiredMessage="O campo CEP é obrigatório">
+
+								<p:outputLabel value="Sexo: *" />
+								<p:selectOneMenu id="sexo"
+									value="#{credenciadoBean.pessoa.sexo}"
+									disabled="#{credenciadoBean.pessoa.sexo != null}"
+									requiredMessage="O campo Sexo é obrigatório">
+									<f:selectItem itemValue="Feminino" itemLabel="Feminino" />
+									<f:selectItem itemValue="Masculino" itemLabel="Masculino" />
+								</p:selectOneMenu>
+								<p:outputLabel value="" />
+								<p:outputLabel value="" />
+
+
+								<p:separator />
+								<p:separator />
+
+
+
+
+
+								<p:outputLabel value="CEP: *" />
+								<p:inputMask id="cep_endereco" mask="99.999-999" maxlength="11"
+									size="11" value="#{credenciadoBean.pessoa.cep}" required="true"
+									requiredMessage="O campo CEP é obrigatório">
+
+									<f:ajax event="blur" execute="@this"
+										render="endereco estado cidade"
+										listener="#{credenciadoBean.pesquisaCep}"></f:ajax>
+
+								</p:inputMask>
+
+								<p:outputLabel value="Endereço Residência: * " />
+								<p:inputText maxlength="50" size="30" id="endereco"
+									value="#{credenciadoBean.pessoa.endereco}" required="true"
+									requiredMessage="O campo Endereço Residência é obrigatório"
+									style="text-transform:uppercase;" />
+
+								<p:outputLabel value="Complemento: " />
+								<p:inputText maxlength="50" size="30"
+									value="#{credenciadoBean.pessoa.complemento}"
+									style="text-transform:uppercase;" />
+
+								<p:outputLabel for="estado" value="UF: * " />
+								<p:selectOneMenu id="estado" filter="true"
+									converter="omnifaces.SelectItemsConverter"
+									value="#{credenciadoBean.pessoa.estadoEndereco}">
+									<f:selectItem noSelectionOption="true"
+										itemLabel="Selecione um estado" />
+									<f:selectItems value="#{credenciadoBean.estados}" var="estado"
+										itemValue="#{estado}" itemLabel="#{estado.sigla}" />
+									<p:ajax listener="#{credenciadoBean.popular}"
+										update=":formulario:cidade" />
+								</p:selectOneMenu>
+
+								<p:outputLabel for="cidade" value="Municipio:" />
+								<p:selectOneMenu id="cidade" filter="true" required="true"
+									requiredMessage="O campo Municipio é obrigatório"
+									converter="omnifaces.SelectItemsConverter"
+									value="#{credenciadoBean.pessoa.municipioEndereco}">
+									<f:selectItem noSelectionOption="true"
+										itemLabel="Selecione uma cidade" />
+									<f:selectItems value="#{credenciadoBean.cidades}" var="cidade"
+										itemValue="#{cidade}" itemLabel="#{cidade.nome}" />
+								</p:selectOneMenu>
+
+								<p:outputLabel value="" />
+								<p:outputLabel value="" />
+
+
+
+								<p:outputLabel value="E-mail:" />
+								<p:inputText maxlength="50" size="30"
+									value="#{credenciadoBean.pessoa.email}"
+									style="text-transform:lowercase;" />
+
+								<p:outputLabel value="Telefone Res.:" />
+								<p:inputMask id="telres" mask="(99) 99999-9999" size="11"
+									value="#{credenciadoBean.pessoa.telRes}">
+								</p:inputMask>
+
+								<p:outputLabel value="Telefone Emp.:" />
+								<p:inputMask id="telemp" mask="(99) 99999-9999" size="11"
+									value="#{credenciadoBean.pessoa.telEmp}">
+								</p:inputMask>
+
+								<p:outputLabel value="Celular:" />
+								<p:inputMask id="cel" mask="(99) 99999-9999" size="11"
+									value="#{credenciadoBean.pessoa.cel}">
+								</p:inputMask>
+
+								<p:outputLabel value="" />
+								<p:outputLabel value="" />
+								<p:outputLabel value="" />
+								<p:outputLabel value="" />
+								<p:separator />
+								<p:separator />
+
+
+								<p:outputLabel value="CNH: " />
 								
-								<f:ajax event="blur" execute="@this" render="endereco estado cidade"
-									listener="#{credenciadoBean.pesquisaCep}"></f:ajax>
-									
-							</p:inputMask>
-
-							<p:outputLabel value="Endereço Residência: * " />
-							<p:inputText maxlength="50" size="30" id="endereco"
-								value="#{credenciadoBean.pessoa.endereco}" required="true"
-								requiredMessage="O campo Endereço Residência é obrigatório"
-								style="text-transform:uppercase;" />
-
-							<p:outputLabel value="Complemento: " />
-							<p:inputText maxlength="50" size="30"
-								value="#{credenciadoBean.pessoa.complemento}"
-								style="text-transform:uppercase;" />
-
-							<p:outputLabel for="estado" value="UF: * " />
-							<p:selectOneMenu id="estado" filter="true"
-								converter="omnifaces.SelectItemsConverter"
-								value="#{credenciadoBean.pessoa.estadoEndereco}">
-								<f:selectItem noSelectionOption="true"
-									itemLabel="Selecione um estado" />
-								<f:selectItems value="#{credenciadoBean.estados}" var="estado"
-									itemValue="#{estado}" itemLabel="#{estado.sigla}" />
-								<p:ajax listener="#{credenciadoBean.popular}"
-									update=":formulario:cidade" />
-							</p:selectOneMenu>
-
-							<p:outputLabel for="cidade" value="Municipio:" />
-							<p:selectOneMenu id="cidade" filter="true" required="true"
-								requiredMessage="O campo Municipio é obrigatório"
-								converter="omnifaces.SelectItemsConverter"
-								value="#{credenciadoBean.pessoa.municipioEndereco}">
-								<f:selectItem noSelectionOption="true"
-									itemLabel="Selecione uma cidade" />
-								<f:selectItems value="#{credenciadoBean.cidades}" var="cidade"
-									itemValue="#{cidade}" itemLabel="#{cidade.nome}" />
-							</p:selectOneMenu>
-
-							<p:outputLabel value="" />
-							<p:outputLabel value="" />
+								<p:inputText id="cnh" maxlength="11" value="#{credenciadoBean.credenciado.cnh}" >
+  <p:keyFilter mask="num" />
+</p:inputText>
+								 
+								<p:outputLabel value="Categoria: " />
+								<p:inputText id="cnhcat" maxlength="2" size="2"
+									value="#{credenciadoBean.credenciado.cnhCategoria}"
+									style="text-transform:uppercase;">
+									<p:keyFilter regEx="/[a-z_]/i" />
+								</p:inputText>
 
 
 
-							<p:outputLabel value="E-mail:" />
-							<p:inputText maxlength="50" size="30"
-								value="#{credenciadoBean.pessoa.email}"
-								style="text-transform:lowercase;" />
 
-							<p:outputLabel value="Telefone Res.:" />
-							<p:inputMask id="telres" mask="(99) 99999-9999" maxlength="11"
-								size="11" value="#{credenciadoBean.pessoa.telRes}">
-							</p:inputMask>
-
-							<p:outputLabel value="Telefone Emp.:" />
-							<p:inputMask id="telemp" mask="(99) 99999-9999" maxlength="11"
-								size="11" value="#{credenciadoBean.pessoa.telEmp}">
-							</p:inputMask>
-
-							<p:outputLabel value="Celular:" />
-							<p:inputMask id="cel" mask="(99) 99999-9999" maxlength="11"
-								size="11" value="#{credenciadoBean.pessoa.cel}">
-							</p:inputMask>
-
-							<p:outputLabel value="" />
-							<p:outputLabel value="" />
-							<p:outputLabel value="" />
-							<p:outputLabel value="" />
-							<p:separator />
-							<p:separator />
+								<p:outputLabel value="Validade: " />
+								<p:calendar id="cnhval" pattern="dd/MM/yyyy" mask="true"
+									size="6" value="#{credenciadoBean.credenciado.cnhDataValidade}"
+									showOn="button">
+									<f:converter converterId="converterData" />
+								</p:calendar>
 
 
-							<p:outputLabel value="CNH: " />
-							<p:inputMask id="cnh" mask="99999999999" maxlength="11" size="11"
-								value="#{credenciadoBean.credenciado.cnh}">
-							</p:inputMask>
-
-							<p:outputLabel value="Categoria: " />
-							<p:inputText id="cnhcat" maxlength="2" size="2"
-								value="#{credenciadoBean.credenciado.cnhCategoria}"
-								style="text-transform:uppercase;">
-								<p:keyFilter regEx="/[a-z_]/i" />
-							</p:inputText>
-
-							<p:outputLabel value="Validade: " />
-							<p:calendar id="cnhval" maxlength="8" size="6"
-								value="#{credenciadoBean.credenciado.cnhDataValidade}"
-								locale="pt_BR" pattern="dd/MM/yyyy" mask="true" />
-
-
-							<p:separator />
-							<p:separator />
+								<p:separator />
+								<p:separator />
 
 
 
-							<p:outputLabel value="Número Credencial: " />
-							<p:inputText maxlength="15" size="18"
-								value="#{credenciadoBean.credenciado.numeroRegistro}">
-								<p:keyFilter regEx="/[\d\-\.\-/]/" />
-							</p:inputText>
+								<p:outputLabel value="Número Credencial: " />
+								<p:inputText maxlength="15" size="18"
+									value="#{credenciadoBean.credenciado.numeroRegistro}">
+									<p:keyFilter regEx="/[\d\-\.\-/]/" />
+								</p:inputText>
 
-							<p:outputLabel value="Tipo Credencial: ** " />
-							<p:selectOneMenu filter="true"
-								value="#{credenciadoBean.credenciado.credencialTipo}"
-								converter="omnifaces.SelectItemsConverter">
-								<f:selectItem noSelectionOption="true"
-									itemLabel="Selecione o Tipo" />
-								<f:selectItems value="#{credenciadoBean.credencialTipos}"
-									var="tipo" itemValue="#{tipo}"
-									itemLabel="#{tipo.tipocredencial}" />
-							</p:selectOneMenu>
+								<p:outputLabel value="Tipo Credencial: ** " />
+								<p:selectOneMenu filter="true"
+									value="#{credenciadoBean.credenciado.credencialTipo}"
+									converter="omnifaces.SelectItemsConverter">
+									<f:selectItem noSelectionOption="true"
+										itemLabel="Selecione o Tipo" />
+									<f:selectItems value="#{credenciadoBean.credencialTipos}"
+										var="tipo" itemValue="#{tipo}"
+										itemLabel="#{tipo.tipocredencial}" />
+								</p:selectOneMenu>
 
-							<p:outputLabel value="Status: ** " />
-							<p:selectOneMenu filter="true"
-								value="#{credenciadoBean.credenciado.credencialStatus}"
-								converter="omnifaces.SelectItemsConverter">
-								<f:selectItem noSelectionOption="true"
-									itemLabel="Selecione um Status" />
-								<f:selectItems value="#{credenciadoBean.credencialStatus}"
-									var="status" itemValue="#{status}"
-									itemLabel="#{status.tipoStatus}" />
-							</p:selectOneMenu>
+								<p:outputLabel value="Status: ** " />
+								<p:selectOneMenu filter="true"
+									value="#{credenciadoBean.credenciado.credencialStatus}"
+									converter="omnifaces.SelectItemsConverter">
+									<f:selectItem noSelectionOption="true"
+										itemLabel="Selecione um Status" />
+									<f:selectItems value="#{credenciadoBean.credencialStatus}"
+										var="status" itemValue="#{status}"
+										itemLabel="#{status.tipoStatus}" />
+								</p:selectOneMenu>
 
-							<p:outputLabel value="Validade: " />
-							<p:calendar id="credval" maxlength="8" size="6"
-								value="#{credenciadoBean.credenciado.vencimentoCredencial}"
-								locale="pt_BR" pattern="dd/MM/yyyy" mask="true" />
 
-							<p:outputLabel value="" />
-							<p:outputLabel value="" />
-							<p:outputLabel value="" />
-							<p:outputLabel value="" />
-							<p:outputLabel value="" />
-							<p:outputLabel value="" />
-							<p:outputLabel value="" />
 
-							<h:panelGrid columns="3">
-								<p:commandButton value="Salvar"
-									actionListener="#{credenciadoBean.salvar()}"
-									update=":mensagem :formulario:cadastro"
-									style="background: #01B50D;" />
 
+								<p:outputLabel value="Validade: " />
+								<p:calendar id="credval" pattern="dd/MM/yyyy" mask="true"
+									size="6"
+									value="#{credenciadoBean.credenciado.vencimentoCredencial}"
+									showOn="button">
+									<f:converter converterId="converterData" />
+								</p:calendar>
+
+								<p:outputLabel value="" />
+								<p:outputLabel value="" />
+								<p:outputLabel value="" />
+								<p:outputLabel value="" />
+								<p:outputLabel value="" />
+								<p:outputLabel value="" />
+								<p:outputLabel value="" />
+
+								<h:panelGrid columns="3">
+									<p:commandButton value="Salvar"
+										actionListener="#{credenciadoBean.salvar()}"
+										update=":mensagem :formulario:cadastro"
+										style="background: #01B50D;" />
+
+								</h:panelGrid>
 							</h:panelGrid>
-						</h:panelGrid>
 
-						<div align="center">
-							<h3>(*) Campos obrigatórios para cadastro de Pessoa Física.</h3>
-							<h3>(**) Campos obrigatórios para cadastro de Credenciado.</h3>
-						</div>
+							<div align="center">
+								<h3>(*) Campos obrigatórios para cadastro de Pessoa Física.</h3>
+								<h3>(**) Campos obrigatórios para cadastro de Credenciado.</h3>
+							</div>
 
 
-					</p:outputPanel>
-				</div>
-			</h:panelGroup>
-		</h:form>
-		
+						</p:outputPanel>
+					</div>
+				</h:panelGroup>
+			</h:form>
+
 		</p:panel>
 	</ui:define>
 </ui:composition>

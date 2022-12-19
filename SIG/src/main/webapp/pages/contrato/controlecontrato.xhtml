@@ -133,7 +133,7 @@
 
 							<p:dataTable id="listaContratos"
 								emptyMessage="Nenhum contrato encontrado." paginator="true"
-								rows="10"
+								rows="10" rowKey="#{contrato.codigo}"
 								value="#{contratoTerceirizadoBean.listaContratosTerceirizados}"
 								var="contrato">
 
@@ -894,7 +894,7 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista">
 				<p:panel header="Eventos">
 
 					<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
-						paginator="true"
+						paginator="true" 
 						value="#{contratoTerceirizadoBean.listaEventosTerceirizadosPorFuncionario}"
 						var="evento" rows="10">
 

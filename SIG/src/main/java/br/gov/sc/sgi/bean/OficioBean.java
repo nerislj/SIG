@@ -1,14 +1,18 @@
 package br.gov.sc.sgi.bean;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.ViewHandler;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpSession;
@@ -31,6 +35,7 @@ public class OficioBean implements Serializable {
 	private Oficio oficio;
 
 	private List<Oficio> oficios;
+	private List<Oficio> oficiosMenuCount;
 	private List<Oficio> oficiosInativos;
 	private Oficio oficioDialogo;
 	private List<Oficio> filtroOficios;
@@ -112,25 +117,46 @@ public class OficioBean implements Serializable {
 			usuarioLogado = (Usuario) sessao.getAttribute("usuario");
 
 			OficioDAO oficioDAO = new OficioDAO();
-			OficioAnoDAO oficioanoDAO = new OficioAnoDAO();
 			
-			System.out.println("e AQUI? Oficio");
-
-			Anos = oficioanoDAO.loadAnos();
-
-			int anoHoje = new Date().getYear() + 1900;
-
-			oficioDialogo = oficioDAO.listarDialogo("codigo", usuarioLogado);
-
-			oficios = oficioDAO.listarAtivos(usuarioLogado.getSetor(), usuarioLogado.getUnidade(), anoHoje);
-
-			oficiosInativos = oficioDAO.listarInativos(usuarioLogado.getSetor(), usuarioLogado.getUnidade());
+			System.out.println("e AQUI? Oficio EM ABERTO");
 			
+			oficios = oficioDAO.carregarOficiosEmAberto("Em Aberto", usuarioLogado.getSetor(), usuarioLogado.getUnidade());
+
+			
+			oficiosMenuCount = oficioDAO.carregarOficiosEmAberto("Em Aberto", usuarioLogado.getSetor(), usuarioLogado.getUnidade());
 
 		} catch (Exception erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar listar os Ofícios.");
 			erro.printStackTrace();
 		}
+	}
+	
+	public void listarOficios() throws Exception {
+		HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+		usuarioLogado = (Usuario) sessao.getAttribute("usuario");
+		
+		OficioDAO oficioDAO = new OficioDAO();
+		
+		OficioAnoDAO oficioanoDAO = new OficioAnoDAO();
+		
+		
+		int anoHoje = new Date().getYear() + 1900;
+		oficios = oficioDAO.listarAtivos(usuarioLogado.getSetor(), usuarioLogado.getUnidade(), anoHoje);
+		
+		Anos = oficioanoDAO.loadAnos();
+
+		
+
+		oficioDialogo = oficioDAO.listarDialogo("codigo", usuarioLogado);
+
+		
+		
+		System.out.println(oficios + " oficiosoficiosoficiosoficiosoficios");
+
+		oficiosInativos = oficioDAO.listarInativos(usuarioLogado.getSetor(), usuarioLogado.getUnidade());
+		
+		oficiosMenuCount = oficioDAO.carregarOficiosEmAberto("Em Aberto", usuarioLogado.getSetor(), usuarioLogado.getUnidade());
+		
 	}
 
 	public void consultaPorAno() {
@@ -200,8 +226,8 @@ public class OficioBean implements Serializable {
 				if (oficio.getDataOficio().getYear() != ano) {
 					oficio.setNumeroOficio(1);
 
+					System.out.println(anoOficio);
 					System.out.println(oficioanoDAO.loadAno(Ano).getOficioAno());
-					System.out.println(ano);
 
 					if (anoOficio != oficioanoDAO.loadAno(Ano).getOficioAno()) {
 
@@ -225,14 +251,31 @@ public class OficioBean implements Serializable {
 
 			oficioDAO.merge(oficio);
 
-			OficioBean.this.listar();
+			
+			
+			
+			oficiosMenuCount = oficioDAO.carregarOficiosEmAberto("Em Aberto", usuarioLogado.getSetor(), usuarioLogado.getUnidade());
+			
 
 			Messages.addGlobalInfo("Ofício salvo com sucesso.");
+			
+			//oficios = oficioDAO.listarSetor(usuarioLogado.getSetor(), usuarioLogado.getUnidade());
+			
+			this.refresh();
 		} catch (Exception erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar salvar o Ofício");
 			erro.printStackTrace();
 		}
 
+	}
+	
+	public void refresh() {
+		FacesContext context = FacesContext.getCurrentInstance();
+		Application application = context.getApplication();
+		ViewHandler viewHandler = application.getViewHandler();
+		UIViewRoot viewRoot = viewHandler.createView(context, context.getViewRoot().getViewId());
+		context.setViewRoot(viewRoot);
+		context.renderResponse();
 	}
 
 	public void salvarEditar() {
@@ -326,6 +369,14 @@ public class OficioBean implements Serializable {
 
 	public void setOficiosInativos(List<Oficio> oficiosInativos) {
 		this.oficiosInativos = oficiosInativos;
+	}
+
+	public List<Oficio> getOficiosMenuCount() {
+		return oficiosMenuCount;
+	}
+
+	public void setOficiosMenuCount(List<Oficio> oficiosMenuCount) {
+		this.oficiosMenuCount = oficiosMenuCount;
 	}
 
 }

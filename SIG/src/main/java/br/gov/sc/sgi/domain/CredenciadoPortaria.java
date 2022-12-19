@@ -14,7 +14,7 @@ import javax.persistence.TemporalType;
 @Entity
 public class CredenciadoPortaria extends GenericDomain {
 
-	@OneToOne
+	@ManyToOne
 	@JoinColumn
 	private CredenciadoEmp empresa;
 	

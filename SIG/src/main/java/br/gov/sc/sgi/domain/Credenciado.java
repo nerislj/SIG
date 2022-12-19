@@ -3,6 +3,7 @@ package br.gov.sc.sgi.domain;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,6 +16,8 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 @SuppressWarnings("serial")
 @Entity
@@ -65,38 +68,47 @@ public class Credenciado extends GenericDomain {
 	@Column
 	private Date cnhDataValidade;
 
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pessoa")
 	@Fetch(FetchMode.SUBSELECT)
 	private List<CredenciadoDocAdic> documentoAdicional;
 
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pessoa")
 	@Fetch(FetchMode.SUBSELECT)
 	private List<CredenciadoSGPE> SGPE;
 
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "credenciado")
 	@Fetch(FetchMode.SUBSELECT)
 	private List<CredencialRelacaoCredHist> historicoCredenciado;
 
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "credenciado")
 	@Fetch(FetchMode.SUBSELECT)
 	private List<CredencialRelacaoCred> ativioCredenciado;
 
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "credenciado")
 	@Fetch(FetchMode.SUBSELECT)
 	private List<CredencialRelacaoPropHist> historicoProp;
 
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "credenciado")
 	@Fetch(FetchMode.SUBSELECT)
 	private List<CredencialRelacaoProp> ativioProp;
 
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pessoa")
 	@Fetch(FetchMode.SUBSELECT)
 	private List<CredenciadoHist> historicocredencial;
 	
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "empresaPF")
 	@Fetch(FetchMode.SUBSELECT)
 	private List<CredenciadoAlvara> historicoAlvara;
-
+	
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "empresaPF")
 	@Fetch(FetchMode.SUBSELECT)
 	private List<CredenciadoPortaria> historicoPortaria;

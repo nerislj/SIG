@@ -13,8 +13,7 @@
 			<f:event
 				listener="#{funcionarioTerceirizadoBean.listarFuncionariosTerceirizados}"
 				type="preRenderView" />
-				<f:event
-				listener="#{funcionarioTerceirizadoBean.popularUnidades}"
+			<f:event listener="#{funcionarioTerceirizadoBean.popularUnidades}"
 				type="preRenderView" />
 		</f:metadata>
 	</ui:define>
@@ -74,7 +73,7 @@
 					<h:outputText value="" />
 
 
-					<p:outputLabel value="CPF: " />
+					<p:outputLabel value="CPF: *" />
 					<p:inputText id="cpf" maxlength="11" size="50"
 						placeholder="Digite o CPF"
 						value="#{funcionarioTerceirizadoBean.pessoa.cpf}" required="true"
@@ -87,12 +86,12 @@
 					</p:inputText>
 
 
-					<p:outputLabel value="RG:" />
+					<p:outputLabel value="RG: *" />
 					<p:inputText maxlength="11" size="50" id="rg"
 						value="#{funcionarioTerceirizadoBean.pessoa.rg}" required="true"
 						requiredMessage="O campo RG é obrigatório" />
 
-					<p:outputLabel value="Órgão Emissor:" />
+					<p:outputLabel value="Órgão Emissor: *" />
 					<p:inputText maxlength="10" size="50" id="orgao"
 						value="#{funcionarioTerceirizadoBean.pessoa.rgOrgaoEmissor}"
 						required="true"
@@ -101,7 +100,7 @@
 
 
 
-					<p:outputLabel value="UF RG: " />
+					<p:outputLabel value="UF RG: *" />
 					<p:selectOneMenu filter="true" style="width:380px"
 						value="#{funcionarioTerceirizadoBean.pessoa.rgEstadoEmissao}"
 						id="ufrg" converter="omnifaces.SelectItemsConverter"
@@ -112,44 +111,46 @@
 							var="estado" itemValue="#{estado}" itemLabel="#{estado.sigla}" />
 					</p:selectOneMenu>
 
-					<p:outputLabel value="Nome Completo:" />
+					<p:outputLabel value="Nome Completo: *" />
 					<p:inputText maxlength="50" size="50" id="nomeCompleto"
 						value="#{funcionarioTerceirizadoBean.pessoa.nomeCompleto}"
 						required="true"
 						requiredMessage="O campo Nome Completo é obrigatório"
 						style="text-transform:uppercase;" />
 
-					<p:outputLabel value="Nome da Mãe:" />
+					<p:outputLabel value="Nome da Mãe: *" />
 					<p:inputText maxlength="50" size="50" id="nomeMae"
 						value="#{funcionarioTerceirizadoBean.pessoa.nomeMae}"
 						required="true"
 						requiredMessage="O campo Nome da Mãe é obrigatório"
 						style="text-transform:uppercase;" />
 
-					<p:outputLabel value="Nome do Pai:" />
+					<p:outputLabel value="Nome do Pai: *" />
 					<p:inputText maxlength="50" size="50" id="nomePai"
 						value="#{funcionarioTerceirizadoBean.pessoa.nomePai}"
 						required="true"
 						requiredMessage="O campo Nome do Pai é obrigatório"
 						style="text-transform:uppercase;" />
 
-					<p:outputLabel value="Data Nascimento:" />
-					<p:calendar maxlength="8" showIcon="true" size="50"
-						id="dtNascimento"
-						value="#{funcionarioTerceirizadoBean.pessoa.dataNascimento}"
-						required="true"
-						requiredMessage="O campo Data de Nascimento é obrigatório"
-						locale="pt_BR" />
 
-					<p:outputLabel value="Sexo:" />
-					<p:selectOneMenu id="sexo" style="width:380px"
+					<p:outputLabel value="Data Nascimento: *" />
+					<p:calendar id="dtNascimento" pattern="dd/MM/yyyy" mask="true" size="46"
+					 required="true"
+						requiredMessage="O campo Data de Nascimento é obrigatório"
+						value="#{funcionarioTerceirizadoBean.pessoa.dataNascimento}"
+						showOn="button">
+						<f:converter converterId="converterData" />
+					</p:calendar>
+
+					<p:outputLabel value="Sexo: *" />
+					<p:selectOneMenu id="sexo" style="width:380px" required="true"
 						value="#{funcionarioTerceirizadoBean.pessoa.sexo}"
 						requiredMessage="O campo Sexo é obrigatório">
 						<f:selectItem itemValue="Feminino" itemLabel="Feminino" />
 						<f:selectItem itemValue="Masculino" itemLabel="Masculino" />
 					</p:selectOneMenu>
 
-					<p:outputLabel value="E-mail" />
+					<p:outputLabel value="E-mail: *" />
 					<p:inputText maxlength="50" size="50" id="email"
 						value="#{funcionarioTerceirizadoBean.pessoa.email}"
 						required="true" requiredMessage="O campo E-mail é obrigatório"
@@ -237,16 +238,15 @@
 						<f:selectItems value="#{funcionarioTerceirizadoBean.unidades}"
 							var="unidade" itemValue="#{unidade}"
 							itemLabel="#{unidade.unidadeNome}" />
-						<p:ajax listener="#{funcionarioTerceirizadoBean.popularUnidades}" 
+						<p:ajax listener="#{funcionarioTerceirizadoBean.popularUnidades}"
 							update=":dadosForm:setor" />
 					</p:selectOneMenu>
 
 					<p:outputLabel for="setor" value="Setor: " />
 					<p:selectOneMenu id="setor" filter="true" style="width:380px"
-					required="true" 
-						requiredMessage="O campo Setor é obrigatório"
+						required="true" requiredMessage="O campo Setor é obrigatório"
 						converter="omnifaces.SelectItemsConverter"
-						value="#{funcionarioTerceirizadoBean.funcionarioTerceirizado.setor}"> 
+						value="#{funcionarioTerceirizadoBean.funcionarioTerceirizado.setor}">
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione um setor" />
 						<f:selectItems value="#{funcionarioTerceirizadoBean.setores}"
@@ -313,7 +313,8 @@
 						sortBy="#{funcionario.pessoa.nomeCompleto}"
 						filterBy="#{funcionario.pessoa.nomeCompleto}"
 						style="width: 70px; text-align: center;">
-						<h:outputText value="#{funcionario.pessoa.nomeCompleto.toUpperCase()}" />
+						<h:outputText
+							value="#{funcionario.pessoa.nomeCompleto.toUpperCase()}" />
 					</p:column>
 					<p:column headerText="Unidade"
 						sortBy="#{funcionario.unidade.unidadeNome}"
@@ -321,7 +322,7 @@
 						style="width: 70px; text-align: center;">
 						<h:outputText value="#{funcionario.unidade.unidadeNome}" />
 					</p:column>
-					
+
 					<p:column headerText="Setor"
 						sortBy="#{funcionario.setor.setorNome}"
 						filterBy="#{funcionario.setor.setorNome}"
@@ -335,8 +336,8 @@
 						style="width: 70px; text-align: center;">
 						<h:outputText value="#{funcionario.cargoTerceirizado.descricao}" />
 					</p:column>
-					
-					
+
+
 
 
 

@@ -6,12 +6,16 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	template="/templates/modelo.xhtml">
+	
+	
+	
+	
 
 	<ui:define name="conteudo">
 		<h:form id="formlista">
 			<p:panel header="Consulta Ofícios - Listagem">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
-					paginator="true" value="#{rastreioBean.oficios}" var="oficio"
+					paginator="true" value="#{oficioBean.oficios}" var="oficio"
 					rows="10">
 					<f:facet name="header">
 						<p:commandButton value="Finalizar"
@@ -140,8 +144,10 @@
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
 						actionListener="#{rastreioBean.salvar}"
-						update=":mensagem :formlista:listaSelecionados :formlista:lista :formularioFinalizar"
+						update=":mensagem :formlista:listaSelecionados :formlista:lista :formularioFinalizar :formMenu"
 						oncomplete="PF('dialogo').hide();">
+						
+							
 					</p:commandButton>
 
 					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />

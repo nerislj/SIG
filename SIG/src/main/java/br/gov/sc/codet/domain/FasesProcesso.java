@@ -36,7 +36,7 @@ public class FasesProcesso extends GenericDomain {
 	private Usuario usuarioCadastro;
 	
 	@ManyToOne
-	@JoinColumn(nullable = false)
+	@JoinColumn(name = "processo_codigo", nullable = false)
 	private Processo processo;
 
 	public Date getDataCadastro() {

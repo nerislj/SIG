@@ -52,11 +52,13 @@ public class CredenciadoEmp extends GenericDomain {
 	@Fetch(FetchMode.SUBSELECT)
 	private List<CredenciadoEmpObs> historicoObs;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "empresa")
+	//EAGER
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "empresa")
 	@Fetch(FetchMode.SUBSELECT)
 	private List<CredenciadoAlvara> historicoAlvara;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "empresa")
+	//EAGER
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "empresa")
 	@Fetch(FetchMode.SUBSELECT)
 	private List<CredenciadoPortaria> historicoPortaria;
 
