@@ -45,6 +45,8 @@ import br.gov.sc.codet.domain.Processo;
 import br.gov.sc.codet.domain.SetorAtual;
 import br.gov.sc.codet.domain.SituacaoProcesso;
 import br.gov.sc.contrato.domain.EmpresaTerceirizada;
+import br.gov.sc.geapo.dao.MaterialTipoDAO;
+import br.gov.sc.geapo.domain.MaterialTipo;
 import br.gov.sc.sgi.dao.CredenciadoDAO;
 import br.gov.sc.sgi.dao.CredenciadoEmpDAO;
 import br.gov.sc.sgi.domain.Credenciado;
@@ -275,6 +277,24 @@ public class ProcessoBean implements Serializable {
 
 		historicoProcesso = (HistoricoProcessoCODET) event.getComponent().getAttributes().get("histSelecionado");
 
+	}
+	
+	public void excluirHistorico(ActionEvent evento) {
+
+		try {
+			historicoProcesso = (HistoricoProcessoCODET) evento.getComponent().getAttributes().get("histSelecionado");
+
+			HistoricoProcessoDAO materialtipoDAO = new HistoricoProcessoDAO();
+			materialtipoDAO.excluir(historicoProcesso);
+
+			historicoProcesso = new HistoricoProcessoCODET();
+			listaHistoricoProcessos = materialtipoDAO.listar();
+
+			Messages.addGlobalInfo("Historico removido com sucesso.");
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("Ocorreu um erro ao tentar excluir o Historico.");
+			erro.printStackTrace();
+		}
 	}
 
 	public void gravarProcesso() {
