@@ -6,8 +6,8 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	template="/templates/modelo.xhtml">
-	
-	
+
+
 
 	<ui:define name="conteudo">
 		<p:tab title="Consulta"
@@ -265,9 +265,11 @@
 
 										<p:column headerText="Data Vencimento"
 											style="width: 9%; text-align: center;">
-											<h:outputText rendered="#{credenciado.vencimentoCredencial != null}"
+											<h:outputText
+												rendered="#{credenciado.vencimentoCredencial != null}"
 												value="#{credenciado.vencimentoCredencial.date}/#{credenciado.vencimentoCredencial.month+1}/#{credenciado.vencimentoCredencial.year+1900}" />
-												<h:outputText rendered="#{credenciado.vencimentoCredencial == null}"
+											<h:outputText
+												rendered="#{credenciado.vencimentoCredencial == null}"
 												value="Sem data" />
 										</p:column>
 
@@ -324,13 +326,13 @@
 
 										<p:column headerText="Validade"
 											style="width: 9%; text-align: center;">
-											
+
 											<h:outputText rendered="#{doc.dataValidade != null}"
 												value="#{doc.dataValidade.date}/#{doc.dataValidade.month+1}/#{doc.dataValidade.year+1900}" />
-												<h:outputText rendered="#{doc.dataValidade == null}"
+											<h:outputText rendered="#{doc.dataValidade == null}"
 												value="Sem data" />
-												
-										
+
+
 										</p:column>
 
 										<p:column headerText="Inclusão"
@@ -518,12 +520,12 @@
 
 										<p:column headerText="Data Fim"
 											style="width: 9%; text-align: center;">
-											
+
 											<h:outputText rendered="#{portaria.dataFim != null}"
 												value="#{portaria.dataFim.date}/#{portaria.dataFim.month+1}/#{portaria.dataFim.year+1900}" />
-												<h:outputText rendered="#{portaria.dataFim == null}"
+											<h:outputText rendered="#{portaria.dataFim == null}"
 												value="Sem data" />
-											
+
 										</p:column>
 
 										<p:column headerText="Data Inclusão"
@@ -582,17 +584,25 @@
 						requiredMessage="O campo Portaria é obritarório"
 						style="text-transform:uppercase;" />
 
+
+
+
 					<p:outputLabel value="Data Inicio:" />
-					<p:calendar id="dataInicio" maxlength="8" size="6"
-						value="#{credenciadoBean.portaria.dataInicio}" required="true"
-						requiredMessage="O campo Data Inicio é obrigatório" locale="pt_BR"
-						pattern="dd/MM/yyyy" mask="true" />
+					<p:calendar pattern="dd/MM/yyyy" mask="true" size="6"
+						required="true"
+						requiredMessage="O campo Data Inicio é obrigatório"
+						value="#{credenciadoBean.portaria.dataInicio}" showOn="button">
+						<f:converter converterId="converterData" />
+					</p:calendar>
+
 
 					<p:outputLabel value="Data Fim:" />
-					<p:calendar id="dataFim" maxlength="8" size="6"
-						value="#{credenciadoBean.portaria.dataFim}"
-						locale="pt_BR"
-						pattern="dd/MM/yyyy" mask="true" />
+					<p:calendar pattern="dd/MM/yyyy" mask="true" size="6"
+						required="true"
+						requiredMessage="O campo Data Fim é obrigatório"
+						value="#{credenciadoBean.portaria.dataFim}" showOn="button">
+						<f:converter converterId="converterData" />
+					</p:calendar>
 
 				</h:panelGrid>
 
@@ -621,17 +631,26 @@
 						requiredMessage="O campo Alvará é obritarório"
 						style="text-transform:uppercase;" />
 
+					
+						
+						
+						
 					<p:outputLabel value="Data Inicio:" />
-					<p:calendar id="dataInicio" maxlength="8" size="6"
-						value="#{credenciadoBean.alvara.dataInicio}" required="true"
-						requiredMessage="O campo Data Inicio é obrigatório" locale="pt_BR"
-						pattern="dd/MM/yyyy" mask="true" />
+					<p:calendar pattern="dd/MM/yyyy" mask="true" size="6"
+						required="true"
+						requiredMessage="O campo Data Inicio é obrigatório"
+						value="#{credenciadoBean.alvara.dataInicio}" showOn="button">
+						<f:converter converterId="converterData" />
+					</p:calendar>
+
 
 					<p:outputLabel value="Data Fim:" />
-					<p:calendar id="dataFim" maxlength="8" size="6"
-						value="#{credenciadoBean.alvara.dataFim}" required="true"
-						requiredMessage="O campo Data Fim é obrigatório" locale="pt_BR"
-						pattern="dd/MM/yyyy" mask="true" />
+					<p:calendar pattern="dd/MM/yyyy" mask="true" size="6"
+						required="true"
+						requiredMessage="O campo Data Fim é obrigatório"
+						value="#{credenciadoBean.alvara.dataFim}" showOn="button">
+						<f:converter converterId="converterData" />
+					</p:calendar>
 
 				</h:panelGrid>
 
@@ -706,10 +725,16 @@
 						requiredMessage="O campo Número Documento é obritarório"
 						style="text-transform:uppercase;" />
 
-					<p:outputLabel value="Validade: " />
-					<p:calendar id="dataValidade" maxlength="8" size="6"
-						value="#{credenciadoBean.doc.dataValidade}"
-						locale="pt_BR" pattern="dd/MM/yyyy" mask="true" />
+				
+						
+						<p:outputLabel value="Validade:" />
+					<p:calendar pattern="dd/MM/yyyy" mask="true" size="6"
+						
+						value="#{credenciadoBean.doc.dataValidade}" showOn="button">
+						<f:converter converterId="converterData" />
+					</p:calendar>
+						
+						
 
 				</h:panelGrid>
 

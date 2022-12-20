@@ -999,17 +999,24 @@
 						requiredMessage="O campo Portaria é obritarório"
 						style="text-transform:uppercase;" />
 
-					<p:outputLabel value="Data Inicio:" />
-					<p:calendar id="dataInicio" maxlength="8" size="6"
-						value="#{credenciadoEmpBean.portaria.dataInicio}" required="true"
-						requiredMessage="O campo Data Inicio é obrigatório" locale="pt_BR"
-						pattern="dd/MM/yyyy" mask="true" />
+					
+						
+						
+						<p:outputLabel value="Data Inicio:" />
+					<p:calendar pattern="dd/MM/yyyy" mask="true" size="6"
+						required="true"
+						requiredMessage="O campo Data Inicio é obrigatório"
+						value="#{credenciadoEmpBean.portaria.dataInicio}" showOn="button">
+						<f:converter converterId="converterData" />
+					</p:calendar>
+
 
 					<p:outputLabel value="Data Fim:" />
-					<p:calendar id="dataFim" maxlength="8" size="6"
-						value="#{credenciadoEmpBean.portaria.dataFim}"
-					 locale="pt_BR"
-						pattern="dd/MM/yyyy" mask="true" />
+					<p:calendar pattern="dd/MM/yyyy" mask="true" size="6"
+						
+						value="#{credenciadoEmpBean.portaria.dataFim}" showOn="button">
+						<f:converter converterId="converterData" />
+					</p:calendar>
 
 				</h:panelGrid>
 
@@ -1038,17 +1045,25 @@
 						requiredMessage="O campo Alvará é obritarório"
 						style="text-transform:uppercase;" />
 
-					<p:outputLabel value="Data Inicio:" />
-					<p:calendar id="dataInicio" maxlength="8" size="6"
-						value="#{credenciadoEmpBean.alvara.dataInicio}" required="true"
-						requiredMessage="O campo Data Inicio é obrigatório" locale="pt_BR"
-						pattern="dd/MM/yyyy" mask="true" />
+				
+						
+						
+						<p:outputLabel value="Data Inicio:" />
+					<p:calendar pattern="dd/MM/yyyy" mask="true" size="6"
+						required="true"
+						requiredMessage="O campo Data Inicio é obrigatório"
+						value="#{credenciadoEmpBean.alvara.dataInicio}" showOn="button">
+						<f:converter converterId="converterData" />
+					</p:calendar>
+
 
 					<p:outputLabel value="Data Fim:" />
-					<p:calendar id="dataFim" maxlength="8" size="6"
-						value="#{credenciadoEmpBean.alvara.dataFim}" required="true"
-						requiredMessage="O campo Data Fim é obrigatório" locale="pt_BR"
-						pattern="dd/MM/yyyy" mask="true" />
+					<p:calendar pattern="dd/MM/yyyy" mask="true" size="6"
+						required="true"
+						requiredMessage="O campo Data Fim é obrigatório"
+						value="#{credenciadoEmpBean.alvara.dataFim}" showOn="button">
+						<f:converter converterId="converterData" />
+					</p:calendar>
 
 				</h:panelGrid>
 

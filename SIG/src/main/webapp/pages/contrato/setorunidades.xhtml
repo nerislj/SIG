@@ -6,12 +6,14 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	template="/templates/modelo.xhtml">
+	
+	
 
 	<ui:define name="conteudo">
 		<h:form id="formlista">
 			<p:panel header="Setor - Listagem">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
-					paginator="true" value="#{contratoTerceirizadoBean.setores}"
+					paginator="true" value="#{setorBean.setoresContratos}"
 					var="setor" rows="10">
 					<f:facet name="header">
 						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
@@ -124,7 +126,8 @@
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
 						actionListener="#{setorBean.salvar()}"
-						update=":mensagem :formcadastro:cadastro :formlista:lista" />
+						update=":mensagem :formcadastro:cadastro :formlista:lista"
+						oncomplete="PF('dialogo').hide();" />
 					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
 				</h:panelGrid>
 			</h:form>
