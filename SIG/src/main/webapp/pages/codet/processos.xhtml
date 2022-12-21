@@ -47,8 +47,6 @@
 .customPanelGrid .ui-panelgrid-content {
 	align-items: center;
 }
-
-
 </style>
 
 
@@ -99,8 +97,8 @@
 			rendered="#{autenticacaoBean.temPermissoes([1, 13, 17, 18])}">
 			<p:tab title="Processos">
 				<h:form id="formularioEmpresas">
-				
-				
+
+
 					<h:panelGroup id="painelDados" layout="block">
 
 
@@ -151,7 +149,7 @@
 								</p:column>
 
 
-								<p:column headerText="Número Processo"
+								<p:column headerText="Número Processo" sortBy="#{processo.numProcesso}"
 									style="width: 4%; text-align: center;">
 									<h:outputText value="#{processo.numProcesso}" />
 								</p:column>
@@ -197,8 +195,8 @@
 											type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 
 									</p:commandButton>
-									
-									
+
+
 									<p:commandButton icon="ui-icon-trash"
 										actionListener="#{processoBean.excluir}"
 										update=":mensagem :mensagem tabView:formularioEmpresas:painelDados :processo:processo processo:tabViewProcesso:listaFases processo:tabViewProcesso:listaPartes :processo:processo processo:processoSituacaoSetor processo:tabViewProcesso:listaHistorico, processo:processoAcusado">
@@ -281,7 +279,8 @@
 
 										<p:column headerText="Última alteração">
 											<h:outputText value="#{parte.dataCadastro}">
-												<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Fortaleza" />
+												<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
+													timeZone="America/Fortaleza" />
 											</h:outputText>
 										</p:column>
 
@@ -303,7 +302,7 @@
 
 
 							</p:dataTable>
-							
+
 							<p:confirmDialog global="true">
 								<p:commandButton value="Sim" type="button"
 									styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
@@ -535,13 +534,12 @@
 
 
 
-				
+
 
 				<p:panel header="Processo">
 
 					<p:panelGrid id="processoAcusado" columns="1" layout="grid"
-						styleClass="showcase-text-align-center ui-panelgrid-blank ui-fluid"
-						>
+						styleClass="showcase-text-align-center ui-panelgrid-blank ui-fluid">
 
 
 
@@ -594,10 +592,10 @@
 						</p:outputPanel>
 
 					</p:panelGrid>
-					
+
 					<br />
 					<br />
-					
+
 
 					<p:panelGrid id="processo" columns="2" layout="grid"
 						styleClass="showcase-text-align-center ui-panelgrid-blank ui-fluid"
@@ -608,7 +606,7 @@
 
 						<p:outputLabel value="Nomenclatura: *" />
 						<p:selectOneMenu value="#{processoBean.processo.nomenclatura}"
-						required="true"
+							required="true"
 							requiredMessage="O campo Data Nomenclatura é obrigatório"
 							filter="true" converter="omnifaces.SelectItemsConverter">
 							<f:selectItem noSelectionOption="true"
@@ -621,26 +619,24 @@
 
 
 						<p:outputLabel value="Data Instauração: *" />
-						<p:calendar pattern="dd/MM/yyyy" mask="true"
-						required="true"
+						<p:calendar pattern="dd/MM/yyyy" mask="true" required="true"
 							requiredMessage="O campo Data Instauração é obrigatório"
-							value="#{processoBean.processo.dataInstauracao}" showOn="button" >
-							<f:converter converterId="converterData"/>  
-							</p:calendar>
-							
-							
-							
+							value="#{processoBean.processo.dataInstauracao}" showOn="button">
+							<f:converter converterId="converterData" />
+						</p:calendar>
+
+
+
 
 						<p:outputLabel value="Número Processo: *" />
 						<p:inputText placeholder="12/22" style="text-transform:uppercase"
-						required="true"
+							required="true"
 							requiredMessage="O campo Número Processo é obrigatório"
 							value="#{processoBean.processo.numProcesso}">
 						</p:inputText>
 
 						<p:outputLabel value="Número SGPE: *" />
-						<p:inputText placeholder="12345/2022" 
-						required="true"
+						<p:inputText placeholder="12345/2022" required="true"
 							requiredMessage="O campo Número SGPE é obrigatório"
 							style="text-transform:uppercase;"
 							value="#{processoBean.processo.numSGPE}">
@@ -648,8 +644,7 @@
 
 						<p:outputLabel value="Situação: *" />
 						<p:selectOneMenu value="#{processoBean.processo.situacao}"
-						required="true"
-							requiredMessage="O campo Situação é obrigatório"
+							required="true" requiredMessage="O campo Situação é obrigatório"
 							filter="true" converter="omnifaces.SelectItemsConverter">
 							<f:selectItem noSelectionOption="true"
 								itemLabel="Selecione uma situação" />
@@ -738,7 +733,7 @@
 								editable="true" editMode="cell" rows="10">
 								<f:facet name="header">
 									<p:commandButton value="Nova Parte" icon="pi pi-user-plus"
-									actionListener="#{processoBean.novaParte()}"
+										actionListener="#{processoBean.novaParte()}"
 										oncomplete="PF('dialogo').show();"
 										update="processo:tabViewProcesso:listaPartes">
 										<f:actionListener
@@ -836,7 +831,8 @@
 
 								<p:column headerText="Última alteração">
 									<h:outputText value="#{parte.dataCadastro}">
-										 <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Fortaleza" />
+										<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
+											timeZone="America/Fortaleza" />
 									</h:outputText>
 								</p:column>
 
@@ -932,7 +928,8 @@
 
 
 									<h:outputText value="#{fases.dataCadastro}">
-										<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Fortaleza" />
+										<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
+											timeZone="America/Fortaleza" />
 									</h:outputText>
 
 
@@ -1085,7 +1082,8 @@
 								<p:column headerText="Data Cadastro"
 									style="width: 70px; text-align: center;">
 									<h:outputText value="#{hist.dataCadastro}">
-										<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Fortaleza" />
+										<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
+											timeZone="America/Fortaleza" />
 									</h:outputText>
 								</p:column>
 
@@ -1101,6 +1099,15 @@
 										<f:attribute name="histSelecionado" value="#{hist}" />
 										<f:actionListener
 											type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+									</p:commandButton>
+
+									<p:commandButton icon="ui-icon-trash"
+										actionListener="#{processoBean.excluirHistorico}"
+										update=":mensagem processo:tabViewProcesso:listaHistorico processo:tabViewProcesso:cadastroHistorico">
+										<p:confirm header="Confirmação"
+											message="Deseja excluir o Historico?" icon="ui-icon-alert" />
+										<f:attribute name="histSelecionado"
+											value="#{hist}" />
 									</p:commandButton>
 
 								</p:column>
