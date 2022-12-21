@@ -293,6 +293,8 @@
 						</p:column>
 						
 						
+							
+						
 					</p:summaryRow>
 
 
@@ -303,7 +305,7 @@
 
 
 							<h:commandLink style="padding: .3em 1em;"
-								rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == true or contratoTerceirizadoBean.mostrarAfastamento == true}"
+								rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == true or contratoTerceirizadoBean.mostrarAfastamento == true or contratoTerceirizadoBean.mostrarFerias == true}"
 								styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-button-text ui-c"
 								action="#{contratoTerceirizadoBean.gerarRelatorioEventos}"
 								update=":mensagem formlista:lista" target="_new"

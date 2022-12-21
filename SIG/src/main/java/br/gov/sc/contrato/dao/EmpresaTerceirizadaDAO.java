@@ -43,7 +43,7 @@ public class EmpresaTerceirizadaDAO extends GenericDAO<EmpresaTerceirizada> {
 		try {
 			Criteria c = sessao.createCriteria(ContratoTerceirizado.class);
 			
-		System.out.println(nContrato + " nContrato");
+		
 		  c.add(Restrictions.eq("nContrato", nContrato));
 			 ProjectionList projList = Projections.projectionList();
 			 c.createAlias("empresaTerceirizada", "e");

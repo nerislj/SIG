@@ -90,13 +90,15 @@ public class EventoTerceirizadoDAO extends GenericDAO<EventoTerceirizado> {
 
 					consulta.add(Restrictions.in("c.unidade", unidades));
 
-					
+					consulta.createAlias("c.unidade", "un");
+					consulta.addOrder(Order.asc("un.unidadeNome"));
 
 				} else {
 				
 
 					consulta.createAlias("c.unidade", "un");
 					consulta.add(Restrictions.eq("un.unidadeNome", setorRelatorio));
+					consulta.addOrder(Order.asc("un.unidadeNome"));
 				}
 				if (dateIni != null || dateFini != null) {
 					if (dateIni.equals(dateFini)) {
@@ -132,6 +134,8 @@ public class EventoTerceirizadoDAO extends GenericDAO<EventoTerceirizado> {
 
 				System.out.println(dateIni + " date1");
 				System.out.println(dateFini + " date2");
+				
+				
 
 				consulta.createCriteria("contratoTerceirizado", "c");
 				consulta.add(Restrictions.eq("c.nContrato", nContrato));
@@ -143,6 +147,9 @@ public class EventoTerceirizadoDAO extends GenericDAO<EventoTerceirizado> {
 				if (setorRelatorio == null) {
 
 					consulta.add(Restrictions.in("c.unidade", unidades));
+					
+					consulta.createAlias("c.unidade", "un");
+					consulta.addOrder(Order.asc("un.unidadeNome"));
 
 					System.out.println("ENTROU isEmpty");
 
@@ -150,7 +157,10 @@ public class EventoTerceirizadoDAO extends GenericDAO<EventoTerceirizado> {
 					System.out.println("ENTROU" + setorRelatorio);
 
 					consulta.createAlias("c.unidade", "un");
-					consulta.add(Restrictions.eq("un.unidadeNome", setorRelatorio));
+					consulta.add(Restrictions.eq("un.codigo", setorRelatorio));
+					consulta.addOrder(Order.asc("un.unidadeNome"));
+					
+					System.out.println("PASSOU ORDERDESC");
 				}
 				if (dateIni != null || dateFini != null) {
 					if (dateIni.equals(dateFini)) {

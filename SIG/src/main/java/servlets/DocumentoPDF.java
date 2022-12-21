@@ -91,6 +91,11 @@ public class DocumentoPDF extends HttpServlet {
 		if (report2 != null) {
 			gerarRelatorioEventoAfastamento(request, response);
 		}
+		
+		String report3 = request.getParameter("eventoferias");
+		if (report3 != null) {
+			gerarRelatorioEventoFerias(request, response);
+		}
 	}
 
 	@SuppressWarnings("unlikely-arg-type")
@@ -570,20 +575,7 @@ System.out.println(nome + " nomenomenomenomenomenomenomenomenome");
 							.equals(nome)) {
 						//count++;
 
-						if (listaEventosTerceirizados.get(i).getHoras().equals("00:00")) {
-
-							String partesDias = listaEventosTerceirizados.get(i).getDias();
-
-							/// System.out.println(partes + "partespartespartespartes");
-							// int dias += Integer.parseInt(partes);
-
-							// System.out.println(dias + "diasdiasdiasdiasdiasdiasdias");
-
-							System.out.println("TOTAL DIAS" + partesDias);
-
-							totalDias += Integer.parseInt(partesDias);
-
-						} else {
+						
 							
 							String partesDias = listaEventosTerceirizados.get(i).getDias();
 
@@ -609,7 +601,7 @@ System.out.println(nome + " nomenomenomenomenomenomenomenomenome");
 
 							System.out.println(totalMinutos + " totalMinutos");
 							
-						}
+						
 						
 
 						total = totalDias;
@@ -673,7 +665,7 @@ System.out.println(nome + " nomenomenomenomenomenomenomenomenome");
 						listaEventosTerceirizados.remove(i);
 
 					} else {
-						i++;
+						
 						total = 0;
 						totalDiasFinal = 0;
 						totalDias = 0;
@@ -737,6 +729,309 @@ System.out.println(nome + " nomenomenomenomenomenomenomenomenome");
 		}
 
 	}
+	
+	@SuppressWarnings("unlikely-arg-type")
+	public void gerarRelatorioEventoFerias(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		Document documento = new Document(PageSize.A4.rotate());
+
+		SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
+
+		try {
+
+			System.out.println(request.getParameter("unidade") + " OQ ESTA VINDO?");
+
+			if (request.getParameter("nContrato") != null) {
+				nContrato = request.getParameter("nContrato");
+				System.out.println(nContrato + " PEGOU ncontrato");
+			}
+			if (request.getParameter("empresaNome") != null) {
+				empresaTerceiriza = Long.parseLong(request.getParameter("empresaNome"));
+				System.out.println(empresaTerceiriza + " PEGOU empresanome");
+			}
+			if (request.getParameter("unidade") == null) {
+				setorRelatorio = null;
+				System.out.println("É NULO DOCUMENTOPDF");
+			} else {
+				System.out.println("ENTROU request UnidadeS");
+				setorRelatorio = Long.parseLong(request.getParameter("unidade"));
+				System.out.println(setorRelatorio + " PEGOU setorrelatorio");
+			}
+
+			if (request.getParameter("tipoEvento") != null) {
+				tipoEvento = new String("Férias");
+				System.out.println(tipoEvento + " PEGOU tipoevento");
+			}
+			if (request.getParameter("dataInicial") != null) {
+				String parameter = request.getParameter("dataInicial");
+				dataInicial = fmt.parse(parameter);
+
+				System.out.println(dataInicial + " PEGOU datainicial");
+			}
+			if (request.getParameter("dataFinal") != null) {
+
+				String parameter = request.getParameter("dataFinal");
+				dataFinal = fmt.parse(parameter);
+
+				System.out.println(dataFinal + " PEGOU datafinal");
+
+			}
+
+			if (request.getParameter("usuarioLogado") != null) {
+
+				usuarioLogado = request.getParameter("usuarioLogado");
+
+				System.out.println(usuarioLogado + "NOVO usuarioLogado");
+
+			}
+
+			Image img = Image.getInstance("C://Users/detran-logo.png");
+			
+			img.setWidthPercentage(50);
+			img.setAlignment(Element.ALIGN_CENTER);
+			
+			
+		
+
+	
+			
+
+			Paragraph logo = new Paragraph();
+			
+			
+
+			logo.add(img);
+			
+
+			// tipo conteudo
+			response.setContentType("apllication/pdf");
+			// nome documento
+			response.addHeader("Content-Disposition", "inline; filename=" + "evento-ferias.pdf");
+
+			// tabela
+			PdfPTable tabela = new PdfPTable(6);
+
+			float[] widths1 = new float[] { 18f, 18f, 8f, 18f, 8f, 4f};
+			tabela.setWidths(widths1);
+
+			// cabeçalho
+
+			Paragraph p1 = new Paragraph("ESTADO DE SANTA CATARINA");
+			Paragraph p2 = new Paragraph("DEPARTAMENTO ESTADUAL DE TRÂNSITO DE SANTA CATARINA");
+
+			Paragraph p3 = new Paragraph("GERÊNCIA DE APOIO OPERACIONAL");
+
+			p1.setAlignment(Element.ALIGN_CENTER);
+			p2.setAlignment(Element.ALIGN_CENTER);
+			p3.setAlignment(Element.ALIGN_CENTER);
+			p3.setSpacingAfter(10);
+
+			EmpresaTerceirizadaDAO empresaDAO = new EmpresaTerceirizadaDAO();
+
+			empresaNome = empresaDAO.carregaEmpresaPorCOD(empresaTerceiriza);
+
+			PdfPCell header2 = new PdfPCell(new Paragraph("PLANILHA FÉRIAS - " + fmt.format(dataInicial) + " à "
+					+ fmt.format(dataFinal) + " - EMPRESA: " + empresaNome.getPessoaJuridica().getNomeFantasia()));
+
+			header2.setExtraParagraphSpace(3);
+
+			header2.setBackgroundColor(new BaseColor(120, 120, 120));
+
+			header2.setColspan(6);
+
+			tabela.addCell(header2);
+
+			Font yourCustomFont = FontFactory.getFont(FontFactory.HELVETICA, 10);
+
+			PdfPCell cell = new PdfPCell(new Phrase("Colaborador"));
+			cell.setBackgroundColor(new BaseColor(0, 173, 239));
+			tabela.addCell(cell);
+
+			cell = new PdfPCell(new Phrase("Setor"));
+			cell.setBackgroundColor(new BaseColor(0, 173, 239));
+			tabela.addCell(cell);
+
+			cell = new PdfPCell(new Phrase("Data"));
+			cell.setBackgroundColor(new BaseColor(0, 173, 239));
+			tabela.addCell(cell);
+
+			cell = new PdfPCell(new Phrase("Substituto"));
+			cell.setBackgroundColor(new BaseColor(0, 173, 239));
+			tabela.addCell(cell);
+
+			cell = new PdfPCell(new Phrase("Data"));
+			cell.setBackgroundColor(new BaseColor(0, 173, 239));
+			tabela.addCell(cell);
+
+			cell = new PdfPCell(new Phrase("Dias"));
+			cell.setBackgroundColor(new BaseColor(0, 173, 239));
+			tabela.addCell(cell);
+
+			
+
+			// popular
+
+			System.out.println(usuarioLogado + "usuarioLogadousuarioLogadousuarioLogadousuarioLogadousuarioLogado");
+			EventoTerceirizadoDAO eventoDAO = new EventoTerceirizadoDAO();
+			UserClaimsContratoDAO userClaimDAO = new UserClaimsContratoDAO();
+			UnidadeDAO unidadeDAO = new UnidadeDAO();
+
+			UsuarioDAO usuarioDAO = new UsuarioDAO();
+			userSessao = usuarioDAO.autenticarPorCpf(usuarioLogado);
+
+			System.out.println(userSessao + "userSessaouserSessao");
+
+			listaUserClaims = userClaimDAO.listarPorUsuarioLogado(userSessao);
+
+			ArrayList<Unidade> codigosUnidades = new ArrayList<Unidade>();
+			for (int posicao = 0; posicao < listaUserClaims.size(); posicao++) {
+
+				codigosUnidades.add(listaUserClaims.get(posicao).getUnidade());
+
+			}
+
+			if (userSessao.getNivelAcesso().getCodigo() == 1) {
+
+				codigosUnidades = (ArrayList<Unidade>) unidadeDAO.listar();
+
+			}
+
+			if (userSessao.getSetor().getSetorNome().contains("Gerência de Apoio Operacional")
+					&& userSessao.getNivelAcesso().getNivel().contains("CONTRATO")) {
+
+				codigosUnidades = (ArrayList<Unidade>) unidadeDAO.listar();
+			}
+
+			System.out.println(nContrato + empresaTerceiriza + setorRelatorio + tipoEvento + dataInicial + dataFinal);
+			listaEventosTerceirizados = eventoDAO.listarPorEmpresaPDF(nContrato, empresaTerceiriza, setorRelatorio,
+					tipoEvento, dataInicial, dataFinal, codigosUnidades);
+			System.out.println(listaEventosTerceirizados + "listaEventosTerceirizados DOCUMENTOPDF");
+			Phrase ph;
+
+		
+			
+			
+
+			while (listaEventosTerceirizados.size() != 0) {
+				//int count = 0;
+				int j = 0;
+
+				String nome = listaEventosTerceirizados.get(j).getContratoTerceirizado().getUnidade().getUnidadeNome();
+				
+				
+System.out.println(nome + " nomenomenomenomenomenomenomenomenome");
+				for (int i = 0; i < listaEventosTerceirizados.size();) {
+					
+				
+
+					if (listaEventosTerceirizados.get(i).getContratoTerceirizado().getUnidade().getUnidadeNome()
+							.equals(nome)) {
+						//count++;
+
+						
+							
+						
+
+						cell = new PdfPCell();
+						ph = new Phrase(listaEventosTerceirizados.get(i).getColaborador().getPessoa().getNomeCompleto(),
+								yourCustomFont);
+						cell.addElement(ph);
+						tabela.addCell(cell);
+
+						cell = new PdfPCell();
+						ph = new Phrase(listaEventosTerceirizados.get(i).getContratoTerceirizado().getUnidade()
+								.getUnidadeNome(), yourCustomFont);
+						cell.addElement(ph);
+						tabela.addCell(cell);
+
+						cell = new PdfPCell();
+						ph = new Phrase(
+								fmt.format(listaEventosTerceirizados.get(i).getDataEventoInicial()) + " - "
+										+ fmt.format(listaEventosTerceirizados.get(i).getDataEventoFinal()),
+								yourCustomFont);
+						cell.addElement(ph);
+						tabela.addCell(cell);
+
+						cell = new PdfPCell();
+						if (listaEventosTerceirizados.get(i).getSubstituto() != null) {
+							ph = new Phrase(
+									listaEventosTerceirizados.get(i).getSubstituto().getPessoa().getNomeCompleto(),
+									yourCustomFont);
+						} else {
+							ph = new Phrase("SEM COBERTURA", yourCustomFont);
+						}
+						cell.addElement(ph);
+						tabela.addCell(cell);
+
+						cell = new PdfPCell();
+						if (listaEventosTerceirizados.get(i).getDataSubstitutoInicial() != null) {
+							ph = new Phrase(
+									fmt.format(listaEventosTerceirizados.get(i).getDataSubstitutoInicial()) + " - "
+											+ fmt.format(listaEventosTerceirizados.get(i).getDataSubstitutoFinal()),
+									yourCustomFont);
+						} else {
+							ph = new Phrase(
+									fmt.format(listaEventosTerceirizados.get(i).getDataEventoInicial()) + " - "
+											+ fmt.format(listaEventosTerceirizados.get(i).getDataEventoFinal()),
+									yourCustomFont);
+						}
+						cell.addElement(ph);
+						tabela.addCell(cell);
+
+						cell = new PdfPCell();
+						ph = new Phrase(listaEventosTerceirizados.get(i).getDias(), yourCustomFont);
+						cell.addElement(ph);
+						tabela.addCell(cell);
+
+						
+
+						listaEventosTerceirizados.remove(i);
+
+					} else {
+						
+						
+						break;
+
+					}
+					
+					
+
+				
+
+					
+
+				}
+				
+				
+
+				
+
+				
+
+			}
+
+			// criar documento
+			PdfWriter.getInstance(documento, response.getOutputStream());
+			// abrir documento -> conteudo
+			documento.open();
+
+			documento.add(logo);
+			documento.add(p1);
+			documento.add(p2);
+			documento.add(p3);
+
+			documento.add(tabela);
+			documento.close();
+			System.out.println("Successfull.");
+
+		} catch (Exception e) {
+			System.out.println(e);
+			documento.close();
+		}
+
+	}
+	
 
 	public EmpresaTerceirizada getEmpresaNome() {
 		return empresaNome;

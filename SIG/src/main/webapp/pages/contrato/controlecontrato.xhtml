@@ -8,16 +8,7 @@
 	template="/templates/modelo.xhtml">
 
 
-	<ui:define name="metadata">
-		<f:metadata>
 
-			<f:event
-				listener="#{contratoTerceirizadoBean.ContratoTerceirizadoListas}"
-				type="preRenderView" />
-
-
-		</f:metadata>
-	</ui:define>
 
 	<ui:define name="conteudo">
 
@@ -133,7 +124,7 @@
 
 							<p:dataTable id="listaContratos"
 								emptyMessage="Nenhum contrato encontrado." paginator="true"
-								rows="10" rowKey="#{contrato.codigo}"
+								rowExpandMode="single" rows="10" rowKey="#{contrato.codigo}"
 								value="#{contratoTerceirizadoBean.listaContratosTerceirizados}"
 								var="contrato">
 
@@ -163,9 +154,11 @@
 
 								<p:ajax event="rowToggle"
 									listener="#{contratoTerceirizadoBean.onRowToggleFuncionarios}"
-									update="tabView:formularioContratos:listaContratos listaFuncionarios " />
+									update="listaFuncionarios" />
 								<p:column headerText="Funcionários"
 									style="width: 3%; text-align: center;">
+
+
 									<p:rowToggler />
 
 
@@ -248,7 +241,7 @@
 										onclick="PF('dialogoNovoFuncionario').show();"
 										style="align: center;background: #8FBC8F;border-width: 0 3px 0 3px;color: #000000;
 "
-										update=":mensagem funcionario:dadosFormFunc">
+										update=":mensagem funcionario:dadosFormFunc listaFuncionarios">
 										<f:attribute name="contratoSelecionado" value="#{contrato}" />
 										<f:actionListener
 											type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
@@ -341,9 +334,9 @@
 												icon="pi pi-calendar"
 												onclick="PF('dialogoFeriasAfastamentoInconsistencias').show();"
 												style="align: center;background: #ffecb3;border-width: 0 3px 0 3px;color: #000000;"
-												update=":mensagem tabView:formularioContratos:painelDados feriasAfastamentoInconsistencias:dadosFormFeriasAfastamentoInconsistencias, feriasAfastamentoInconsistencias:dadosFormInco,
+												update=":mensagem feriasAfastamentoInconsistencias:dadosFormFeriasAfastamentoInconsistencias, feriasAfastamentoInconsistencias:dadosFormInco,
 feriasAfastamentoInconsistencias:dadosFormDiasPergunta,
-feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista">
+feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista, feriasAfastamentoInconsistencias:salvarEvento">
 												<f:attribute name="funcionarioSelecionado"
 													value="#{relacao}" />
 												<f:actionListener
@@ -868,12 +861,18 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista">
 
 					<br />
 					<br />
-					<h:panelGrid columns="2" style="margin: 0 auto;">
+					<h:panelGrid id="salvarEvento" columns="2" style="margin: 0 auto;">
 						<p:commandButton value="Salvar Evento"
 							actionListener="#{contratoTerceirizadoBean.salvarEvento()}"
 							update=":mensagem tabView:formularioContratos:painelDados formlista:lista"
 							style="background: #01B50D;"
-							oncomplete="PF('dialogoFeriasAfastamentoInconsistencias').hide();" />
+							oncomplete="PF('dialogoFeriasAfastamentoInconsistencias').hide();">
+							<f:attribute name="funcionarioSelecionado"
+								value="#{contratoTerceirizadoBean.novoEvento()}" />
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+
+						</p:commandButton>
 
 						<p:commandButton value="Voltar"
 							update="tabView:formularioContratos:painelDados"
@@ -894,7 +893,7 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista">
 				<p:panel header="Eventos">
 
 					<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
-						paginator="true" 
+						paginator="true"
 						value="#{contratoTerceirizadoBean.listaEventosTerceirizadosPorFuncionario}"
 						var="evento" rows="10">
 

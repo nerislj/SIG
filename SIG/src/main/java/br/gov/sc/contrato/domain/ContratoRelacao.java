@@ -18,8 +18,7 @@ import javax.persistence.TemporalType;
 public class ContratoRelacao extends GenericDomainContrato {
    @OneToOne
    @JoinColumn(
-      nullable = false,
-      unique = true
+      nullable = false
    )
    private FuncionarioTerceirizado funcionarioTerceirizado;
    @OneToOne
