@@ -284,11 +284,14 @@ public class ProcessoBean implements Serializable {
 		try {
 			historicoProcesso = (HistoricoProcessoCODET) evento.getComponent().getAttributes().get("histSelecionado");
 
-			HistoricoProcessoDAO materialtipoDAO = new HistoricoProcessoDAO();
-			materialtipoDAO.excluir(historicoProcesso);
+			HistoricoProcessoDAO histDAO = new HistoricoProcessoDAO();
+			
+			
+			
+			histDAO.excluir(historicoProcesso);
 
 			historicoProcesso = new HistoricoProcessoCODET();
-			listaHistoricoProcessos = materialtipoDAO.listar();
+			listaHistoricoProcessos = histDAO.listarPorProcesso(processo);
 
 			Messages.addGlobalInfo("Historico removido com sucesso.");
 		} catch (RuntimeException erro) {

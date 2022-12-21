@@ -598,8 +598,6 @@
 
 					<p:outputLabel value="Data Fim:" />
 					<p:calendar pattern="dd/MM/yyyy" mask="true" size="6"
-						required="true"
-						requiredMessage="O campo Data Fim é obrigatório"
 						value="#{credenciadoBean.portaria.dataFim}" showOn="button">
 						<f:converter converterId="converterData" />
 					</p:calendar>
@@ -631,10 +629,10 @@
 						requiredMessage="O campo Alvará é obritarório"
 						style="text-transform:uppercase;" />
 
-					
-						
-						
-						
+
+
+
+
 					<p:outputLabel value="Data Inicio:" />
 					<p:calendar pattern="dd/MM/yyyy" mask="true" size="6"
 						required="true"
@@ -646,8 +644,7 @@
 
 					<p:outputLabel value="Data Fim:" />
 					<p:calendar pattern="dd/MM/yyyy" mask="true" size="6"
-						required="true"
-						requiredMessage="O campo Data Fim é obrigatório"
+						required="true" requiredMessage="O campo Data Fim é obrigatório"
 						value="#{credenciadoBean.alvara.dataFim}" showOn="button">
 						<f:converter converterId="converterData" />
 					</p:calendar>
@@ -725,16 +722,15 @@
 						requiredMessage="O campo Número Documento é obritarório"
 						style="text-transform:uppercase;" />
 
-				
-						
-						<p:outputLabel value="Validade:" />
+
+
+					<p:outputLabel value="Validade:" />
 					<p:calendar pattern="dd/MM/yyyy" mask="true" size="6"
-						
 						value="#{credenciadoBean.doc.dataValidade}" showOn="button">
 						<f:converter converterId="converterData" />
 					</p:calendar>
-						
-						
+
+
 
 				</h:panelGrid>
 
