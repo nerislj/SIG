@@ -54,7 +54,7 @@
 
 						<p:panel header="Consulta Processo - Listagem">
 							<p:dataTable id="lista"
-								emptyMessage="Nenhum registro encontrado." paginator="true"
+								emptyMessage="Nenhum registro encontrado." paginator="true" rowKey="#{recurso.codigo}"
 								value="#{recursoMultaTramitaBean.recursosMultaPopular}" var="recurso"
 								rows="10">
 
