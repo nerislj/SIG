@@ -7,8 +7,14 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	template="/templates/modelo.xhtml">
 
+	<ui:define name="metadata">
 
+		<f:metadata>
 
+			<f:event listener="#{contratoTerceirizadoBean.ContratoTerceirizadoListas()}"
+				type="preRenderView" />
+		</f:metadata>
+	</ui:define>
 
 	<ui:define name="conteudo">
 
@@ -277,9 +283,9 @@
 								</p:column>
 
 								<p:rowExpansion>
-									<p:dataTable id="listaFuncionarios"
+									<p:dataTable id="listaFuncionarios" 
 										emptyMessage="Nenhum funcionário encontrado." paginator="true"
-										value="#{contratoTerceirizadoBean.listaContratoRelacoes}"
+										value="#{contratoTerceirizadoBean.listaContratoRelacoes}" filteredValue="#{contratoTerceirizadoBean.filteredListaContratoRelacoes}"
 										var="relacao" rows="10">
 
 										<p:column headerText="Funcionário"
@@ -892,7 +898,7 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista, feriasAfastamen
 
 				<p:panel header="Eventos">
 
-					<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+					<p:dataTable id="lista" emptyMessage="Nenhum evento encontrado, selecione o tipo evento e data evento para filtrar."
 						paginator="true"
 						value="#{contratoTerceirizadoBean.listaEventosTerceirizadosPorFuncionario}"
 						var="evento" rows="10">
