@@ -293,7 +293,7 @@
 											filterBy="#{relacao.funcionarioTerceirizado.pessoa.nomeCompleto}"
 											style="width: 7%; text-align: center;">
 											<h:outputText
-												value="#{relacao.funcionarioTerceirizado.pessoa.nomeCompleto}" />
+												value="#{relacao.funcionarioTerceirizado.pessoa.nomeCompleto.toUpperCase()}" />
 
 
 										</p:column>
@@ -317,7 +317,7 @@
 
 										<p:column headerText="Cadastrado Por" style="width: 7%;">
 											<h:outputText
-												value="#{relacao.usuarioCadastro.pessoa.nomeCompleto}" />
+												value="#{relacao.usuarioCadastro.pessoa.nomeCompleto.toUpperCase()}" />
 										</p:column>
 
 										<p:column headerText="Data Cadastro" style="width: 3%;">
@@ -845,7 +845,7 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista, feriasAfastamen
 								itemLabel="Selecione um funcionário" />
 							<f:selectItems
 								value="#{contratoTerceirizadoBean.listaFuncionarios}" var="func"
-								itemValue="#{func}" itemLabel="#{func.pessoa.nomeCompleto}" />
+								itemValue="#{func}" itemLabel="#{func.pessoa.nomeCompleto.toUpperCase()}" />
 
 
 
@@ -927,7 +927,7 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista, feriasAfastamen
 							sortBy="#{evento.substituto.pessoa.nomeCompleto}"
 							filterBy="#{evento.substituto.pessoa.nomeCompleto}"
 							style="width: 20%; text-align: center;">
-							<h:outputText value="#{evento.substituto.pessoa.nomeCompleto}"
+							<h:outputText value="#{evento.substituto.pessoa.nomeCompleto.toUpperCase()}"
 								rendered="#{evento.substituto.pessoa.nomeCompleto!=null}" />
 							<h:outputText value="SEM COBERTURA"
 								rendered="#{evento.substituto.pessoa.nomeCompleto==null}" />
@@ -973,7 +973,7 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista, feriasAfastamen
 							filterBy="#{evento.usuarioCadastro.pessoa.nomeCompleto}"
 							style="width: 20%; text-align: center;">
 							<h:outputText
-								value="#{evento.usuarioCadastro.pessoa.nomeCompleto}" />
+								value="#{evento.usuarioCadastro.pessoa.nomeCompleto.toUpperCase()}" />
 						</p:column>
 
 
@@ -1078,6 +1078,7 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista">
 								value="#{contratoTerceirizadoBean.listaFuncionarios}" var="func"
 								itemValue="#{func}"
 								itemLabel="#{func.pessoa.nomeCompleto.toUpperCase()}" />
+
 
 							<p:ajax event="change" update="cpf, dataNascimento, rg"
 								process="@this"

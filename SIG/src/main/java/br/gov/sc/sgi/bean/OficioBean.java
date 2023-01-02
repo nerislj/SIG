@@ -162,9 +162,12 @@ public class OficioBean implements Serializable {
 	public void consultaPorAno() {
 		try {
 			OficioDAO oficioDAO = new OficioDAO();
+			
+			System.out.println("CONSULTOU ");
 
+			if(Ano!=null) {
 			oficios = oficioDAO.listarPorAno(usuarioLogado.getSetor(), usuarioLogado.getUnidade(), Ano.getOficioAno());
-
+			}
 		} catch (Exception erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar listar os Ofícios.");
 			erro.printStackTrace();
