@@ -117,56 +117,61 @@ public class OficioBean implements Serializable {
 			usuarioLogado = (Usuario) sessao.getAttribute("usuario");
 
 			OficioDAO oficioDAO = new OficioDAO();
-			
-			System.out.println("e AQUI? Oficio EM ABERTO");
-			
-			oficios = oficioDAO.carregarOficiosEmAberto("Em Aberto", usuarioLogado.getSetor(), usuarioLogado.getUnidade());
 
+			System.out.println("e AQUI? Oficio EM ABERTO");
+
+			oficios = oficioDAO.carregarOficiosEmAberto("Em Aberto", usuarioLogado.getSetor(),
+					usuarioLogado.getUnidade());
+
+			OficioAnoDAO oficioanoDAO = new OficioAnoDAO();
+			Anos = oficioanoDAO.loadAnos();
 			
-			oficiosMenuCount = oficioDAO.carregarOficiosEmAberto("Em Aberto", usuarioLogado.getSetor(), usuarioLogado.getUnidade());
+			oficiosMenuCount = oficioDAO.carregarOficiosEmAberto("Em Aberto", usuarioLogado.getSetor(),
+					usuarioLogado.getUnidade());
 
 		} catch (Exception erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar listar os Ofícios.");
 			erro.printStackTrace();
 		}
 	}
-	
+
 	public void listarOficios() throws Exception {
 		HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 		usuarioLogado = (Usuario) sessao.getAttribute("usuario");
-		
+
 		OficioDAO oficioDAO = new OficioDAO();
-		
+
 		OficioAnoDAO oficioanoDAO = new OficioAnoDAO();
-		
-		
+
 		int anoHoje = new Date().getYear() + 1900;
 		oficios = oficioDAO.listarAtivos(usuarioLogado.getSetor(), usuarioLogado.getUnidade(), anoHoje);
-		
-		Anos = oficioanoDAO.loadAnos();
 
-		
+		Anos = oficioanoDAO.loadAnos();
 
 		oficioDialogo = oficioDAO.listarDialogo("codigo", usuarioLogado);
 
-		
-		
 		System.out.println(oficios + " oficiosoficiosoficiosoficiosoficios");
 
 		oficiosInativos = oficioDAO.listarInativos(usuarioLogado.getSetor(), usuarioLogado.getUnidade());
-		
-		oficiosMenuCount = oficioDAO.carregarOficiosEmAberto("Em Aberto", usuarioLogado.getSetor(), usuarioLogado.getUnidade());
-		
+
+		oficiosMenuCount = oficioDAO.carregarOficiosEmAberto("Em Aberto", usuarioLogado.getSetor(),
+				usuarioLogado.getUnidade());
+
 	}
 
 	public void consultaPorAno() {
 		try {
 			OficioDAO oficioDAO = new OficioDAO();
-			
+
 			System.out.println("CONSULTOU ");
 
-			if(Ano!=null) {
-			oficios = oficioDAO.listarPorAno(usuarioLogado.getSetor(), usuarioLogado.getUnidade(), Ano.getOficioAno());
+			OficioAnoDAO oficioanoDAO = new OficioAnoDAO();
+
+			Anos = oficioanoDAO.loadAnos();
+
+			if (Ano != null) {
+				oficios = oficioDAO.listarPorAno(usuarioLogado.getSetor(), usuarioLogado.getUnidade(),
+						Ano.getOficioAno());
 			}
 		} catch (Exception erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar listar os Ofícios.");
@@ -254,24 +259,23 @@ public class OficioBean implements Serializable {
 
 			oficioDAO.merge(oficio);
 
-			
-			
-			
-			oficiosMenuCount = oficioDAO.carregarOficiosEmAberto("Em Aberto", usuarioLogado.getSetor(), usuarioLogado.getUnidade());
-			
+			oficiosMenuCount = oficioDAO.carregarOficiosEmAberto("Em Aberto", usuarioLogado.getSetor(),
+					usuarioLogado.getUnidade());
 
 			Messages.addGlobalInfo("Ofício salvo com sucesso.");
-			
-			//oficios = oficioDAO.listarSetor(usuarioLogado.getSetor(), usuarioLogado.getUnidade());
-			
+
+			// oficios = oficioDAO.listarSetor(usuarioLogado.getSetor(),
+			// usuarioLogado.getUnidade());
+
 			this.refresh();
+
 		} catch (Exception erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar salvar o Ofício");
 			erro.printStackTrace();
 		}
 
 	}
-	
+
 	public void refresh() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		Application application = context.getApplication();
@@ -279,6 +283,7 @@ public class OficioBean implements Serializable {
 		UIViewRoot viewRoot = viewHandler.createView(context, context.getViewRoot().getViewId());
 		context.setViewRoot(viewRoot);
 		context.renderResponse();
+
 	}
 
 	public void salvarEditar() {
@@ -325,7 +330,9 @@ public class OficioBean implements Serializable {
 	}
 
 	public void successListener() {
+		this.refresh();
 		Messages.addGlobalInfo("Copiado com sucesso.");
+
 	}
 
 	public void errorListener(final ClipboardErrorEvent errorEvent) {
@@ -359,6 +366,8 @@ public class OficioBean implements Serializable {
 				OficioBean.this.listar();
 				Messages.addGlobalInfo("Ofício cancelado com sucesso.");
 			}
+			
+			this.refresh();
 
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar cancelar o Ofício.");

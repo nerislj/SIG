@@ -136,6 +136,8 @@
 		<mapping
 			class="br.gov.sc.contrato.domain.ContratoHistFuncionario" />
 		<mapping class="br.gov.sc.contrato.domain.UserClaimsContrato" />
+		<mapping
+			class="br.gov.sc.contrato.domain.HistoricoEdicoesContrato" />
 
 
 

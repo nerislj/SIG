@@ -343,14 +343,14 @@
 				<h:panelGrid id="cadastroDialogo" columns="2">
 					<h:outputLabel value="Ofício gerado: " />
 					<h:outputText
-						style="font-family:Times New Roman, Times, serif; font-size:16px;"
+					
 						id="oficioNumber"
 						value="#{oficioBean.oficio.numeroOficio}/#{oficioBean.oficio.setorAbertura.setor}/#{oficioBean.oficio.dataOficio.year+1900}" />
 
-					<p:commandButton id="btnCopy" value="Copiar" icon="ui-icon-copy" />
+					<p:commandButton id="btnCopy" value="Copiar" icon="ui-icon-copy" actionListener="#{oficioBean.successListener}" oncomplete="PF('dlg').hide();"  />
 					<pe:clipboard id="clipCopy" trigger="btnCopy" action="copy"
 						target="oficioNumber">
-						<p:ajax event="success" listener="#{oficioBean.successListener}" />
+						<p:ajax event="success" listener="#{oficioBean.successListener}" update=":mensagem" />
 					</pe:clipboard>
 				</h:panelGrid>
 			</h:form>
@@ -370,17 +370,17 @@
 					<br />
 						<br />
 						Número: <h:outputText id="txtCopy"
-							style="font-family:Times New Roman, Times, serif; font-size:16px;"
+						
 							value="#{oficio.oficio}" />
 						<br />
 						<br />
 					Para copiar o ofício, clique no botão abaixo.
 					<br />
 						<br />
-						<p:commandButton id="btnCopy" value="Copiar" icon="ui-icon-copy" />
+						<p:commandButton id="btnCopy" value="Copiar" icon="ui-icon-copy" oncomplete="PF('dlgSalvar').hide();PF('dialogo').hide();" />
 						<pe:clipboard id="clipCopy" trigger="btnCopy" action="copy"
 							target="txtCopy">
-							<p:ajax event="success" listener="#{oficioBean.successListener}" />
+							<p:ajax event="success" listener="#{oficioBean.successListener}" update=":mensagem" />
 						</pe:clipboard>
 					</p:column>
 				</p:dataTable>
@@ -404,7 +404,7 @@
 				<h:panelGrid columns="4">
 					<p:commandButton value="Confirmar"
 						actionListener="#{oficioBean.cancelaOficio}"
-						update=":mensagem :tabView:formlista:lista">
+						update=":mensagem :tabView:formlista:lista" oncomplete="PF('dialogoExclusao').hide();">
 					</p:commandButton>
 					<p:commandButton value="Fechar"
 						oncomplete="PF('dialogoExclusao').hide();" />

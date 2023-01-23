@@ -11,7 +11,8 @@
 
 		<f:metadata>
 
-			<f:event listener="#{contratoTerceirizadoBean.ContratoTerceirizadoListas()}"
+			<f:event
+				listener="#{contratoTerceirizadoBean.ContratoTerceirizadoListas()}"
 				type="preRenderView" />
 		</f:metadata>
 	</ui:define>
@@ -109,6 +110,9 @@
 .value {
 	font-weight: bold;
 }
+
+
+
 </style>
 
 
@@ -132,10 +136,15 @@
 								emptyMessage="Nenhum contrato encontrado." paginator="true"
 								rowExpandMode="single" rows="10" rowKey="#{contrato.codigo}"
 								value="#{contratoTerceirizadoBean.listaContratosTerceirizados}"
-								var="contrato">
+								var="contrato" selectionMode="single"
+								selection="#{contratoTerceirizadoBean.codigoContratoHistorico}">
 
-
-
+								<p:ajax event="rowSelect"
+									listener="#{contratoTerceirizadoBean.onRowSelectCodContrato}"
+									oncomplete="PF('dialogoHistContrato').show();"
+									update=":mensagem contratoHist:listaHistorico" />
+								<p:ajax event="rowUnselect"
+									listener="#{contratoTerceirizadoBean.onRowUnselect}" />
 
 								<f:facet name="header">
 									<h3>CONTRATOS</h3>
@@ -283,9 +292,10 @@
 								</p:column>
 
 								<p:rowExpansion>
-									<p:dataTable id="listaFuncionarios" 
+									<p:dataTable id="listaFuncionarios"
 										emptyMessage="Nenhum funcionário encontrado." paginator="true"
-										value="#{contratoTerceirizadoBean.listaContratoRelacoes}" filteredValue="#{contratoTerceirizadoBean.filteredListaContratoRelacoes}"
+										value="#{contratoTerceirizadoBean.listaContratoRelacoes}"
+										filteredValue="#{contratoTerceirizadoBean.filteredListaContratoRelacoes}"
 										var="relacao" rows="10">
 
 										<p:column headerText="Funcionário"
@@ -601,6 +611,119 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista, feriasAfastamen
 
 		</p:dialog>
 
+		<p:dialog widgetVar="dialogoHistContrato" draggable="false"
+			resizable="true" modal="true" closable="true" responsive="true">
+			<f:facet name="header">
+
+				<h:outputText id="someDialogHeader2"
+					value="Histórico Edições Contrato" />
+
+			</f:facet>
+
+			<h:form id="contratoHist">
+
+
+
+				<p:panel header="Contrato">
+
+
+
+					<p:dataTable id="listaHistorico" showGridlines="true"
+						emptyMessage="Nenhum registro encontrado." paginator="true"
+						rows="5" value="#{contratoTerceirizadoBean.historicoEdicoes}"
+						var="hist">
+
+
+						<p:column headerText="Contrato" >
+							<h:outputText 
+								value="#{hist.contrato.nContrato} - #{hist.contrato.empresaTerceirizada.pessoaJuridica.nomeFantasia} - #{hist.contrato.municipio.nome}" />
+						</p:column>
+
+
+						<p:column headerText="SGPE" style="width: 90px; text-align: center;">
+							<h:outputText value="#{hist.nSGPE}" />
+						</p:column>
+						
+						<p:column headerText="Qtd Funcionários" style="width: 70px; text-align: center;">
+							<h:outputText value="#{hist.qtdFuncionarios}" />
+						</p:column>
+						
+						<p:column headerText="H/Dia" style="width: 70px; text-align: center;">
+							<h:outputText value="#{hist.hrContrato}" />
+						</p:column>
+						
+						<p:column headerText="Valor NF" style="width: 80px; text-align: center;">
+							
+							
+							<h:outputText value="#{hist.valorNF}">
+										<f:convertNumber type="currency" />
+									</h:outputText>
+						</p:column>
+
+
+						<p:column headerText="Usuário Cadastro" >
+							<h:outputText value="#{hist.usuarioCadastro.pessoa.nomeCompleto}" />
+						</p:column>
+
+						<p:column headerText="Data Cadastro"
+							style="width: 70px; text-align: center;">
+							<h:outputText value="#{hist.dataCadastro}">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
+									timeZone="America/Fortaleza" />
+							</h:outputText>
+						</p:column>
+
+
+					<!--  	<p:column headerText="Ações"
+							style="width: 3%; text-align: center;">
+
+							<p:commandButton icon="ui-icon-trash"
+								actionListener="#{contratoTerceirizadoBean.excluirHistorico}"
+								update=":mensagem contratoHist:listaHistorico">
+								<p:confirm header="Confirmação"
+									message="Deseja excluir o Historico?" icon="ui-icon-alert" />
+								<f:attribute name="histSelecionado" value="#{hist}" />
+							</p:commandButton>
+
+						</p:column> -->
+
+
+
+
+
+					</p:dataTable>
+
+
+
+				</p:panel>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			</h:form>
+
+
+
+		</p:dialog>
+
 		<p:dialog widgetVar="dialogoNovoFuncionario" draggable="false"
 			resizable="true" modal="true" closable="true" responsive="true">
 			<f:facet name="header">
@@ -845,7 +968,8 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista, feriasAfastamen
 								itemLabel="Selecione um funcionário" />
 							<f:selectItems
 								value="#{contratoTerceirizadoBean.listaFuncionarios}" var="func"
-								itemValue="#{func}" itemLabel="#{func.pessoa.nomeCompleto.toUpperCase()}" />
+								itemValue="#{func}"
+								itemLabel="#{func.pessoa.nomeCompleto.toUpperCase()}" />
 
 
 
@@ -898,7 +1022,8 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista, feriasAfastamen
 
 				<p:panel header="Eventos">
 
-					<p:dataTable id="lista" emptyMessage="Nenhum evento encontrado, selecione o tipo evento e data evento para filtrar."
+					<p:dataTable id="lista"
+						emptyMessage="Nenhum evento encontrado, selecione o tipo evento e data evento para filtrar."
 						paginator="true"
 						value="#{contratoTerceirizadoBean.listaEventosTerceirizadosPorFuncionario}"
 						var="evento" rows="10">
@@ -927,7 +1052,8 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista, feriasAfastamen
 							sortBy="#{evento.substituto.pessoa.nomeCompleto}"
 							filterBy="#{evento.substituto.pessoa.nomeCompleto}"
 							style="width: 20%; text-align: center;">
-							<h:outputText value="#{evento.substituto.pessoa.nomeCompleto.toUpperCase()}"
+							<h:outputText
+								value="#{evento.substituto.pessoa.nomeCompleto.toUpperCase()}"
 								rendered="#{evento.substituto.pessoa.nomeCompleto!=null}" />
 							<h:outputText value="SEM COBERTURA"
 								rendered="#{evento.substituto.pessoa.nomeCompleto==null}" />

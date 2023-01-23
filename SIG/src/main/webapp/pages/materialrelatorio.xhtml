@@ -63,7 +63,7 @@
 					<p:selectOneMenu id="ano"
 						converter="omnifaces.SelectItemsConverter"
 						value="#{relatorioMaterialBean.ano}">
-						<f:selectItems value="#{oficioBean.anos}" var="ano"
+						<f:selectItems value="#{relatorioMaterialBean.anos}" var="ano"
 							itemValue="#{ano}" itemLabel="#{ano.oficioAno}" />
 					</p:selectOneMenu>
 					<p:spacer width="15" height="10" />
@@ -97,7 +97,7 @@
 
 				<p:dataTable id="lista" var="mat"
 					value="#{relatorioMaterialBean.listaMateriaisSaida}"
-					sortBy="#{mat.dataCadastro.month+1} + #{mat.material.material}"
+					SortMeta="#{mat.dataCadastro.month+1} + #{mat.material.material}"
 					expandableRowGroups="true"
 					emptyMessage="Nenhum registro encontrado.">
 
@@ -111,7 +111,7 @@
 						<br />
             TOTAL MENSAL
         </f:facet>
-					<p:headerRow>
+					<p:headerRow field="material.material">
 						<p:column colspan="7">
 							<h:outputText value="Mês " />
 							<h:outputText value="#{mat.dataCadastro}">
@@ -214,7 +214,7 @@
 					</f:facet>
 
 
-					<p:headerRow>
+					<p:headerRow field="material.material">
 
 
 

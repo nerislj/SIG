@@ -19,6 +19,7 @@ import br.gov.sc.geapo.domain.Material;
 import br.gov.sc.geapo.domain.MaterialCentroCusto;
 import br.gov.sc.geapo.domain.MaterialSaida;
 import br.gov.sc.geapo.domain.MaterialStatus;
+import br.gov.sc.sgi.dao.OficioAnoDAO;
 import br.gov.sc.sgi.dao.SetorDAO;
 import br.gov.sc.sgi.dao.UnidadeDAO;
 import br.gov.sc.sgi.domain.OficioAno;
@@ -47,6 +48,7 @@ public class RelatorioMaterialBean implements Serializable {
 	private List<MaterialStatus> listaStatus;
 	private List<MaterialSaida> listaSaida;
 	private List<MaterialCentroCusto> listaCusto;
+	private List<OficioAno> anos;
 
 	private Date dataInicial;
 	private String dateIni;
@@ -148,12 +150,15 @@ System.out.println("relatoriomaterial bean");
 			MaterialDAO materialDAO = new MaterialDAO();
 			MaterialSaidaDAO materialSaidaDAO = new MaterialSaidaDAO();
 			MaterialCentroCustoDAO materialCentroCustoDAO = new MaterialCentroCustoDAO();
+			OficioAnoDAO oficioAnoDAO = new OficioAnoDAO();
 
 			listaUnidades = uniDAO.listar();
 			listaSaida = materialSaidaDAO.listar();
 			listaStatus = statusDAO.listar();
 			listaMateriais = materialDAO.listar();
 			listaCusto = materialCentroCustoDAO.listar();
+			
+			anos = oficioAnoDAO.loadAnos();
 
 			materialSaida = new MaterialSaida();
 			materialCentroDeCusto = new MaterialCentroCusto();
@@ -334,6 +339,14 @@ System.out.println("relatoriomaterial bean");
 
 	public void setMaterial(Material material) {
 		this.material = material;
+	}
+
+	public List<OficioAno> getAnos() {
+		return anos;
+	}
+
+	public void setAnos(List<OficioAno> anos) {
+		this.anos = anos;
 	}
 
 }
