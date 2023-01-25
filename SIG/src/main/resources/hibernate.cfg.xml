@@ -138,6 +138,16 @@
 		<mapping class="br.gov.sc.contrato.domain.UserClaimsContrato" />
 		<mapping
 			class="br.gov.sc.contrato.domain.HistoricoEdicoesContrato" />
+			
+			
+				<mapping
+			class="br.gov.sc.ecvitl.domain.EcvItl" />
+			
+			<mapping
+			class="br.gov.sc.ecvitl.domain.HistoricoDescricao" />
+			
+			<mapping
+			class="br.gov.sc.ecvitl.domain.PessoaEcvItl" />
 
 
 

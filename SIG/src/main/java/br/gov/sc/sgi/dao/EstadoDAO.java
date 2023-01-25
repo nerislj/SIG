@@ -21,4 +21,6 @@ public class EstadoDAO extends GenericDAO<Estado>{
 		return (Estado) criteria.setMaxResults(1).uniqueResult();
 	}
 	
+	
+	
 }

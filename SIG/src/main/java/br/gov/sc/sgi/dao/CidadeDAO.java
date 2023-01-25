@@ -30,7 +30,36 @@ public class CidadeDAO extends GenericDAO<Cidade>{
 		}
 		
 		
+		@SuppressWarnings("unchecked")
+		public List<Cidade> buscarPorEstadoNome(String sigla) {
+			Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+			try {
+				Criteria consulta = sessao.createCriteria(Cidade.class);
+				
+				consulta.createAlias("estado", "e");
+				consulta.add(Restrictions.eq("e.sigla", sigla));	
+				consulta.addOrder(Order.asc("nome"));
+				List<Cidade> resultado = consulta.list();
+				return resultado;
+			} catch (RuntimeException erro) {
+				throw erro;
+			} finally {
+				sessao.close();
+			}
+		}
+		
+		
 		public Cidade loadNome(String nome) throws Exception {
+			Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+			Criteria criteria = sessao.createCriteria(Cidade.class);
+			criteria.addOrder(Order.desc("codigo"));
+			criteria.add(Restrictions.eq("nome", nome));
+			
+
+			return (Cidade) criteria.setMaxResults(1).uniqueResult();
+		}
+		
+		public Cidade loadNomeString(String nome) throws Exception {
 			Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 			Criteria criteria = sessao.createCriteria(Cidade.class);
 			criteria.addOrder(Order.desc("codigo"));

@@ -1,0 +1,814 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+
+		<h:outputStylesheet name="primeicons/primeicons.css"
+			library="primefaces" />
+
+		<style type="text/css">
+.ui-icon-mail-closed {
+	-ms-transform: scale(1.5); /* IE 9 */
+	-webkit-transform: scale(1.5); /* Chrome, Safari, Opera */
+	transform: scale(1.5);
+}
+
+.ui-icon-pencil {
+	-ms-transform: scale(1.3); /* IE 9 */
+	-webkit-transform: scale(1.3); /* Chrome, Safari, Opera */
+	transform: scale(1.3);
+}
+
+.ui-icon-zoomin {
+	-ms-transform: scale(1.2); /* IE 9 */
+	-webkit-transform: scale(1.2); /* Chrome, Safari, Opera */
+	transform: scale(1.2);
+}
+
+.ui-icon-folder-collapsed {
+	-ms-transform: scale(1.3); /* IE 9 */
+	-webkit-transform: scale(1.3); /* Chrome, Safari, Opera */
+	transform: scale(1.3);
+}
+
+.ui-dialog.ui-widget-content .ui-dialog-title {
+	left: 50%; /* left-align your element to center */
+	transform: translateX(-50%);
+	/* offset left by half the width of your element */
+	position: relative; /* use or dont' use depending on element parent */
+}
+
+.customPanelGrid .ui-panelgrid-content {
+	align-items: center;
+}
+</style>
+
+
+		<p:tab title="Consulta">
+
+
+			<h:form id="formularioConsulta">
+				<p:panel header="Consulta">
+
+
+
+
+					<div class="ui-g-12 ui-md-5">
+						<p:staticMessage severity="info" summary="Posso pesquisar por:"
+							detail="Nome, Credencial, Tipo, Cnpj." />
+
+					</div>
+					<br />
+					<br />
+					<br />
+					<br />
+					<p:inputText id="campo" maxlength="40" size="40"
+						value="#{ecvItlBean.campoDaBusca}"
+						style="text-transform:uppercase;">
+
+					</p:inputText>
+
+
+					<p:commandButton value="Pesquisar" icon="pi pi-search"
+						actionListener="#{ecvItlBean.buscarCamposPesquisa}"
+						update=":mensagem tabView:formularioEmpresas:painelDados "
+						style="background: #01B50D;">
+						<f:actionListener
+							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+					</p:commandButton>
+
+					<p:commandButton value="Cadastrar Empresa"
+						style="background: #3c8dbc;" actionListener="#{ecvItlBean.novo}"
+						oncomplete="PF('dialogoAdicionarProcesso').show();"
+						update="tabView:formularioEmpresas:listaCorregedoria dadosForm:dadosForm"
+						rendered="#{autenticacaoBean.temPermissoes([1, 11])}">
+
+					</p:commandButton>
+
+					<!-- ALTERAR AQUI -->
+
+
+
+
+
+				</p:panel>
+			</h:form>
+		</p:tab>
+		<p:tabView id="tabView">
+			<p:tab title="Empresas">
+				<h:form id="formularioEmpresas">
+
+
+					<h:panelGroup id="painelDados" layout="block">
+
+
+
+
+						<!-- <h:panelGrid columns="2"
+							rendered="#{credenciadoEmpBean.exibePainelDados}">
+							 -->
+						<p:panelGrid columns="1" layout="grid">
+
+							<p:dataTable id="listaCorregedoria"
+								emptyMessage="Nenhum ecv/itl encontrado." paginator="true"
+								rows="12" value="#{ecvItlBean.listaEcvItl}" var="emp"
+								rowKey="#{emp.codigo}" rowExpandMode="single"
+								selectionMode="single" selection="#{ecvItlBean.ecvItl}">
+
+
+
+								<p:ajax event="rowSelect"
+									listener="#{ecvItlBean.onRowSelectCodEcvItl}"
+									oncomplete="PF('dialogoAdicionarProcesso').show();"
+									update=":mensagem dadosForm:dadosForm" />
+
+
+								<p:ajax event="rowToggle"
+									listener="#{ecvItlBean.onRowToggleProprietarios}"
+									update="listaFuncionarios" />
+								<p:column headerText="Proprietários"
+									style="width: 2%; text-align: center;">
+
+
+									<p:rowToggler />
+
+
+
+								</p:column>
+
+
+
+
+								<p:column headerText="Tipo"
+									style="width: 2%; text-align: center;">
+									<h:outputText value="Ecv" rendered="#{emp.tipoCadastro==1}" />
+									<h:outputText value="Itl" rendered="#{emp.tipoCadastro==2}" />
+								</p:column>
+
+
+								<p:column headerText="Credencial"
+									style="width: 2%; text-align: center;">
+									<h:outputText value="#{emp.credencial}" />
+								</p:column>
+
+								<p:column headerText="Razão Social"
+									style="width: 20%; text-align: center;">
+									<h:outputText value="#{emp.razaoSocial}" />
+								</p:column>
+
+								<p:column headerText="Situação"
+									style="width: 2%; text-align: center;">
+									<h:outputText value="Ativo"
+										rendered="#{emp.situacaCadastro==1}" />
+									<h:outputText value="Inativo"
+										rendered="#{emp.situacaCadastro==2}" />
+								</p:column>
+
+								<p:column headerText="IP ou VPN"
+									style="width: 2%; text-align: center;">
+									<h:outputText value="IP" rendered="#{emp.situacaIp==1}" />
+									<h:outputText value="VPN" rendered="#{emp.situacaIp==2}" />
+									<h:outputText value="VPN" rendered="#{emp.situacaIp==0}" />
+								</p:column>
+
+
+								<p:column headerText="Data Cadastro"
+									style="width: 3%; text-align: center;">
+									<h:outputText value="#{emp.dataCadastro}">
+										<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
+											timeZone="America/Fortaleza" />
+									</h:outputText>
+								</p:column>
+
+								<p:column headerText="Usuário Cadastro"
+									style="width: 10%;text-align: center;">
+									<h:outputText value="NÃO INFORMADO"
+										rendered="#{emp.usuarioCadastro.pessoa.nomeCompleto==null}" />
+									<h:outputText
+										value="#{emp.usuarioCadastro.pessoa.nomeCompleto}"
+										rendered="#{emp.usuarioCadastro.pessoa.nomeCompleto!=null}" />
+								</p:column>
+
+
+
+
+
+								<p:column headerText="Ações"
+									style="width: 3%; text-align: center;">
+
+
+
+
+									<p:commandButton title="Histórico" icon="ui-icon-script"
+										actionListener="#{ecvItlBean.editar}"
+										oncomplete="PF('dialogoAdicionarHistorico').show();"
+										update=":mensagem :mensagem tabView:formularioEmpresas:painelDados dadosForm2:listaHistorico">
+
+										<f:attribute name="ecvitlSelecionado" value="#{emp}" />
+									</p:commandButton>
+
+									<p:commandButton title="Adicionar Proprietário"
+										actionListener="#{ecvItlBean.novoProprietarioSalvar}"
+										icon="pi pi-user-plus"
+										onclick="PF('dialogoNovoFuncionario').show();"
+										style="align: center;background: #8FBC8F;border-width: 0 3px 0 3px;color: #000000;"
+										update=":mensagem">
+										<f:attribute name="ecvitlSelecionado" value="#{emp}" />
+										<f:actionListener
+											type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+
+									</p:commandButton>
+
+								</p:column>
+
+
+
+								<p:rowExpansion>
+									<p:dataTable id="listaFuncionarios"
+										emptyMessage="Nenhum proprietário encontrado." paginator="true"
+										value="#{ecvItlBean.listaPessoasEcvItl}" var="relacao"
+										rows="10">
+
+										<p:column headerText="Nome" 
+											style="width: 7%; text-align: center;">
+											<h:outputText value="#{relacao.nome.toUpperCase()}" />
+
+
+										</p:column>
+										
+										<p:column headerText="CPF" 
+											style="width: 7%; text-align: center;">
+											<h:outputText value="#{relacao.cpf}" />
+
+
+										</p:column>
+										
+										<p:column headerText="Tipo Pessoa" 
+											style="width: 7%; text-align: center;">
+											<p:column headerText="Tipo"
+									style="width: 2%; text-align: center;">
+									<h:outputText value="Proprietário" rendered="#{relacao.tipoPessoa==1}" />
+									<h:outputText value="Procurador" rendered="#{relacao.tipoPessoa==0}" />
+								</p:column>					
+										</p:column>
+										
+										<p:column headerText="Ativo"
+									style="width: 2%; text-align: center;">
+									<h:outputText value="Ativo"
+										rendered="#{relacao.ativo==1}" />
+									<h:outputText value="Inativo"
+										rendered="#{relacao.ativo==0}" />
+										
+								</p:column>
+
+
+
+										<p:column headerText="Ações"
+											style="width: 3%; text-align: center;">
+
+
+											<p:commandButton title="Editar"
+				
+												actionListener="#{ecvItlBean.editarProprietario}"
+												icon="pi pi-pencil"
+												onclick="PF('dialogoNovoFuncionario').show();"
+												style="align: center;background: #ffecb3;border-width: 0 3px 0 3px;color: #000000;"
+												update=":mensagem funcionario:dadosFormFunc">
+												<f:attribute name="proprietarioSelecionado"
+													value="#{relacao}" />
+												<f:actionListener
+													type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+
+
+											</p:commandButton>
+
+
+
+
+
+
+
+										</p:column>
+
+
+
+
+
+
+
+
+
+									</p:dataTable>
+								</p:rowExpansion>
+
+
+
+							</p:dataTable>
+
+
+
+						</p:panelGrid>
+
+
+
+						<br />
+						<br />
+
+
+
+
+
+
+					</h:panelGroup>
+
+
+
+
+
+
+				</h:form>
+
+
+			</p:tab>
+
+
+
+
+
+
+
+
+		</p:tabView>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		<p:dialog widgetVar="dialogoAdicionarProcesso" draggable="false"
+			resizable="true" modal="true" closable="true" responsive="true"
+			height="800px" width="70%" dynamic="true">
+			<f:facet name="header">
+
+				<h:outputText id="someDialogHeader" value="Cadastro" />
+
+			</f:facet>
+
+
+
+
+
+
+
+
+			<p:panel header="Empresa">
+				<h:form id="dadosForm">
+
+
+
+
+
+
+
+
+					<p:panelGrid id="dadosForm" columns="2" layout="tabular"
+						style="margin: 0 auto;" styleClass="ui-noborder">
+
+
+						<i class="pi pi-users"></i>
+						<b style="color: #518e2e; margin: 0 auto;">Empresa</b>
+
+						<h:outputText value="" />
+
+						<p:outputLabel value="Tipo Cadastro" />
+						<p:selectOneMenu value="#{ecvItlBean.ecvItl.tipoCadastro}"
+							style="width:215px">
+							<f:selectItem itemLabel="Selecione o Tipo Cadastro" itemValue="" />
+							<f:selectItem itemLabel="Ecv" itemValue="1" />
+							<f:selectItem itemLabel="Itl" itemValue="2" />
+
+
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Credencial:" />
+						<p:inputText maxlength="50" size="30" id="credencial"
+							value="#{ecvItlBean.ecvItl.credencial}" required="true"
+							requiredMessage="O campo Credencial é obrigatório"
+							style="text-transform:uppercase;" />
+
+						<p:outputLabel value="CNPJ: " />
+						<p:inputText id="cnpj" maxlength="18" size="30"
+							placeholder="Digite o CNPJ" value="#{ecvItlBean.ecvItl.cnpj}"
+							required="true" requiredMessage="O campo CNPJ é obrigatório">
+						
+						</p:inputText>
+
+
+						<p:outputLabel value="Razão Social:" />
+						<p:inputText maxlength="50" size="30" id="razaoSocial"
+							value="#{ecvItlBean.ecvItl.razaoSocial}" required="true"
+							requiredMessage="O campo Razão Social é obrigatório"
+							style="text-transform:uppercase;" />
+
+						<p:outputLabel value="Nome Fantasia:" />
+						<p:inputText maxlength="50" size="30" id="nomeFantasia"
+							value="#{ecvItlBean.ecvItl.nomeFantasia}"
+							style="text-transform:uppercase;" />
+
+						<p:outputLabel value="Telefone 1:" />
+						<p:inputMask id="tel1" mask="(99) 9999-9999" size="11"
+							value="#{ecvItlBean.ecvItl.telefoneEcvItl1}">
+						</p:inputMask>
+
+						<p:outputLabel value="Telefone 2:" />
+						<p:inputMask id="tel2" mask="(99) 9999-9999" size="11"
+							value="#{ecvItlBean.ecvItl.telefoneEcvItl2}">
+						</p:inputMask>
+
+						<p:outputLabel value="E-mail:" />
+						<p:inputText maxlength="50" size="30" id="emailemp"
+							value="#{ecvItlBean.ecvItl.emailEcvItl}" 
+							style="text-transform:uppercase;" />
+
+
+						<p:outputLabel value="Situação Cadastro" />
+						<p:selectOneMenu value="#{ecvItlBean.ecvItl.situacaCadastro}"
+							style="width:215px">
+							<f:selectItem itemLabel="Selecione a Situação" itemValue="" />
+							<f:selectItem itemLabel="Cancelado" itemValue="0" />
+							<f:selectItem itemLabel="Ativo" itemValue="1" />
+							<f:selectItem itemLabel="Bloqueado" itemValue="2" />
+
+
+						</p:selectOneMenu>
+
+
+						<p:outputLabel value="Situação IP" />
+						<p:selectOneMenu value="#{ecvItlBean.ecvItl.situacaIp}"
+							style="width:215px">
+							<f:selectItem itemLabel="Selecione a Situação IP" itemValue="" />
+							<f:selectItem itemLabel="IP" itemValue="1" />
+							<f:selectItem itemLabel="VPN" itemValue="2" />
+
+
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Ip Fixo:" />
+						<p:inputText maxlength="50" size="30" id="idFixo"
+							value="#{ecvItlBean.ecvItl.ipFixo}" 
+							style="text-transform:uppercase;" />
+
+
+
+
+
+						<br />
+						<br />
+						<i class="pi pi-globe"></i>
+						<b style="color: #518e2e; margin: 0 auto;">ENDEREÇO</b>
+
+						<h:outputText value="" />
+
+
+						<p:outputLabel value="CEP:" />
+						<p:inputMask id="cep_endereco" mask="99.999-999" maxlength="11"
+							size="11" value="#{ecvItlBean.ecvItl.cep}" required="true"
+							requiredMessage="O campo CEP é obrigatório">
+							<f:ajax event="blur" execute="@this"
+								render="estado cidade endereco bairro"
+								listener="#{ecvItlBean.pesquisaCep}"></f:ajax>
+						</p:inputMask>
+
+						<p:outputLabel value="Logradouro: " />
+						<p:inputText maxlength="50" size="30" id="endereco"
+							value="#{ecvItlBean.ecvItl.logradouro}" required="true"
+							requiredMessage="O campo Endereço Residência é obrigatório"
+							style="text-transform:uppercase;" />
+							
+							<p:outputLabel value="Número:" />
+						<p:inputText maxlength="50" size="30" id="numero"
+							value="#{ecvItlBean.ecvItl.numero}"
+							style="text-transform:uppercase;" />
+							
+
+						<p:outputLabel value="Complemento:" />
+						<p:inputText maxlength="50" size="30" id="complemento"
+							value="#{ecvItlBean.ecvItl.complemento}"
+							style="text-transform:uppercase;" />
+
+						<p:outputLabel value="Estado:" />
+						<p:inputText maxlength="50" size="30" id="estado"
+							value="#{ecvItlBean.ecvItl.estado}"
+							style="text-transform:uppercase;" />
+
+						<p:outputLabel value="Cidade:" />
+						<p:inputText maxlength="50" size="30" id="cidade"
+							value="#{ecvItlBean.ecvItl.cidade}"
+							style="text-transform:uppercase;" />
+
+						<p:outputLabel value="Bairro:" />
+						<p:inputText maxlength="50" size="30" id="bairro"
+							value="#{ecvItlBean.ecvItl.bairro}"
+							style="text-transform:uppercase;" />
+
+						
+
+
+
+
+
+
+					</p:panelGrid>
+
+
+					<br />
+					<br />
+
+
+
+
+
+
+
+
+
+
+
+					<h:panelGrid columns="2" style="margin: 0 auto;">
+						<p:commandButton value="Salvar" style="background: #01B50D"
+							actionListener="#{ecvItlBean.salvar()}"
+							oncomplete="PF('dialogoAdicionarProcesso').hide();"
+							update=":mensagem tabView:formularioEmpresas:listaCorregedoria" />
+
+
+
+					</h:panelGrid>
+				</h:form>
+
+			</p:panel>
+
+
+
+
+
+
+
+
+
+
+		</p:dialog>
+
+
+		<p:dialog widgetVar="dialogoAdicionarHistorico" draggable="false"
+			resizable="true" modal="true" closable="true" responsive="true"
+			height="800px" width="70%" dynamic="true">
+			<f:facet name="header">
+
+				<h:outputText id="someDialogHeader2" value="Cadastro" />
+
+			</f:facet>
+
+			<h:form id="dadosForm2">
+
+
+
+				<p:tab title="Histórico">
+
+					<f:facet name="title">
+							Histórico <i class="pi pi-list"></i>
+					</f:facet>
+
+
+					<p:panel header="Histórico processo">
+
+						<h:panelGrid id="cadastroHistorico" columns="2" cellpadding="2"
+							style="margin: 0 auto;">
+
+							<p:inputTextarea maxlength="255" rows="3" cols="50"
+								value="#{ecvItlBean.historicoEcvItl.descricao}"
+								counter="display" counterTemplate="Restam {0} Caracteres." />
+							<h:outputText />
+							<h:outputText id="display" />
+
+						</h:panelGrid>
+
+						<h:panelGrid columns="2" style="margin: 0 auto;">
+							<p:commandButton value="Salvar" ajax="false"
+								actionListener="#{ecvItlBean.salvarHistorico()}"
+								update=":mensagem processo:tabViewProcesso:listaHistorico" />
+
+						</h:panelGrid>
+
+						<p:dataTable id="listaHistorico" showGridlines="true"
+							emptyMessage="Nenhum registro encontrado." paginator="true"
+							rows="5" value="#{ecvItlBean.listaHistoricoEcvItl}" var="hist">
+
+
+							<p:column headerText="Histórico Descrição">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{hist.descricao}" />
+
+									</f:facet>
+									<f:facet name="input">
+										<p:inputTextarea maxlength="255" rows="1" cols="50"
+											value="#{hist.descricao}" counter="display"
+											counterTemplate="Restam {0} Caracteres." />
+										<h:outputText />
+										<h:outputText id="display" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+
+
+							<p:column headerText="Usuário Cadastro"
+								style="text-align: center;">
+								<h:outputText value="NÃO INFORMADO"
+									rendered="#{hist.usuarioCadastro.pessoa.nomeCompleto==null}" />
+								<h:outputText
+									value="#{hist.usuarioCadastro.pessoa.nomeCompleto}"
+									rendered="#{hist.usuarioCadastro.pessoa.nomeCompleto!=null}" />
+							</p:column>
+
+
+
+
+							<p:column headerText="Ações"
+								style="width: 3%; text-align: center;">
+
+
+
+								<p:commandButton icon="ui-icon-pencil"
+									actionListener="#{ecvItlBean.editarHistorico}"
+									update=":mensagem dadosForm2:listaHistorico dadosForm2:cadastroHistorico">
+									<f:attribute name="histSelecionado" value="#{hist}" />
+									<f:actionListener
+										type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+								</p:commandButton>
+
+								<p:commandButton icon="ui-icon-trash"
+									actionListener="#{ecvItlBean.excluirHistorico}"
+									update=":mensagem dadosForm2:listaHistorico dadosForm2:cadastroHistorico">
+									<p:confirm header="Confirmação"
+										message="Deseja excluir o Historico?" icon="ui-icon-alert" />
+									<f:attribute name="histSelecionado" value="#{hist}" />
+								</p:commandButton>
+
+							</p:column>
+
+
+
+
+
+						</p:dataTable>
+
+						<p:confirmDialog global="true">
+							<p:commandButton value="Sim" type="button"
+								styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+							<p:commandButton value="Não" type="button"
+								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						</p:confirmDialog>
+
+					</p:panel>
+
+				</p:tab>
+
+
+
+
+			</h:form>
+
+
+
+
+
+
+
+
+
+
+
+
+		</p:dialog>
+
+
+		<p:dialog widgetVar="dialogoNovoFuncionario" draggable="false"
+			resizable="true" modal="true" closable="true" responsive="true">
+			<f:facet name="header">
+
+				<h:outputText id="someDialogHeaderFunc" value="Proprietário" />
+
+			</f:facet>
+
+			<h:form id="funcionario">
+
+
+
+				<p:panel header="Novo Proprietário">
+
+					<p:panelGrid id="dadosFormFunc" columns="2" layout="tabular"
+						style="margin: 0 auto;" styleClass="ui-noborder">
+
+						<p:outputLabel value="Tipo Pessoa" />
+						<p:selectOneMenu value="#{ecvItlBean.pessoaEcvItl.tipoPessoa}"
+							style="width:215px">
+							<f:selectItem itemLabel="Selecione o Tipo Pessoa" itemValue="" />
+							<f:selectItem itemLabel="Proprietário" itemValue="1" />
+							<f:selectItem itemLabel="Procurador" itemValue="0" />
+
+						</p:selectOneMenu>
+
+						<p:outputLabel value="CPF: *" />
+						<p:inputText id="cpf" maxlength="14" size="50"
+							placeholder="Digite o CPF" value="#{ecvItlBean.pessoaEcvItl.cpf}"
+							required="true" requiredMessage="O campo CPF é obrigatório">
+							
+						</p:inputText>
+
+						<p:outputLabel value="Nome: *" />
+						<p:inputText maxlength="50" size="50" id="nomeCompleto"
+							value="#{ecvItlBean.pessoaEcvItl.nome}" required="true"
+							requiredMessage="O campo Nome Completo é obrigatório"
+							style="text-transform:uppercase;" />
+
+
+						<p:outputLabel value="E-mail:" />
+						<p:inputText maxlength="50" size="50" id="email"
+							value="#{ecvItlBean.pessoaEcvItl.email}"
+							style="text-transform:lowercase;" />
+
+						<p:outputLabel value="Telefone 1:" />
+						<p:inputMask id="tel1" mask="(99) 99999-9999" size="50"
+							value="#{ecvItlBean.pessoaEcvItl.telefone}">
+						</p:inputMask>
+
+						<p:outputLabel value="Telefone 2:" />
+						<p:inputMask id="tel2" mask="(99) 99999-9999" size="50"
+							value="#{ecvItlBean.pessoaEcvItl.telefone2}">
+						</p:inputMask>
+
+
+						<p:outputLabel value="Ativo" />
+						<p:selectOneMenu value="#{ecvItlBean.pessoaEcvItl.ativo}"
+							style="width:215px">
+							<f:selectItem itemLabel="Selecione o Status" itemValue="" />
+
+							<f:selectItem itemLabel="Ativo" itemValue="1" />
+							<f:selectItem itemLabel="Inativo" itemValue="0" />
+
+
+						</p:selectOneMenu>
+
+
+
+					</p:panelGrid>
+
+					<br />
+					<br />
+					<h:panelGrid columns="2" style="margin: 0 auto;">
+						<p:commandButton value="Salvar"
+							actionListener="#{ecvItlBean.salvarNovoProprietario()}"
+							update=":mensagem tabView:formularioEmpresas:listaCorregedoria"
+							oncomplete="PF('dialogoNovoFuncionario').hide();"
+							style="background: #01B50D;">
+
+						</p:commandButton>
+
+
+
+					</h:panelGrid>
+
+				</p:panel>
+			</h:form>
+		</p:dialog>
+
+
+
+
+
+
+
+	</ui:define>
+</ui:composition>
+
+
+
+
+
+
+

@@ -75,7 +75,7 @@ $(window).bind('beforeunload', function() {
 				<p:menubar>
 
 					<p:menuitem value="Inicio"
-						url="/Sistema_Integrado_de_Gestão/pages/principal.xhtml" />
+						url="/pages/principal.xhtml" />
 
 					<p:submenu label="Sistema">
 						<p:menuitem value="Alterar Senha" icon="ui-icon-key"
@@ -88,40 +88,40 @@ $(window).bind('beforeunload', function() {
 					<p:submenu label="Cadastros"
 						rendered="#{autenticacaoBean.temPermissoes([1])}">
 						<p:menuitem value="Estado"
-							url="/Sistema_Integrado_de_Gestão/pages/estado.xhtml" />
+							url="/pages/estado.xhtml" />
 						<p:menuitem value="Cidade"
-							url="/Sistema_Integrado_de_Gestão/pages/cidade.xhtml" />
+							url="/pages/cidade.xhtml" />
 						<p:menuitem value="Pessoas"
-							url="/Sistema_Integrado_de_Gestão/pages/pessoas.xhtml" />
+							url="/pages/pessoas.xhtml" />
 						<p:menuitem value="Empresas"
-							url="/Sistema_Integrado_de_Gestão/pages/empresas.xhtml" />
+							url="/pages/empresas.xhtml" />
 						<p:menuitem value="Usuários"
-							url="/Sistema_Integrado_de_Gestão/pages/usuarios.xhtml" />
+							url="/pages/usuarios.xhtml" />
 						<p:menuitem value="Unidade"
-							url="/Sistema_Integrado_de_Gestão/pages/unidade.xhtml" />
+							url="/pages/unidade.xhtml" />
 						<p:menuitem value="Setor"
-							url="/Sistema_Integrado_de_Gestão/pages/setor.xhtml" />
+							url="/pages/setor.xhtml" />
 						<p:menuitem value="Usuário Nível Acesso"
-							url="/Sistema_Integrado_de_Gestão/pages/usuarionivelacesso.xhtml" />
+							url="/pages/usuarionivelacesso.xhtml" />
 						<p:menuitem value="Usuário Status"
-							url="/Sistema_Integrado_de_Gestão/pages/usuariostatus.xhtml" />
+							url="/pages/usuariostatus.xhtml" />
 					</p:submenu>
 
 					<p:submenu label="Recurso Multa"
 						rendered="#{autenticacaoBean.temPermissoes([1, 2, 7])}">
 						<p:menuitem value="Recurso - Tipos"
-							url="/Sistema_Integrado_de_Gestão/pages/recursomultatipos.xhtml"
+							url="/pages/recursomultatipos.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1])}" />
 						<p:menuitem value="Recurso - Cadastrar" icon="ui-icon-plusthick"
-							url="/Sistema_Integrado_de_Gestão/pages/recursomultacadastro.xhtml" />
+							url="/pages/recursomultacadastro.xhtml" />
 						<p:menuitem value="Recurso - Receber"
 							icon="ui-icon-transferthick-e-w"
-							url="/Sistema_Integrado_de_Gestão/pages/recursomultarecebe.xhtml" />
+							url="/pages/recursomultarecebe.xhtml" />
 						<p:menuitem value="Recurso - Tramitar"
 							icon="ui-icon-arrowreturnthick-1-e"
-							url="/Sistema_Integrado_de_Gestão/pages/recursomultasaida.xhtml" />
+							url="/pages/recursomultasaida.xhtml" />
 						<p:menuitem value="Recurso - Consulta" icon="ui-icon-search"
-							url="/Sistema_Integrado_de_Gestão/pages/recursomultaconsultasaida.xhtml" />
+							url="/pages/recursomultaconsultasaida.xhtml" />
 
 
 					</p:submenu>
@@ -129,40 +129,40 @@ $(window).bind('beforeunload', function() {
 					<p:submenu label="Credenciamento"
 						rendered="#{autenticacaoBean.temPermissoes([1, 13, 17, 18])}">
 						<p:menuitem value="Credenciado Cadastro" icon="ui-icon-plusthick"
-							url="/Sistema_Integrado_de_Gestão/pages/credenciado.xhtml"
+							url="/pages/credenciado.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}" />
 						<p:menuitem value="Credenciado Visão Geral" icon="ui-icon-person"
-							url="/Sistema_Integrado_de_Gestão/pages/credenciadogeral.xhtml" />
+							url="/pages/credenciadogeral.xhtml" />
 						<p:menuitem value="Relatório Credenciado" icon="ui-icon-calendar"
-							url="/Sistema_Integrado_de_Gestão/pages/credencialrelatorio.xhtml"
+							url="/pages/credencialrelatorio.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 13, 17, 18])}" />
 						<p:separator style="height:7px"
 							rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}" />
 						<p:menuitem value="Empresa Cadastro" icon="ui-icon-plusthick"
-							url="/Sistema_Integrado_de_Gestão/pages/credenciadoemp.xhtml"
+							url="/pages/credenciadoemp.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}" />
 						<p:menuitem value="Empresa Visão Geral" icon="ui-icon-suitcase"
-							url="/Sistema_Integrado_de_Gestão/pages/credenciadoempgeral.xhtml" />
+							url="/pages/credenciadoempgeral.xhtml" />
 						<p:menuitem value="Relatório Empresa" icon="ui-icon-calendar"
-							url="/Sistema_Integrado_de_Gestão/pages/credencialemprelatorio.xhtml"
+							url="/pages/credencialemprelatorio.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 13, 17, 18])}" />
 
 						<p:menuitem value="Processos andamento" icon="ui-icon-calendar"
-							url="/Sistema_Integrado_de_Gestão/pages/processoscodet.xhtml"
+							url="/pages/processoscodet.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1])}" />
 						<p:separator style="height:7px"
 							rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}" />
 						<p:menuitem value="Cadastro - Status"
-							url="/Sistema_Integrado_de_Gestão/pages/credencialstatus.xhtml"
+							url="/pages/credencialstatus.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 18])}" />
 						<p:menuitem value="Cadastro - Tipo Credenciado"
-							url="/Sistema_Integrado_de_Gestão/pages/credencialtipo.xhtml"
+							url="/pages/credencialtipo.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 18])}" />
 						<p:menuitem value="Cadastro - Tipo Empresa"
-							url="/Sistema_Integrado_de_Gestão/pages/credencialemptipo.xhtml"
+							url="/pages/credencialemptipo.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 18])}" />
 						<p:menuitem value="Veículo Cadastro" icon="ui-icon-plusthick"
-							url="/Sistema_Integrado_de_Gestão/pages/credencialveiculo.xhtml"
+							url="/pages/credencialveiculo.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}" />
 
 					</p:submenu>
@@ -170,7 +170,7 @@ $(window).bind('beforeunload', function() {
 					<p:submenu label="Ofícios"
 						rendered="#{autenticacaoBean.temPermissoesPorUnidadeCodigo([1,2,3])}">
 						<p:menuitem value="Novo Ofício" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/oficio.xhtml" />
+							url="/pages/oficio.xhtml" />
 
 
 
@@ -179,7 +179,7 @@ $(window).bind('beforeunload', function() {
 
 
 						<p:menuitem icon="ui-icon-transferthick-e-w"
-							url="/Sistema_Integrado_de_Gestão/pages/rastreio.xhtml">
+							url="/pages/rastreio.xhtml">
 							<p:outputLabel value="Saída Ofício " />
 
 							<p:badge value="#{oficioBean.oficiosMenuCount.size()}"
@@ -194,15 +194,15 @@ $(window).bind('beforeunload', function() {
 						<p:separator style="height:7px" />
 						<p:menuitem rendered="#{autenticacaoBean.temPermissoes([1])}"
 							value="Consulta Rastreio" icon="ui-icon-search"
-							url="/Sistema_Integrado_de_Gestão/pages/rastreioconsulta.xhtml" />
+							url="/pages/rastreioconsulta.xhtml" />
 						<p:menuitem value="Consulta Ofício/Rastreio" icon="ui-icon-search"
-							url="/Sistema_Integrado_de_Gestão/pages/rastreioconsulta2.xhtml" />
+							url="/pages/rastreioconsulta2.xhtml" />
 
 						<p:separator style="height:7px" />
 						<p:menuitem value="SGP-e Caderno" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/docsgpe.xhtml" />
+							url="/pages/docsgpe.xhtml" />
 						<p:menuitem value="SGP-e Caderno" icon="ui-icon-search"
-							url="/Sistema_Integrado_de_Gestão/pages/docsgpeconsulta.xhtml" />
+							url="/pages/docsgpeconsulta.xhtml" />
 
 
 					</p:submenu>
@@ -210,17 +210,17 @@ $(window).bind('beforeunload', function() {
 					<p:submenu label="Frota"
 						rendered="#{autenticacaoBean.temPermissoesPorUnidadeCodigo([1,2,3])}">
 						<p:menuitem value="Veículo" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/frotaveiculo.xhtml"
+							url="/pages/frotaveiculo.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1,25])}" />
 						<p:menuitem value="Condutor" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/frotacondutor.xhtml"
+							url="/pages/frotacondutor.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1,25])}" />
 						<p:menuitem value="Gerencia Viagem" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/frotaviagem.xhtml"
+							url="/pages/frotaviagem.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1,25])}" />
 
 						<p:menuitem value="Solicitar Viagem" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/frotasolicita.xhtml" />
+							url="/pages/frotasolicita.xhtml" />
 
 
 
@@ -230,19 +230,19 @@ $(window).bind('beforeunload', function() {
 					<p:submenu label="Almoxarifado"
 						rendered="#{autenticacaoBean.temPermissoes([1, 19, 25])}">
 						<p:menuitem value="Centro de Custo" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/materialcentrocusto.xhtml" />
+							url="/pages/materialcentrocusto.xhtml" />
 						<p:menuitem value="Material Tipo" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/materialtipo.xhtml" />
+							url="/pages/materialtipo.xhtml" />
 						<p:menuitem value="Cadastro de Materiais" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/material.xhtml" />
+							url="/pages/material.xhtml" />
 						<p:menuitem value="Estoque Material" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/materialentrada.xhtml" />
+							url="/pages/materialentrada.xhtml" />
 						<p:menuitem value="Solicitação Material" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/materialsaida.xhtml" />
+							url="/pages/materialsaida.xhtml" />
 						<p:menuitem value="Aprovação Pedidos" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/materialaprovacao.xhtml" />
+							url="/pages/materialaprovacao.xhtml" />
 						<p:menuitem value="Relatório" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/materialrelatorio.xhtml" />
+							url="/pages/materialrelatorio.xhtml" />
 
 					</p:submenu>
 
@@ -250,29 +250,29 @@ $(window).bind('beforeunload', function() {
 						rendered="#{autenticacaoBean.temPermissoes([1, 27])}">
 
 						<p:menuitem value="Situações" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/cetran/situacao.xhtml"
+							url="/pages/cetran/situacao.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
 						<p:menuitem value="Representação" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/cetran/representacao.xhtml"
+							url="/pages/cetran/representacao.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
 						<p:menuitem value="Conselheiros" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/cetran/conselheiro.xhtml"
+							url="/pages/cetran/conselheiro.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
 
 						<p:menuitem value="Processos" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/cetran/requerente.xhtml"
+							url="/pages/cetran/requerente.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
 
 						<p:menuitem value="Vincular Conselheiro" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/cetran/vincularprocesso.xhtml"
+							url="/pages/cetran/vincularprocesso.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
 
 						<p:menuitem value="Relatório e Histórico" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/cetran/relatoriodistribuicao.xhtml"
+							url="/pages/cetran/relatoriodistribuicao.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
 
 						<p:menuitem value="Processos à Vencer" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/cetran/processoavencer.xhtml"
+							url="/pages/cetran/processoavencer.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
 
 					</p:submenu>
@@ -282,26 +282,26 @@ $(window).bind('beforeunload', function() {
 						rendered="#{autenticacaoBean.temPermissoes([1, 13])}">
 
 						<p:menuitem value="Nomenclatura Processo" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/codet/nomenclaturaprocesso.xhtml"
+							url="/pages/codet/nomenclaturaprocesso.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 13])}" />
 						<p:menuitem value="Situação Processo" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/codet/situacaoprocesso.xhtml"
+							url="/pages/codet/situacaoprocesso.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 13])}" />
 						<p:menuitem value="Setor Atual" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/codet/setoratual.xhtml"
+							url="/pages/codet/setoratual.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 13])}" />
 						<p:menuitem value="Penalidade Processo" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/codet/penalidadeprocesso.xhtml"
+							url="/pages/codet/penalidadeprocesso.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 13])}" />
 
 
 						<p:menuitem value="Processos" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/codet/processos.xhtml"
+							url="/pages/codet/processos.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 13])}" />
 
 						<p:menuitem value="Relatório Setor/Situação"
 							icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/codet/relatorioprocesso.xhtml"
+							url="/pages/codet/relatorioprocesso.xhtml"
 							rendered="#{autenticacaoBean.temPermissoes([1, 13])}" />
 					</p:submenu>
 
@@ -310,36 +310,36 @@ $(window).bind('beforeunload', function() {
 						label="Controle Terceirizados">
 						<p:menuitem value="Empresas" icon="ui-icon-plusthick"
 							rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}"
-							url="/Sistema_Integrado_de_Gestão/pages/contrato/empresaterceirizada.xhtml" />
+							url="/pages/contrato/empresaterceirizada.xhtml" />
 
 						<p:menuitem value="Cargo Funcionários" icon="ui-icon-plusthick"
 							rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}"
-							url="/Sistema_Integrado_de_Gestão/pages/contrato/cargoterceirizado.xhtml" />
+							url="/pages/contrato/cargoterceirizado.xhtml" />
 
 						<p:menuitem value="Funcionários" icon="ui-icon-plusthick"
-							url="/Sistema_Integrado_de_Gestão/pages/contrato/funcionarioterceirizado.xhtml" />
+							url="/pages/contrato/funcionarioterceirizado.xhtml" />
 
 						<p:menuitem value="Contratos" icon="ui-icon-plusthick"
-							url="/Sistema_Integrado_de_Gestão/pages/contrato/controlecontrato.xhtml" />
+							url="/pages/contrato/controlecontrato.xhtml" />
 
 						<p:menuitem value="Setor Unidade" icon="ui-icon-plusthick"
-							url="/Sistema_Integrado_de_Gestão/pages/contrato/setorunidades.xhtml" />
+							url="/pages/contrato/setorunidades.xhtml" />
 
 						<p:menuitem value="Substituições" icon="ui-icon-transferthick-e-w"
 							rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}"
-							url="/Sistema_Integrado_de_Gestão/pages/contrato/substituicoesfuncionarios.xhtml" />
+							url="/pages/contrato/substituicoesfuncionarios.xhtml" />
 
 						<p:menuitem value="Relatório Eventos" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/contrato/relatorioevento.xhtml" />
+							url="/pages/contrato/relatorioevento.xhtml" />
 						<p:menuitem value="Histórico Funcionários" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/contrato/relatoriocontratoxfuncionario.xhtml" />
+							url="/pages/contrato/relatoriocontratoxfuncionario.xhtml" />
 
 						<p:menuitem value="Funcionários Ativos" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/contrato/funcionariosativos.xhtml"
+							url="/pages/contrato/funcionariosativos.xhtml"
 							rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}" />
 						<p:menuitem value="Usuários Claims" icon="ui-icon-contact"
 							rendered="#{autenticacaoBean.temPermissoes([1])}"
-							url="/Sistema_Integrado_de_Gestão/pages/contrato/userclaimscontrato.xhtml" />
+							url="/pages/contrato/userclaimscontrato.xhtml" />
 					</p:submenu>
 
 					<p:submenu
@@ -349,13 +349,19 @@ $(window).bind('beforeunload', function() {
 
 						<p:menuitem value="Contratos" icon="ui-icon-search"
 							rendered="#{contratoTerceirizadoBean.soVisualizar == true}"
-							url="/Sistema_Integrado_de_Gestão/pages/contrato/controlecontrato.xhtml" />
+							url="/pages/contrato/controlecontrato.xhtml" />
 
+					</p:submenu>
+					
+					
+					<p:submenu label="Diretoria de Veículos" rendered="#{autenticacaoBean.temPermissoes([1,11])}">
+						<p:menuitem value="ECV/ITL" icon="ui-icon-document"
+							url="/pages/ecvitl/EcvItl.xhtml" />
 					</p:submenu>
 
 					<p:submenu label="Solicitações">
 						<p:menuitem value="Acessos" icon="ui-icon-document"
-							url="/Sistema_Integrado_de_Gestão/pages/acessos.xhtml" />
+							url="/pages/acessos.xhtml" />
 					</p:submenu>
 
 					<f:facet name="options">
