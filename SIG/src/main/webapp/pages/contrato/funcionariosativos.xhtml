@@ -45,9 +45,9 @@
 						<f:selectItem noSelectionOption="true" itemValue=""
 							itemLabel="TODOS" />
 						<f:selectItem noSelectionOption="true" itemValue="Substituto"
-							itemLabel="Substituto" />
+							itemLabel="Volante" />
 						<f:selectItem noSelectionOption="true" itemValue="Ativo"
-							itemLabel="Ativo" />
+							itemLabel="Efetivo" />
 						
 
 					</p:selectOneMenu>
@@ -85,7 +85,15 @@
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true"
 					value="#{contratoTerceirizadoBean.listaContratoRelacoes}"
-					var="relacao" rows="10">
+					var="relacao" rows="560">
+					
+					<p:column headerText="Unidade"
+						sortBy="#{relacao.funcionarioTerceirizado.unidade.unidadeNome}"
+						filterBy="#{relacao.funcionarioTerceirizado.unidade.unidadeNome}"
+						style="width: 20%; text-align: center;">
+						<h:outputText
+							value="#{relacao.funcionarioTerceirizado.unidade.unidadeNome}" />
+					</p:column>
 
 					<p:column headerText="Empresa"
 						sortBy="#{relacao.contratoTerceirizado.empresaTerceirizada.pessoaJuridica.nomeFantasia}"
@@ -108,7 +116,23 @@
 						filterBy="#{relacao.funcionarioTerceirizado.pessoa.nomeCompleto}"
 						style="width: 20%; text-align: center;">
 						<h:outputText
-							value="#{relacao.funcionarioTerceirizado.pessoa.nomeCompleto}" />
+							value="#{relacao.funcionarioTerceirizado.pessoa.nomeCompleto} - #{relacao.funcionarioTerceirizado.pessoa.cpf}" />
+					</p:column>
+					
+					<p:column headerText="Setor"
+						sortBy="#{relacao.funcionarioTerceirizado.setor.setorNome}"
+						filterBy="#{relacao.funcionarioTerceirizado.setor.setorNome}"
+						style="width: 20%; text-align: center;">
+						<h:outputText
+							value="#{relacao.funcionarioTerceirizado.setor.setorNome}" />
+					</p:column>
+					
+					<p:column headerText="Cargo"
+						sortBy="#{relacao.funcionarioTerceirizado.cargoTerceirizado.descricao}"
+						filterBy="#{relacao.funcionarioTerceirizado.cargoTerceirizado.descricao}"
+						style="width: 20%; text-align: center;">
+						<h:outputText
+							value="#{relacao.funcionarioTerceirizado.cargoTerceirizado.descricao}" />
 					</p:column>
 
 					<p:column headerText="Movimentação" sortBy="#{relacao.status}"
@@ -125,8 +149,8 @@
 					</p:column>
 
 					<p:column headerText="Cadastrado Por"
-						sortBy="#{relacao.usuarioLogado.pessoa.nomeCompleto}"
-						filterBy="#{relacao.usuarioLogado.pessoa.nomeCompleto}"
+						sortBy="#{relacao.usuarioCadastro.pessoa.nomeCompleto}"
+						filterBy="#{relacao.usuarioCadastro.pessoa.nomeCompleto}"
 						style="width: 20%; text-align: center;">
 						<h:outputText value="#{relacao.usuarioCadastro.pessoa.nomeCompleto}" />
 					</p:column>

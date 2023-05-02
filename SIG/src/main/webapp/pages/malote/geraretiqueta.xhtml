@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="metadata">
+
+		<f:metadata>
+
+			<f:event listener="#{processoCetranBean.listarSituacoes}"
+				type="preRenderView" />
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="conteudo">
+		<h:form id="formlista"
+			rendered="#{autenticacaoBean.temPermissoes([1, 27])}">
+			<p:panel header="Ler etiqueta">
+
+
+			<h:panelGrid columns="1" style="margin: 0 auto;">
+			
+					<p:outputLabel value="Lote: " />
+						<p:inputText  maxlength="14" size="10"
+							placeholder="6789" value="#{ecvItlBean.pessoaEcvItl.cpf}"
+							>
+							
+						</p:inputText>
+						
+							
+						<br />
+							<br />
+							
+							
+								<p:outputLabel value="Município: " />
+						<p:inputText  maxlength="14" size="10"
+							placeholder="São José" value="#{ecvItlBean.pessoaEcvItl.cpf}"
+							>
+							
+						</p:inputText>
+								
+						
+			
+						
+						
+						<br />
+							<br />
+								<br />
+									<br />
+										<br />
+											<br />
+						
+							<p:outputLabel value="" />
+        <p:barcode value="0000006789" type="codabar"/>
+        
+        	<br />
+							<br />
+        	
+						
+						
+						
+        
+
+				</h:panelGrid>
+				
+				
+			
+
+			</p:panel>
+			
+			
+				<p:panel header="Etiquetas geradas">
+				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+					paginator="true" value="#{situacaoBean.listaSituacoes}"
+					var="situacao" rows="10">
+					<f:facet name="footer">
+						<p:commandButton value="Despacho"
+							actionListener="#{ecvItlBean.salvarNovoProprietario()}"
+							update=":mensagem "
+							oncomplete="PF('dialogoNovoFuncionario').hide();"
+							style="background: #01B50D;">
+
+						</p:commandButton>
+					</f:facet>
+
+					<p:column headerText="Lote" style="width: 70px; text-align: center;">
+						<h:outputText value="6789" />
+					</p:column>
+					
+						<p:column headerText="Status" style="width: 70px; text-align: center;">
+						<h:outputText value="Recebido" />
+					</p:column>
+					
+
+					
+				</p:dataTable>
+				
+				</p:panel>
+			
+			
+			
+		</h:form>
+
+
+	</ui:define>
+</ui:composition>

@@ -25,7 +25,7 @@
 
 	<ui:define name="conteudo">
 		<h:form id="formlista">
-			<p:panel header="Substituições - Listagem">
+			<p:panel header="Volantes - Listagem">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					value="#{contratoTerceirizadoBean.listaHistFuncionariosSubstitutos}"
 					var="sub" reflow="true" rows="10" paginator="true">
@@ -38,7 +38,7 @@
 							value="#{sub.contratoTerceirizado.nContrato} - #{sub.contratoTerceirizado.empresaTerceirizada.pessoaJuridica.nomeFantasia} - #{sub.contratoTerceirizado.unidade.unidadeNome}" />
 					</p:column>
 
-					<p:column headerText="Substituto"
+					<p:column headerText="Volante"
 						sortBy="#{sub.funcionarioTerceirizado.pessoa.nomeCompleto.toUpperCase()}"
 						filterBy="#{sub.funcionarioTerceirizado.pessoa.nomeCompleto.toUpperCase()}">
 						<h:outputText

@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +19,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.servlet.http.HttpSession;
+import javax.swing.text.MaskFormatter;
 
 import org.omnifaces.util.Messages;
 import org.primefaces.event.SelectEvent;
@@ -58,15 +60,12 @@ public class EcvItlBean implements Serializable {
 
 	private HistoricoDescricao historicoEcvItl;
 	private List<HistoricoDescricao> listaHistoricoEcvItl;
-	
+
 	private PessoaEcvItl pessoaEcvItl;
 	private List<PessoaEcvItl> listaPessoasEcvItl;
-	
-	
+
 	private String campoDaBusca;
 	private Usuario usuarioLogado;
-	
-	
 
 	public PessoaEcvItl getPessoaEcvItl() {
 		return pessoaEcvItl;
@@ -119,7 +118,6 @@ public class EcvItlBean implements Serializable {
 			historicoEcvItl = new HistoricoDescricao();
 			pessoaEcvItl = new PessoaEcvItl();
 
-			
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar listar as Ecv/Itl.");
 			erro.printStackTrace();
@@ -143,7 +141,7 @@ public class EcvItlBean implements Serializable {
 			ecvItl.setDataCadastro(new Date());
 
 			ecvItlDAO.merge(ecvItl);
-			
+
 			listaEcvItl = ecvItlDAO.listar("credencial");
 
 			Messages.addGlobalInfo("Ecv/Itl cadastrada com Sucesso!");
@@ -209,15 +207,9 @@ public class EcvItlBean implements Serializable {
 
 			ecvItl.setBairro(cepEmpresa.getBairro());
 
-			
-
 			ecvItl.setEstado(cepEmpresa.getUf());
 
-		
-
 			ecvItl.setCidade(cepEmpresa.getLocalidade());
-
-		
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -236,6 +228,7 @@ public class EcvItlBean implements Serializable {
 			historicoEcvItl.setEcvItl(ecvItl);
 
 			historicoEcvItl.setUsuarioCadastro(usuarioLogado);
+			historicoEcvItl.setDataCadastro(new Date());
 			historicoEcvItl.setDescricao(historicoEcvItl.getDescricao());
 
 			histDAO.merge(historicoEcvItl);
@@ -251,23 +244,20 @@ public class EcvItlBean implements Serializable {
 		}
 
 	}
-	
+
 	public void editarProprietario(ActionEvent evento) {
-		
-		
-		
+
 		pessoaEcvItl = (PessoaEcvItl) evento.getComponent().getAttributes().get("proprietarioSelecionado");
-		
+
 		ecvItl = pessoaEcvItl.getEcvItl();
 	}
-	
+
 	public void novoProprietarioSalvar(ActionEvent evento) {
-		
-		
+
 		ecvItl = (EcvItl) evento.getComponent().getAttributes().get("ecvitlSelecionado");
 		System.out.println(ecvItl + " ecvItl EVENTO");
 	}
-	
+
 	public void salvarNovoProprietario() {
 
 		try {
@@ -276,21 +266,14 @@ public class EcvItlBean implements Serializable {
 			this.usuarioLogado = (Usuario) sessao.getAttribute("usuario");
 
 			PessoaEcvItlDAO pessoaDAO = new PessoaEcvItlDAO();
-			
-			
+
 			pessoaEcvItl.setEcvItl(ecvItl);
-			
-			
+
 			pessoaEcvItl.setTipoPessoa(pessoaEcvItl.getTipoPessoa());
 
 			pessoaEcvItl.setUsuarioCadastro(usuarioLogado);
-			
-			
-		
 
 			pessoaDAO.merge(pessoaEcvItl);
-
-			
 
 			pessoaEcvItl = new PessoaEcvItl();
 
@@ -301,7 +284,7 @@ public class EcvItlBean implements Serializable {
 		}
 
 	}
-	
+
 	public void onRowToggleProprietarios(ToggleEvent event) {
 		PessoaEcvItlDAO relacaoDAO = new PessoaEcvItlDAO();
 		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Row State " + event.getVisibility(),
@@ -310,9 +293,8 @@ public class EcvItlBean implements Serializable {
 		ecvItl = (EcvItl) event.getData();
 		listaPessoasEcvItl = relacaoDAO.listarPorEcvItlObject(event.getData());
 
-			
-		
-		System.out.println(listaPessoasEcvItl + " listaPessoasEcvItllistaPessoasEcvItllistaPessoasEcvItllistaPessoasEcvItl");
+		System.out.println(
+				listaPessoasEcvItl + " listaPessoasEcvItllistaPessoasEcvItllistaPessoasEcvItllistaPessoasEcvItl");
 		FacesContext.getCurrentInstance().addMessage((String) null, msg);
 	}
 
@@ -341,14 +323,12 @@ public class EcvItlBean implements Serializable {
 			erro.printStackTrace();
 		}
 	}
-	
-	public void buscarCamposPesquisa() {
+
+	public void buscarCamposPesquisa() throws ParseException {
 
 		try {
 
 			listaEcvItl = new ArrayList<>();
-
-			
 
 			EcvItlDAO ecvItlDAO = new EcvItlDAO();
 
@@ -357,35 +337,43 @@ public class EcvItlBean implements Serializable {
 				listaEcvItl = ecvItlDAO.listar("credencial");
 			} else {
 
-				
-				if(campoDaBusca.toUpperCase().equals("ECV")) {
+				//conta quantidade de números
+				Integer qtdNum = 1;
+				for (int i = 0; i <= campoDaBusca.length(); i++) {
+					qtdNum = i;
+				}
+				//se for 14 = cnpj corridos
+				if (qtdNum == 14) {
+					
+					//adiciona a mascara
+					MaskFormatter mask = new MaskFormatter("##.###.###/####-##");
+					mask.setValueContainsLiteralCharacters(false);
+					campoDaBusca = mask.valueToString(campoDaBusca);
+				}
+
+				if (campoDaBusca.toUpperCase().equals("ECV")) {
 					campoDaBusca = "1";
 				}
-				if(campoDaBusca.toUpperCase().equals("ITL")) {
+				if (campoDaBusca.toUpperCase().equals("ITL")) {
 					campoDaBusca = "2";
 				}
-			
-				
+
 				listaEcvItl = ecvItlDAO.listarEmpresasConsulta(campoDaBusca);
 			}
 			System.out.println(listaEcvItl + " listaEcvItl");
-	
 
 		} catch (NullPointerException e) {
 			Messages.addGlobalError("Empresa não cadastrada.");
 
 		}
 	}
-	
-	 public void onRowSelectCodEcvItl(SelectEvent<EcvItl> event) {
-	      
-	        
-	        System.out.println(event.getObject() + "event.getObject().getCodigo()");
-	        ecvItl = event.getObject();
-	       
-	     
-	    }
 
+	public void onRowSelectCodEcvItl(SelectEvent<EcvItl> event) {
+
+		System.out.println(event.getObject() + "event.getObject().getCodigo()");
+		ecvItl = event.getObject();
+
+	}
 
 	public EcvItl getEcvItl() {
 		return ecvItl;

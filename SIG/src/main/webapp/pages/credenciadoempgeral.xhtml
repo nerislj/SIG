@@ -623,6 +623,19 @@
 											<h:outputText
 												value="#{portaria.usuarioCadastro.pessoa.nomeCompleto}" />
 										</p:column>
+										
+										<p:column headerText="Opções"
+											style="width: 6%; text-align: center;"
+											rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
+											<p:commandButton icon="ui-icon-trash"
+												actionListener="#{credenciadoEmpBean.excluirPortaria}"
+												update=":mensagem tabView:formularioEmpresas:lista5">
+												<p:confirm header="Confirmação"
+													message="Deseja excluir a Portaria?" icon="ui-icon-alert" />
+												<f:attribute name="portariaSelecionado" value="#{portaria}" />
+											</p:commandButton>
+										</p:column>
+										
 									</p:dataTable>
 
 
@@ -672,6 +685,19 @@
 											<h:outputText
 												value="#{alvara.usuarioCadastro.pessoa.nomeCompleto}" />
 										</p:column>
+										
+										<p:column headerText="Opções"
+											style="width: 6%; text-align: center;"
+											rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
+											<p:commandButton icon="ui-icon-trash"
+												actionListener="#{credenciadoEmpBean.excluirAlvara}"
+												update=":mensagem tabView:formularioEmpresas:lista6">
+												<p:confirm header="Confirmação"
+													message="Deseja excluir o Alvará?" icon="ui-icon-alert" />
+												<f:attribute name="alvaraSelecionado" value="#{alvara}" />
+											</p:commandButton>
+										</p:column>
+										
 									</p:dataTable>
 
 
@@ -784,6 +810,18 @@
 											<h:outputText
 												value="#{sgpe.usuarioCadastro.pessoa.nomeCompleto}" />
 										</p:column>
+										
+										<p:column headerText="Opções"
+											style="width: 6%; text-align: center;"
+											rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
+											<p:commandButton icon="ui-icon-trash"
+												actionListener="#{credenciadoEmpBean.excluirSGPE}"
+												update=":mensagem tabView:formularioEmpresas:lista77">
+												<p:confirm header="Confirmação"
+													message="Deseja excluir o SGPE?" icon="ui-icon-alert" />
+												<f:attribute name="sgpeSelecionado" value="#{sgpe}" />
+											</p:commandButton>
+										</p:column>
 
 
 
@@ -825,6 +863,18 @@
 											style="width: 9%; text-align: center;">
 											<h:outputText
 												value="#{sgpe.usuarioCadastro.pessoa.nomeCompleto}" />
+										</p:column>
+										
+										<p:column headerText="Opções"
+											style="width: 6%; text-align: center;"
+											rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
+											<p:commandButton icon="ui-icon-trash"
+												actionListener="#{credenciadoEmpBean.excluirSGPE}"
+												update=":mensagem tabView:formularioEmpresas:lista7">
+												<p:confirm header="Confirmação"
+													message="Deseja excluir o SGPE?" icon="ui-icon-alert" />
+												<f:attribute name="sgpeSelecionado" value="#{sgpe}" />
+											</p:commandButton>
 										</p:column>
 
 

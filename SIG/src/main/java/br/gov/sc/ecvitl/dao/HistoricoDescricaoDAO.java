@@ -24,7 +24,7 @@ public class HistoricoDescricaoDAO extends GenericDAO<HistoricoDescricao>{
 		try {
 			Criteria consulta = sessao.createCriteria(HistoricoDescricao.class);
 			consulta.add(Restrictions.eq("ecvItl", processo));	
-			
+			consulta.addOrder(Order.desc("dataCadastro"));
 			List<HistoricoDescricao> resultado = consulta.list();
 			return resultado;
 		} catch (RuntimeException erro) {

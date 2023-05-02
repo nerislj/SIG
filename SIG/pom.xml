@@ -5,8 +5,7 @@
 	<version>0.1 beta</version>
 	<packaging>war</packaging>
 	<name>Sistema Integrado de Gestão</name>
-	
-	
+
 
 	<!-- Codificação dos caracteres -->
 	<properties>
@@ -94,10 +93,6 @@
 			<artifactId>primefaces-extensions</artifactId>
 			<version>12.0.0</version>
 		</dependency>
-		
-		
-		
-		
 
 
 		<!-- Temas PrimeFaces -->
@@ -177,6 +172,18 @@
 			<groupId>com.itextpdf</groupId>
 			<artifactId>itextpdf</artifactId>
 			<version>5.5.13</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>io.nayuki</groupId>
+			<artifactId>qrcodegen</artifactId>
+			<version>1.8.0</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.barcode4j</groupId>
+			<artifactId>barcode4j-light</artifactId>
+			<version>2.1</version>
 		</dependency>
 
 

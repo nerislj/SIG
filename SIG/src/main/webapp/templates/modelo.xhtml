@@ -208,16 +208,16 @@ $(window).bind('beforeunload', function() {
 					</p:submenu>
 
 					<p:submenu label="Frota"
-						rendered="#{autenticacaoBean.temPermissoesPorUnidadeCodigo([1,2,3])}">
+						rendered="#{autenticacaoBean.temPermissoesPorUnidadeCodigo([1,2,3,22])}">
 						<p:menuitem value="Veículo" icon="ui-icon-document"
 							url="/pages/frotaveiculo.xhtml"
-							rendered="#{autenticacaoBean.temPermissoes([1,25])}" />
+							rendered="#{autenticacaoBean.temPermissoes([1,25,22])}" />
 						<p:menuitem value="Condutor" icon="ui-icon-document"
 							url="/pages/frotacondutor.xhtml"
-							rendered="#{autenticacaoBean.temPermissoes([1,25])}" />
+							rendered="#{autenticacaoBean.temPermissoes([1,25,22])}" />
 						<p:menuitem value="Gerencia Viagem" icon="ui-icon-document"
 							url="/pages/frotaviagem.xhtml"
-							rendered="#{autenticacaoBean.temPermissoes([1,25])}" />
+							rendered="#{autenticacaoBean.temPermissoes([1,25,22])}" />
 
 						<p:menuitem value="Solicitar Viagem" icon="ui-icon-document"
 							url="/pages/frotasolicita.xhtml" />
@@ -325,7 +325,7 @@ $(window).bind('beforeunload', function() {
 						<p:menuitem value="Setor Unidade" icon="ui-icon-plusthick"
 							url="/pages/contrato/setorunidades.xhtml" />
 
-						<p:menuitem value="Substituições" icon="ui-icon-transferthick-e-w"
+						<p:menuitem value="Volantes" icon="ui-icon-transferthick-e-w"
 							rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}"
 							url="/pages/contrato/substituicoesfuncionarios.xhtml" />
 

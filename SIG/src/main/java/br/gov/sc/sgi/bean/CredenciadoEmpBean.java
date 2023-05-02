@@ -1018,6 +1018,63 @@ public class CredenciadoEmpBean implements Serializable {
 			CredenciadoEmpBean.this.buscar();
 		}
 	}
+	
+	public void excluirPortaria(ActionEvent evento) {
+
+		try {
+			portaria = (CredenciadoPortaria) evento.getComponent().getAttributes().get("portariaSelecionado");
+
+			CredenciadoPortariaDAO portariaDAO = new CredenciadoPortariaDAO();
+			
+			portariaDAO.excluir(portaria);
+
+			CredenciadoEmpBean.this.buscar();
+
+			Messages.addGlobalInfo("Portaria removida com sucesso.");
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("Ocorreu um erro ao tentar excluir a Portaria.");
+			erro.printStackTrace();
+			CredenciadoEmpBean.this.buscar();
+		}
+	}
+	
+	public void excluirAlvara(ActionEvent evento) {
+
+		try {
+			alvara = (CredenciadoAlvara) evento.getComponent().getAttributes().get("alvaraSelecionado");
+
+			CredenciadoAlvaraDAO alvaraDAO = new CredenciadoAlvaraDAO();
+			
+			alvaraDAO.excluir(alvara);
+
+			CredenciadoEmpBean.this.buscar();
+
+			Messages.addGlobalInfo("Alvará removida com sucesso.");
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("Ocorreu um erro ao tentar excluir o Alvará.");
+			erro.printStackTrace();
+			CredenciadoEmpBean.this.buscar();
+		}
+	}
+	
+	public void excluirSGPE(ActionEvent evento) {
+
+		try {
+			SGPE = (CredenciadoSGPE) evento.getComponent().getAttributes().get("sgpeSelecionado");
+
+			CredenciadoSGPEDAO sgpeDAO = new CredenciadoSGPEDAO();
+			
+			sgpeDAO.excluir(SGPE);
+
+			CredenciadoEmpBean.this.buscar();
+
+			Messages.addGlobalInfo("SGPE removido com sucesso.");
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("Ocorreu um erro ao tentar excluir o SGPE.");
+			erro.printStackTrace();
+			CredenciadoEmpBean.this.buscar();
+		}
+	}
 
 	public void adicionaSGPE() {
 		try {

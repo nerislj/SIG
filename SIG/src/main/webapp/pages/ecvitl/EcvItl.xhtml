@@ -644,7 +644,23 @@
 									value="#{hist.usuarioCadastro.pessoa.nomeCompleto}"
 									rendered="#{hist.usuarioCadastro.pessoa.nomeCompleto!=null}" />
 							</p:column>
-
+							
+							
+							
+							<p:column headerText="Data Cadastro">
+							<h:outputText value="SEM DATA"
+									rendered="#{hist.dataCadastro==null}" />
+								<h:outputText value="#{hist.dataCadastro}"
+									rendered="#{hist.dataCadastro!=null}"
+								>
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
+										timeZone="America/Fortaleza" />
+								</h:outputText>
+									
+								
+							</p:column>
+							
+						
 
 
 
