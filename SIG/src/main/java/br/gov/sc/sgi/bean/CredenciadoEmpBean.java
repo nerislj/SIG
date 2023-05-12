@@ -1075,6 +1075,8 @@ public class CredenciadoEmpBean implements Serializable {
 			CredenciadoEmpBean.this.buscar();
 		}
 	}
+	
+	
 
 	public void adicionaSGPE() {
 		try {
@@ -1140,6 +1142,25 @@ public class CredenciadoEmpBean implements Serializable {
 
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar incluir a Observação.");
+			erro.printStackTrace();
+			CredenciadoEmpBean.this.buscar();
+		}
+	}
+	
+	public void excluirObs(ActionEvent evento) {
+
+		try {
+			obs = (CredenciadoEmpObs) evento.getComponent().getAttributes().get("obsSelecionado");
+
+			CredenciadoEmpObsDAO obsDAO = new CredenciadoEmpObsDAO();
+			
+			obsDAO.excluir(obs);
+
+			CredenciadoEmpBean.this.buscar();
+
+			Messages.addGlobalInfo("Observação removido com sucesso.");
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("Ocorreu um erro ao tentar excluir a Observação.");
 			erro.printStackTrace();
 			CredenciadoEmpBean.this.buscar();
 		}

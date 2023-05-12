@@ -462,7 +462,6 @@
 											<h3>HISTÓRICO CREDENCIAL</h3>
 										</f:facet>
 
-
 										<p:column headerText="Tipo Credencial"
 											style="width: 9%; text-align: center;">
 											<h:outputText
@@ -490,7 +489,8 @@
 											style="width: 9%; text-align: center;">
 											<h:outputText
 												value="#{empresa.usuarioCadastro.pessoa.nomeCompleto}" />
-										</p:column>
+										</p:column>			
+										
 
 									</p:dataTable>
 
@@ -734,6 +734,20 @@
 											<h:outputText
 												value="#{obs.usuarioCadastro.pessoa.nomeCompleto}" />
 										</p:column>
+										
+										<p:column headerText="Opções"
+											style="width: 3%; text-align: center;"
+											rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
+											<p:commandButton icon="ui-icon-trash"
+												actionListener="#{credenciadoEmpBean.excluirObs}"
+												update=":mensagem tabView:formularioEmpresas:lista44">
+												<p:confirm header="Confirmação"
+													message="Deseja excluir a observação?" icon="ui-icon-alert" />
+												<f:attribute name="obsSelecionado" value="#{obs}" />
+											</p:commandButton>
+										</p:column>
+										
+										
 									</p:dataTable>
 
 
@@ -770,6 +784,20 @@
 											<h:outputText
 												value="#{obs.usuarioCadastro.pessoa.nomeCompleto}" />
 										</p:column>
+										
+											<p:column headerText="Opções"
+											style="width: 3%; text-align: center;"
+											rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
+											<p:commandButton icon="ui-icon-trash"
+												actionListener="#{credenciadoEmpBean.excluirObs}"
+												update=":mensagem tabView:formularioEmpresas:lista4">
+												<p:confirm header="Confirmação"
+													message="Deseja excluir a observação?" icon="ui-icon-alert" />
+												<f:attribute name="obsSelecionado" value="#{obs}" />
+											</p:commandButton>
+										</p:column>
+										
+										
 									</p:dataTable>
 
 

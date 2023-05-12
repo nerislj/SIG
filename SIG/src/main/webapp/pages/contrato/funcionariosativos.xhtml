@@ -6,11 +6,12 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	template="/templates/modelo.xhtml">
-	
-		<ui:define name="metadata">
+
+	<ui:define name="metadata">
 		<f:metadata>
 
-			<f:event listener="#{contratoTerceirizadoBean.ContratoTerceirizadoListas}" 
+			<f:event
+				listener="#{contratoTerceirizadoBean.ContratoTerceirizadoListas}"
 				type="preRenderView" />
 		</f:metadata>
 	</ui:define>
@@ -48,17 +49,19 @@
 							itemLabel="Volante" />
 						<f:selectItem noSelectionOption="true" itemValue="Ativo"
 							itemLabel="Efetivo" />
-						
+
 
 					</p:selectOneMenu>
 
 					<p:outputLabel for="dataInicial" value="Data Inicial: " />
-					<p:calendar id="dataInicial" readonlyInput="false" required="true" requiredMessage="Campo Data Inicial é obrigatório!"
+					<p:calendar id="dataInicial" readonlyInput="false" required="true"
+						requiredMessage="Campo Data Inicial é obrigatório!"
 						yearRange="c-120:c-14" pattern="dd/MM/yyyy"
 						value="#{contratoTerceirizadoBean.dataInicial}" showIcon="true" />
 
 					<p:outputLabel for="dataFinal" value="Data Final: " />
-					<p:calendar id="dataFinal" readonlyInput="false" required="true" requiredMessage="Campo Data Final é obrigatório!"
+					<p:calendar id="dataFinal" readonlyInput="false" required="true"
+						requiredMessage="Campo Data Final é obrigatório!"
 						yearRange="c-120:c-14" pattern="dd/MM/yyyy"
 						value="#{contratoTerceirizadoBean.dataFinal}" showIcon="true" />
 
@@ -68,7 +71,7 @@
 
 				<h:panelGrid columns="2" style="margin: 0 auto;">
 					<p:commandButton value="Gerar Relatório"
-						actionListener="#{contratoTerceirizadoBean.blurRelacaoFuncionario}" 
+						actionListener="#{contratoTerceirizadoBean.blurRelacaoFuncionario}"
 						update=":mensagem :formcadastro:cadastro :formlista:lista" />
 
 				</h:panelGrid>
@@ -86,7 +89,7 @@
 					paginator="true"
 					value="#{contratoTerceirizadoBean.listaContratoRelacoes}"
 					var="relacao" rows="560">
-					
+
 					<p:column headerText="Unidade"
 						sortBy="#{relacao.funcionarioTerceirizado.unidade.unidadeNome}"
 						filterBy="#{relacao.funcionarioTerceirizado.unidade.unidadeNome}"
@@ -116,9 +119,17 @@
 						filterBy="#{relacao.funcionarioTerceirizado.pessoa.nomeCompleto}"
 						style="width: 20%; text-align: center;">
 						<h:outputText
-							value="#{relacao.funcionarioTerceirizado.pessoa.nomeCompleto} - #{relacao.funcionarioTerceirizado.pessoa.cpf}" />
+							value="#{relacao.funcionarioTerceirizado.pessoa.nomeCompleto}" />
 					</p:column>
-					
+
+					<p:column headerText="CPF"
+						sortBy="#{relacao.funcionarioTerceirizado.pessoa.cpf}"
+						filterBy="#{relacao.funcionarioTerceirizado.pessoa.cpf}"
+						style="width: 20%; text-align: center;">
+						<h:outputText
+							value="#{relacao.funcionarioTerceirizado.pessoa.cpf}" />
+					</p:column>
+
 					<p:column headerText="Setor"
 						sortBy="#{relacao.funcionarioTerceirizado.setor.setorNome}"
 						filterBy="#{relacao.funcionarioTerceirizado.setor.setorNome}"
@@ -126,7 +137,7 @@
 						<h:outputText
 							value="#{relacao.funcionarioTerceirizado.setor.setorNome}" />
 					</p:column>
-					
+
 					<p:column headerText="Cargo"
 						sortBy="#{relacao.funcionarioTerceirizado.cargoTerceirizado.descricao}"
 						filterBy="#{relacao.funcionarioTerceirizado.cargoTerceirizado.descricao}"
@@ -136,11 +147,13 @@
 					</p:column>
 
 					<p:column headerText="Movimentação" sortBy="#{relacao.status}"
-						filterBy="#{relacao.status}" style="width: 20%; text-align: center;">
+						filterBy="#{relacao.status}"
+						style="width: 20%; text-align: center;">
 						<h:outputText value="#{relacao.status}" />
 					</p:column>
 
-					<p:column headerText="Data Cadastro" sortBy="#{relacao.dataCadastro}"
+					<p:column headerText="Data Cadastro"
+						sortBy="#{relacao.dataCadastro}"
 						filterBy="#{relacao.dataCadastro}"
 						style="width: 20%; text-align: center;">
 						<h:outputText value="#{relacao.dataCadastro}">
@@ -152,7 +165,8 @@
 						sortBy="#{relacao.usuarioCadastro.pessoa.nomeCompleto}"
 						filterBy="#{relacao.usuarioCadastro.pessoa.nomeCompleto}"
 						style="width: 20%; text-align: center;">
-						<h:outputText value="#{relacao.usuarioCadastro.pessoa.nomeCompleto}" />
+						<h:outputText
+							value="#{relacao.usuarioCadastro.pessoa.nomeCompleto}" />
 					</p:column>
 
 
