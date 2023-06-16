@@ -20,8 +20,13 @@
 
 	<!-- Tema do PrimeFaces -->
 	<context-param>
+<<<<<<< HEAD
+		<param-name>SAGA</param-name>
+		<param-value>bootstrap</param-value>
+=======
 		<param-name>primefaces.THEME</param-name>
 		<param-value>saga</param-value>
+>>>>>>> branch 'main' of https://github.com/nerislj/SIG.git
 	</context-param>
 
 	<context-param>
