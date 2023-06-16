@@ -15,8 +15,6 @@ import br.gov.sc.contrato.bean.ContratoTerceirizadoBean;
 import br.gov.sc.contrato.domain.ContratoTerceirizado;
 import br.gov.sc.contrato.domain.FuncionarioTerceirizado;
 import br.gov.sc.geapo.domain.Material;
-import br.gov.sc.sgi.domain.Oficio;
-import br.gov.sc.sgi.domain.Setor;
 import br.gov.sc.sgi.domain.Unidade;
 import br.gov.sc.sgi.util.HibernateUtil;
 
@@ -77,16 +75,6 @@ public class ContratoTerceirizadoDAO extends GenericDAO<ContratoTerceirizado> {
 			} finally {
 				sessao.close();
 			}
-		}
-	  
-	  
-	  public ContratoTerceirizado loadLast() throws Exception {
-			Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
-			Criteria criteria = sessao.createCriteria(ContratoTerceirizado.class);
-			criteria.addOrder(Order.desc("codigo"));
-			
-
-			return (ContratoTerceirizado) criteria.setMaxResults(1).uniqueResult();
 		}
 	  
 	  

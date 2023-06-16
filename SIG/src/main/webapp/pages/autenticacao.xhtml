@@ -18,11 +18,9 @@
 
 
 
-
 	<p:growl id="mensagem" />
 
 
-<<<<<<< HEAD
 	<p:graphicImage library="images" name="sig4.png" styleClass="divLogo" />
 	
 	
@@ -75,64 +73,6 @@
 	</div>
 	
 	
-=======
-	
-
-	<body>
-	<div class="section">
-		<h:form>
-			
-
-
-
-
-				<div class="inputbox">
-				
-				<p:graphicImage library="images" name="sig4.png" styleClass="divLogo" />
-
-
-					<span class="ui-input-icon-left"> <i class="pi pi-id-card"></i>
-
-						<p:inputText id="cpf" maxlength="11" size="20" placeholder="CPF"
-							required="true" requiredMessage="O campo CPF é obrigatório"
-							value="#{autenticacaoBean.usuario.pessoa.cpf}" /></span>
-				</div>
-				<div class="inputbox">
-					<span class="ui-input-icon-left"> <i class="pi pi-lock"></i>
-
-						<p:password id="senha" maxlength="30" size="20" required="true"
-							placeholder="Senha" requiredMessage="O campo Senha é obrigatório"
-							value="#{autenticacaoBean.usuario.senha}" />
-					</span>
-
-				</div>
-				<div class="forget"></div>
-
-				<p:commandButton value="ENTRAR" update=":mensagem" styleClass="rounded-button ui-button-success"
-					actionListener="#{autenticacaoBean.autenticar}" />
-
-				<div class="register">
-					<p>
-						Não tem conta? <a href="mailto:intranet@detran.sc.gov.br">Registrar</a>
-					</p>
-				</div>
-
-
-
-
-
-
-
-
-
-
-			
-		</h:form>
-		</div>
-	</body>
-
-
->>>>>>> branch 'main' of https://github.com/nerislj/SIG.git
 
 
 

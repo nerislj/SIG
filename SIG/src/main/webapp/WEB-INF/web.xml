@@ -9,7 +9,7 @@
 
 	<!-- Página Principal -->
 	<welcome-file-list>
-		<welcome-file>pages/dashboard.xhtml</welcome-file>
+		<welcome-file>pages/principal.xhtml</welcome-file>
 	</welcome-file-list>
 
 	<!-- Estágio do projeto -->
@@ -20,13 +20,8 @@
 
 	<!-- Tema do PrimeFaces -->
 	<context-param>
-<<<<<<< HEAD
 		<param-name>SAGA</param-name>
 		<param-value>bootstrap</param-value>
-=======
-		<param-name>primefaces.THEME</param-name>
-		<param-value>saga</param-value>
->>>>>>> branch 'main' of https://github.com/nerislj/SIG.git
 	</context-param>
 
 	<context-param>
