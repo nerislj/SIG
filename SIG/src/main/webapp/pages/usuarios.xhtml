@@ -6,11 +6,11 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	template="/templates/modelo.xhtml">
-	
+
 	<ui:define name="metadata">
 		<f:metadata>
 
-			<f:event listener="#{usuarioBean.listarUsuarios}" 
+			<f:event listener="#{usuarioBean.listarUsuarios}"
 				type="preRenderView" />
 		</f:metadata>
 	</ui:define>
@@ -21,10 +21,11 @@
 				rendered="#{autenticacaoBean.temPermissoes([1])}">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{usuarioBean.usuarios}" var="usuario"
-					rows="10">
+					rows="10" stripedRows="true">
 					<f:facet name="header">
 						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
-							actionListener="#{usuarioBean.novo()}"
+							styleClass="rounded-button ui-button-success"
+							actionListener="#{usuarioBean.novo()}" icon="pi pi-plus"
 							update=":formcadastro:cadastro">
 							<f:actionListener
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
@@ -32,13 +33,14 @@
 					</f:facet>
 
 					<p:column headerText="CPF" sortBy="#{usuario.pessoa.cpf}"
-						filterBy="#{usuario.pessoa.cpf}"
+						filterBy="#{usuario.pessoa.cpf}" filterMatchMode="contains"
 						style="width: 15%; text-align: center;">
 						<h:outputText value="#{usuario.pessoa.cpf}" />
 					</p:column>
 
 					<p:column headerText="Nome" sortBy="#{usuario.pessoa.nomeCompleto}"
-						filterBy="#{usuario.pessoa.nomeCompleto}">
+						filterBy="#{usuario.pessoa.nomeCompleto}"
+						filterMatchMode="contains" style="width: 15%; text-align: center;">
 						<h:outputText value="#{usuario.pessoa.nomeCompleto}" />
 					</p:column>
 
@@ -49,15 +51,16 @@
 					</p:column>
 
 					<p:column headerText="Unidade" sortBy="#{usuario.unidade.unidade}"
-						filterBy="#{usuario.unidade.unidade}"
+						filterBy="#{usuario.unidade.unidade}" filterMatchMode="contains"
 						style="width: 10%; text-align: center;">
 						<h:outputText value="#{usuario.unidade.unidade}" />
 					</p:column>
 
 					<p:column headerText="Setor" sortBy="#{usuario.setor.setor}"
-						filterBy="#{usuario.setor.setor}"
+						filterBy="#{usuario.setor.setor}" filterMatchMode="contains"
 						style="width: 10%; text-align: center;">
-						<h:outputText value="#{usuario.setor.setor} - #{usuario.setor.setorNome}" />
+						<h:outputText
+							value="#{usuario.setor.setor} - #{usuario.setor.setorNome}" />
 					</p:column>
 
 					<p:column headerText="Perfil" sortBy="#{usuario.nivelAcesso.nivel}"
@@ -68,16 +71,19 @@
 
 					<p:column headerText="Opções"
 						style="width: 6%; text-align: center;">
-						<p:commandButton icon="ui-icon-trash"
+						<p:commandButton icon="pi pi-trash"
+							styleClass="rounded-button ui-button-danger"
 							actionListener="#{usuarioBean.excluir}"
 							update=":mensagem :formlista:lista"
 							rendered="#{autenticacaoBean.temPermissoes([1, 2])}">
 							<p:confirm header="Confirmação"
-								message="Deseja excluir o Usuário?" icon="ui-icon-alert" />
+								message="Deseja excluir o Usuário?"
+								icon="pi pi-exclamation-triangle" />
 							<f:attribute name="usuarioSelecionado" value="#{usuario}" />
 						</p:commandButton>
 
-						<p:commandButton icon="ui-icon-pencil"
+						<p:commandButton icon="pi pi-pencil"
+							styleClass="rounded-button ui-button-info"
 							actionListener="#{usuarioBean.editar}"
 							update=":formcadastro:cadastro"
 							oncomplete="PF('dialogo').show();">
@@ -91,9 +97,10 @@
 
 				<p:confirmDialog global="true">
 					<p:commandButton value="Sim" type="button"
-						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
+						icon="pi pi-check" />
 					<p:commandButton value="Não" type="button"
-						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						styleClass="ui-confirmdialog-no rounded-button" icon="pi pi-times" />
 				</p:confirmDialog>
 			</p:panel>
 		</h:form>
@@ -104,7 +111,7 @@
 				<h:panelGrid id="cadastro" columns="2">
 
 					<p:outputLabel value="Pessoa: " />
-					<p:selectOneMenu filter="true"
+					<p:selectOneMenu filter="true" filterMatchMode="contains"
 						value="#{usuarioBean.usuario.pessoa}"
 						converter="omnifaces.SelectItemsConverter" required="true"
 						requiredMessage="O campo Pessoa é obrigatório">
@@ -128,33 +135,36 @@
 
 					<p:outputLabel for="unidade" value="Unidade " />
 					<p:selectOneMenu id="unidade" filter="true"
+						filterMatchMode="contains"
 						requiredMessage="O campo Unidade é obrigatório"
 						converter="omnifaces.SelectItemsConverter"
 						value="#{usuarioBean.usuario.unidade}">
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione uma unidade" />
-						<f:selectItems value="#{usuarioBean.unidades}"
-							var="unidade" itemValue="#{unidade}"
-							itemLabel="#{unidade.unidadeNome}" />
+						<f:selectItems value="#{usuarioBean.unidades}" var="unidade"
+							itemValue="#{unidade}" itemLabel="#{unidade.unidadeNome}" />
 						<p:ajax listener="#{usuarioBean.popular}"
 							update=":formcadastro:setor" />
 					</p:selectOneMenu>
 
 					<p:outputLabel for="setor" value="Setor: " />
 					<p:selectOneMenu id="setor" filter="true"
+						filterMatchMode="contains"
 						requiredMessage="O campo Setor é obrigatório"
 						converter="omnifaces.SelectItemsConverter"
 						value="#{usuarioBean.usuario.setor}">
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione um setor" />
 						<f:selectItems value="#{usuarioBean.setores}" var="setor"
-							itemValue="#{setor}" itemLabel="#{setor.setor} - #{setor.setorNome}" />
+							itemValue="#{setor}"
+							itemLabel="#{setor.setor} - #{setor.setorNome}" />
 						<p:ajax listener="#{usuarioBean.popularNivel}"
 							update=":formcadastro:perfil" />
 					</p:selectOneMenu>
 
 					<p:outputLabel for="perfil" value="Perfil: " />
 					<p:selectOneMenu id="perfil" filter="true" required="true"
+						filterMatchMode="contains"
 						requiredMessage="O campo Perfil é obrigatório"
 						converter="omnifaces.SelectItemsConverter"
 						value="#{usuarioBean.usuario.nivelAcesso}">
@@ -185,9 +195,12 @@
 
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
-						actionListener="#{usuarioBean.salvar()}"
+						styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
+						icon="pi pi-check" actionListener="#{usuarioBean.salvar()}"
 						update=":mensagem :formcadastro:cadastro :formlista:lista" />
-					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+					<p:commandButton value="Fechar"
+						styleClass="ui-confirmdialog-no rounded-button" icon="pi pi-times"
+						oncomplete="PF('dialogo').hide();" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>

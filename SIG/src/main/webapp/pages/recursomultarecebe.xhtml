@@ -14,20 +14,22 @@
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true"
 					value="#{recursoMultaTramitaBean.recursosPendentes}" var="recurso"
-					rows="10">
+					rows="10" stripedRows="true">
 					<f:facet name="header">
 						<p:commandButton value="Receber"
+							styleClass="rounded-button ui-button-success"
 							actionListener="#{recursoMultaTramitaBean.finalizar}"
 							update=":mensagem :formularioConfirmacao"
 							oncomplete="PF('confirmacao').show();"
-							style="background: #01B50D;">
+							icon="pi pi-arrow-down-left" style="background: #01B50D;">
 						</p:commandButton>
 
 					</f:facet>
 
 					<p:column headerText="Opções"
-						style="width: 6%; text-align: center;">
-						<p:commandButton icon="ui-icon-plus"
+						style="width: 10px; text-align: center;">
+						<p:commandButton icon="pi pi-plus"
+							styleClass="rounded-button ui-button-info"
 							actionListener="#{recursoMultaTramitaBean.adicionar}"
 							update=":formlista:listaSelecionados"
 							style="background: #18B5ED;">
@@ -36,27 +38,28 @@
 					</p:column>
 
 					<p:column headerText="Placa" sortBy="#{recurso.placa}"
-						filterBy="#{recurso.placa}"
+						filterBy="#{recurso.placa}" filterMatchMode="contains"
 						style="width: 9%; text-align: center; text-transform:uppercase;">
 						<h:outputText value="#{recurso.placa}" />
 					</p:column>
 
 					<p:column headerText="Auto infração"
 						sortBy="#{recurso.autoInfracao}"
-						filterBy="#{recurso.autoInfracao}"
+						filterBy="#{recurso.autoInfracao}" filterMatchMode="contains"
 						style="width: 12%; text-align: center; text-transform:uppercase;">
 						<h:outputText value="#{recurso.autoInfracao}" />
 					</p:column>
 
 					<p:column headerText="Tipo"
 						sortBy="#{recurso.tipoProcesso.tipoProcesso}"
-						filterBy="#{recurso.tipoProcesso.tipoProcesso}">
+						filterBy="#{recurso.tipoProcesso.tipoProcesso}"
+						filterMatchMode="contains" style="width:20px; text-align:center;">
 						<h:outputText value="#{recurso.tipoProcesso.tipoProcesso}" />
 					</p:column>
 
 					<p:column headerText="Data Recebimento"
 						sortBy="#{recurso.dataCadastro}"
-						filterBy="#{recurso.dataCadastro}"
+						filterBy="#{recurso.dataCadastro}" filterMatchMode="contains"
 						style="width: 12%; text-align: center;">
 						<h:outputText
 							value="#{recurso.dataCadastro.date}/#{recurso.dataCadastro.month+1}/#{recurso.dataCadastro.year+1900}" />
@@ -73,13 +76,13 @@
 					<p:column headerText="Usuário Cadastro"
 						sortBy="#{recurso.usuarioCadastro.pessoa.nomeCompleto}"
 						filterBy="#{recurso.usuarioCadastro.pessoa.nomeCompleto}"
-						filterMatchMode="contains">
+						style="width:20px; text-align:center;" filterMatchMode="contains">
 						<h:outputText
 							value="#{recurso.usuarioCadastro.pessoa.nomeCompleto}" />
 					</p:column>
 
 					<p:column headerText="Status" sortBy="#{recurso.status}"
-						filterBy="#{recurso.status}"
+						filterBy="#{recurso.status}" filterMatchMode="contains"
 						style="width: 9%; text-align: center;">
 						<h:outputText value="#{recurso.status}" />
 					</p:column>
@@ -93,8 +96,9 @@
 					rows="10">
 
 					<p:column headerText="Opções"
-						style="width: 6%; text-align: center;">
-						<p:commandButton icon="ui-icon-minus"
+						style="width: 10px; text-align: center;">
+						<p:commandButton icon="pi pi-minus"
+							styleClass="rounded-button ui-button-danger"
 							actionListener="#{recursoMultaTramitaBean.remover}"
 							update=":formlista:listaSelecionados"
 							style="background: #ED9818;">
@@ -103,26 +107,28 @@
 					</p:column>
 
 					<p:column headerText="Placa" sortBy="#{saida.placa}"
-						filterBy="#{saida.placa}"
+						filterBy="#{saida.placa}" filterMatchMode="contains"
 						style="width: 9%; text-align: center; text-transform:uppercase;">
 						<h:outputText value="#{saida.placa}" />
 					</p:column>
 
 					<p:column headerText="Auto infração" sortBy="#{saida.autoInfracao}"
-						filterBy="#{saida.autoInfracao}"
+						filterBy="#{saida.autoInfracao}" filterMatchMode="contains"
 						style="width: 12%; text-align: center; text-transform:uppercase;">
 						<h:outputText value="#{saida.autoInfracao}" />
 					</p:column>
 
 					<p:column headerText="Tipo"
 						sortBy="#{saida.tipoProcesso.tipoProcesso}"
-						filterBy="#{saida.tipoProcesso.tipoProcesso}">
+						filterBy="#{saida.tipoProcesso.tipoProcesso}"
+						filterMatchMode="contains"
+						style="width: 20px; text-align: center;">
 						<h:outputText value="#{saida.tipoProcesso.tipoProcesso}" />
 					</p:column>
 
 					<p:column headerText="Data Recebimento"
 						sortBy="#{saida.dataCadastro}" filterBy="#{saida.dataCadastro}"
-						style="width: 12%; text-align: center;">
+						filterMatchMode="contains" style="width: 12%; text-align: center;">
 						<h:outputText
 							value="#{saida.dataCadastro.date}/#{saida.dataCadastro.month+1}/#{saida.dataCadastro.year+1900}" />
 					</p:column>
@@ -138,12 +144,13 @@
 					<p:column headerText="Usuário Cadastro"
 						sortBy="#{saida.usuarioCadastro.pessoa.nomeCompleto}"
 						filterBy="#{saida.usuarioCadastro.pessoa.nomeCompleto}"
-						filterMatchMode="contains">
+						filterMatchMode="contains" style="width:20px; text-align:center;">
 						<h:outputText value="#{saida.usuarioCadastro.pessoa.nomeCompleto}" />
 					</p:column>
 
 					<p:column headerText="Status" sortBy="#{saida.status}"
-						filterBy="#{saida.status}" style="width: 9%; text-align: center;">
+						filterMatchMode="contains" filterBy="#{saida.status}"
+						style="width: 9%; text-align: center;">
 						<h:outputText value="#{saida.status}" />
 					</p:column>
 
@@ -163,15 +170,17 @@
 				<br />
 						<br />
 
-						<p:commandButton value="Sim" styleClass="ui-confirmdialog-yes"
-							icon="ui-icon-check"
+						<p:commandButton value="Sim"
+							styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
+							icon="pi pi-check"
 							actionListener="#{recursoMultaTramitaBean.recebeProcesso}"
 							update=":mensagem :formlista:listaSelecionados :formlista:lista"
 							oncomplete="PF('confirmacao').hide();">
 						</p:commandButton>
 
-						<p:commandButton value="Não" styleClass="ui-confirmdialog-no"
-							icon="ui-icon-close" oncomplete="PF('confirmacao').hide();" />
+						<p:commandButton value="Não"
+							styleClass="ui-confirmdialog-no rounded-button"
+							icon="pi pi-times" oncomplete="PF('confirmacao').hide();" />
 					</p:column>
 				</h:panelGrid>
 			</h:form>

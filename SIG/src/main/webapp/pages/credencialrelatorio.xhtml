@@ -8,16 +8,16 @@
 	template="/templates/modelo.xhtml">
 
 
-<ui:define name="metadata">
+	<ui:define name="metadata">
 
 		<f:metadata>
 
 			<f:event listener="#{credenciadoBean.listasRelatorio}"
 				type="preRenderView" />
-					
+
 		</f:metadata>
 	</ui:define>
-	
+
 	<ui:define name="conteudo">
 		<style type="text/css">
 .vencida {
@@ -66,12 +66,13 @@
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true"
 					value="#{credenciadoBean.credenciadosValidadeDesc}"
-					var="credenciado" rows="10" style="width: 100%;" 
+					var="credenciado" rows="10" style="width: 100%;"
 					rowStyleClass="#{(credenciado.vencimentoCredencial le credenciadoBean.convertTime(credenciadoBean.dataHoje)? 'vencida': (credenciado.vencimentoCredencial le credenciadoBean.convert10Dias(credenciadoBean.data10Dias) ? 'dezdias':'ok'))}">
 
 					<p:column headerText="Nº Credencial"
 						sortBy="#{credenciado.numeroRegistro}"
 						filterBy="#{credenciado.numeroRegistro}"
+						filterMatchMode="contains"
 						style="width: 50px; text-align: center;">
 						<h:outputText value="#{credenciado.numeroRegistro}" />
 					</p:column>
@@ -79,12 +80,13 @@
 					<p:column headerText="Nome Completo"
 						sortBy="#{credenciado.pessoa.nomeCompleto}"
 						filterBy="#{credenciado.pessoa.nomeCompleto}"
+						filterMatchMode="contains"
 						style="width: 170px; text-align: center;">
 						<h:outputText value="#{credenciado.pessoa.nomeCompleto}" />
 					</p:column>
 
 					<p:column headerText="CPF" sortBy="#{credenciado.pessoa.cpf}"
-						filterBy="#{credenciado.pessoa.cpf}"
+						filterBy="#{credenciado.pessoa.cpf}" filterMatchMode="contains"
 						style="width: 70px; text-align: center;">
 						<h:outputText value="#{credenciado.pessoa.cpf}" />
 					</p:column>
@@ -92,6 +94,7 @@
 					<p:column headerText="Tipo Credencial"
 						sortBy="#{credenciado.credencialTipo.tipocredencial}"
 						filterBy="#{credenciado.credencialTipo.tipocredencial}"
+						filterMatchMode="contains"
 						style="width: 70px; text-align: center;">
 						<h:outputText value="#{credenciado.credencialTipo.tipocredencial}" />
 					</p:column>
@@ -117,6 +120,7 @@
 					<p:column headerText="Status"
 						sortBy="#{credenciado.credencialStatus.tipoStatus}"
 						filterBy="#{credenciado.credencialStatus.tipoStatus}"
+						filterMatchMode="contains"
 						style="width: 70px; text-align: center;">
 						<h:outputText value="#{credenciado.credencialStatus.tipoStatus}" />
 					</p:column>

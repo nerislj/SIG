@@ -31,8 +31,8 @@
 
 					<p:spacer width="20" height="10" />
 
-					<p:commandButton icon="ui-icon-search"
-						actionListener="#{credenciadoBean.buscar()}"
+					<p:commandButton styleClass="rounded-button ui-button-success"
+						icon="pi pi-search" actionListener="#{credenciadoBean.buscar()}"
 						update=":mensagem :formulario:cadastro"
 						style="background: #01B50D;">
 						<f:actionListener
@@ -74,7 +74,7 @@
 									style="text-transform:uppercase;" />
 
 								<p:outputLabel value="UF RG: * " />
-								<p:selectOneMenu filter="true"
+								<p:selectOneMenu filter="true" filterMatchMode="contains"
 									disabled="#{credenciadoBean.pessoa.rgEstadoEmissao != null}"
 									value="#{credenciadoBean.pessoa.rgEstadoEmissao}"
 									converter="omnifaces.SelectItemsConverter" required="true"
@@ -121,7 +121,7 @@
 
 
 								<p:outputLabel value="Sexo: *" />
-								<p:selectOneMenu id="sexo"
+								<p:selectOneMenu id="sexo" filterMatchMode="contains"
 									value="#{credenciadoBean.pessoa.sexo}"
 									disabled="#{credenciadoBean.pessoa.sexo != null}"
 									requiredMessage="O campo Sexo é obrigatório">
@@ -163,6 +163,7 @@
 
 								<p:outputLabel for="estado" value="UF: * " />
 								<p:selectOneMenu id="estado" filter="true"
+									filterMatchMode="contains"
 									converter="omnifaces.SelectItemsConverter"
 									value="#{credenciadoBean.pessoa.estadoEndereco}">
 									<f:selectItem noSelectionOption="true"
@@ -175,6 +176,7 @@
 
 								<p:outputLabel for="cidade" value="Municipio:" />
 								<p:selectOneMenu id="cidade" filter="true" required="true"
+									filterMatchMode="contains"
 									requiredMessage="O campo Municipio é obrigatório"
 									converter="omnifaces.SelectItemsConverter"
 									value="#{credenciadoBean.pessoa.municipioEndereco}">
@@ -254,7 +256,7 @@
 								</p:inputText>
 
 								<p:outputLabel value="Tipo Credencial: ** " />
-								<p:selectOneMenu filter="true"
+								<p:selectOneMenu filter="true" filterMatchMode="contains"
 									value="#{credenciadoBean.credenciado.credencialTipo}"
 									converter="omnifaces.SelectItemsConverter">
 									<f:selectItem noSelectionOption="true"
@@ -265,7 +267,7 @@
 								</p:selectOneMenu>
 
 								<p:outputLabel value="Status: ** " />
-								<p:selectOneMenu filter="true"
+								<p:selectOneMenu filter="true" filterMatchMode="contains"
 									value="#{credenciadoBean.credenciado.credencialStatus}"
 									converter="omnifaces.SelectItemsConverter">
 									<f:selectItem noSelectionOption="true"
@@ -296,6 +298,8 @@
 
 								<h:panelGrid columns="3">
 									<p:commandButton value="Salvar"
+										styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
+										icon="pi pi-check"
 										actionListener="#{credenciadoBean.salvar()}"
 										update=":mensagem :formulario:cadastro"
 										style="background: #01B50D;" />

@@ -13,17 +13,20 @@
 			<p:panel header="Recurso de Multa - Listagem">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{recursoMultaTramitaBean.recursosMulta}"
-					var="recurso" rows="10">
-					<f:facet name="header">
+					var="recurso" rows="10" stripedRows="true">
+					<f:facet name="header" stripedRows="true">
 						<p:commandButton value="Finalizar"
+							styleClass="rounded-button ui-button-success"
 							actionListener="#{recursoMultaTramitaBean.finalizar}"
 							update=":mensagem :formularioFinalizar:painelFinalizar"
-							oncomplete="PF('dialogo').show();" style="background: #01B50D;" />
+							oncomplete="PF('dialogo').show();" icon="pi pi-check-circle"
+							style="background: #01B50D;" />
 					</f:facet>
 
 					<p:column headerText="Opções"
-						style="width: 6%; text-align: center;">
-						<p:commandButton icon="ui-icon-plus"
+						style="width: 10%; text-align: center;">
+						<p:commandButton icon="pi pi-plus"
+							styleClass="rounded-button ui-button-info"
 							actionListener="#{recursoMultaTramitaBean.adicionar}"
 							update=":formlista:listaSelecionados"
 							style="background: #18B5ED;">
@@ -32,13 +35,13 @@
 					</p:column>
 
 					<p:column headerText="Placa" sortBy="#{recurso.placa}"
-						filterBy="#{recurso.placa}"
+						filterBy="#{recurso.placa}" filterMatchMode="contains"
 						style="width: 9%; text-align: center; text-transform:uppercase;">
 						<h:outputText value="#{recurso.placa}" />
 					</p:column>
 
 					<p:column headerText="Auto infração"
-						sortBy="#{recurso.autoInfracao}"
+						sortBy="#{recurso.autoInfracao}" filterMatchMode="contains"
 						filterBy="#{recurso.autoInfracao}"
 						style="width: 12%; text-align: center; text-transform:uppercase;">
 						<h:outputText value="#{recurso.autoInfracao}" />
@@ -46,13 +49,14 @@
 
 					<p:column headerText="Tipo"
 						sortBy="#{recurso.tipoProcesso.tipoProcesso}"
-						filterBy="#{recurso.tipoProcesso.tipoProcesso}">
+						filterBy="#{recurso.tipoProcesso.tipoProcesso}"
+						filterMatchMode="contains" style="width:20px; text-align:center;">
 						<h:outputText value="#{recurso.tipoProcesso.tipoProcesso}" />
 					</p:column>
 
 					<p:column headerText="Data Recebimento"
 						sortBy="#{recurso.dataCadastro}"
-						filterBy="#{recurso.dataCadastro}"
+						filterBy="#{recurso.dataCadastro}" filterMatchMode="contains"
 						style="width: 12%; text-align: center;">
 						<h:outputText
 							value="#{recurso.dataCadastro.date}/#{recurso.dataCadastro.month+1}/#{recurso.dataCadastro.year+1900}" />
@@ -69,13 +73,13 @@
 					<p:column headerText="Usuário Cadastro"
 						sortBy="#{recurso.usuarioCadastro.pessoa.nomeCompleto}"
 						filterBy="#{recurso.usuarioCadastro.pessoa.nomeCompleto}"
-						filterMatchMode="contains">
+						filterMatchMode="contains" style="width:20px; text-align:center;">
 						<h:outputText
 							value="#{recurso.usuarioCadastro.pessoa.nomeCompleto}" />
 					</p:column>
 
 					<p:column headerText="Status" sortBy="#{recurso.status}"
-						filterBy="#{recurso.status}"
+						filterBy="#{recurso.status}" filterMatchMode="contains"
 						style="width: 9%; text-align: center;">
 						<h:outputText value="#{recurso.status}" />
 					</p:column>
@@ -90,8 +94,9 @@
 					rows="50" rowsPerPageTemplate="50, 100">
 
 					<p:column headerText="Opções"
-						style="width: 6%; text-align: center;">
-						<p:commandButton icon="ui-icon-minus"
+						style="width: 10px; text-align: center;">
+						<p:commandButton icon="pi pi-minus"
+							styleClass="rounded-button ui-button-danger"
 							actionListener="#{recursoMultaTramitaBean.remover}"
 							update=":formlista:listaSelecionados"
 							style="background: #ED9818;">
@@ -100,26 +105,27 @@
 					</p:column>
 
 					<p:column headerText="Placa" sortBy="#{saida.placa}"
-						filterBy="#{saida.placa}"
+						filterBy="#{saida.placa}" filterMatchMode="contains"
 						style="width: 9%; text-align: center; text-transform:uppercase;">
 						<h:outputText value="#{saida.placa}" />
 					</p:column>
 
 					<p:column headerText="Auto infração" sortBy="#{saida.autoInfracao}"
-						filterBy="#{saida.autoInfracao}"
+						filterBy="#{saida.autoInfracao}" filterMatchMode="contains"
 						style="width: 12%; text-align: center; text-transform:uppercase;">
 						<h:outputText value="#{saida.autoInfracao}" />
 					</p:column>
 
 					<p:column headerText="Tipo"
 						sortBy="#{saida.tipoProcesso.tipoProcesso}"
-						filterBy="#{saida.tipoProcesso.tipoProcesso}">
+						filterBy="#{saida.tipoProcesso.tipoProcesso}"
+						filterMatchMode="contains" style="width:20px; text-align:center;">
 						<h:outputText value="#{saida.tipoProcesso.tipoProcesso}" />
 					</p:column>
 
 					<p:column headerText="Data Recebimento"
 						sortBy="#{saida.dataCadastro}" filterBy="#{saida.dataCadastro}"
-						style="width: 12%; text-align: center;">
+						filterMatchMode="contains" style="width: 12%; text-align: center;">
 						<h:outputText
 							value="#{saida.dataCadastro.date}/#{saida.dataCadastro.month+1}/#{saida.dataCadastro.year+1900}" />
 					</p:column>
@@ -135,12 +141,13 @@
 					<p:column headerText="Usuário Cadastro"
 						sortBy="#{saida.usuarioCadastro.pessoa.nomeCompleto}"
 						filterBy="#{saida.usuarioCadastro.pessoa.nomeCompleto}"
-						filterMatchMode="contains">
+						filterMatchMode="contains" style="width:20px; text-align:center;">
 						<h:outputText value="#{saida.usuarioCadastro.pessoa.nomeCompleto}" />
 					</p:column>
 
 					<p:column headerText="Status" sortBy="#{saida.status}"
-						filterBy="#{saida.status}" style="width: 9%; text-align: center;">
+						filterMatchMode="contains" filterBy="#{saida.status}"
+						style="width: 9%; text-align: center;">
 						<h:outputText value="#{saida.status}" />
 					</p:column>
 
@@ -155,13 +162,17 @@
 
 
 
-					<p:commandButton value="Interno" icon="ui-icon-copy"
+					<p:commandButton value="Interno"
+						styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
+						icon="pi pi-window-minimize"
 						update=":formularioInterno:painelInterno"
 						onclick="PF('tramitacaoInterna').show();"
 						style="width:100px;height:50px;">
 					</p:commandButton>
 
-					<p:commandButton value="Externo" icon="ui-icon-copy"
+					<p:commandButton value="Externo"
+						styleClass="rounded-button ui-button-warning"
+						icon="pi pi-window-maximize"
 						update=":formularioExterno:painelExterno"
 						onclick="PF('tramitacaoExterna').show();"
 						style="width:100px;height:50px;">
@@ -175,7 +186,9 @@
 
 				<h:panelGrid columns="1" style="display: block;margin-left:30%;">
 
-					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+					<p:commandButton value="Fechar"
+						styleClass="ui-confirmdialog-no rounded-button" icon="pi pi-times"
+						oncomplete="PF('dialogo').hide();" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>
@@ -188,6 +201,7 @@
 
 					<p:outputLabel for="unidade" value="Unidade " />
 					<p:selectOneMenu id="unidade" filter="true"
+						filterMatchMode="contains"
 						requiredMessage="O campo Unidade é obrigatório"
 						converter="omnifaces.SelectItemsConverter"
 						value="#{recursoMultaTramitaBean.unidade}">
@@ -202,6 +216,7 @@
 
 					<p:outputLabel for="setor" value="Setor: " />
 					<p:selectOneMenu id="setor" filter="true"
+						filterMatchMode="contains"
 						value="#{recursoMultaTramitaBean.setor}"
 						converter="omnifaces.SelectItemsConverter" required="true"
 						requiredMessage="O campo Ofício é obrigatório">
@@ -216,12 +231,15 @@
 
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
+						styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
+						icon="pi pi-check"
 						actionListener="#{recursoMultaTramitaBean.salvarInterno}"
 						update=":mensagem :formlista:listaSelecionados :formlista:lista :formularioInterno:painelInterno"
 						oncomplete="PF('tramitacaoInterna').hide(); PF('dialogo').hide();">
 					</p:commandButton>
 
 					<p:commandButton value="Fechar"
+						styleClass="ui-confirmdialog-no rounded-button" icon="pi pi-times"
 						oncomplete="PF('tramitacaoInterna').hide();" />
 				</h:panelGrid>
 			</h:form>
@@ -243,12 +261,15 @@
 
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
+						styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
+						icon="pi pi-check"
 						actionListener="#{recursoMultaTramitaBean.salvarExterno}"
 						update=":mensagem :formlista:listaSelecionados :formularioInterno:painelInterno :formlista:lista"
 						oncomplete="PF('tramitacaoExterna').hide(); PF('dialogo').hide();">
 					</p:commandButton>
 
 					<p:commandButton value="Fechar"
+						styleClass="ui-confirmdialog-no rounded-button" icon="pi pi-times"
 						oncomplete="PF('tramitacaoExterna').hide();" />
 				</h:panelGrid>
 			</h:form>

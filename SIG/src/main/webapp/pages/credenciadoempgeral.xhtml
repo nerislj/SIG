@@ -6,14 +6,14 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	template="/templates/modelo.xhtml">
-	
+
 	<ui:define name="metadata">
 
 		<f:metadata>
 
 			<f:event listener="#{credenciadoEmpBean.listasCredenciadoVisaoGeral}"
 				type="preRenderView" />
-					
+
 		</f:metadata>
 	</ui:define>
 
@@ -58,24 +58,25 @@
 				<p:panel header="Consulta">
 
 					<div align="center">
-					
-					
-				
- 
-						<p:outputLabel for="cred" value="Credenciado " />
-					<p:selectOneMenu id="cred" filter="true" filterMatchMode="contains" style="width:225px"
-						converter="omnifaces.SelectItemsConverter"
-						value="#{credenciadoEmpBean.credenciadoPesquisaPorNome}">
-						<f:selectItem noSelectionOption="true"
-							itemLabel="Selecione um credenciado" />
-						<f:selectItems value="#{credenciadoEmpBean.credenciados}"  
-							var="cred" itemValue="#{cred.pessoaJuridica.cnpj}"
-							itemLabel="#{cred.pessoaJuridica.nomeFantasia} - #{cred.pessoaJuridica.razaoSocial} - #{cred.pessoaJuridica.cnpj}" />
 
-						<p:ajax event="change"
-							listener="#{credenciadoEmpBean.blurCredenciado}"
-							update="formularioConsulta:cnpj" />
-					</p:selectOneMenu>
+
+
+
+						<p:outputLabel for="cred" value="Credenciado " />
+						<p:selectOneMenu id="cred" filter="true"
+							filterMatchMode="contains" style="width:225px"
+							converter="omnifaces.SelectItemsConverter"
+							value="#{credenciadoEmpBean.credenciadoPesquisaPorNome}">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione um credenciado" />
+							<f:selectItems value="#{credenciadoEmpBean.credenciados}"
+								var="cred" itemValue="#{cred.pessoaJuridica.cnpj}"
+								itemLabel="#{cred.pessoaJuridica.nomeFantasia} - #{cred.pessoaJuridica.razaoSocial} - #{cred.pessoaJuridica.cnpj}" />
+
+							<p:ajax event="change"
+								listener="#{credenciadoEmpBean.blurCredenciado}"
+								update="formularioConsulta:cnpj" />
+						</p:selectOneMenu>
 
 						<p:outputLabel value="CNPJ: " />
 						<p:inputText id="cnpj" maxlength="14" size="12"
@@ -85,7 +86,8 @@
 						</p:inputText>
 						<br /> <br />
 
-						<p:commandButton value="Pesquisar" icon="ui-icon-search"
+						<p:commandButton value="Pesquisar"
+							styleClass="rounded-button ui-button-success" icon="pi pi-search"
 							actionListener="#{credenciadoEmpBean.buscarCredenciado}"
 							update=":mensagem tabView:formularioEmpresas:painelDados"
 							style="background: #01B50D;">
@@ -93,7 +95,7 @@
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 						</p:commandButton>
 
-						
+
 
 					</div>
 				</p:panel>
@@ -207,7 +209,7 @@
 
 
 
-							
+
 
 								<br />
 								<br />
@@ -236,7 +238,9 @@
 											<h3>RELAÇÃO DE FUNCIONÁRIOS</h3>
 
 											<p:commandButton value="Adicionar"
-												oncomplete="PF('dialogofunc').show();" update=":func:func"
+												styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
+												icon="pi pi-plus" oncomplete="PF('dialogofunc').show();"
+												update=":func:func"
 												rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
 												<f:actionListener
 													type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
@@ -275,12 +279,13 @@
 										<p:column headerText="Opções"
 											style="width: 6%; text-align: center;"
 											rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
-											<p:commandButton icon="ui-icon-trash"
+											<p:commandButton icon="pi pi-trash"
+												styleClass="rounded-button ui-button-danger"
 												actionListener="#{credenciadoEmpBean.excluirFuncionario}"
 												update=":mensagem tabView:formularioEmpresas:lista3 tabView:formularioEmpresas:lista33">
 												<p:confirm header="Confirmação"
 													message="Deseja excluir o Funcionário?"
-													icon="ui-icon-alert" />
+													icon="pi pi-exclamation-triangle" />
 												<f:attribute name="funcionarioSelecionado" value="#{func}" />
 											</p:commandButton>
 										</p:column>
@@ -292,9 +297,11 @@
 
 									<p:confirmDialog global="true">
 										<p:commandButton value="Sim" type="button"
-											styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+											styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
+											icon="pi pi-check" />
 										<p:commandButton value="Não" type="button"
-											styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+											styleClass="ui-confirmdialog-no rounded-button"
+											icon="pi pi-times" />
 									</p:confirmDialog>
 
 
@@ -323,7 +330,9 @@
 											<h3>RELAÇÃO DE PROPRIETÁRIOS</h3>
 
 											<p:commandButton value="Adicionar"
-												oncomplete="PF('dialogoprop').show();" update=":prop:prop"
+												styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
+												icon="pi pi-plus" oncomplete="PF('dialogoprop').show();"
+												update=":prop:prop"
 												rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
 												<f:actionListener
 													type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
@@ -356,11 +365,13 @@
 										<p:column headerText="Opções"
 											style="width: 6%; text-align: center;"
 											rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
-											<p:commandButton icon="ui-icon-trash"
+											<p:commandButton icon="pi pi-trash"
+												styleClass="rounded-button ui-button-danger"
 												actionListener="#{credenciadoEmpBean.excluirProprietario}"
 												update=":mensagem tabView:formularioEmpresas:listaProp">
 												<p:confirm header="Confirmação"
-													message="Deseja excluir o Endereço?" icon="ui-icon-alert" />
+													message="Deseja excluir o Endereço?"
+													icon="pi pi-exclamation-triangle" />
 												<f:attribute name="ProprietarioSelecionado" value="#{prop}" />
 											</p:commandButton>
 										</p:column>
@@ -377,7 +388,9 @@
 											<h3>RELAÇÃO DE FUNCIONÁRIOS</h3>
 
 											<p:commandButton value="Adicionar"
-												oncomplete="PF('dialogofunc').show();" update=":func:func"
+												styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
+												icon="pi pi-plus" oncomplete="PF('dialogofunc').show();"
+												update=":func:func"
 												rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
 												<f:actionListener
 													type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
@@ -416,12 +429,13 @@
 										<p:column headerText="Opções"
 											style="width: 6%; text-align: center;"
 											rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
-											<p:commandButton icon="ui-icon-trash"
+											<p:commandButton icon="pi pi-trash"
+												styleClass="rounded-button ui-button-danger"
 												actionListener="#{credenciadoEmpBean.excluirFuncionario}"
 												update=":mensagem tabView:formularioEmpresas:lista3 tabView:formularioEmpresas:lista33">
 												<p:confirm header="Confirmação"
 													message="Deseja excluir o Funcionário?"
-													icon="ui-icon-alert" />
+													icon="pi pi-exclamation-triangle" />
 												<f:attribute name="funcionarioSelecionado" value="#{func}" />
 											</p:commandButton>
 										</p:column>
@@ -433,9 +447,11 @@
 
 									<p:confirmDialog global="true">
 										<p:commandButton value="Sim" type="button"
-											styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+											styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
+											icon="pi pi-check" />
 										<p:commandButton value="Não" type="button"
-											styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+											styleClass="ui-confirmdialog-no rounded-button"
+											icon="pi pi-times" />
 									</p:confirmDialog>
 
 
@@ -489,8 +505,8 @@
 											style="width: 9%; text-align: center;">
 											<h:outputText
 												value="#{empresa.usuarioCadastro.pessoa.nomeCompleto}" />
-										</p:column>			
-										
+										</p:column>
+
 
 									</p:dataTable>
 
@@ -504,7 +520,8 @@
 										<f:facet name="header">
 											<h3>ENDEREÇOS ADICIONAIS</h3>
 											<p:commandButton value="Adicionar"
-												oncomplete="PF('dialogo').show();"
+												styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
+												icon="pi pi-plus" oncomplete="PF('dialogo').show();"
 												update=":endereco:endereco"
 												rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
 												<f:actionListener
@@ -539,11 +556,13 @@
 										<p:column headerText="Opções"
 											style="width: 6%; text-align: center;"
 											rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
-											<p:commandButton icon="ui-icon-trash"
+											<p:commandButton icon="pi pi-trash"
+												styleClass="rounded-button ui-button-danger"
 												actionListener="#{credenciadoEmpBean.excluirEnd}"
 												update=":mensagem tabView:formularioEmpresas:listaEndAdc">
 												<p:confirm header="Confirmação"
-													message="Deseja excluir o Endereço?" icon="ui-icon-alert" />
+													message="Deseja excluir o Endereço?"
+													icon="pi pi-exclamation-triangle" />
 												<f:attribute name="enderecoSelecionado" value="#{empresa}" />
 											</p:commandButton>
 										</p:column>
@@ -554,9 +573,11 @@
 
 									<p:confirmDialog global="true">
 										<p:commandButton value="Sim" type="button"
-											styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+											styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
+											icon="pi pi-check" />
 										<p:commandButton value="Não" type="button"
-											styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+											styleClass="ui-confirmdialog-no rounded-button"
+											icon="pi pi-times" />
 									</p:confirmDialog>
 
 
@@ -585,7 +606,8 @@
 										<f:facet name="header">
 											<h3>PORTARIA</h3>
 											<p:commandButton value="Adicionar"
-												oncomplete="PF('dialogoportaria').show();"
+												styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
+												icon="pi pi-plus" oncomplete="PF('dialogoportaria').show();"
 												update=":portaria:portaria"
 												rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
 												<f:actionListener
@@ -608,7 +630,7 @@
 											style="width: 9%; text-align: center;">
 											<h:outputText rendered="#{portaria.dataFim != null}"
 												value="#{portaria.dataFim.date}/#{portaria.dataFim.month+1}/#{portaria.dataFim.year+1900}" />
-												<h:outputText rendered="#{portaria.dataFim == null}"
+											<h:outputText rendered="#{portaria.dataFim == null}"
 												value="Sem data" />
 										</p:column>
 
@@ -623,19 +645,21 @@
 											<h:outputText
 												value="#{portaria.usuarioCadastro.pessoa.nomeCompleto}" />
 										</p:column>
-										
+
 										<p:column headerText="Opções"
 											style="width: 6%; text-align: center;"
 											rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
-											<p:commandButton icon="ui-icon-trash"
+											<p:commandButton icon="pi pi-trash"
+												styleClass="rounded-button ui-button-danger"
 												actionListener="#{credenciadoEmpBean.excluirPortaria}"
 												update=":mensagem tabView:formularioEmpresas:lista5">
 												<p:confirm header="Confirmação"
-													message="Deseja excluir a Portaria?" icon="ui-icon-alert" />
+													message="Deseja excluir a Portaria?"
+													icon="pi pi-exclamation-triangle" />
 												<f:attribute name="portariaSelecionado" value="#{portaria}" />
 											</p:commandButton>
 										</p:column>
-										
+
 									</p:dataTable>
 
 
@@ -649,7 +673,8 @@
 										<f:facet name="header">
 											<h3>ALVARÁ</h3>
 											<p:commandButton value="Adicionar"
-												oncomplete="PF('dialogoalvara').show();"
+												styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
+												icon="pi pi-plus" oncomplete="PF('dialogoalvara').show();"
 												update=":alvara:alvara"
 												rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
 												<f:actionListener
@@ -685,19 +710,21 @@
 											<h:outputText
 												value="#{alvara.usuarioCadastro.pessoa.nomeCompleto}" />
 										</p:column>
-										
+
 										<p:column headerText="Opções"
 											style="width: 6%; text-align: center;"
 											rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
-											<p:commandButton icon="ui-icon-trash"
+											<p:commandButton icon="pi pi-trash"
+												styleClass="rounded-button ui-button-danger"
 												actionListener="#{credenciadoEmpBean.excluirAlvara}"
 												update=":mensagem tabView:formularioEmpresas:lista6">
 												<p:confirm header="Confirmação"
-													message="Deseja excluir o Alvará?" icon="ui-icon-alert" />
+													message="Deseja excluir o Alvará?"
+													icon="pi pi-exclamation-triangle" />
 												<f:attribute name="alvaraSelecionado" value="#{alvara}" />
 											</p:commandButton>
 										</p:column>
-										
+
 									</p:dataTable>
 
 
@@ -711,7 +738,9 @@
 										<f:facet name="header">
 											<h3>OBSERVAÇÃO</h3>
 											<p:commandButton value="Adicionar"
-												oncomplete="PF('dialogoobs').show();" update=":obs:obs"
+												styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
+												icon="pi pi-plus" oncomplete="PF('dialogoobs').show();"
+												update=":obs:obs"
 												rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
 												<f:actionListener
 													type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
@@ -734,20 +763,22 @@
 											<h:outputText
 												value="#{obs.usuarioCadastro.pessoa.nomeCompleto}" />
 										</p:column>
-										
+
 										<p:column headerText="Opções"
 											style="width: 3%; text-align: center;"
 											rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
-											<p:commandButton icon="ui-icon-trash"
+											<p:commandButton icon="pi pi-trash"
+												styleClass="rounded-button ui-button-danger"
 												actionListener="#{credenciadoEmpBean.excluirObs}"
 												update=":mensagem tabView:formularioEmpresas:lista44">
 												<p:confirm header="Confirmação"
-													message="Deseja excluir a observação?" icon="ui-icon-alert" />
+													message="Deseja excluir a observação?"
+													icon="pi pi-exclamation-triangle" />
 												<f:attribute name="obsSelecionado" value="#{obs}" />
 											</p:commandButton>
 										</p:column>
-										
-										
+
+
 									</p:dataTable>
 
 
@@ -761,7 +792,9 @@
 										<f:facet name="header">
 											<h3>OBSERVAÇÃO</h3>
 											<p:commandButton value="Adicionar"
-												oncomplete="PF('dialogoobs').show();" update=":obs:obs"
+												styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
+												icon="pi pi-plus" oncomplete="PF('dialogoobs').show();"
+												update=":obs:obs"
 												rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
 												<f:actionListener
 													type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
@@ -784,20 +817,22 @@
 											<h:outputText
 												value="#{obs.usuarioCadastro.pessoa.nomeCompleto}" />
 										</p:column>
-										
-											<p:column headerText="Opções"
+
+										<p:column headerText="Opções"
 											style="width: 3%; text-align: center;"
 											rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
-											<p:commandButton icon="ui-icon-trash"
+											<p:commandButton icon="pi pi-trash"
+												styleClass="rounded-button ui-button-danger"
 												actionListener="#{credenciadoEmpBean.excluirObs}"
 												update=":mensagem tabView:formularioEmpresas:lista4">
 												<p:confirm header="Confirmação"
-													message="Deseja excluir a observação?" icon="ui-icon-alert" />
+													message="Deseja excluir a observação?"
+													icon="pi pi-exclamation-triangle" />
 												<f:attribute name="obsSelecionado" value="#{obs}" />
 											</p:commandButton>
 										</p:column>
-										
-										
+
+
 									</p:dataTable>
 
 
@@ -810,7 +845,9 @@
 										<f:facet name="header">
 											<h3>SGP-e</h3>
 											<p:commandButton value="Adicionar"
-												oncomplete="PF('dialogosgpe').show();" update=":sgpe:sgpe"
+												styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
+												icon="pi pi-plus" oncomplete="PF('dialogosgpe').show();"
+												update=":sgpe:sgpe"
 												rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
 												<f:actionListener
 													type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
@@ -838,15 +875,17 @@
 											<h:outputText
 												value="#{sgpe.usuarioCadastro.pessoa.nomeCompleto}" />
 										</p:column>
-										
+
 										<p:column headerText="Opções"
 											style="width: 6%; text-align: center;"
 											rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
-											<p:commandButton icon="ui-icon-trash"
+											<p:commandButton icon="pi pi-trash"
+												styleClass="rounded-button ui-button-danger"
 												actionListener="#{credenciadoEmpBean.excluirSGPE}"
 												update=":mensagem tabView:formularioEmpresas:lista77">
 												<p:confirm header="Confirmação"
-													message="Deseja excluir o SGPE?" icon="ui-icon-alert" />
+													message="Deseja excluir o SGPE?"
+													icon="pi pi-exclamation-triangle" />
 												<f:attribute name="sgpeSelecionado" value="#{sgpe}" />
 											</p:commandButton>
 										</p:column>
@@ -864,7 +903,9 @@
 										<f:facet name="header">
 											<h3>SGP-e</h3>
 											<p:commandButton value="Adicionar"
-												oncomplete="PF('dialogosgpe').show();" update=":sgpe:sgpe"
+												styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
+												icon="pi pi-plus" oncomplete="PF('dialogosgpe').show();"
+												update=":sgpe:sgpe"
 												rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
 												<f:actionListener
 													type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
@@ -892,15 +933,17 @@
 											<h:outputText
 												value="#{sgpe.usuarioCadastro.pessoa.nomeCompleto}" />
 										</p:column>
-										
+
 										<p:column headerText="Opções"
 											style="width: 6%; text-align: center;"
 											rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
-											<p:commandButton icon="ui-icon-trash"
+											<p:commandButton icon="pi pi-trash"
+												styleClass="rounded-button ui-button-danger"
 												actionListener="#{credenciadoEmpBean.excluirSGPE}"
 												update=":mensagem tabView:formularioEmpresas:lista7">
 												<p:confirm header="Confirmação"
-													message="Deseja excluir o SGPE?" icon="ui-icon-alert" />
+													message="Deseja excluir o SGPE?"
+													icon="pi pi-exclamation-triangle" />
 												<f:attribute name="sgpeSelecionado" value="#{sgpe}" />
 											</p:commandButton>
 										</p:column>
@@ -927,7 +970,9 @@
 										<f:facet name="header">
 											<h3>RELAÇÃO DE VEÍCULOS</h3>
 											<p:commandButton value="Adicionar"
-												oncomplete="PF('dialogoveic').show();" update=":veic:veic"
+												styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
+												icon="pi pi-plus" oncomplete="PF('dialogoveic').show();"
+												update=":veic:veic"
 												rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
 												<f:actionListener
 													type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
@@ -981,20 +1026,24 @@
 										<p:column headerText="Opções"
 											style="width: 6%; text-align: center;"
 											rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
-											<p:commandButton icon="ui-icon-trash"
+											<p:commandButton icon="pi pi-trash"
+												styleClass="rounded-button ui-button-danger"
 												actionListener="#{credenciadoEmpBean.excluirVeiculo}"
 												update=":mensagem tabView:formularioEmpresas:lista8">
 												<p:confirm header="Confirmação"
-													message="Deseja excluir o Veículo?" icon="ui-icon-alert" />
+													message="Deseja excluir o Veículo?"
+													icon="pi pi-exclamation-triangle" />
 												<f:attribute name="VeiculoSelecionado" value="#{veiculo}" />
 											</p:commandButton>
 										</p:column>
 
 										<p:confirmDialog global="true">
 											<p:commandButton value="Sim" type="button"
-												styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+												styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
+												icon="pi pi-check" />
 											<p:commandButton value="Não" type="button"
-												styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+												styleClass="ui-confirmdialog-no rounded-button"
+												icon="pi pi-times" />
 										</p:confirmDialog>
 
 
@@ -1003,9 +1052,10 @@
 
 									<p:confirmDialog global="true">
 										<p:commandButton value="Sim" type="button"
-											styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+											styleClass="ui-confirmdialog-yes rounded-button ui-button-danger" />
 										<p:commandButton value="Não" type="button"
-											styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+											styleClass="ui-confirmdialog-no rounded-button"
+											icon="pi pi-times" />
 									</p:confirmDialog>
 
 
@@ -1055,10 +1105,13 @@
 
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
+						styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
+						icon="pi pi-check"
 						actionListener="#{credenciadoEmpBean.adicionaObs}"
 						update=":mensagem tabView:formularioEmpresas:lista4 tabView:formularioEmpresas:lista44"
 						oncomplete="PF('dialogoobs').hide();" />
 					<p:commandButton value="Fechar"
+						styleClass="ui-confirmdialog-no rounded-button" icon="pi pi-times"
 						oncomplete="PF('dialogoobs').hide();" />
 				</h:panelGrid>
 
@@ -1077,10 +1130,10 @@
 						requiredMessage="O campo Portaria é obritarório"
 						style="text-transform:uppercase;" />
 
-					
-						
-						
-						<p:outputLabel value="Data Inicio:" />
+
+
+
+					<p:outputLabel value="Data Inicio:" />
 					<p:calendar pattern="dd/MM/yyyy" mask="true" size="6"
 						required="true"
 						requiredMessage="O campo Data Inicio é obrigatório"
@@ -1091,7 +1144,6 @@
 
 					<p:outputLabel value="Data Fim:" />
 					<p:calendar pattern="dd/MM/yyyy" mask="true" size="6"
-						
 						value="#{credenciadoEmpBean.portaria.dataFim}" showOn="button">
 						<f:converter converterId="converterData" />
 					</p:calendar>
@@ -1100,11 +1152,12 @@
 
 
 				<h:panelGrid columns="2">
-					<p:commandButton value="Salvar"
+					<p:commandButton value="Salvar" styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
+						icon="pi pi-check"
 						actionListener="#{credenciadoEmpBean.adicionaPortaria}"
 						update=":mensagem tabView:formularioEmpresas:lista5"
 						oncomplete="PF('dialogoportaria').hide();" />
-					<p:commandButton value="Fechar"
+					<p:commandButton value="Fechar" styleClass="ui-confirmdialog-no rounded-button" icon="pi pi-times"
 						oncomplete="PF('dialogoportaria').hide();" />
 				</h:panelGrid>
 
@@ -1123,10 +1176,10 @@
 						requiredMessage="O campo Alvará é obritarório"
 						style="text-transform:uppercase;" />
 
-				
-						
-						
-						<p:outputLabel value="Data Inicio:" />
+
+
+
+					<p:outputLabel value="Data Inicio:" />
 					<p:calendar pattern="dd/MM/yyyy" mask="true" size="6"
 						required="true"
 						requiredMessage="O campo Data Inicio é obrigatório"
@@ -1137,8 +1190,7 @@
 
 					<p:outputLabel value="Data Fim:" />
 					<p:calendar pattern="dd/MM/yyyy" mask="true" size="6"
-						required="true"
-						requiredMessage="O campo Data Fim é obrigatório"
+						required="true" requiredMessage="O campo Data Fim é obrigatório"
 						value="#{credenciadoEmpBean.alvara.dataFim}" showOn="button">
 						<f:converter converterId="converterData" />
 					</p:calendar>
@@ -1147,11 +1199,12 @@
 
 
 				<h:panelGrid columns="2">
-					<p:commandButton value="Salvar"
+					<p:commandButton value="Salvar" styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
+						icon="pi pi-check"
 						actionListener="#{credenciadoEmpBean.adicionaAlvara}"
 						update=":mensagem tabView:formularioEmpresas:lista6"
 						oncomplete="PF('dialogoalvara').hide();" />
-					<p:commandButton value="Fechar"
+					<p:commandButton value="Fechar" styleClass="ui-confirmdialog-no rounded-button" icon="pi pi-times"
 						oncomplete="PF('dialogoalvara').hide();" />
 				</h:panelGrid>
 
@@ -1184,11 +1237,12 @@
 
 
 				<h:panelGrid columns="2">
-					<p:commandButton value="Salvar"
+					<p:commandButton value="Salvar" styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
+						icon="pi pi-check"
 						actionListener="#{credenciadoEmpBean.adicionaSGPE}"
 						update=":mensagem tabView:formularioEmpresas:lista7 tabView:formularioEmpresas:lista77"
 						oncomplete="PF('dialogosgpe').hide();" />
-					<p:commandButton value="Fechar"
+					<p:commandButton value="Fechar" styleClass="ui-confirmdialog-no rounded-button" icon="pi pi-times"
 						oncomplete="PF('dialogosgpe').hide();" />
 				</h:panelGrid>
 
@@ -1221,7 +1275,8 @@
 
 
 				<h:panelGrid columns="2">
-					<p:commandButton value="Salvar"
+					<p:commandButton value="Salvar" styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
+						icon="pi pi-check"
 						actionListener="#{credenciadoEmpBean.adicionaEnd}"
 						update=":mensagem tabView:formularioEmpresas:listaEndAdc"
 						oncomplete="PF('dialogo').hide();" />
@@ -1259,11 +1314,12 @@
 
 
 				<h:panelGrid columns="2">
-					<p:commandButton value="Salvar"
+					<p:commandButton value="Salvar" styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
+						icon="pi pi-check"
 						actionListener="#{credenciadoEmpBean.adicionaFuncionario}"
 						update=":mensagem tabView:formularioEmpresas:lista3 tabView:formularioEmpresas:lista33 func:cpf func:nomeCompleto"
 						oncomplete="PF('dialogofunc').hide();" />
-					<p:commandButton value="Fechar"
+					<p:commandButton value="Fechar" styleClass="ui-confirmdialog-no rounded-button" icon="pi pi-times"
 						oncomplete="PF('dialogofunc').hide();" />
 				</h:panelGrid>
 
@@ -1298,11 +1354,12 @@
 
 
 				<h:panelGrid columns="2">
-					<p:commandButton value="Salvar"
+					<p:commandButton value="Salvar" styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
+						icon="pi pi-check"
 						actionListener="#{credenciadoEmpBean.adicionaProprietario}"
 						update=":mensagem tabView:formularioEmpresas:listaProp :prop:cpf prop:nomeCompleto"
 						oncomplete="PF('dialogoprop').hide();" />
-					<p:commandButton value="Fechar"
+					<p:commandButton value="Fechar" styleClass="ui-confirmdialog-no rounded-button" icon="pi pi-times"
 						oncomplete="PF('dialogoprop').hide();" />
 				</h:panelGrid>
 
@@ -1359,11 +1416,12 @@
 
 
 				<h:panelGrid columns="2">
-					<p:commandButton value="Salvar"
+					<p:commandButton value="Salvar" styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
+						icon="pi pi-check"
 						actionListener="#{credenciadoEmpBean.adicionaVeiculo()}"
 						update=":mensagem tabView:formularioEmpresas:lista8"
 						oncomplete="PF('dialogoveic').hide();" />
-					<p:commandButton value="Fechar"
+					<p:commandButton value="Fechar" styleClass="ui-confirmdialog-no rounded-button" icon="pi pi-times"
 						oncomplete="PF('dialogoveic').hide();" />
 				</h:panelGrid>
 
@@ -1374,9 +1432,9 @@
 
 
 
-		
 
-		
+
+
 
 
 

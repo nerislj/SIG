@@ -7,36 +7,43 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	template="/templates/modelo.xhtml">
 
-	<ui:define name="conteudo" >
-		<h:form id="formlista" rendered="#{autenticacaoBean.temPermissoes([1])}">
+	<ui:define name="conteudo">
+		<h:form id="formlista"
+			rendered="#{autenticacaoBean.temPermissoes([1])}">
 			<p:panel header="Tipos de Recurso de Multa - Listagem">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{recursoMultaTiposBean.recursomultatipos}"
-					var="tipos" rows="10">
+					var="tipos" rows="10" stripedRows="true">
 					<f:facet name="header">
 						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
+							styleClass="rounded-button ui-button-success"
 							actionListener="#{recursoMultaTiposBean.novo()}"
-							update=":formcadastro:cadastro">
+							icon="pi pi-plus" update=":formcadastro:cadastro">
 							<f:actionListener
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 						</p:commandButton>
 					</f:facet>
 
 					<p:column headerText="Nome" sortBy="#{tipos.tipoProcesso}"
-						filterBy="#{tipos.tipoProcesso}" style="width: 15%; text-align: center;">
+						filterBy="#{tipos.tipoProcesso}" filterMatchMode="contains"
+						style="width: 15%; text-align: center;">
 						<h:outputText value="#{tipos.tipoProcesso}" />
 					</p:column>
 
-					<p:column headerText="Opções" style="width: 15%; text-align: center;">
-						<p:commandButton icon="ui-icon-trash"
+					<p:column headerText="Opções"
+						style="width: 10%; text-align: center;">
+						<p:commandButton icon="pi pi-trash"
+							styleClass="rounded-button ui-button-danger"
 							actionListener="#{recursoMultaTiposBean.excluir}"
 							update=":mensagem :formlista:lista">
 							<p:confirm header="Confirmação"
-								message="Deseja excluir o Tipode Recurso?" icon="ui-icon-alert" />
+								message="Deseja excluir o Tipode Recurso?"
+								icon="pi pi-exclamation-triangle" />
 							<f:attribute name="recursomultatipoSelecionado" value="#{tipos}" />
 						</p:commandButton>
 
-						<p:commandButton icon="ui-icon-pencil"
+						<p:commandButton icon="pi pi-pencil"
+							styleClass="rounded-button ui-button-info"
 							actionListener="#{recursoMultaTiposBean.editar}"
 							update=":formcadastro:cadastro"
 							oncomplete="PF('dialogo').show();">
@@ -50,9 +57,9 @@
 
 				<p:confirmDialog global="true">
 					<p:commandButton value="Sim" type="button"
-						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						styleClass="ui-confirmdialog-yes rounded-button ui-button-danger" />
 					<p:commandButton value="Não" type="button"
-						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						styleClass="ui-confirmdialog-no rounded-button" icon="pi pi-times" />
 				</p:confirmDialog>
 			</p:panel>
 		</h:form>
@@ -71,9 +78,13 @@
 
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
+						styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
+						icon="pi pi-check"
 						actionListener="#{recursoMultaTiposBean.salvar()}"
 						update=":mensagem :formcadastro:cadastro :formlista:lista" />
-					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+					<p:commandButton value="Fechar"
+						styleClass="ui-confirmdialog-no rounded-button" icon="pi pi-times"
+						oncomplete="PF('dialogo').hide();" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>
