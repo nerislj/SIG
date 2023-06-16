@@ -1,100 +1,132 @@
-@CHARSET "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'poppins',sans-serif;
+}
 
 body {
-	background: url('../resources/images/bg-sig-branco.png');
-	background-repeat: no-repeat;
-	background-size: 100%;
-	bottom: 0;
-	color: black;
-	left: 0;
-	overflow: auto;
-	padding: 3em;
-	position: absolute;
-	right: 0;
-	text-align: center;
-	top: 0;
-	background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: url('../resources/images/bg-color.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
 
-.imagemCentralizada {
-	display: block;
-	width: 100%;
+.section {
+    position: relative;
+    max-width: 400px;
+    background-color: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    backdrop-filter: blur(55px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5rem 3rem 2rem;
 }
 
-.rodape img {
-	text-align: center;
-	padding-top: 10px;
-	opacity: 0.5;
-	filter: alpha(opacity = 50); /* For IE8 and earlier */
-	margin-top: -190px;
-	margin-left: -60px;
-	
+
+
+.inputbox {
+    position: relative;
+    margin: 30px 0;
+    max-width: 310px;
+    
 }
 
-.divTopo {
-	padding-bottom: 5px;
+.inputbox label {
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    color: #fff;
+    font-size: 1rem;
+    pointer-events: none;
+    transition: all 0.5s ease-in-out;
 }
 
-.divCabecalho {
-	padding-bottom: 5px;
+input:focus ~ label, 
+input:valid ~ label {
+    top: -5px;
 }
 
-.ui-widget, .ui-widget .ui-widget {
-	font-size: 95% !important;
+.inputbox input {
+    width: 100%;
+    height: 60px;
+  
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    padding: 0 35px 0 5px;
+    
 }
 
-.botaoLogout {
-	background: #EA5C5C;
+
+
+.forget {
+    margin: 35px 0;
+    font-size: 0.9rem;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+}
+
+.forget label input {
+    margin-right: 3px;
+}
+
+.forget label a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.forget label a:hover {
+    text-decoration: underline;
+}
+
+button {
+    width: 100%;
+    height: 40px;
+    border-radius: 40px;
+    background-color: #fff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.register {
+    font-size: 0.9rem;
+    color: #808080;
+    text-align: center;
+    margin: 25px 0 10px;
+}
+
+.register p a {
+    text-decoration: none;
+    color: #808080;
+    font-weight: 600;
+}
+
+.register p a:hover {
+    text-decoration: underline;
 }
 
 .divLogo {
 	display: block;
 	position: absolute;
-	top: 50%;
+	top: 35%;
 	left: 50%;
-	margin-top: -190px;
-	margin-left: -122px;
+	margin-top: -130px;
+	margin-left: -57px;
 	z-index: 999;
-	width: 200px;
-	height: 200px;
-}
-
-.divCPFeSenha {
-	display: block;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin-top: -20px;
-	margin-left: -150px;
-	z-index: 999;
-	width: 170px;
-	height: 170px;
-}
-
-.divEntrar {
-	display: block;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin-top: 50px;
-	z-index: 999;
-}
-
-.divEntrarButton {
-	width: 245px;
-	height: 50px;
-	margin-left: -150px;
-	background-image: none;
-	background-color: #569d11;
-	color: white;
-}
-
-.divOpcoes {
-	display: block;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin-top: 110px;
-	margin-left: -150px;
-	z-index: 999;
+	width: 120px;
+	height: 120px;
 }

@@ -16,15 +16,11 @@
 					rows="10" stripedRows="true">
 					<f:facet name="header">
 <<<<<<< HEAD
-
-						
-
-						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();" styleClass="rounded-button ui-button-success"
-
-=======
 						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
 							styleClass="rounded-button ui-button-success"
->>>>>>> parent of 8eb053e (Merge branch 'main' of https://github.com/nerislj/SIG.git into main)
+=======
+						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();" styleClass="rounded-button ui-button-success"
+>>>>>>> branch 'main' of https://github.com/nerislj/SIG.git
 							actionListener="#{estadoBean.novo()}" icon="pi pi-plus"
 							update=":formcadastro:cadastro">
 							<f:actionListener
@@ -33,11 +29,10 @@
 					</f:facet>
 
 <<<<<<< HEAD
-
-					<p:column headerText="Nome" sortBy="#{estado.nome}"
-=======
 					<p:column headerText="Nome" sortBy="#{estado.nome}" filterMatchMode="contains"
->>>>>>> parent of 8eb053e (Merge branch 'main' of https://github.com/nerislj/SIG.git into main)
+=======
+					<p:column headerText="Nome" sortBy="#{estado.nome}"
+>>>>>>> branch 'main' of https://github.com/nerislj/SIG.git
 						filterBy="#{estado.nome}" style="width: 90px; text-align: center;">
 						<h:outputText value="#{estado.nome}" />
 					</p:column>
@@ -49,18 +44,14 @@
 					</p:column>
 
 <<<<<<< HEAD
-
-						
-
-					<p:column headerText="Opções" style="width: 10px; text-align: center;">
-						<p:commandButton icon="pi pi-trash" styleClass="rounded-button ui-button-danger"
-
-=======
 					<p:column headerText="Opções"
 						style="width: 10px; text-align: center;">
 						<p:commandButton icon="pi pi-trash"
 							styleClass="rounded-button ui-button-danger"
->>>>>>> parent of 8eb053e (Merge branch 'main' of https://github.com/nerislj/SIG.git into main)
+=======
+					<p:column headerText="Opções" style="width: 10px; text-align: center;">
+						<p:commandButton icon="pi pi-trash" styleClass="rounded-button ui-button-danger"
+>>>>>>> branch 'main' of https://github.com/nerislj/SIG.git
 							actionListener="#{estadoBean.excluir}"
 							update=":mensagem :formlista:lista">
 							<p:confirm header="Confirmação"
@@ -69,13 +60,11 @@
 						</p:commandButton>
 
 <<<<<<< HEAD
-
-						<p:commandButton icon="pi pi-pencil" styleClass="rounded-button ui-button-info"
-
-=======
 						<p:commandButton icon="pi pi-pencil"
 							styleClass="rounded-button ui-button-info"
->>>>>>> parent of 8eb053e (Merge branch 'main' of https://github.com/nerislj/SIG.git into main)
+=======
+						<p:commandButton icon="pi pi-pencil" styleClass="rounded-button ui-button-info"
+>>>>>>> branch 'main' of https://github.com/nerislj/SIG.git
 							actionListener="#{estadoBean.editar}"
 							update=":formcadastro:cadastro"
 							oncomplete="PF('dialogo').show();">
