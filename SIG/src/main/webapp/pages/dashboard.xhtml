@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+
+
+
+	<ui:define name="conteudo">
+
+<p:panel header="Página Inicial">
+		<div class="card">
+
+			<div class="grid">
+				<div class="colStats">
+					<div class="box">
+
+						<img src="https://www.sc.gov.br/assets/indicadores.fw_.png"
+							width="435px" height="400px" />
+
+					</div>
+				</div>
+				<div class="colStats">
+					<div class="box">
+
+						<div class="item">
+							<i class="pi pi-building" style="font-size: 5rem"></i>
+							<p id="number2" class="number">
+								<span style="color: #8fb13a; font-size: 36px; font-weight: 800;"><h:outputLabel
+										value="#{unidadeBean.unidades.size()}" /></span>
+							</p>
+							<p class="fontStats">UNIDADES</p>
+						</div>
+
+					</div>
+				</div>
+				<div class="colStats">
+					<div class="box">
+
+						<div class="item">
+							<i class="pi pi-users" style="font-size: 5rem"></i>
+							<p id="number3" class="number">
+								<span style="color: #8fb13a; font-size: 36px; font-weight: 800;">770</span>
+							</p>
+							<p class="fontStats">COLABORADORES</p>
+						</div>
+
+					</div>
+				</div>
+				<div class="colStats">
+					<div class="box">
+
+						<div class="item">
+							<i class="pi pi-desktop" style="font-size: 5rem"></i>
+							<p id="number3" class="number">
+								<span style="color: #8fb13a; font-size: 36px; font-weight: 800;"><h:outputLabel
+										value="#{usuarioBean.usuariosCount.size()}" /></span> 
+							</p>
+							<span class="fontStats">USUÁRIOS</span>
+						</div>
+
+					</div>
+				</div>
+
+				<div class="colStats">
+					<div class="box">
+
+						<div class="item">
+							<i class="pi pi-id-card" style="font-size: 5rem"></i>
+							<p id="number3" class="number">
+								<span style="color: #8fb13a; font-size: 36px; font-weight: 800;"><h:outputLabel
+										value="#{credenciadoBean.credenciados.size()+credenciadoEmpBean.credenciados.size()}" /></span>
+							</p>
+							<p class="fontStats">CREDENCIADOS</p>
+						</div>
+
+					</div>
+				</div>
+				
+				
+				
+			</div>
+		</div>
+		
+		</p:panel>
+
+
+
+
+
+
+
+	</ui:define>
+
+
+
+
+
+</ui:composition>

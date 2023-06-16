@@ -471,6 +471,9 @@ public class CredenciadoEmpBean implements Serializable {
 			HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 			usuarioLogado = (Usuario) sessao.getAttribute("usuario");
 
+			CredenciadoEmpDAO credenciadoDAO = new CredenciadoEmpDAO();
+			credenciados = credenciadoDAO.listar();
+			
 			credenciado = new CredenciadoEmp();
 
 			empresa = new PessoaJuridica();

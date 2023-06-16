@@ -66,7 +66,7 @@ public class AutenticacaoBean {
 				return;
 			}
 
-			Faces.redirect("./pages/principal.xhtml");
+			Faces.redirect("./pages/dashboard.xhtml");
 		} catch (IOException erro) {
 			erro.printStackTrace();
 			Messages.addGlobalError(erro.getMessage());
@@ -80,7 +80,7 @@ public class AutenticacaoBean {
 
 		try {
 		
-			Faces.redirect("./pages/principal.xhtml");
+			Faces.redirect("./pages/dashboard.xhtml");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
