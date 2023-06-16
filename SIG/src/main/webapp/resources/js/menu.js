@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of 8eb053e (Merge branch 'main' of https://github.com/nerislj/SIG.git into main)
 $(document).ready(function() {
 	$('.menu li:has(ul)').click(function(e) {
 		e.preventDefault();
@@ -17,6 +20,7 @@ $(document).ready(function() {
 			window.location.href = $(this).attr('href');
 		})
 	});
+<<<<<<< HEAD
 });
 
 $(document).ready(function() {
@@ -41,3 +45,6 @@ $(document).ready(function() {
 
 
 
+=======
+});
+>>>>>>> parent of 8eb053e (Merge branch 'main' of https://github.com/nerislj/SIG.git into main)

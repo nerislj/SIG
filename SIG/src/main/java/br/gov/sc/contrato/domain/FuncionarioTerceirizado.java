@@ -1,9 +1,6 @@
 /* Decompiler 4ms, total 150ms, lines 124 */
 package br.gov.sc.contrato.domain;
 
-import br.gov.sc.codet.domain.Processo;
-import br.gov.sc.funcionariosuf.domain.CiretranCitran;
-import br.gov.sc.funcionariosuf.domain.UnidadeCiretranCitran;
 import br.gov.sc.sgi.domain.PessoaFisica;
 import br.gov.sc.sgi.domain.Setor;
 import br.gov.sc.sgi.domain.Unidade;
@@ -30,35 +27,27 @@ public class FuncionarioTerceirizado extends GenericDomainContrato {
 	@OneToOne
 	@JoinColumn(unique = true)
 	private EventoTerceirizado tipoEvento;
-	
 	@OneToOne
 	@JoinColumn(nullable = false, unique = true)
 	private PessoaFisica pessoa;
-	
 	@ManyToOne
 	@JoinColumn
 	private Unidade unidade;
-	
 	@ManyToOne
 	@JoinColumn(nullable = true)
 	private Setor setor;
-	
 	@Temporal(TemporalType.DATE)
 	@Column(nullable = false)
 	private Date dataCadastro;
-	
 	@OneToOne
-	@JoinColumn
+	@JoinColumn(nullable = false)
 	private CargoTerceirizado cargoTerceirizado;
-	
 	@OneToOne
 	@JoinColumn(nullable = false)
 	private Usuario usuarioCadastro;
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "funcionarioTerceirizado")
 	@Fetch(FetchMode.SUBSELECT)
 	private List<ContratoRelacao> contratoRelacao;
-	
-
 
 	public EventoTerceirizado getTipoEvento() {
 		return this.tipoEvento;

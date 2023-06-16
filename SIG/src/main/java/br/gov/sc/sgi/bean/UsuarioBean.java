@@ -33,7 +33,6 @@ public class UsuarioBean implements Serializable {
 
 	private Usuario usuario;
 	private List<Usuario> Usuarios;
-	private List<Usuario> usuariosCount;
 	private List<PessoaFisica> pessoas;
 	private List<UsuarioStatus> usuarioStatus;
 	private List<UsuarioNivelAcesso> usuarioNivel;
@@ -110,9 +109,6 @@ public class UsuarioBean implements Serializable {
 		try {
 			System.out.println("AQUI USUARIO BEAN");
 			
-			UsuarioDAO usuarioDAO = new UsuarioDAO();
-			usuariosCount = usuarioDAO.listar();
-			
 
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar listar os Usuários.");
@@ -137,9 +133,6 @@ public class UsuarioBean implements Serializable {
 
 			UnidadeDAO unidadeDAO = new UnidadeDAO();
 			Unidades = unidadeDAO.listar();
-			
-			
-		
 			
 			setores = new ArrayList<>();
 
@@ -238,13 +231,5 @@ public class UsuarioBean implements Serializable {
 			Messages.addGlobalError("Ocorreu um erro ao tentar filtrar os perfis");
 			erro.printStackTrace();
 		}
-	}
-
-	public List<Usuario> getUsuariosCount() {
-		return usuariosCount;
-	}
-
-	public void setUsuariosCount(List<Usuario> usuariosCount) {
-		this.usuariosCount = usuariosCount;
 	}
 }

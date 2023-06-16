@@ -78,13 +78,12 @@
 					<p:commandButton value="Pesquisar" icon="pi pi-search"
 						actionListener="#{ecvItlBean.buscarCamposPesquisa}"
 						update=":mensagem tabView:formularioEmpresas:painelDados "
-						styleClass="rounded-button ui-button-success">
+						style="background: #01B50D;">
 						<f:actionListener
 							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 					</p:commandButton>
 
-					<p:commandButton value="Cadastrar Empresa" icon="pi pi-plus"
-						styleClass="rounded-button ui-button-info"
+					<p:commandButton value="Cadastrar Empresa"
 						style="background: #3c8dbc;" actionListener="#{ecvItlBean.novo}"
 						oncomplete="PF('dialogoAdicionarProcesso').show();"
 						update="tabView:formularioEmpresas:listaCorregedoria dadosForm:dadosForm"
@@ -206,7 +205,7 @@
 
 
 
-									<p:commandButton title="Histórico" icon="pi pi-book" styleClass="rounded-button ui-button-info"
+									<p:commandButton title="Histórico" icon="ui-icon-script"
 										actionListener="#{ecvItlBean.editar}"
 										oncomplete="PF('dialogoAdicionarHistorico').show();"
 										update=":mensagem :mensagem tabView:formularioEmpresas:painelDados dadosForm2:listaHistorico">
@@ -217,9 +216,9 @@
 									<p:commandButton title="Adicionar Proprietário"
 										actionListener="#{ecvItlBean.novoProprietarioSalvar}"
 										icon="pi pi-user-plus"
-										styleClass="rounded-button ui-button-success"
 										onclick="PF('dialogoNovoFuncionario').show();"
-										 update=":mensagem">
+										style="align: center;background: #8FBC8F;border-width: 0 3px 0 3px;color: #000000;"
+										update=":mensagem">
 										<f:attribute name="ecvitlSelecionado" value="#{emp}" />
 										<f:actionListener
 											type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
@@ -232,41 +231,41 @@
 
 								<p:rowExpansion>
 									<p:dataTable id="listaFuncionarios"
-										emptyMessage="Nenhum proprietário encontrado."
-										paginator="true" value="#{ecvItlBean.listaPessoasEcvItl}"
-										var="relacao" rows="10">
+										emptyMessage="Nenhum proprietário encontrado." paginator="true"
+										value="#{ecvItlBean.listaPessoasEcvItl}" var="relacao"
+										rows="10">
 
-										<p:column headerText="Nome"
+										<p:column headerText="Nome" 
 											style="width: 7%; text-align: center;">
 											<h:outputText value="#{relacao.nome.toUpperCase()}" />
 
 
 										</p:column>
-
-										<p:column headerText="CPF"
+										
+										<p:column headerText="CPF" 
 											style="width: 7%; text-align: center;">
 											<h:outputText value="#{relacao.cpf}" />
 
 
 										</p:column>
-
-										<p:column headerText="Tipo Pessoa"
+										
+										<p:column headerText="Tipo Pessoa" 
 											style="width: 7%; text-align: center;">
 											<p:column headerText="Tipo"
-												style="width: 2%; text-align: center;">
-												<h:outputText value="Proprietário"
-													rendered="#{relacao.tipoPessoa==1}" />
-												<h:outputText value="Procurador"
-													rendered="#{relacao.tipoPessoa==0}" />
-											</p:column>
+									style="width: 2%; text-align: center;">
+									<h:outputText value="Proprietário" rendered="#{relacao.tipoPessoa==1}" />
+									<h:outputText value="Procurador" rendered="#{relacao.tipoPessoa==0}" />
+								</p:column>					
 										</p:column>
-
+										
 										<p:column headerText="Ativo"
-											style="width: 2%; text-align: center;">
-											<h:outputText value="Ativo" rendered="#{relacao.ativo==1}" />
-											<h:outputText value="Inativo" rendered="#{relacao.ativo==0}" />
-
-										</p:column>
+									style="width: 2%; text-align: center;">
+									<h:outputText value="Ativo"
+										rendered="#{relacao.ativo==1}" />
+									<h:outputText value="Inativo"
+										rendered="#{relacao.ativo==0}" />
+										
+								</p:column>
 
 
 
@@ -275,11 +274,11 @@
 
 
 											<p:commandButton title="Editar"
+				
 												actionListener="#{ecvItlBean.editarProprietario}"
 												icon="pi pi-pencil"
-											styleClass="rounded-button ui-button-warning"
 												onclick="PF('dialogoNovoFuncionario').show();"
-												
+												style="align: center;background: #ffecb3;border-width: 0 3px 0 3px;color: #000000;"
 												update=":mensagem funcionario:dadosFormFunc">
 												<f:attribute name="proprietarioSelecionado"
 													value="#{relacao}" />
@@ -415,7 +414,7 @@
 						<p:inputText id="cnpj" maxlength="18" size="30"
 							placeholder="Digite o CNPJ" value="#{ecvItlBean.ecvItl.cnpj}"
 							required="true" requiredMessage="O campo CNPJ é obrigatório">
-
+						
 						</p:inputText>
 
 
@@ -442,7 +441,7 @@
 
 						<p:outputLabel value="E-mail:" />
 						<p:inputText maxlength="50" size="30" id="emailemp"
-							value="#{ecvItlBean.ecvItl.emailEcvItl}"
+							value="#{ecvItlBean.ecvItl.emailEcvItl}" 
 							style="text-transform:uppercase;" />
 
 
@@ -470,7 +469,7 @@
 
 						<p:outputLabel value="Ip Fixo:" />
 						<p:inputText maxlength="50" size="30" id="idFixo"
-							value="#{ecvItlBean.ecvItl.ipFixo}"
+							value="#{ecvItlBean.ecvItl.ipFixo}" 
 							style="text-transform:uppercase;" />
 
 
@@ -499,12 +498,12 @@
 							value="#{ecvItlBean.ecvItl.logradouro}" required="true"
 							requiredMessage="O campo Endereço Residência é obrigatório"
 							style="text-transform:uppercase;" />
-
-						<p:outputLabel value="Número:" />
+							
+							<p:outputLabel value="Número:" />
 						<p:inputText maxlength="50" size="30" id="numero"
 							value="#{ecvItlBean.ecvItl.numero}"
 							style="text-transform:uppercase;" />
-
+							
 
 						<p:outputLabel value="Complemento:" />
 						<p:inputText maxlength="50" size="30" id="complemento"
@@ -526,7 +525,7 @@
 							value="#{ecvItlBean.ecvItl.bairro}"
 							style="text-transform:uppercase;" />
 
-
+						
 
 
 
@@ -645,22 +644,23 @@
 									value="#{hist.usuarioCadastro.pessoa.nomeCompleto}"
 									rendered="#{hist.usuarioCadastro.pessoa.nomeCompleto!=null}" />
 							</p:column>
-
-
-
+							
+							
+							
 							<p:column headerText="Data Cadastro">
-								<h:outputText value="SEM DATA"
+							<h:outputText value="SEM DATA"
 									rendered="#{hist.dataCadastro==null}" />
 								<h:outputText value="#{hist.dataCadastro}"
-									rendered="#{hist.dataCadastro!=null}">
-									<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
+									rendered="#{hist.dataCadastro!=null}"
+								>
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
 										timeZone="America/Fortaleza" />
 								</h:outputText>
-
-
+									
+								
 							</p:column>
-
-
+							
+						
 
 
 
@@ -753,7 +753,7 @@
 						<p:inputText id="cpf" maxlength="14" size="50"
 							placeholder="Digite o CPF" value="#{ecvItlBean.pessoaEcvItl.cpf}"
 							required="true" requiredMessage="O campo CPF é obrigatório">
-
+							
 						</p:inputText>
 
 						<p:outputLabel value="Nome: *" />
