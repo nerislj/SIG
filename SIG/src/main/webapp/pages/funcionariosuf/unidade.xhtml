@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+
+		<style>
+/* reset on the showcase style*/
+body .ui-panelgrid .ui-panelgrid-cell {
+	background-color: transparent;
+}
+
+/* example use of styles for your form */
+.my-heading-row {
+	background-color: #c0c0c0;
+	font-weight: bold;
+}
+</style>
+
+
+
+		<h:form id="formcadastro">
+			<p:panel header="Cadastro">
+
+				<p:panelGrid id="cadastro" columns="4" layout="flex"
+                 columnClasses="col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4, col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4"
+                 contentStyleClass="ui-fluid">
+
+
+
+
+					<p:outputLabel value="Ciretran: " />
+					<p:selectOneMenu filter="true" 
+						value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.ciretran}"
+						converter="omnifaces.SelectItemsConverter" required="true"
+						requiredMessage="O campo Ciretran é obrigatório">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma Ciretran" />
+						<f:selectItems value="#{unidadeCiretranCitranBean.listaCiretran}"
+							var="ciretran" itemValue="#{ciretran}"
+							itemLabel="#{ciretran.nome}" />
+						<p:ajax listener="#{unidadeCiretranCitranBean.popularCITRAN}"
+							update=":formcadastro:citran, :formcadastro:setor" />
+					</p:selectOneMenu>
+
+
+
+					<p:outputLabel for="citran" value="Ciretran/Citran" />
+					<p:selectOneMenu id="citran" filter="true" required="true"
+					
+						requiredMessage="O campo Municipio é obrigatório"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.ciretranCitran}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma Ciretran/Citran" />
+						<f:selectItems
+							value="#{unidadeCiretranCitranBean.listaCiretranCitran}"
+							var="ciretrancitran" itemValue="#{ciretrancitran}"
+							itemLabel="#{ciretrancitran.nome}" />
+					</p:selectOneMenu>
+
+
+
+					<p:outputLabel value="CEP:" />
+					<p:inputMask id="cepEnd" mask="99.999-999" maxlength="11" 
+						value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.cep}"
+						required="true" requiredMessage="O campo CEP é obrigatório">
+						<f:ajax event="blur" execute="@this"
+							render="estado cidade endResi"
+							listener="#{unidadeCiretranCitranBean.pesquisaCep}"></f:ajax>
+					</p:inputMask>
+
+					<p:outputLabel value="Endereço: " />
+					<p:inputText maxlength="255"  id="endResi"
+						value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.endereco}"
+						required="true"
+						requiredMessage="O campo Endereço Residência é obrigatório"
+						style="text-transform:uppercase;" />
+
+
+
+					<p:outputLabel for="estado" value="UF: " />
+					<p:selectOneMenu id="estado" filter="true" 
+						converter="omnifaces.SelectItemsConverter"
+						value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.estadoEndereco}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione um estado" />
+						<f:selectItems value="#{unidadeCiretranCitranBean.estados}"
+							var="estado" itemValue="#{estado}" itemLabel="#{estado.nome}" />
+						<p:ajax listener="#{unidadeCiretranCitranBean.popular}"
+							update=":formcadastro:cidade" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="cidade" value="Municipio" />
+					<p:selectOneMenu id="cidade" filter="true" required="true"
+						
+						requiredMessage="O campo Municipio é obrigatório"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.municipioEndereco}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma cidade" />
+						<f:selectItems value="#{unidadeCiretranCitranBean.cidades}"
+							var="cidade" itemValue="#{cidade}" itemLabel="#{cidade.nome}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="setor" value="Setor: " />
+					<p:selectOneMenu id="setor" filter="true" 
+						required="true" requiredMessage="O campo Setor é obrigatório"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.setor}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione um setor" />
+						<f:selectItems value="#{unidadeCiretranCitranBean.setores}"
+							var="setor" itemValue="#{setor}" itemLabel="#{setor.setorNome}" />
+					</p:selectOneMenu>
+
+
+
+					<p:outputLabel value="Número Circuito: " />
+					<p:inputText maxlength="255" 
+						value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.nCircuito}"
+						required="true" style="text-transform:uppercase;" />
+
+
+					<p:outputLabel value="Endereço IP: " />
+					<p:inputText maxlength="255" 
+						value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.enderecoIp}"
+						required="true" style="text-transform:uppercase;" />
+
+					<p:outputLabel value="Horário de Atendimento: " />
+					<p:inputMask
+						value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.horarioAtendimento}"
+						 mask="99:99h às 99:99h" validateMask="true"
+						required="true"
+						requiredMessage="O campo Horário Atendimento é obrigatório" />
+
+					<p:outputLabel value="E-mails: " />
+					<p:inputTextarea maxlength="255"   styleClass="block"
+						value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.email}"
+						counter="display" counterTemplate="Restam {0} Caracteres.">
+						 <h:outputText id="display" class="block" />
+						</p:inputTextarea>
+					
+					
+					
+				
+					
+					<p:outputLabel value="Telefones: " />
+					<p:inputTextarea maxlength="255"   styleClass="block"
+						value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.telefone}"
+						counter="display2" counterTemplate="Restam {0} Caracteres.">
+						 <h:outputText id="display2" class="block" />
+						</p:inputTextarea>
+					
+					
+
+
+
+
+
+
+				</p:panelGrid>
+
+				<br />
+				<br />
+				<h:panelGrid columns="2" style="margin: 0 auto;">
+					<p:commandButton value="Salvar" styleClass="rounded-button ui-button-success" icon="pi pi-save"
+						actionListener="#{unidadeCiretranCitranBean.salvar()}"
+						update=":mensagem :formcadastro:cadastro :formlista:lista" />
+
+				</h:panelGrid>
+
+			</p:panel>
+		</h:form>
+
+
+
+		<h:form id="formlista">
+			<p:panel header="Ciretran/Citran - Listagem"
+				rendered="#{autenticacaoBean.temPermissoes([1])}">
+				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+					paginator="true" rowKey="#{unidades.codigo}"
+					value="#{unidadeCiretranCitranBean.listaUnidadeCiretranCitran}"
+					var="unidades" rows="10" >
+
+
+
+					<p:column headerText="Ciretran" sortBy="#{unidades.ciretran.nome}"
+						filterBy="#{unidades.ciretran.nome}"
+						style="width: 170px; text-align: center;">
+						<h:outputText value="#{unidades.ciretran.nome}" />
+					</p:column>
+					
+					<p:column headerText="Ciretran/Citran" sortBy="#{unidades.ciretranCitran.nome}"
+						filterBy="#{unidades.ciretranCitran.nome}"
+						style="width: 170px; text-align: center;">
+						<h:outputText value="#{unidades.ciretranCitran.nome}" />
+					</p:column>
+					
+					<p:column headerText="Setor" sortBy="#{unidades.setor.setorNome}"
+						filterBy="#{unidades.setor.setorNome}"
+						style="width: 170px; text-align: center;">
+						<h:outputText value="#{unidades.setor.setorNome}" />
+					</p:column>
+					
+					<p:column headerText="Horário Atendimento" sortBy="#{unidades.horarioAtendimento}"
+						filterBy="#{unidades.horarioAtendimento}"
+						style="width: 170px; text-align: center;">
+						<h:outputText value="#{unidades.horarioAtendimento}" />
+					</p:column>
+					
+					<p:column headerText="Nº Circuito" sortBy="#{unidades.nCircuito}"
+						filterBy="#{unidades.nCircuito}"
+						style="width: 170px; text-align: center;">
+						<h:outputText value="#{unidades.nCircuito}" />
+					</p:column>
+					<p:column headerText="Endereço IP" sortBy="#{unidades.enderecoIp}"
+						filterBy="#{unidades.enderecoIp}"
+						style="width: 170px; text-align: center;">
+						<h:outputText value="#{unidades.enderecoIp}" />
+					</p:column>
+
+					<p:column headerText="Opções"
+						style="width: 15%; text-align: center;">
+						
+						
+						<p:commandButton icon="pi pi-eye" styleClass="rounded-button ui-button-warning"
+							actionListener="#{unidadeCiretranCitranBean.viewUnidade}" 
+							update=":formcadastro:cadastro"
+							oncomplete="PF('dialogoView').show();">
+							<f:attribute name="unidadeSelecionado" value="#{unidades}" />
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+						
+						
+						<p:commandButton icon="pi pi-pencil" styleClass="rounded-button ui-button-info"
+							actionListener="#{unidadeCiretranCitranBean.editar}" 
+							update=":formcadastro:cadastro"
+							>
+							<f:attribute name="ciretranCitranSelecionado" value="#{unidades}" />
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+						
+						<p:commandButton icon="pi pi-trash" styleClass="rounded-button ui-button-danger"
+							actionListener="#{unidadeCiretranCitranBean.excluir}" 
+							update=":mensagem :formlista:lista">
+							<p:confirm header="Confirmação"
+								message="Deseja excluir a Ciretran/Citran" />
+							<f:attribute name="cidadeSelecionado" value="#{cidade}" />
+						</p:commandButton>
+
+
+					</p:column>
+				</p:dataTable>
+
+				<p:confirmDialog global="true">
+					<p:commandButton value="Sim" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="Não" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+			</p:panel>
+		</h:form>
+		
+		<p:dialog widgetVar="dialogoView" draggable="false" resizable="true"
+			modal="true" closable="true" responsive="true" height="700px"
+			width="100%" dynamic="true">
+			<f:facet name="header">
+
+				<h:outputText id="someDialogHeader" value="Ver Unidade" />
+
+			</f:facet>
+
+			<h:form id="unidadeView">
+			
+			
+			<p:panel header="Unidade">
+
+					<p:panelGrid id="unidadeView" columns="4" layout="flex"
+						columnClasses="col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4, col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4"
+						contentStyleClass="ui-fluid">
+
+						<p:outputLabel value="Ciretran: " />
+						<p:selectOneMenu filter="true" disabled="true"
+							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.ciretran}"
+							converter="omnifaces.SelectItemsConverter" required="true"
+							requiredMessage="O campo Ciretran é obrigatório">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione uma Ciretran" />
+							<f:selectItems value="#{unidadeCiretranCitranBean.listaCiretran}"
+								var="ciretran" itemValue="#{ciretran}"
+								itemLabel="#{ciretran.nome}" />
+							<p:ajax listener="#{unidadeCiretranCitranBean.popularCITRAN}"
+								update="unidadeView:citran, unidadeView:setor" />
+						</p:selectOneMenu>
+
+
+
+						<p:outputLabel for="citran" value="Ciretran/Citran" />
+						<p:selectOneMenu id="citran" filter="true" required="true"
+							disabled="true" requiredMessage="O campo Municipio é obrigatório"
+							converter="omnifaces.SelectItemsConverter"
+							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.ciretranCitran}">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione uma Ciretran/Citran" />
+							<f:selectItems
+								value="#{unidadeCiretranCitranBean.listaCiretranCitran}"
+								var="ciretrancitran" itemValue="#{ciretrancitran}"
+								itemLabel="#{ciretrancitran.nome}" />
+						</p:selectOneMenu>
+
+
+
+						<p:outputLabel value="CEP:" />
+						<p:inputMask id="cepEnd" mask="99.999-999" maxlength="11"
+							disabled="true"
+							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.cep}"
+							required="true" requiredMessage="O campo CEP é obrigatório">
+							<f:ajax event="blur" execute="@this"
+								render="estado cidade endResi"
+								listener="#{unidadeCiretranCitranBean.pesquisaCep}"></f:ajax>
+						</p:inputMask>
+
+						<p:outputLabel value="Endereço: " />
+						<p:inputText maxlength="255" id="endResi" disabled="true"
+							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.endereco}"
+							required="true"
+							requiredMessage="O campo Endereço Residência é obrigatório"
+							style="text-transform:uppercase;" />
+
+
+
+						<p:outputLabel for="estado" value="UF: " />
+						<p:selectOneMenu id="estado" filter="true" disabled="true"
+							converter="omnifaces.SelectItemsConverter"
+							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.estadoEndereco}">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione um estado" />
+							<f:selectItems value="#{unidadeCiretranCitranBean.estados}"
+								var="estado" itemValue="#{estado}" itemLabel="#{estado.nome}" />
+							<p:ajax listener="#{unidadeCiretranCitranBean.popular}"
+								update="unidadeView:cidade" />
+						</p:selectOneMenu>
+
+						<p:outputLabel for="cidade" value="Municipio" />
+						<p:selectOneMenu id="cidade" filter="true" required="true"
+							disabled="true" requiredMessage="O campo Municipio é obrigatório"
+							converter="omnifaces.SelectItemsConverter"
+							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.municipioEndereco}">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione uma cidade" />
+							<f:selectItems value="#{unidadeCiretranCitranBean.cidades}"
+								var="cidade" itemValue="#{cidade}" itemLabel="#{cidade.nome}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel for="setor" value="Setor: " />
+						<p:selectOneMenu id="setor" filter="true" disabled="true"
+							required="true" requiredMessage="O campo Setor é obrigatório"
+							converter="omnifaces.SelectItemsConverter"
+							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.setor}">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione um setor" />
+							<f:selectItems value="#{unidadeCiretranCitranBean.setores}"
+								var="setor" itemValue="#{setor}" itemLabel="#{setor.setorNome}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Horário de Atendimento: " />
+						<p:inputMask disabled="true"
+							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.horarioAtendimento}"
+							mask="99:99h às 99:99h" validateMask="true" required="true"
+							requiredMessage="O campo Horário Atendimento é obrigatório" />
+							
+							<p:outputLabel value="Nº Circuito: " />
+						<p:inputMask disabled="true"
+							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.nCircuito}"
+							  />
+							  
+							  <p:outputLabel value="Endereço Ip: " />
+						<p:inputMask disabled="true"
+							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.enderecoIp}"
+							  />
+							
+							
+
+						<p:outputLabel value="E-mails: " />
+						<p:inputTextarea maxlength="255" disabled="true"
+							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.email}" />
+
+
+
+						<p:outputLabel value="Telefones: " />
+						<p:inputTextarea maxlength="255" disabled="true"
+							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.telefone}" />
+
+
+
+
+
+
+
+					</p:panelGrid>
+
+
+
+				</p:panel>
+			
+			
+			
+			</h:form>
+			
+			</p:dialog>
+
+
+	</ui:define>
+</ui:composition>

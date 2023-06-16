@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Autenticação</title>
+	<h:outputStylesheet library="css" name="autenticacao.css" />
+	<h:outputStylesheet name="primeicons/primeicons.css"
+		library="primefaces" />
+
+</h:head>
+<h:body>
+
+
+
+
+	<p:growl id="mensagem" />
+
+
+	<p:graphicImage library="images" name="sig4.png" styleClass="divLogo" />
+	
+	
+	<h:form>
+		<h:panelGrid columns="2" styleClass="divCPFeSenha">
+
+
+
+
+
+			<p:button icon="pi pi-user" styleClass="rounded-button ui-button-info"
+				onclick="jQuery(this).addClass('ui-state-disabled')">
+
+			</p:button>
+
+
+
+
+
+			<p:inputText id="cpf" maxlength="11" size="20" placeholder="CPF"
+				required="true" requiredMessage="O campo CPF é obrigatório"
+				value="#{autenticacaoBean.usuario.pessoa.cpf}" />
+
+
+
+			<p:button icon="pi pi-lock" styleClass="rounded-button ui-button-info"
+				onclick="jQuery(this).addClass('ui-state-disabled')">
+
+			</p:button>
+			<p:password id="senha" maxlength="30" size="20" required="true"
+				placeholder="Senha" requiredMessage="O campo Senha é obrigatório"
+				value="#{autenticacaoBean.usuario.senha}" />
+		</h:panelGrid>
+
+		<h:panelGrid columns="1" styleClass="divEntrar">
+			<p:commandButton value="ENTRAR" update=":mensagem"
+			 	styleClass="rounded-button ui-button-success, divEntrarButton"
+				actionListener="#{autenticacaoBean.autenticar}" />
+		</h:panelGrid>
+		
+	
+		
+	
+
+	
+		
+	</h:form>
+	
+	
+	
+
+
+
+</h:body>
+</html>
