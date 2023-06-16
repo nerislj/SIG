@@ -114,4 +114,14 @@ public class ContratoTerceirizadoDAO extends GenericDAO<ContratoTerceirizado> {
 				sessao.close();
 			}
 		}
+	  
+	  public ContratoTerceirizado loadLast() throws Exception {
+			Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+			Criteria criteria = sessao.createCriteria(ContratoTerceirizado.class);
+			criteria.addOrder(Order.desc("codigo"));
+			
+
+			return (ContratoTerceirizado) criteria.setMaxResults(1).uniqueResult();
+		}
+	  
 }

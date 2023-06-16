@@ -472,6 +472,9 @@ public class CredenciadoEmpBean implements Serializable {
 			usuarioLogado = (Usuario) sessao.getAttribute("usuario");
 
 			credenciado = new CredenciadoEmp();
+			
+			CredenciadoEmpDAO credenciadoDAO = new CredenciadoEmpDAO();
+			credenciados = credenciadoDAO.listar();
 
 			empresa = new PessoaJuridica();
 			pessoa = new PessoaFisica();

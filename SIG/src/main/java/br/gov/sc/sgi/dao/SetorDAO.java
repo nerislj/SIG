@@ -31,6 +31,23 @@ public class SetorDAO extends GenericDAO<Setor>{
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<Setor> buscarPorCiretranNome(String nome) {
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+		try {
+			Criteria consulta = sessao.createCriteria(Setor.class);
+			consulta.createAlias("unidade", "u");
+			consulta.add(Restrictions.eq("u.unidadeNome", nome));	
+			consulta.add(Restrictions.isNull("setor"));	
+			List<Setor> resultado = consulta.list();
+			return resultado;
+		} catch (RuntimeException erro) {
+			throw erro;
+		} finally {
+			sessao.close();
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<Setor> buscarPorUnidadeFuncionarioTerceirizados(Long unidadeCodigo) {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 		try {

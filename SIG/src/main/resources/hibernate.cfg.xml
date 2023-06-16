@@ -148,6 +148,18 @@
 			
 			<mapping
 			class="br.gov.sc.ecvitl.domain.PessoaEcvItl" />
+			
+				<mapping class="br.gov.sc.ecvitl.domain.EcvItl" />
+		<mapping class="br.gov.sc.ecvitl.domain.HistoricoDescricao" />
+		<mapping class="br.gov.sc.ecvitl.domain.PessoaEcvItl" />
+		
+		
+		<mapping class="br.gov.sc.funcionariosuf.domain.CiretranCitran" />
+		<mapping class="br.gov.sc.funcionariosuf.domain.Ciretran" />
+		<mapping class="br.gov.sc.funcionariosuf.domain.UnidadeCiretranCitran" />
+		<mapping class="br.gov.sc.funcionariosuf.domain.Estagiarios" />
+		<mapping class="br.gov.sc.funcionariosuf.domain.Servidores" />
+		<mapping class="br.gov.sc.funcionariosuf.domain.Terceirizados" />
 
 
 

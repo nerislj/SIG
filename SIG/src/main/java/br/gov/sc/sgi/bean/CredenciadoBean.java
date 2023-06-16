@@ -328,7 +328,7 @@ public class CredenciadoBean implements Serializable {
 			pessoa = new PessoaFisica();
 
 			CredenciadoDAO credenciadoDAO = new CredenciadoDAO();
-			//credenciados = credenciadoDAO.listar();
+			credenciados = credenciadoDAO.listar();
 
 		
 

@@ -101,4 +101,39 @@ body .ui-chip {
     padding: 0 0.5rem;
 }
 
+.iconePlus .ui-icon.ui-icon-triangle-1-e {
+   content: "\e90d" !important;
+     background-color: #000000;
+    background-position: 0 0; /* closed position */
+}
+.iconePlus .ui-icon.ui-icon-triangle-1-s {
+     content: "\e90d" !important;
+     background-color: #000000;
+    background-position: 0 0; /* opened position */
+}
+
+.iconePlus .ui-icon ui-icon-triangle-1-e {
+    content: "\e90d" !important;
+    
+}
+
+.ui-panelmenu-panel .iconePlus  {
+	 content: "\e90d" !important;
+  
+}
+
+
+.colStats {
+    flex-grow: 1;
+    flex-basis: 0;
+    padding: 3.5rem;
+}
+
+.fontStats {
+	color: #333333;
+	font-size: 18px;
+	font-family: 'Montserrat', sans-serif;
+	font-weight: 700;
+}
+
 
