@@ -9,45 +9,39 @@
 
 	<ui:define name="conteudo">
 		<h:form id="formlista">
-			<p:panel header="Estado - Listagem"
-				rendered="#{autenticacaoBean.temPermissoes([1])}">
+			<p:panel header="Estado - Listagem" rendered="#{autenticacaoBean.temPermissoes([1])}">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{estadoBean.estados}" var="estado"
-					rows="10" stripedRows="true">
+					rows="10" style="width: 50%; padding-left: 25%; ">
 					<f:facet name="header">
 						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
-							styleClass="rounded-button ui-button-success"
-							actionListener="#{estadoBean.novo()}" icon="pi pi-plus"
+							actionListener="#{estadoBean.novo()}"
 							update=":formcadastro:cadastro">
 							<f:actionListener
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 						</p:commandButton>
 					</f:facet>
 
-					<p:column headerText="Nome" sortBy="#{estado.nome}" filterMatchMode="contains"
-						filterBy="#{estado.nome}" style="width: 90px; text-align: center;">
+					<p:column headerText="Nome" sortBy="#{estado.nome}"
+						filterBy="#{estado.nome}">
 						<h:outputText value="#{estado.nome}" />
 					</p:column>
 
-					<p:column headerText="Sigla" sortBy="#{estado.sigla}" filterMatchMode="contains"
-						filterBy="#{estado.sigla}"
-						style="width: 70px; text-align: center;">
+					<p:column headerText="Sigla" sortBy="#{estado.sigla}"
+						filterBy="#{estado.sigla}" style="width: 70px; text-align: center;">
 						<h:outputText value="#{estado.sigla}" />
 					</p:column>
 
-					<p:column headerText="Opções"
-						style="width: 10px; text-align: center;">
-						<p:commandButton icon="pi pi-trash"
-							styleClass="rounded-button ui-button-danger"
+					<p:column headerText="Opções" style="width: 70px; text-align: center;">
+						<p:commandButton icon="ui-icon-trash"
 							actionListener="#{estadoBean.excluir}"
 							update=":mensagem :formlista:lista">
 							<p:confirm header="Confirmação"
-								message="Deseja excluir a Estado?" icon="pi pi-exclamation-triangle" />
+								message="Deseja excluir a Estado?" icon="ui-icon-alert" />
 							<f:attribute name="estadoSelecionada" value="#{estado}" />
 						</p:commandButton>
 
-						<p:commandButton icon="pi pi-pencil"
-							styleClass="rounded-button ui-button-info"
+						<p:commandButton icon="ui-icon-pencil"
 							actionListener="#{estadoBean.editar}"
 							update=":formcadastro:cadastro"
 							oncomplete="PF('dialogo').show();">
@@ -61,10 +55,9 @@
 
 				<p:confirmDialog global="true">
 					<p:commandButton value="Sim" type="button"
-						styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
-						icon="pi pi-check" />
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
 					<p:commandButton value="Não" type="button"
-						styleClass="ui-confirmdialog-no rounded-button" icon="pi pi-times" />
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
 				</p:confirmDialog>
 			</p:panel>
 		</h:form>
@@ -86,12 +79,9 @@
 
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
-						styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
-						icon="pi pi-check" actionListener="#{estadoBean.salvar()}"
+						actionListener="#{estadoBean.salvar()}"
 						update=":mensagem :formcadastro:cadastro :formlista:lista" />
-					<p:commandButton value="Fechar"
-						styleClass="ui-confirmdialog-no rounded-button" icon="pi pi-times"
-						oncomplete="PF('dialogo').hide();" />
+					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>

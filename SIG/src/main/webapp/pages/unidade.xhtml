@@ -13,48 +13,41 @@
 			<p:panel header="Setor - Listagem">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{unidadeBean.unidades}" var="unidade"
-					rows="10" stripedRows="true">
+					rows="10">
 					<f:facet name="header">
 						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
-							styleClass="rounded-button ui-button-success"
-							actionListener="#{unidadeBean.novo()}" icon="pi pi-plus"
+							actionListener="#{unidadeBean.novo()}"
 							update=":formcadastro:cadastro">
 							<f:actionListener
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 						</p:commandButton>
 					</f:facet>
-
+					
 					<p:column headerText="Código" sortBy="#{unidade.codigo}"
-						filterBy="#{unidade.codigo}" filterMatchMode="contains"
-						style="width:70px; text-align: center;">
+						filterBy="#{unidade.codigo}">
 						<h:outputText value="#{unidade.codigo}" />
 					</p:column>
 
 					<p:column headerText="Nome" sortBy="#{unidade.unidadeNome}"
-						filterBy="#{unidade.unidadeNome}" filterMatchMode="contains"
-						style="width:90px; text-align: center;">
+						filterBy="#{unidade.unidadeNome}">
 						<h:outputText value="#{unidade.unidadeNome}" />
 					</p:column>
 
 					<p:column headerText="Sigla" sortBy="#{unidade.unidade}"
-						filterBy="#{unidade.unidade}" filterMatchMode="contains"
-						style="width:70px; text-align: center;">
+						filterBy="#{unidade.unidade}">
 						<h:outputText value="#{unidade.unidade}" />
 					</p:column>
 
-					<p:column headerText="Opções"
-						style="width: 10px; text-align: center;">
-						<p:commandButton icon="pi pi-trash"
-							styleClass="rounded-button ui-button-danger"
+					<p:column headerText="Opções">
+						<p:commandButton icon="ui-icon-trash"
 							actionListener="#{unidadeBean.excluir}"
 							update=":mensagem :formlista:lista">
 							<p:confirm header="Confirmação" message="Deseja excluir o Setor?"
-								icon="pi pi-exclamation-triangle" />
+								icon="ui-icon-alert" />
 							<f:attribute name="unidadeSelecionado" value="#{unidade}" />
 						</p:commandButton>
 
-						<p:commandButton icon="pi pi-pencil"
-							styleClass="rounded-button ui-button-info"
+						<p:commandButton icon="ui-icon-pencil"
 							actionListener="#{unidadeBean.editar}"
 							update=":formcadastro:cadastro"
 							oncomplete="PF('dialogo').show();">
@@ -68,9 +61,9 @@
 
 				<p:confirmDialog global="true">
 					<p:commandButton value="Sim" type="button"
-						styleClass="ui-confirmdialog-yes rounded-button ui-button-danger" />
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
 					<p:commandButton value="Não" type="button"
-						styleClass="ui-confirmdialog-no rounded-button" icon="pi pi-times" />
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
 				</p:confirmDialog>
 			</p:panel>
 		</h:form>
@@ -94,12 +87,9 @@
 
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
-						styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
-						icon="pi pi-check" actionListener="#{unidadeBean.salvar()}"
+						actionListener="#{unidadeBean.salvar()}"
 						update=":mensagem :formcadastro:cadastro :formlista:lista" />
-					<p:commandButton value="Fechar"
-						styleClass="ui-confirmdialog-no rounded-button" icon="pi pi-times"
-						oncomplete="PF('dialogo').hide();" />
+					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>

@@ -12,42 +12,40 @@
 	</ui:define>
 
 	<ui:define name="conteudo">
-		<h:form id="formulario"
-			rendered="#{autenticacaoBean.temPermissoes([1, 2, 7, 8])}">
+		<h:form id="formulario" rendered="#{autenticacaoBean.temPermissoes([1, 2, 7, 8])}">
 			<p:panel header="Recursos">
+				
+
+					<div align="center">
+
+						<p:outputLabel value="Placa:" />
+						<p:inputMask id="placa" maxlength="7" size="10" mask="aaa9*99"
+							value="#{recursoMultaTramitaBean.recursoMulta.placa}"
+							style="text-transform:uppercase;" />
 
 
-				<div align="center">
+						<p:spacer width="15" />
 
-					<p:outputLabel value="Placa:" />
-					<p:inputMask id="placa" maxlength="7" size="10" mask="aaa9*99"
-						value="#{recursoMultaTramitaBean.recursoMulta.placa}"
-						style="text-transform:uppercase;" />
+						<p:outputLabel value="Auto Infração:" />
+						<p:spacer width="5" />
+						<p:inputText maxlength="15" size="15"
+							value="#{recursoMultaTramitaBean.recursoMulta.autoInfracao}"
+							style="text-transform:uppercase;" />
 
-
-					<p:spacer width="15" />
-
-					<p:outputLabel value="Auto Infração:" />
-					<p:spacer width="5" />
-					<p:inputText maxlength="15" size="15"
-						value="#{recursoMultaTramitaBean.recursoMulta.autoInfracao}"
-						style="text-transform:uppercase;" />
-
-					<br /> <br />
+						<br /> <br />
 
 
 
-					<p:commandButton value="Pesquisar"
-						styleClass="rounded-button ui-button-success"
-						actionListener="#{recursoMultaTramitaBean.buscar}"
-						icon="pi pi-search" update=":mensagem :formulario:painelDados"
-						style="background: #01B50D;">
-						<f:actionListener
-							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
-					</p:commandButton>
+						<p:commandButton value="Pesquisar" icon="ui-icon-search"
+							actionListener="#{recursoMultaTramitaBean.buscar}"
+							update=":mensagem :formulario:painelDados"
+							style="background: #01B50D;">
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
 
-				</div>
-
+					</div>
+			
 
 				<h:panelGroup id="painelDados" layout="block">
 
@@ -56,10 +54,9 @@
 
 						<p:panel header="Consulta Processo - Listagem">
 							<p:dataTable id="lista"
-								emptyMessage="Nenhum registro encontrado." paginator="true"
-								rowKey="#{recurso.codigo}"
-								value="#{recursoMultaTramitaBean.recursosMultaPopular}"
-								var="recurso" rows="10" stripedRows="true">
+								emptyMessage="Nenhum registro encontrado." paginator="true" rowKey="#{recurso.codigo}"
+								value="#{recursoMultaTramitaBean.recursosMultaPopular}" var="recurso"
+								rows="10">
 
 								<p:column style="width: 16px;">
 									<p:rowToggler />
@@ -75,11 +72,10 @@
 									<h:outputText value="#{recurso.autoInfracao}" />
 								</p:column>
 
-								<p:column headerText="Tipo"
-									style="width: 12%; text-align: center;">
+								<p:column headerText="Tipo">
 									<h:outputText value="#{recurso.tipoProcesso.tipoProcesso}" />
 								</p:column>
-
+								
 								<p:column headerText="Observação"
 									style="width: 12%; text-align: center; text-transform:uppercase;">
 									<h:outputText value="#{recurso.observacao}" />
@@ -93,57 +89,48 @@
 
 								<p:column headerText="Setor Abertura"
 									style="width: 10%; text-align: center;">
-									<h:outputText
-										value="#{recurso.unidadeAbertura.unidade}/#{recurso.setorAbertura.setor}" />
+									<h:outputText value="#{recurso.unidadeAbertura.unidade}/#{recurso.setorAbertura.setor}" />
 								</p:column>
 
-								<p:column headerText="Usuário Cadastro"
-									style="width: 12%; text-align: center;">
+								<p:column headerText="Usuário Cadastro">
 									<h:outputText
 										value="#{recurso.usuarioCadastro.pessoa.nomeCompleto}" />
 								</p:column>
 
 								<p:column headerText="Setor Atual"
 									style="width: 10%; text-align: center;">
-									<h:outputText
-										value="#{recurso.unidadeAtual.unidade}/#{recurso.setorAtual.setor}" />
+									<h:outputText value="#{recurso.unidadeAtual.unidade}/#{recurso.setorAtual.setor}" />
 								</p:column>
 
 								<p:column headerText="Status"
 									style="width: 9%; text-align: center;">
 									<h:outputText value="#{recurso.status}" />
 								</p:column>
-
+								
 								<p:rowExpansion>
 									<p:dataTable id="lista"
 										emptyMessage="Nenhum registro encontrado."
 										value="#{recurso.tramitacao}" var="tramitacao"
 										style="width: 80%; padding-left: 10%">
 
-										<p:column headerText="Ação"
-											style="width: 22%; text-align: center;">
+										<p:column headerText="Ação" style="width: 22%;">
 											<h:outputText value="#{tramitacao.acaoFormatado}" />
 										</p:column>
 
-										<p:column headerText="Data"
-											style="width: 20%; text-align: center;">
+										<p:column headerText="Data" style="width: 20%">
 											<h:outputText
 												value="#{tramitacao.dataTramita.date}/#{tramitacao.dataTramita.month+1}/#{tramitacao.dataTramita.year+1900}" />
 										</p:column>
 
-										<p:column headerText="Origem"
-											style="width: 20%; text-align: center;">
-											<h:outputText
-												value="#{tramitacao.origemUnidade.unidade}/#{tramitacao.origem.setor}" />
+										<p:column headerText="Origem" style="width: 20%;">
+											<h:outputText value="#{tramitacao.origemUnidade.unidade}/#{tramitacao.origem.setor}" />
 										</p:column>
 
-										<p:column headerText="Destino"
-											style="width: 20%; text-align: center;">
+										<p:column headerText="Destino" style="width: 20%;">
 											<h:outputText value="#{tramitacao.destino}" />
 										</p:column>
 
-										<p:column headerText="Usuário"
-											style="width: 20%; text-align: center;">
+										<p:column headerText="Usuário" style="width: 20%;">
 											<h:outputText
 												value="#{tramitacao.usuario.pessoa.nomeCompleto}" />
 										</p:column>

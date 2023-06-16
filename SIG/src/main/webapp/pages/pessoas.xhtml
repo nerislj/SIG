@@ -13,11 +13,10 @@
 				rendered="#{autenticacaoBean.temPermissoes([1])}">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{pessoaBean.pessoas}" var="pessoa"
-					rows="10" stripedRows="true">
+					rows="10">
 					<f:facet name="header">
 						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
-							styleClass="rounded-button ui-button-success"
-							actionListener="#{pessoaBean.novo()}" icon="pi pi-plus"
+							actionListener="#{pessoaBean.novo()}"
 							update=":formcadastro:cadastro">
 							<f:actionListener
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
@@ -25,32 +24,30 @@
 					</f:facet>
 
 					<p:column headerText="CPF" sortBy="#{pessoa.cpf}"
-						filterBy="#{pessoa.cpf}" filterMatchMode="contains"
-						style="width: 15%; text-align: center;">
+						filterBy="#{pessoa.cpf}" style="width: 15%; text-align: center;">
 						<h:outputText value="#{pessoa.cpf}" />
 					</p:column>
 
 					<p:column headerText="Nome" sortBy="#{pessoa.nomeCompleto}"
-						filterBy="#{pessoa.nomeCompleto}" filterMatchMode="contains"
-						style="text-transform:uppercase; width: 15%; text-align: center;">
+						filterBy="#{pessoa.nomeCompleto}"
+						style="text-transform:uppercase;">
 						<h:outputText value="#{pessoa.nomeCompleto}" />
 					</p:column>
 
 					<p:column headerText="E-mail" sortBy="#{pessoa.email}"
-						filterBy="#{pessoa.email}" filterMatchMode="contains"
+						filterBy="#{pessoa.email}"
 						style="width: 15%; text-align: center; text-transform:lowercase;">
 						<h:outputText value="#{pessoa.email}" />
 					</p:column>
 
 					<p:column headerText="Celular" sortBy="#{pessoa.cel}"
-						filterBy="#{pessoa.cel}" filterMatchMode="contains"
-						style="width: 10%; text-align: center;">
+						filterBy="#{pessoa.cel}" style="width: 10%; text-align: center;">
 						<h:outputText value="#{pessoa.cel}" />
 					</p:column>
 
 					<p:column headerText="Data Nascimento"
 						sortBy="#{pessoa.dataNascimento}"
-						filterBy="#{pessoa.dataNascimento}" filterMatchMode="contains"
+						filterBy="#{pessoa.dataNascimento}"
 						style="width: 15%; text-align: center;">
 						<h:outputText
 							value="#{pessoa.dataNascimento.day}/#{pessoa.dataNascimento.month}/#{pessoa.dataNascimento.year+1900}" />
@@ -59,19 +56,16 @@
 
 
 					<p:column headerText="Opções"
-						style="width: 10px; text-align: center;">
-						<p:commandButton icon="pi pi-trash"
-							styleClass="rounded-button ui-button-danger"
+						style="width: 6%; text-align: center;">
+						<p:commandButton icon="ui-icon-trash"
 							actionListener="#{pessoaBean.excluir}"
 							update=":mensagem :formlista:lista">
 							<p:confirm header="Confirmação"
-								message="Deseja excluir a Pessoa?"
-								icon="pi pi-exclamation-triangle" />
+								message="Deseja excluir a Pessoa?" icon="ui-icon-alert" />
 							<f:attribute name="pessoaSelecionada" value="#{pessoa}" />
 						</p:commandButton>
 
-						<p:commandButton icon="pi pi-pencil"
-							styleClass="rounded-button ui-button-info"
+						<p:commandButton icon="ui-icon-pencil"
 							actionListener="#{pessoaBean.editar}"
 							update=":formcadastro:cadastro"
 							oncomplete="PF('dialogo').show();">
@@ -85,10 +79,9 @@
 
 				<p:confirmDialog global="true">
 					<p:commandButton value="Sim" type="button"
-						styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
-						icon="pi pi-check" />
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
 					<p:commandButton value="Não" type="button"
-						styleClass="ui-confirmdialog-no rounded-button" icon="pi pi-times" />
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
 				</p:confirmDialog>
 			</p:panel>
 		</h:form>
@@ -172,7 +165,6 @@
 
 					<p:outputLabel for="estado" value="UF: " />
 					<p:selectOneMenu id="estado" filter="true"
-						filterMatchMode="contains"
 						converter="omnifaces.SelectItemsConverter"
 						value="#{pessoaBean.pessoa.estadoEndereco}">
 						<f:selectItem noSelectionOption="true"
@@ -185,7 +177,6 @@
 
 					<p:outputLabel for="cidade" value="Municipio" />
 					<p:selectOneMenu id="cidade" filter="true" required="true"
-						filterMatchMode="contains"
 						requiredMessage="O campo Municipio é obrigatório"
 						converter="omnifaces.SelectItemsConverter"
 						value="#{pessoaBean.pessoa.municipioEndereco}">
@@ -208,18 +199,18 @@
 						style="text-transform:lowercase;" />
 
 					<p:outputLabel value="Telefone Res.:" />
-					<p:inputMask id="telres" mask="(99) 99999-9999" maxlength="11"
-						size="11" value="#{pessoaBean.pessoa.telRes}">
+					<p:inputMask id="telres" mask="(99) 99999-9999" maxlength="11" size="11"
+						value="#{pessoaBean.pessoa.telRes}">
 					</p:inputMask>
 
 					<p:outputLabel value="Telefone Emp.:" />
-					<p:inputMask id="telemp" mask="(99) 99999-9999" maxlength="11"
-						size="11" value="#{pessoaBean.pessoa.telEmp}">
+					<p:inputMask id="telemp" mask="(99) 99999-9999" maxlength="11" size="11"
+						value="#{pessoaBean.pessoa.telEmp}">
 					</p:inputMask>
 
 					<p:outputLabel value="Celular:" />
-					<p:inputMask id="cel" mask="(99) 99999-9999" maxlength="11"
-						size="11" value="#{pessoaBean.pessoa.cel}">
+					<p:inputMask id="cel" mask="(99) 99999-9999" maxlength="11" size="11"
+						value="#{pessoaBean.pessoa.cel}">
 					</p:inputMask>
 
 
@@ -228,12 +219,9 @@
 
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
-						styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
-						icon="pi pi-check" actionListener="#{pessoaBean.salvar()}"
+						actionListener="#{pessoaBean.salvar()}"
 						update=":mensagem :formcadastro:cadastro :formlista:lista" />
-					<p:commandButton value="Fechar"
-						styleClass="ui-confirmdialog-no rounded-button" icon="pi pi-times"
-						oncomplete="PF('dialogo').hide();" />
+					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>

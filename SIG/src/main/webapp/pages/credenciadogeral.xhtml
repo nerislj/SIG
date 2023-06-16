@@ -24,8 +24,7 @@
 						</p:inputText>
 						<br /> <br />
 
-						<p:commandButton value="Pesquisar"
-							styleClass="rounded-button ui-button-success" icon="pi pi-search"
+						<p:commandButton value="Pesquisar" icon="ui-icon-search"
 							actionListener="#{credenciadoBean.buscarCredenciado}"
 							update=":mensagem tabView:formularioPessoais:painelDados"
 							style="background: #01B50D;">
@@ -236,10 +235,8 @@
 										allowTypes="/(\.|\/)(jpeg|jpg|png)$/" sizeLimit="2097152"
 										invalidSizeMessage="Tamanho do arquivo inválido, máximo 2MB!" />
 
-									<p:commandButton value="Gerar Carteira"
-										styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
-										icon="pi pi-play" oncomplete="PF('dialogoCart').show();"
-										update=":cart:cart"
+									<p:commandButton value="Gerar Carteira" icon="ui-icon-play"
+										oncomplete="PF('dialogoCart').show();" update=":cart:cart"
 										rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}" />
 
 								</p:panelGrid>
@@ -307,9 +304,7 @@
 											<h3>DOCUMENTOS ADICIONAIS</h3>
 
 											<p:commandButton value="Adicionar"
-												styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
-												icon="pi pi-plus" oncomplete="PF('dialogoDoc').show();"
-												update=":doc:doc"
+												oncomplete="PF('dialogoDoc').show();" update=":doc:doc"
 												rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
 												<f:actionListener
 													type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
@@ -405,9 +400,7 @@
 										<f:facet name="header">
 											<h3>SGP-e</h3>
 											<p:commandButton value="Adicionar"
-												styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
-												icon="pi pi-plus" oncomplete="PF('dialogosgpe').show();"
-												update=":sgpe:sgpe"
+												oncomplete="PF('dialogosgpe').show();" update=":sgpe:sgpe"
 												rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
 												<f:actionListener
 													type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
@@ -458,8 +451,7 @@
 										<f:facet name="header">
 											<h3>ALVARÁ</h3>
 											<p:commandButton value="Adicionar"
-												styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
-												icon="pi pi-plus" oncomplete="PF('dialogoalvara').show();"
+												oncomplete="PF('dialogoalvara').show();"
 												update=":alvara:alvara"
 												rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
 												<f:actionListener
@@ -507,8 +499,7 @@
 										<f:facet name="header">
 											<h3>PORTARIA</h3>
 											<p:commandButton value="Adicionar"
-												styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
-												icon="pi pi-plus" oncomplete="PF('dialogoportaria').show();"
+												oncomplete="PF('dialogoportaria').show();"
 												update=":portaria:portaria"
 												rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
 												<f:actionListener
@@ -616,13 +607,10 @@
 
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
-						styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
-						icon="pi pi-check"
 						actionListener="#{credenciadoBean.adicionaPortaria}"
 						update=":mensagem tabView:formularioPessoais:listaPortaria"
 						oncomplete="PF('dialogoportaria').hide();" />
 					<p:commandButton value="Fechar"
-						styleClass="ui-confirmdialog-no rounded-button" icon="pi pi-times"
 						oncomplete="PF('dialogoportaria').hide();" />
 				</h:panelGrid>
 
@@ -666,13 +654,10 @@
 
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
-						styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
-						icon="pi pi-check"
 						actionListener="#{credenciadoBean.adicionaAlvara}"
 						update=":mensagem tabView:formularioPessoais:listaAlvara"
 						oncomplete="PF('dialogoalvara').hide();" />
 					<p:commandButton value="Fechar"
-						styleClass="ui-confirmdialog-no rounded-button" icon="pi pi-times"
 						oncomplete="PF('dialogoalvara').hide();" />
 				</h:panelGrid>
 
@@ -706,13 +691,10 @@
 
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
-						styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
-						icon="pi pi-check"
 						actionListener="#{credenciadoBean.adicionaSGPE}"
 						update=":mensagem tabView:formularioPessoais:lista5"
 						oncomplete="PF('dialogosgpe').hide();" />
 					<p:commandButton value="Fechar"
-						styleClass="ui-confirmdialog-no rounded-button" icon="pi pi-times"
 						oncomplete="PF('dialogosgpe').hide();" />
 				</h:panelGrid>
 
@@ -727,7 +709,7 @@
 				<h:panelGrid id="doc" columns="2">
 
 					<p:outputLabel value="Tipo Documento: " />
-					<p:selectOneMenu id="tipodoc" filterMatchMode="contains"
+					<p:selectOneMenu id="tipodoc"
 						value="#{credenciadoBean.doc.tipoDocumento}"
 						requiredMessage="O campo Tipo Documento é obritarório">
 						<f:selectItem itemValue="CRM" itemLabel="CRM" />
@@ -755,12 +737,10 @@
 
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
-						styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
-						icon="pi pi-check" actionListener="#{credenciadoBean.adicionaDoc}"
+						actionListener="#{credenciadoBean.adicionaDoc}"
 						update=":mensagem tabView:formularioPessoais:lista3"
 						oncomplete="PF('dialogoDoc').hide();" />
 					<p:commandButton value="Fechar"
-						styleClass="ui-confirmdialog-no rounded-button" icon="pi pi-times"
 						oncomplete="PF('dialogoDoc').hide();" />
 				</h:panelGrid>
 
@@ -775,7 +755,6 @@
 
 					<p:outputLabel value="SGP-e" />
 					<p:selectOneMenu id="sgpe" required="true"
-						filterMatchMode="contains"
 						value="#{credenciadoBean.credenciado.carteirinhaSGPE}"
 						requiredMessage="O campo SGP-e é obritarório">
 						<f:selectItem noSelectionOption="true"
@@ -798,12 +777,9 @@
 
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
-						styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
-						icon="pi pi-check"
 						actionListener='#{credenciadoBean.gerarCarteira()}'
 						update=":mensagem" oncomplete="PF('dialogoCart').hide();" />
 					<p:commandButton value="Fechar"
-						styleClass="ui-confirmdialog-no rounded-button" icon="pi pi-times"
 						oncomplete="PF('dialogoCart').hide();" />
 				</h:panelGrid>
 

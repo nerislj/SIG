@@ -13,11 +13,10 @@
 				rendered="#{autenticacaoBean.temPermissoes([1])}">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{pessoaJuridicaBean.empresas}"
-					var="pessoaJuridica" rows="10" stripedRows="true">
+					var="pessoaJuridica" rows="10">
 					<f:facet name="header">
 						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
-							styleClass="rounded-button ui-button-success"
-							actionListener="#{pessoaJuridicaBean.novo()}" icon="pi pi-plus"
+							actionListener="#{pessoaJuridicaBean.novo()}"
 							update=":formcadastro:cadastro">
 							<f:actionListener
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
@@ -25,7 +24,7 @@
 					</f:facet>
 
 					<p:column headerText="CNPJ" sortBy="#{pessoaJuridica.cnpj}"
-						filterBy="#{pessoaJuridica.cnpj}" filterMatchMode="contains"
+						filterBy="#{pessoaJuridica.cnpj}"
 						style="width: 15%; text-align: center;">
 						<h:outputText value="#{pessoaJuridica.cnpj}" />
 					</p:column>
@@ -33,45 +32,40 @@
 					<p:column headerText="Razão Social"
 						sortBy="#{pessoaJuridica.razaoSocial}"
 						filterBy="#{pessoaJuridica.razaoSocial}"
-						filterMatchMode="contains"
-						style="text-transform:uppercase; width: 20%; text-align: center;">
+						style="text-transform:uppercase;">
 						<h:outputText value="#{pessoaJuridica.razaoSocial}" />
 					</p:column>
 
 					<p:column headerText="Nome Fantasia"
 						sortBy="#{pessoaJuridica.nomeFantasia}"
 						filterBy="#{pessoaJuridica.nomeFantasia}"
-						filterMatchMode="contains"
-						style="text-transform:uppercase;width: 20%; text-align: center;">
+						style="text-transform:uppercase;">
 						<h:outputText value="#{pessoaJuridica.nomeFantasia}" />
 					</p:column>
 
 					<p:column headerText="Telefone" sortBy="#{pessoaJuridica.telEmp}"
-						filterBy="#{pessoaJuridica.telEmp}" filterMatchMode="contains"
-						style="text-transform:uppercase;width: 20%; text-align: center;">
+						filterBy="#{pessoaJuridica.telEmp}"
+						style="text-transform:uppercase;">
 						<h:outputText value="#{pessoaJuridica.telEmp}" />
 					</p:column>
 
 					<p:column headerText="E-mail" sortBy="#{pessoaJuridica.email}"
-						filterBy="#{pessoaJuridica.email}" filterMatchMode="contains"
-						style="text-transform:uppercase;width: 20%; text-align: center;">
+						filterBy="#{pessoaJuridica.email}"
+						style="text-transform:uppercase;">
 						<h:outputText value="#{pessoaJuridica.email}" />
 					</p:column>
 
 					<p:column headerText="Opções"
 						style="width: 6%; text-align: center;">
-						<p:commandButton icon="pi pi-trash"
-							styleClass="rounded-button ui-button-danger"
+						<p:commandButton icon="ui-icon-trash"
 							actionListener="#{pessoaJuridicaBean.excluir}"
 							update=":mensagem :formlista:lista">
 							<p:confirm header="Confirmação"
-								message="Deseja excluir a Pessoa?"
-								icon="pi pi-exclamation-triangle" />
+								message="Deseja excluir a Pessoa?" icon="ui-icon-alert" />
 							<f:attribute name="empresaSelecionada" value="#{pessoaJuridica}" />
 						</p:commandButton>
 
-						<p:commandButton icon="pi pi-pencil"
-							styleClass="rounded-button ui-button-info"
+						<p:commandButton icon="ui-icon-pencil"
 							actionListener="#{pessoaJuridicaBean.editar}"
 							update=":formcadastro:cadastro"
 							oncomplete="PF('dialogo').show();">
@@ -85,10 +79,9 @@
 
 				<p:confirmDialog global="true">
 					<p:commandButton value="Sim" type="button"
-						styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
-						icon="pi pi-check" />
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
 					<p:commandButton value="Não" type="button"
-						styleClass="ui-confirmdialog-no rounded-button" icon="pi pi-times" />
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
 				</p:confirmDialog>
 			</p:panel>
 		</h:form>
@@ -149,7 +142,6 @@
 
 					<p:outputLabel for="estado" value="UF: " />
 					<p:selectOneMenu id="estado" filter="true"
-						filterMatchMode="contains"
 						converter="omnifaces.SelectItemsConverter"
 						value="#{pessoaJuridicaBean.empresa.estadoEndereco}">
 						<f:selectItem noSelectionOption="true"
@@ -162,7 +154,6 @@
 
 					<p:outputLabel for="cidade" value="Municipio" />
 					<p:selectOneMenu id="cidade" filter="true" required="true"
-						filterMatchMode="contains"
 						requiredMessage="O campo Municipio é obrigatório"
 						converter="omnifaces.SelectItemsConverter"
 						value="#{pessoaJuridicaBean.empresa.municipioEndereco}">
@@ -182,12 +173,9 @@
 
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
-						styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
-						icon="pi pi-check" actionListener="#{pessoaJuridicaBean.salvar()}"
+						actionListener="#{pessoaJuridicaBean.salvar()}"
 						update=":mensagem :formcadastro:cadastro :formlista:lista" />
-					<p:commandButton value="Fechar"
-						styleClass="ui-confirmdialog-no rounded-button" icon="pi pi-times"
-						oncomplete="PF('dialogo').hide();" />
+					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>
