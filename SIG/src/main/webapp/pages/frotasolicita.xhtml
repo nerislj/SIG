@@ -139,16 +139,15 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 
 
-				<h:panelGrid columns="3">
-					<p:commandButton value="Solicitar"
+				<h:panelGrid columns="3" style="margin: 0 auto;">
+					<p:commandButton value="Solicitar Viagem" styleClass="rounded-button ui-button-success"
 						actionListener="#{frotaViagemBean.salvar}"
 						onclick="jQuery(this).addClass('ui-state-disabled')" update=":mensagem :formlista:lista formularioConsulta"
-						style="background: #01B50D;"
+					style="margin: 0 auto;"
 						 />
 						
 						
-					<p:commandButton value="Fechar"
-						oncomplete="PF('confirmacao').hide();" />
+					
 
 				</h:panelGrid>
 

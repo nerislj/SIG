@@ -1,4 +1,3 @@
-
 package br.gov.sc.funcionariosuf.bean;
 
 import java.io.BufferedReader;
@@ -8,11 +7,8 @@ import java.io.Serializable;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
@@ -26,7 +22,6 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.collections.ListUtils;
 import org.omnifaces.util.Messages;
 
 import com.google.gson.Gson;
