@@ -11,9 +11,16 @@
 		<h:form id="formlista"
 			rendered="#{autenticacaoBean.temPermissoes([1])}">
 			<p:panel header="Setor - Listagem">
-				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
-					paginator="true" value="#{unidadeBean.unidades}" var="unidade"
-					rows="10">
+			
+			<p:panelGrid columns="1" layout="grid">
+			
+			<p:dataTable id="lista"
+								emptyMessage="Nenhum processo encontrado." paginator="true"
+								rowKey="#{unidade}" rows="10"
+								value="#{unidadeBean.unidades}"
+								var="unidade" stripedRows="true" rowExpandMode="single">
+								
+			
 					<f:facet name="header">
 						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
 							actionListener="#{unidadeBean.novo()}"
@@ -65,6 +72,9 @@
 					<p:commandButton value="Não" type="button"
 						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
 				</p:confirmDialog>
+				
+				</p:panelGrid>
+				
 			</p:panel>
 		</h:form>
 

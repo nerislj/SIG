@@ -10,11 +10,17 @@
 	<ui:define name="conteudo">
 		<h:form id="formlista">
 			<p:panel header="Cidade - Listagem" rendered="#{autenticacaoBean.temPermissoes([1])}">
-				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
-					paginator="true" value="#{cidadeBean.cidades}" var="cidade"
-					rows="10" style="width: 50%; padding-left: 25%; ">
+			
+			<p:dataTable id="lista"
+								emptyMessage="Nenhum processo encontrado." paginator="true"
+								rowKey="#{cidade}" rows="10"
+								value="#{cidadeBean.cidades}"
+								var="cidade" stripedRows="true" rowExpandMode="single">
+	
+			
 					<f:facet name="header">
-						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
+						<p:commandButton styleClass="rounded-button ui-button-success"
+										icon="pi pi-plus-circle" value="Novo" oncomplete="PF('dialogo').show();"
 							actionListener="#{cidadeBean.novo()}"
 							update=":formcadastro:cadastro">
 							<f:actionListener
@@ -34,7 +40,8 @@
 					</p:column>
 
 					<p:column headerText="Opções" style="width: 70px; text-align: center;">
-						<p:commandButton icon="ui-icon-trash"
+						<p:commandButton icon="pi pi-times"
+												styleClass="rounded-button ui-button-danger"
 							actionListener="#{cidadeBean.excluir}"
 							update=":mensagem :formlista:lista">
 							<p:confirm header="Confirmação"
@@ -42,7 +49,8 @@
 							<f:attribute name="cidadeSelecionado" value="#{cidade}" />
 						</p:commandButton>
 
-						<p:commandButton icon="ui-icon-pencil"
+						<p:commandButton icon="pi pi-pencil"
+										styleClass="rounded-button ui-button-secondary"
 							actionListener="#{cidadeBean.editar}"
 							update=":formcadastro:cadastro"
 							oncomplete="PF('dialogo').show();">
