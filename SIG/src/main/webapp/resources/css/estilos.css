@@ -147,4 +147,8 @@ body .ui-chip {
     margin-top: 20px
 }
 
+body .ui-state-disabled {
+    opacity: 0.2 !important;
+}
+
 

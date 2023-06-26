@@ -24,7 +24,7 @@ public class FrotaViagem extends GenericDomain {
 	@Column(nullable = false)
 	private Date dataInicial;
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = true)
 	private Date dataPrevista;
 	
@@ -68,6 +68,9 @@ public class FrotaViagem extends GenericDomain {
 	
 	@Column(length = 255)
 	private String observacaoViagem;
+	
+	@Column(length = 255)
+	private String justificativa;
 	
 	
 	
@@ -234,6 +237,16 @@ public class FrotaViagem extends GenericDomain {
 
 	public void setUltimoUsuario(Usuario ultimoUsuario) {
 		this.ultimoUsuario = ultimoUsuario;
+	}
+
+
+	public String getJustificativa() {
+		return justificativa;
+	}
+
+
+	public void setJustificativa(String justificativa) {
+		this.justificativa = justificativa;
 	}
 	
 	

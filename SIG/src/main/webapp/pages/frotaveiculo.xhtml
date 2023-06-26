@@ -11,11 +11,19 @@
 		<h:form id="formlista">
 			<p:panel header="Veiculo - Listagem"
 				rendered="#{autenticacaoBean.temPermissoes([1,25])}">
-				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
-					paginator="true" value="#{frotaVeiculoBean.veiculos}" var="veiculo"
-					rows="10">
+				
+				<p:dataTable id="lista"
+								emptyMessage="Nenhum registro encontrado." paginator="true"
+								rowKey="#{veiculo}" rows="10"
+								value="#{frotaVeiculoBean.veiculos}"
+								var="veiculo" stripedRows="true" rowExpandMode="single">
+				
+			
 					<f:facet name="header">
-						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
+						<p:commandButton 
+						styleClass="rounded-button ui-button-success"
+										icon="pi pi-plus-circle"
+						value="Novo" oncomplete="PF('dialogo').show();"
 							actionListener="#{frotaVeiculoBean.novo()}"
 							update=":formcadastro:cadastro">
 							<f:actionListener
@@ -70,7 +78,9 @@
 						style="width: 70px; text-align: center;">
 
 
-						<p:commandButton icon="ui-icon-pencil"
+						<p:commandButton 
+						icon="pi pi-pencil"
+										styleClass="rounded-button ui-button-secondary"
 							actionListener="#{frotaVeiculoBean.editar}"
 							update=":formcadastro:cadastro"
 							oncomplete="PF('dialogo').show();">

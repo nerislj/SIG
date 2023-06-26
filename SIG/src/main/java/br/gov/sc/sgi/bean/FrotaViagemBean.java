@@ -196,7 +196,7 @@ public class FrotaViagemBean implements Serializable {
 			veiculo = new FrotaVeiculo();
 
 			FrotaCondutorDAO condutorDAO = new FrotaCondutorDAO();
-			condutores = condutorDAO.listar();
+			condutores = condutorDAO.listarCondutoresAtivos();
 
 		} catch (RuntimeException erro) {
 
@@ -293,7 +293,7 @@ public class FrotaViagemBean implements Serializable {
 			);
 			email.addTo("frota@detran.sc.gov.br"); // E-MAIL SETOR GEAPO
 
-			email.send();
+			//email.send();
 
 			Messages.addGlobalInfo("E-mail enviado com Sucesso!");
 
@@ -345,7 +345,7 @@ public class FrotaViagemBean implements Serializable {
 			);
 			email.addTo(viagem.getUsuarioCadastro().getPessoa().getEmail()); // E-MAIL SOLICITANTE
 
-			email.send();
+			//email.send();
 
 			Messages.addGlobalInfo("E-mail enviado com Sucesso!");
 
@@ -398,7 +398,7 @@ public class FrotaViagemBean implements Serializable {
 			);
 			email.addTo(viagem.getUsuarioCadastro().getPessoa().getEmail()); // E-MAIL SETOR GEAPO
 
-			email.send();
+			//email.send();
 
 			Messages.addGlobalInfo("E-mail enviado com Sucesso!");
 

@@ -55,25 +55,33 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 				<h:panelGrid columns="2" style="margin: 0 auto;">
 
+	
+						<p:outputLabel value="Solicitante: " />
+						
+						<p:inputText maxlength="30" size="30"
+						value="#{frotaViagemBean.usuarioLogado.pessoa.nomeCompleto}" disabled="true"
+						 />
+						
 
-
-					<p:outputLabel for="button" value="Data Início:" />
+					<p:outputLabel for="button" value="Data Saída:" />
 					<p:calendar id="button" readonlyInput="true" yearRange="c-120:c-14"
 						mindate="#{frotaViagemBean.hj}" disabledWeekends="true"
 						maxdate="#{frotaViagemBean.todayPlusThree}"
-						value="#{frotaViagemBean.viagem.dataInicial}" showIcon="true" />
+						value="#{frotaViagemBean.viagem.dataInicial}" showOn="button" />
 
 
-					<p:outputLabel for="timeonly" value="Hora Inicio:" />
+					<p:outputLabel for="timeonly" value="Hora Saída:" />
 					<p:datePicker id="timeonly"
 						value="#{frotaViagemBean.viagem.horaInicial}" timeOnly="true"
 						pattern="HH:mm" />
 
 
-					<p:outputLabel for="button2" value="Data Entrega (Prevista):" />
-					<p:calendar id="button2" readonlyInput="true" yearRange="c-120:c"
+					<p:outputLabel for="button2" value="Data/hora de retorno (previsão):" />
+						<p:calendar id="button2" showOn="button"
 						mindate="#{frotaViagemBean.hj}" disabledWeekends="true"
-						value="#{frotaViagemBean.viagem.dataPrevista}" showIcon="true" />
+						readonlyInput="true" yearRange="c-120:c"
+						value="#{frotaViagemBean.viagem.dataPrevista}"
+						pattern="dd/MM/yyyy HH:mm" />
 
 
 
@@ -108,7 +116,7 @@ body .ui-panelgrid .ui-panelgrid-cell {
 						requiredMessage="O campo Destino é obrigatório" />
 
 					<p:outputLabel value="Condutor: " />
-					<p:selectOneMenu id="condutor" filter="true"
+					<p:selectOneMenu id="condutor" filter="true" size="30"
 						converter="omnifaces.SelectItemsConverter"
 						value="#{frotaViagemBean.viagem.frotaCondutor}" required="true"
 						requiredMessage="O campo Condutor é obrigatório">
@@ -120,34 +128,38 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 					</p:selectOneMenu>
 
-					<!-- <p:outputLabel value="Observação Viagem: " />
-					<p:inputTextarea maxlength="255"
-						value="#{frotaViagemBean.viagem.observacaoViagem}"
-						counter="display" counterTemplate="Restam {0} Caracteres." />
+					<p:outputLabel value="Justificativa: " />
+					<p:inputTextarea maxlength="255" size="30"
+						value="#{frotaViagemBean.viagem.justificativa}" counter="display"
+						counterTemplate="Restam {0} Caracteres." />
 					<h:outputText />
-					<h:outputText id="display" /> -->
+					<h:outputText id="display" />
 
 
 				</h:panelGrid>
-				
+
 				<h:panelGroup style="display:block; text-align:center">
-				<p>OBS: A <b>Data Início</b> não pode ser posterior a 3 (três) dias da data atual.</p>
+					<p>
+						OBS: A <b>Data Saída</b> não pode ser posterior a 3 (três) dias
+						da data atual.
+					</p>
 				</h:panelGroup>
-				
+
 				<br />
 				<br />
 
 
 
 				<h:panelGrid columns="3" style="margin: 0 auto;">
-					<p:commandButton value="Solicitar Viagem" styleClass="rounded-button ui-button-success"
+					<p:commandButton value="Solicitar Viagem"
+						styleClass="rounded-button ui-button-success"
 						actionListener="#{frotaViagemBean.salvar}"
-						onclick="jQuery(this).addClass('ui-state-disabled')" update=":mensagem :formlista:lista formularioConsulta"
-					style="margin: 0 auto;"
-						 />
-						
-						
-					
+						onclick="jQuery(this).addClass('ui-state-disabled')"
+						update=":mensagem :formlista:lista formularioConsulta"
+						style="margin: 0 auto;" />
+
+
+
 
 				</h:panelGrid>
 
@@ -176,14 +188,14 @@ body .ui-panelgrid .ui-panelgrid-cell {
 						<h:outputText value="#{viagem.codigo}" />
 					</p:column>
 
-					<p:column headerText="Data/Hora Inicial" sortBy="#{viagem.dataInicial}"
-						filterBy="#{viagem.dataInicial}"
+					<p:column headerText="Saída data/hora"
+						sortBy="#{viagem.dataInicial}" filterBy="#{viagem.dataInicial}"
 						style="text-align: center; text-transform:uppercase;">
 						<h:outputText
 							value="#{viagem.dataInicial.date}/#{viagem.dataInicial.month+1}/#{viagem.dataInicial.year+1900} - #{viagem.horaInicial}" />
 					</p:column>
 
-					<p:column headerText="Data Entrega (Prevista)"
+					<p:column headerText="Data de retorno (Prevista)"
 						sortBy="#{viagem.dataPrevista}" filterBy="#{viagem.dataPrevista}"
 						style="text-align: center; text-transform:uppercase;">
 						<h:outputText
@@ -197,6 +209,13 @@ body .ui-panelgrid .ui-panelgrid-cell {
 						<h:outputText value="#{viagem.destino}" />
 					</p:column>
 
+
+					<p:column headerText="Justificativa"
+						sortBy="#{viagem.justificativa}"
+						filterBy="#{viagem.justificativa}"
+						style="text-align: center; text-transform:uppercase;">
+						<h:outputText value="#{viagem.justificativa}" />
+					</p:column>
 
 					<p:column headerText="Veículo"
 						sortBy="#{viagem.frotaVeiculo.placa}"
@@ -225,10 +244,10 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 
 					<p:column headerText="Opções">
-						<p:commandButton value="Cancelar" icon="ui-icon-trash"
+						<p:commandButton value="Cancelar" icon="pi pi-times"
+							styleClass="rounded-button ui-button-danger"
 							actionListener="#{frotaViagemBean.excluir}"
-							onclick="PF('dlg2').show();" 
-							update="formularioCancelar:lista"
+							onclick="PF('dlg2').show();" update="formularioCancelar:lista"
 							disabled="#{viagem.statusFormatado eq 'Baixada' or viagem.statusFormatado eq 'Reprovada' or viagem.statusFormatado eq 'Cancelada'}"
 							style="width: 100%; align: center;">
 							<f:attribute name="viagemSelecionado" value="#{viagem}" />
@@ -243,7 +262,8 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 
 
-						<p:commandButton value="Visualizar" icon="ui-icon-zoomin"
+						<p:commandButton value="Visualizar"
+							styleClass="rounded-button ui-button-info" icon="pi pi-search"
 							actionListener="#{frotaViagemBean.visualizar}"
 							onclick="PF('dlgVisualizar').show();"
 							update="formularioVisualizar:lista"
@@ -302,7 +322,7 @@ body .ui-panelgrid .ui-panelgrid-cell {
 							actionListener="#{frotaViagemBean.salvarExcluirSolicitante}"
 							update=":mensagem :formlista:lista"
 							oncomplete="PF('dlg2').hide(); window.location.reload();" />
-							
+
 						<p:commandButton value="Cancelar" oncomplete="PF('dlg2').hide();" />
 					</h:panelGrid>
 

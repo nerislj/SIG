@@ -11,11 +11,17 @@
 		<h:form id="formlista">
 			<p:panel header="Usuario - Listagem"
 				rendered="#{autenticacaoBean.temPermissoes([1,25])}">
+
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
-					paginator="true" value="#{frotaCondutorBean.frotaCondutores}"
-					var="condutor" rows="10">
+					paginator="true" rowKey="#{condutor}" rows="10"
+					value="#{frotaCondutorBean.frotaCondutores}" var="condutor"
+					stripedRows="true" rowExpandMode="single">
+
+
 					<f:facet name="header">
-						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
+						<p:commandButton styleClass="rounded-button ui-button-success"
+							icon="pi pi-plus-circle" value="Novo"
+							oncomplete="PF('dialogo').show();"
 							actionListener="#{frotaCondutorBean.novo()}"
 							update=":formcadastro:cadastro">
 							<f:actionListener
@@ -35,9 +41,16 @@
 						<h:outputText value="#{condutor.pessoa.nomeCompleto}" />
 					</p:column>
 
+					<p:column headerText="Status" sortBy="#{condutor.status}"
+						filterBy="#{condutor.status}">
+						<h:outputText value="#{condutor.status}" />
+						<h:outputText rendered="#{condutor.status == null}" value="Ativo" />
+					</p:column>
+
 					<p:column headerText="Opções"
 						style="width: 6%; text-align: center;">
-						<p:commandButton icon="ui-icon-trash"
+						<p:commandButton icon="pi pi-times"
+							styleClass="rounded-button ui-button-danger"
 							actionListener="#{frotaCondutorBean.excluir}"
 							update=":mensagem :formlista:lista"
 							rendered="#{autenticacaoBean.temPermissoes([1, 2])}">
@@ -46,7 +59,8 @@
 							<f:attribute name="CondutorSelecionado" value="#{condutor}" />
 						</p:commandButton>
 
-						<p:commandButton icon="ui-icon-pencil"
+						<p:commandButton icon="pi pi-pencil"
+							styleClass="rounded-button ui-button-secondary"
 							actionListener="#{frotaCondutorBean.editar}"
 							update=":formcadastro:cadastro"
 							oncomplete="PF('dialogo').show();">
@@ -84,15 +98,21 @@
 							itemLabel="#{pessoas.cpf} - #{pessoas.nomeCompleto}" />
 					</p:selectOneMenu>
 
-				
-					
+					<p:outputLabel value="Status: " />
+					<p:selectOneRadio value="#{frotaCondutorBean.frotacondutor.status}">
+						<f:selectItem itemLabel="Ativo" itemValue="Ativo" />
+						<f:selectItem itemLabel="Inativo" itemValue="Inativo" />
+
+					</p:selectOneRadio>
+
 
 				</h:panelGrid>
 
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
 						actionListener="#{frotaCondutorBean.salvar()}"
-						update=":mensagem :formcadastro:cadastro :formlista:lista" oncomplete="PF('dialogo').hide();" />
+						update=":mensagem :formcadastro:cadastro :formlista:lista"
+						oncomplete="PF('dialogo').hide();" />
 					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
 				</h:panelGrid>
 			</h:form>

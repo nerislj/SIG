@@ -126,7 +126,8 @@ body .ui-panelgrid .ui-panelgrid-cell {
 							<p:column headerText="Opções">
 
 
-								<p:commandButton value="Recusar" icon="ui-icon-trash"
+								<p:commandButton value="Recusar" icon="pi pi-times"
+							styleClass="rounded-button ui-button-danger"
 									actionListener="#{frotaViagemBean.recusar}"
 									onclick="PF('dlg2').show();" update="formularioCancelar:lista"
 									disabled="#{viagem.statusFormatado eq 'Baixada' or viagem.statusFormatado eq 'Reprovada' or viagem.statusFormatado eq 'Cancelada'}"
@@ -144,7 +145,7 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 
 
-								<p:commandButton value="Visualizar" icon="ui-icon-zoomin"
+								<p:commandButton value="Visualizar" styleClass="rounded-button ui-button-info" icon="pi pi-search" 
 									actionListener="#{frotaViagemBean.visualizar}"
 									onclick="PF('dlgVisualizar').show();"
 									update="formularioVisualizar:lista"
@@ -156,9 +157,10 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 								<p:commandButton value="Aprovar"
 									actionListener="#{frotaViagemBean.visualizar}"
-									icon=" ui-icon-transferthick-e-w"
+									icon="pi pi-thumbs-up-fill"
+							styleClass="rounded-button ui-button-success"
 									onclick="PF('dlgAprovar').show();"
-									style="background: #90EE90;width: 100%; align: center;"
+									style="width: 100%; align: center;"
 									update="formularioAprovar:lista"
 									disabled="#{viagem.statusFormatado eq 'Baixada' or viagem.statusFormatado eq 'Reprovada' or viagem.statusFormatado eq 'Cancelada' or viagem.statusFormatado eq 'Aprovada'}">
 									<f:attribute name="viagemSelecionado" value="#{viagem}" />
@@ -167,9 +169,11 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 
 								<p:commandButton value="Baixa veículo"
+								icon="pi pi-book"
+							styleClass="rounded-button ui-button-success"
 									actionListener="#{frotaViagemBean.editar}"
-									icon=" ui-icon-transferthick-e-w" onclick="PF('dlg1').show();"
-									style="background: #90EE90;width: 100%; align: center;"
+									 onclick="PF('dlg1').show();"
+									style="width: 100%; align: center;"
 									update="formularioEntrega:lista"
 									disabled="#{viagem.statusFormatado eq 'Reprovada' or viagem.statusFormatado eq 'Baixada' or viagem.statusFormatado eq 'Cancelada' or viagem.statusFormatado eq 'Solicitada'}">
 									<f:attribute name="viagemSelecionado" value="#{viagem}" />
@@ -276,7 +280,7 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 
 
-						<p:commandButton value="Visualizar" icon="ui-icon-zoomin"
+						<p:commandButton value="Visualizar" styleClass="rounded-button ui-button-info" icon="pi pi-search" 
 								actionListener="#{frotaViagemBean.visualizar}"
 								onclick="PF('dlgVisualizar').show();"
 								update="formularioVisualizar"
@@ -289,8 +293,9 @@ body .ui-panelgrid .ui-panelgrid-cell {
 							
 								<p:commandButton value="Baixa veículo"
 									actionListener="#{frotaViagemBean.editar}"
-									icon=" ui-icon-transferthick-e-w" onclick="PF('dlg1').show();"
-									style="background: #90EE90;width: 100%; align: center;"
+									icon="pi pi-book"
+							styleClass="rounded-button ui-button-success" onclick="PF('dlg1').show();"
+									style="width: 100%; align: center;"
 									update="formularioEntrega:lista"
 									disabled="#{viagem.statusFormatado eq 'Reprovada' or viagem.statusFormatado eq 'Baixada' or viagem.statusFormatado eq 'Cancelada' or viagem.statusFormatado eq 'Solicitada'}">
 									<f:attribute name="viagemSelecionado" value="#{viagem}" />
@@ -392,7 +397,7 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 
 
-							<p:commandButton value="Visualizar" icon="ui-icon-zoomin"
+							<p:commandButton value="Visualizar" styleClass="rounded-button ui-button-info" icon="pi pi-search" 
 								actionListener="#{frotaViagemBean.visualizar}"
 								onclick="PF('dlgVisualizar').show();"
 								update="formularioVisualizar"
@@ -497,7 +502,7 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 
 
-							<p:commandButton value="Visualizar" icon="ui-icon-zoomin"
+							<p:commandButton value="Visualizar" styleClass="rounded-button ui-button-info" icon="pi pi-search" 
 								actionListener="#{frotaViagemBean.visualizar}"
 								onclick="PF('dlgVisualizar').show();"
 								update="formularioVisualizar"
@@ -603,7 +608,7 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 
 
-						<p:commandButton value="Visualizar" icon="ui-icon-zoomin"
+						<p:commandButton value="Visualizar" styleClass="rounded-button ui-button-info" icon="pi pi-search" 
 								actionListener="#{frotaViagemBean.visualizar}"
 								onclick="PF('dlgVisualizar').show();"
 								update="formularioVisualizar"
