@@ -277,6 +277,7 @@ $(window).bind('beforeunload', function() {
 										<li><a
 											href="/Sistema_Integrado_de_Gestão/pages/oficio.xhtml">Novo
 												Ofício</a></li>
+												<h:form id="formCountSaida">
 										<li><a
 											href="/Sistema_Integrado_de_Gestão/pages/rastreio.xhtml">Saída
 												Ofício <p:badge
@@ -284,6 +285,7 @@ $(window).bind('beforeunload', function() {
 													severity="danger">
 												</p:badge>
 										</a></li>
+										</h:form>
 										<h:panelGroup
 											rendered="#{autenticacaoBean.temPermissoes([1])}">
 
@@ -491,7 +493,6 @@ $(window).bind('beforeunload', function() {
 
 
 
-
 				</div>
 				<div class="col-12 md:col-10 col-nogutter">
 					<div class="grid">
@@ -545,23 +546,23 @@ $(window).bind('beforeunload', function() {
 							itemValue="#{autenticacaoBean.usuarioLogado}" rendered="false" />
 					</p:selectOneMenu>
 
-					<p:outputLabel value="Informe uma senha de 4 a 10 caracteres."
+					<p:outputLabel value="Informe uma senha de 4 a 15 caracteres."
 						style="background: #db8a8a; color: #000000" />
 
 
 					<p:outputLabel for="senha" value="Senha:" />
-					<p:password id="senha" maxlength="10" size="8"
+					<p:password id="senha" maxlength="15" size="30"
 						value="#{autenticacaoBean.usuarioLogado.senha}" feedback="true"
 						promptLabel="Favor inserir nova senha." weakLabel="Fraco"
 						goodLabel="Normal" strongLabel="Forte" required="true"
 						match="confirmaSenha"
 						requiredMessage="O campo Senha é obrigatório."
-						validatorMessage="Informe uma senha de 4 a 10 caracteres.">
-						<f:validateLength minimum="4" maximum="10" />
+						validatorMessage="Informe uma senha de 4 a 15 caracteres.">
+						<f:validateLength minimum="4" maximum="15" />
 					</p:password>
 
 					<p:outputLabel for="confirmaSenha" value="Confirmação: " />
-					<p:password id="confirmaSenha" maxlength="10" size="8"
+					<p:password id="confirmaSenha" maxlength="15" size="30"
 						required="true" onblur="#{usuarioBean}"
 						validatorMessage="Os valore digitados não são iguais." />
 

@@ -37,7 +37,7 @@ public class OficioDAO extends GenericDAO<Oficio> {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 		try {
 			Criteria consulta = sessao.createCriteria(Oficio.class);
-			
+			consulta.addOrder(Order.desc("codigo"));
 			consulta.add(Restrictions.eq("unidadeAbertura", unidadeAbertura));
 			consulta.add(Restrictions.eq("setorAbertura", setor));
 
@@ -158,6 +158,7 @@ public class OficioDAO extends GenericDAO<Oficio> {
 	public List<Oficio> carregarOficiosEmAberto(String status, Setor setor, Unidade unidadeAbertura) throws Exception {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 		Criteria consulta = sessao.createCriteria(Oficio.class);
+		consulta.addOrder(Order.desc("codigo"));
 		consulta.add(Restrictions.eq("status", status));
 		consulta.add(Restrictions.eq("unidadeAbertura", unidadeAbertura));
 		consulta.add(Restrictions.eq("setorAbertura", setor));

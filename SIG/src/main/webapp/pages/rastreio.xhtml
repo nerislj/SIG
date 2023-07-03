@@ -20,13 +20,13 @@
 					<f:facet name="header">
 						<p:commandButton value="Finalizar"
 							actionListener="#{rastreioBean.finalizar}"
-							update=":mensagem :formularioFinalizar:painelFinalizar"
+							update=":mensagem :formularioFinalizar:painelFinalizar formlista:lista"
 							oncomplete="PF('dialogo').show();" style="background: #01B50D;" />
 					</f:facet>
 
 					<p:column headerText="Opções"
 						style="width: 6% !important ; text-align: center;">
-						<p:commandButton icon="ui-icon-plus"
+						<p:commandButton icon="pi pi-plus"
 							actionListener="#{rastreioBean.adicionar}"
 							update=":formlista:listaSelecionados"
 							style="background: #18B5ED;">
@@ -63,10 +63,12 @@
 					</p:column>
 
 					<p:column headerText="Data Abertura" sortBy="#{oficio.dataOficio}"
-						filterBy="#{oficio.dataOficio}"
+						filterBy="#{oficio.dataOficio}"  filterMatchMode="contains"
 						style="width: 9%; text-align: center;">
 						<h:outputText
-							value="#{oficio.dataOficio.date}/#{oficio.dataOficio.month+1}/#{oficio.dataOficio.year+1900}" />
+							value="#{oficio.dataOficio}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
 					</p:column>
 
 
@@ -79,7 +81,7 @@
 
 					<p:column headerText="Opções"
 						style="width: 6%; text-align: center;">
-						<p:commandButton icon="ui-icon-minus"
+						<p:commandButton icon="pi pi-minus"
 							actionListener="#{rastreioBean.remover}"
 							update=":formlista:listaSelecionados"
 							style="background: #ED9818;">
@@ -144,7 +146,7 @@
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
 						actionListener="#{rastreioBean.salvar}"
-						update=":mensagem :formlista:listaSelecionados :formlista:lista :formularioFinalizar :formMenu"
+						update=":mensagem :formlista:listaSelecionados :formlista:lista :formularioFinalizar :formCountSaida"
 						oncomplete="PF('dialogo').hide();">
 						
 							

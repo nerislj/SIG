@@ -112,7 +112,9 @@
 								sortBy="#{oficio.dataOficio}" filterBy="#{oficio.dataOficio}"
 								style="width: 9%; text-align: center;">
 								<h:outputText
-									value="#{oficio.dataOficio.date}/#{oficio.dataOficio.month+1}/#{oficio.dataOficio.year+1900}" />
+									value="#{oficio.dataOficio}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
 							</p:column>
 
 							<p:column headerText="Opções">
@@ -199,7 +201,9 @@
 								filterBy="#{oficio.dataCancelamento}"
 								style="width: 9%; text-align: center;">
 								<h:outputText
-									value="#{oficio.dataCancelamento.date}/#{oficio.dataCancelamento.month+1}/#{oficio.dataCancelamento.year+1900}" />
+									value="#{oficio.dataCancelamento}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
 							</p:column>
 
 							<p:column headerText="Motivo Cancelamento"
@@ -328,8 +332,8 @@
 				<h:panelGrid columns="4">
 					<p:commandButton value="Salvar"
 						actionListener="#{oficioBean.salvar}"
-						update=":mensagem :tabView:formlista:lista :formcopie:copie"
-						oncomplete="(!args.validationFailed) ? PF('dlgSalvar').show() : PF('dlgSalvar').hide()">
+						update=":mensagem :tabView:formlista:lista :formCountSaida"
+						oncomplete="PF('dialogo').hide()">
 					</p:commandButton>
 					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
 				</h:panelGrid>
@@ -355,37 +359,7 @@
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>
-		<p:dialog header="Ofício - Gerado" widgetVar="dlgSalvar"
-			dynamic="true" width="500" height="200" draggable="false"
-			resizable="false" modal="true" closable="true">
-			<h:form id="formcopie">
-
-				<p:dataTable id="copie" value="#{oficioBean.oficioDialogo}"
-					var="oficio" rows="1">
-
-					<p:column>
-						<br />
-						<br />
-					Ofício gerado com sucesso!
-					<br />
-						<br />
-						Número: <h:outputText id="txtCopy"
-						
-							value="#{oficio.oficio}" />
-						<br />
-						<br />
-					Para copiar o ofício, clique no botão abaixo.
-					<br />
-						<br />
-						<p:commandButton id="btnCopy" value="Copiar" icon="ui-icon-copy" oncomplete="PF('dlgSalvar').hide();PF('dialogo').hide();" />
-						<pe:clipboard id="clipCopy" trigger="btnCopy" action="copy"
-							target="txtCopy">
-							<p:ajax event="success" listener="#{oficioBean.successListener}" update=":mensagem" />
-						</pe:clipboard>
-					</p:column>
-				</p:dataTable>
-			</h:form>
-		</p:dialog>
+		
 
 		<p:dialog header="Ofício - Cancelamento" widgetVar="dialogoExclusao"
 			draggable="false" resizable="false" modal="true" closable="false">

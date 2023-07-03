@@ -42,9 +42,11 @@
 
 					<p:column headerText="Data Saida"
 						sortBy="#{rastreio.rastreio.dataSaida}"
-						filterBy="#{rastreio.rastreio.dataSaida}">
+						filterBy="#{rastreio.rastreio.dataSaida}" filterMatchMode="contains">
 						<h:outputText
-							value="#{rastreio.rastreio.dataSaida.date}/#{rastreio.rastreio.dataSaida.month+1}/#{rastreio.rastreio.dataSaida.year+1900}" />
+							value="#{rastreio.rastreio.dataSaida}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
 					</p:column>
 
 					<p:column headerText="Usuário Saida"

@@ -266,8 +266,10 @@ public class OficioBean implements Serializable {
 
 			// oficios = oficioDAO.listarSetor(usuarioLogado.getSetor(),
 			// usuarioLogado.getUnidade());
-
+			oficioDialogo = oficioDAO.listarDialogo("codigo", usuarioLogado);
 			this.refresh();
+			
+			
 
 		} catch (Exception erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar salvar o Ofício");
