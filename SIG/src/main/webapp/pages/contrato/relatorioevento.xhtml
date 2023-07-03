@@ -32,7 +32,7 @@
 
 					<p:outputLabel for="contrato" value="Contrato: " />
 					<p:selectOneMenu id="contrato" filter="true" required="true"
-						style="width:165px"
+						
 						requiredMessage="O campo contrato é obrigatório"
 						converter="omnifaces.SelectItemsConverter"
 						value="#{contratoTerceirizadoBean.nContrato}">
@@ -49,7 +49,7 @@
 
 					<p:outputLabel for="empresa" value="Empresa: " />
 					<p:selectOneMenu id="empresa" filter="true" required="true"
-						style="width:165px"
+						
 						requiredMessage="O campo empresa é obrigatório"
 						converter="omnifaces.SelectItemsConverter"
 						value="#{contratoTerceirizadoBean.empresaTerceiriza}">
@@ -62,7 +62,7 @@
 					</p:selectOneMenu>
 
 					<p:outputLabel for="setor" value="Unidade " />
-					<p:selectOneMenu id="setor" filter="true" style="width:165px"
+					<p:selectOneMenu id="setor" filter="true" 
 						converter="omnifaces.SelectItemsConverter"
 						value="#{contratoTerceirizadoBean.setorRelatorio}">
 						<f:selectItem noSelectionOption="true" itemLabel="Todos" />
@@ -74,7 +74,7 @@
 
 
 					<p:outputLabel value="Tipo Evento: *" />
-					<p:selectOneMenu id="tipo" style="width:165px" required="true"
+					<p:selectOneMenu id="tipo"  required="true"
 						value="#{contratoTerceirizadoBean.tipoEvento}"
 						requiredMessage="O campo Tipo é obrigatório">
 						<f:selectItem noSelectionOption="true"

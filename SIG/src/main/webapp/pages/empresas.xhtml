@@ -57,7 +57,8 @@
 
 					<p:column headerText="Opções"
 						style="width: 6%; text-align: center;">
-						<p:commandButton icon="ui-icon-trash"
+						<p:commandButton icon="pi pi-times"
+												styleClass="rounded-button ui-button-danger"
 							actionListener="#{pessoaJuridicaBean.excluir}"
 							update=":mensagem :formlista:lista">
 							<p:confirm header="Confirmação"
@@ -65,7 +66,8 @@
 							<f:attribute name="empresaSelecionada" value="#{pessoaJuridica}" />
 						</p:commandButton>
 
-						<p:commandButton icon="ui-icon-pencil"
+						<p:commandButton icon="pi pi-pencil"
+										styleClass="rounded-button ui-button-secondary"
 							actionListener="#{pessoaJuridicaBean.editar}"
 							update=":formcadastro:cadastro"
 							oncomplete="PF('dialogo').show();">

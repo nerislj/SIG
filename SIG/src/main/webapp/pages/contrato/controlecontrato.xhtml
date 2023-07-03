@@ -153,11 +153,7 @@
 										rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}"
 										title="Adicionar Novo Contrato"
 										actionListener="#{contratoTerceirizadoBean.listar}"
-										style="align: center;
-    background: #32cd32;
-  
-    border-width: 0 3px 0 3px;
-    color: #000000;"
+										styleClass="rounded-button ui-button-success"
 										icon="pi pi-plus-circle"
 										oncomplete="PF('dialogoNovoContrato').show();"
 										update="tabView:formularioContratos:listaContratos :contrato:dadosForm">
@@ -254,8 +250,9 @@
 										actionListener="#{contratoTerceirizadoBean.novoFuncionario}"
 										icon="pi pi-user-plus"
 										onclick="PF('dialogoNovoFuncionario').show();"
-										style="align: center;background: #8FBC8F;border-width: 0 3px 0 3px;color: #000000;
-"
+										
+										styleClass="rounded-button ui-button-sucess"
+
 										update=":mensagem funcionario:dadosFormFunc listaFuncionarios">
 										<f:attribute name="contratoSelecionado" value="#{contrato}" />
 										<f:actionListener
@@ -268,7 +265,7 @@
 										actionListener="#{contratoTerceirizadoBean.editar}"
 										icon="pi pi-pencil"
 										onclick="PF('dialogoNovoContrato').show();"
-										style="align: center;border-width: 0 3px 0 3px;color: #fff;background: #607d8b;"
+										styleClass="rounded-button ui-button-secondary"
 										update=":mensagem contrato:dadosForm">
 										<f:attribute name="contratoSelecionado" value="#{contrato}" />
 										<f:actionListener
@@ -279,7 +276,7 @@
 										rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}"
 										actionListener="#{contratoTerceirizadoBean.excluirContrato}"
 										icon="pi pi-times"
-										style="align: center; background: #F59E9C;border-width: 0 3px 0 3px;color: #000000;"
+										styleClass="rounded-button ui-button-danger"
 										update=":mensagem tabView:formularioContratos:painelDados">
 										<p:confirm header="Confirmação"
 											message="Deseja Excluir o Contrato?" icon="ui-icon-alert" />
@@ -349,7 +346,7 @@
 												actionListener="#{contratoTerceirizadoBean.novoEvento}"
 												icon="pi pi-calendar"
 												onclick="PF('dialogoFeriasAfastamentoInconsistencias').show();"
-												style="align: center;background: #ffecb3;border-width: 0 3px 0 3px;color: #000000;"
+												styleClass="rounded-button ui-button-warning"
 												update=":mensagem feriasAfastamentoInconsistencias:dadosFormFeriasAfastamentoInconsistencias, feriasAfastamentoInconsistencias:dadosFormInco,
 feriasAfastamentoInconsistencias:dadosFormDiasPergunta,
 feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista, feriasAfastamentoInconsistencias:salvarEvento">
@@ -367,7 +364,7 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista, feriasAfastamen
 												rendered="#{contratoTerceirizadoBean.ciretran == true and contratoTerceirizadoBean.citran == true}"
 												actionListener="#{contratoTerceirizadoBean.carregaRelacao}"
 												icon="pi pi-times" onclick="PF('dlg2').show();"
-												style="align: center;background: #F59E9C;border-width: 0 3px 0 3px;color: #000000;"
+												styleClass="rounded-button ui-button-danger"
 												update=":mensagem formularioCancelar:listaRemover">
 												<f:attribute name="funcionarioSelecionado"
 													value="#{relacao}" />

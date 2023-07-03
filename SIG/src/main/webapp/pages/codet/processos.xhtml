@@ -186,7 +186,7 @@
 									rendered="#{autenticacaoBean.temPermissoes([1, 13])}">
 
 									<p:commandButton actionListener="#{processoBean.editar}"
-										icon="ui-icon-zoomin"
+										icon="pi pi-search" styleClass="rounded-button ui-button-secondary"
 										onclick="PF('dialogoAdicionarProcesso').show();"
 										style="align: center;"
 										update=":mensagem tabView:formularioEmpresas:painelDados :processo:processo processo:tabViewProcesso:listaFases processo:tabViewProcesso:listaPartes :processo:processo processo:processoSituacaoSetor processo:tabViewProcesso:listaHistorico, processo:processoAcusado">
@@ -197,7 +197,7 @@
 									</p:commandButton>
 
 
-									<p:commandButton icon="ui-icon-trash"
+									<p:commandButton icon="pi pi-times" styleClass="rounded-button ui-button-danger"
 										actionListener="#{processoBean.excluir}"
 										update=":mensagem :mensagem tabView:formularioEmpresas:painelDados :processo:processo processo:tabViewProcesso:listaFases processo:tabViewProcesso:listaPartes :processo:processo processo:processoSituacaoSetor processo:tabViewProcesso:listaHistorico, processo:processoAcusado">
 										<p:confirm header="Confirmação" message="Deseja excluir?"

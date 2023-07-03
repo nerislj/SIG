@@ -12,7 +12,7 @@
 			<p:panel header="Material - Listagem">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{materialEntradaBean.listaEntradaMateriais}"
-					var="material" rows="10" style="width: 40%; padding-left: 25%; ">
+					var="material" rows="10" >
 					<f:facet name="header">
 					Clique no botão abaixo para inserir mais materiais ao estoque.
 					<p><h3>OBS: A quantidade fornecida irá somar com o Total/Estoque.</h3></p>
@@ -49,7 +49,8 @@
 					>
 						
 
-						<p:commandButton icon="ui-icon-pencil" 
+						<p:commandButton icon="pi pi-pencil"
+										styleClass="rounded-button ui-button-secondary"
 							actionListener="#{materialEntradaBean.editar}"
 							update=":formedicao:edicao"
 							oncomplete="PF('dialogoEdicao').show();" 
@@ -59,7 +60,8 @@
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 						</p:commandButton>
 						
-						<p:commandButton icon="ui-icon-trash" immediate="true"
+						<p:commandButton icon="pi pi-times"
+												styleClass="rounded-button ui-button-danger" immediate="true"
 							actionListener="#{materialEntradaBean.excluir}"
 							update=":mensagem :formlista:lista">
 							<p:confirm header="Confirmação"

@@ -12,7 +12,7 @@
 			<p:panel header="Material Tipo - Listagem">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{materialTipoBean.listaTipos}"
-					var="material" rows="10" style="width: 40%; padding-left: 25%; ">
+					var="material" rows="10" >
 					<f:facet name="header">
 						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
 							actionListener="#{materialTipoBean.novo()}"
@@ -28,7 +28,8 @@
 					</p:column>
 
 					<p:column headerText="Opções" style="width: 70px; text-align: center;">
-						<p:commandButton icon="ui-icon-trash"
+						<p:commandButton icon="pi pi-times"
+												styleClass="rounded-button ui-button-danger"
 							actionListener="#{materialTipoBean.excluir}"
 							update=":mensagem :formlista:lista">
 							<p:confirm header="Confirmação"
@@ -36,7 +37,8 @@
 							<f:attribute name="materialstatusSelecionado" value="#{material}" />
 						</p:commandButton>
 
-						<p:commandButton icon="ui-icon-pencil"
+						<p:commandButton icon="pi pi-pencil"
+										styleClass="rounded-button ui-button-secondary"
 							actionListener="#{materialTipoBean.editar}"
 							update=":formcadastro:cadastro"
 							oncomplete="PF('dialogo').show();">

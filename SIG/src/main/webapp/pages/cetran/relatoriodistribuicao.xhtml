@@ -164,7 +164,8 @@
 
 					<p:column headerText="Opções"
 						style="width: 70px; text-align: center;">
-						<p:commandButton icon="ui-icon-trash"
+						<p:commandButton icon="pi pi-times"
+												styleClass="rounded-button ui-button-danger"
 							actionListener="#{historicoProcessoBean.excluir}"
 							update=":mensagem :formlista:lista">
 							<p:confirm header="Confirmação"

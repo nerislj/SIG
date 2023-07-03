@@ -349,7 +349,8 @@
 
 					<p:column headerText="Opções"
 						style="width: 70px; text-align: center;">
-						<p:commandButton icon="ui-icon-trash"
+						<p:commandButton icon="pi pi-times"
+												styleClass="rounded-button ui-button-danger"
 							actionListener="#{funcionarioTerceirizadoBean.excluir}"
 							update=":mensagem :formlista:lista">
 							<p:confirm header="Confirmação"
@@ -357,7 +358,8 @@
 							<f:attribute name="funcionarioSelecionado" value="#{funcionario}" />
 						</p:commandButton>
 
-						<p:commandButton icon="ui-icon-pencil"
+						<p:commandButton icon="pi pi-pencil"
+										styleClass="rounded-button ui-button-secondary"
 							actionListener="#{funcionarioTerceirizadoBean.editar}"
 							update=":dadosForm">
 							<f:attribute name="funcionarioSelecionado" value="#{funcionario}" />

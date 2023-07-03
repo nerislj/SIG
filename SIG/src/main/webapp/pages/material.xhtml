@@ -13,7 +13,7 @@
 			<p:panel header="Material - Listagem">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{materialBean.listaMateriais}"
-					var="material" rows="10" style="width: 40%; padding-left: 25%; ">
+					var="material" rows="10" >
 					<f:facet name="header">
 						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
 							actionListener="#{materialBean.novo()}"
@@ -58,7 +58,8 @@
 
 
 
-						<p:commandButton icon="ui-icon-pencil"
+						<p:commandButton icon="pi pi-pencil"
+										styleClass="rounded-button ui-button-secondary"
 							actionListener="#{materialBean.editar}"
 							update=":formcadastro:cadastro"
 							oncomplete="PF('dialogo').show();">
@@ -67,7 +68,8 @@
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 						</p:commandButton>
 						
-						<p:commandButton icon="ui-icon-trash" immediate="true"
+						<p:commandButton icon="pi pi-times"
+												styleClass="rounded-button ui-button-danger" immediate="true"
 							actionListener="#{materialBean.excluir}"
 							update=":mensagem :formlista:lista">
 							<p:confirm header="Confirmação"

@@ -105,14 +105,15 @@
 
 					<p:column headerText="Ações"
 						style="width: 10% !important ; text-align: center;">
-						<p:commandButton value="Selecionar" icon="ui-icon-check"
+						<p:commandButton value="Selecionar" icon="pi pi-check"
 							actionListener="#{materialSaidaBean.adicionar}"
 							update=":formlista:listaSelecionados"
 							style="background: #18B5ED;">
 							<f:attribute name="materialSelecionado" value="#{material}" />
 						</p:commandButton>
 						
-						<p:commandButton icon="ui-icon-pencil"
+						<p:commandButton icon="pi pi-pencil"
+												styleClass="rounded-button ui-button-danger"
 							actionListener="#{materialSaidaBean.ressalva}"
 							update=":formlista:listaSelecionados :formlista:lista :formularioFinalizarRessalva:painelFinalizarRessalva"
 							style="background: #CD5C5C; color: #000000"
@@ -165,7 +166,7 @@
 					
 					<p:column headerText="Ações"
 						style="width: 6%; text-align: center;">
-						<p:commandButton value="Remover" icon="ui-icon-minus"
+						<p:commandButton value="Remover" icon="pi pi-minus"
 							actionListener="#{materialSaidaBean.remover}"
 							update=":formlista:listaSelecionados"
 							style="background: #ED9818;">

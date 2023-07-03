@@ -269,7 +269,8 @@
 
 					<p:column headerText="Opções"
 						style="width: 70px; text-align: center;">
-						<p:commandButton icon="ui-icon-trash"
+						<p:commandButton icon="pi pi-times"
+												styleClass="rounded-button ui-button-danger"
 							actionListener="#{requerenteBean.excluir}"
 							update=":mensagem :formlista:lista">
 							<p:confirm header="Confirmação"
@@ -277,7 +278,8 @@
 							<f:attribute name="processoSelecionado" value="#{processo}" />
 						</p:commandButton>
 
-						<p:commandButton icon="ui-icon-pencil"
+						<p:commandButton icon="pi pi-pencil"
+										styleClass="rounded-button ui-button-secondary"
 							actionListener="#{requerenteBean.editar}"
 							update=":formcadastro:cadastro"
 							>

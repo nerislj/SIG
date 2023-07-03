@@ -205,8 +205,9 @@
 
 
 
-									<p:commandButton title="Histórico" icon="ui-icon-script"
+									<p:commandButton title="Histórico" icon="pi pi-file"
 										actionListener="#{ecvItlBean.editar}"
+										styleClass="rounded-button ui-button-secondary"
 										oncomplete="PF('dialogoAdicionarHistorico').show();"
 										update=":mensagem :mensagem tabView:formularioEmpresas:painelDados dadosForm2:listaHistorico">
 
@@ -216,8 +217,8 @@
 									<p:commandButton title="Adicionar Proprietário"
 										actionListener="#{ecvItlBean.novoProprietarioSalvar}"
 										icon="pi pi-user-plus"
+										styleClass="rounded-button ui-button-success"
 										onclick="PF('dialogoNovoFuncionario').show();"
-										style="align: center;background: #8FBC8F;border-width: 0 3px 0 3px;color: #000000;"
 										update=":mensagem">
 										<f:attribute name="ecvitlSelecionado" value="#{emp}" />
 										<f:actionListener
@@ -277,8 +278,9 @@
 				
 												actionListener="#{ecvItlBean.editarProprietario}"
 												icon="pi pi-pencil"
+												
 												onclick="PF('dialogoNovoFuncionario').show();"
-												style="align: center;background: #ffecb3;border-width: 0 3px 0 3px;color: #000000;"
+												styleClass="rounded-button ui-button-warning"
 												update=":mensagem funcionario:dadosFormFunc">
 												<f:attribute name="proprietarioSelecionado"
 													value="#{relacao}" />

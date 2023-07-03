@@ -63,7 +63,8 @@
 
 					<p:column headerText="Opções"
 						style="width: 6%; text-align: center;">
-						<p:commandButton icon="ui-icon-trash"
+						<p:commandButton icon="pi pi-times"
+												styleClass="rounded-button ui-button-danger"
 							actionListener="#{userClaimsContratoBean.excluir}"
 							update=":mensagem :formlista:lista"
 							rendered="#{autenticacaoBean.temPermissoes([1, 2])}">
@@ -72,7 +73,8 @@
 							<f:attribute name="claimSelecionado" value="#{usuario}" />
 						</p:commandButton>
 
-						<p:commandButton icon="ui-icon-pencil"
+						<p:commandButton icon="pi pi-pencil"
+										styleClass="rounded-button ui-button-secondary"
 							actionListener="#{userClaimsContratoBean.editar}"
 							update=":formcadastro:cadastro"
 							oncomplete="PF('dialogo').show();">

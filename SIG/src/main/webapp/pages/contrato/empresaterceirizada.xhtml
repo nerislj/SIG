@@ -230,7 +230,8 @@
 
 					<p:column headerText="Opções"
 						style="width: 70px; text-align: center;">
-						<p:commandButton icon="ui-icon-trash"
+						<p:commandButton icon="pi pi-times"
+												styleClass="rounded-button ui-button-danger"
 							actionListener="#{empresaTerceirizadaBean.excluir}"
 							update=":mensagem :formlista:lista">
 							<p:confirm header="Confirmação"
@@ -238,7 +239,8 @@
 							<f:attribute name="empresaSelecionada" value="#{empresa}" />
 						</p:commandButton>
 
-						<p:commandButton icon="ui-icon-pencil"
+						<p:commandButton icon="pi pi-pencil"
+										styleClass="rounded-button ui-button-secondary"
 							actionListener="#{empresaTerceirizadaBean.editar}"
 							update=":dadosForm">
 							<f:attribute name="empresaSelecionada" value="#{empresa}" />

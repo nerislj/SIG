@@ -14,7 +14,7 @@
 			<p:panel header="Centro de Custo - Listagem">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{materialCentroCustoBean.listaCusto}"
-					var="material" rows="10" style="width: 55%; padding-left: 25%; ">
+					var="material" rows="10" >
 					<f:facet name="header">
 						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
 							actionListener="#{materialCentroCustoBean.novo()}"
@@ -48,7 +48,8 @@
 						style="width: 70px; text-align: center;">
 
 
-						<p:commandButton icon="ui-icon-pencil"
+						<p:commandButton icon="pi pi-pencil"
+										styleClass="rounded-button ui-button-secondary"
 							actionListener="#{materialCentroCustoBean.editar}"
 							update=":formcadastro:cadastro :formlista:lista"
 							oncomplete="PF('dialogo').show();">

@@ -117,18 +117,18 @@
 
 							<p:column headerText="Opções">
 
-								<p:commandButton value="Copiar" icon="ui-icon-copy"
+								<p:commandButton value="Copiar" icon="pi pi-copy"
 									actionListener="#{oficioBean.editar}"
 									update=":dlgConfirmar:cadastroDialogo"
-									onclick="PF('dlg').show();" style="background: #18B5ED;">
+									onclick="PF('dlg').show();" style="background: #18B5ED;width: 100%; align: center;">
 									<f:attribute name="oficioSelecionado" value="#{oficio}" />
 									<f:actionListener
 										type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 								</p:commandButton>
 
-								<p:commandButton value="Cancelar" icon="ui-icon-cancel"
+								<p:commandButton value="Cancelar" icon="pi pi-times"
 									actionListener="#{oficioBean.editar}"
-									update=":formExclusao:exclusao"
+									update=":formExclusao:exclusao" style="width: 100%; align: center;"
 									oncomplete="PF('dialogoExclusao').show();">
 									<f:attribute name="oficioSelecionado" value="#{oficio}" />
 									<f:actionListener
@@ -328,7 +328,7 @@
 				<h:panelGrid columns="4">
 					<p:commandButton value="Salvar"
 						actionListener="#{oficioBean.salvar}"
-						update=":mensagem :tabView:formlista:lista :formcopie:copie :formMenu"
+						update=":mensagem :tabView:formlista:lista :formcopie:copie"
 						oncomplete="(!args.validationFailed) ? PF('dlgSalvar').show() : PF('dlgSalvar').hide()">
 					</p:commandButton>
 					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />

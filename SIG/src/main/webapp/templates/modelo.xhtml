@@ -217,6 +217,7 @@ $(window).bind('beforeunload', function() {
 													- Credenciado</a></li>
 
 										</h:panelGroup>
+										 <p:separator/>
 										<h:panelGroup
 											rendered="#{autenticacaoBean.temPermissoes([1, 13, 17, 18])}">
 											<li><a
@@ -234,7 +235,7 @@ $(window).bind('beforeunload', function() {
 												href="/Sistema_Integrado_de_Gestão/pages/credencialemprelatorio.xhtml">Relatório
 													- Empresa</a></li>
 										</h:panelGroup>
-
+ <p:separator/>
 
 										<h:panelGroup
 											rendered="#{autenticacaoBean.temPermissoes([1])}">
@@ -418,7 +419,7 @@ $(window).bind('beforeunload', function() {
 											<li><a
 												href="/Sistema_Integrado_de_Gestão/pages/contrato/controlecontrato.xhtml">Contratos</a></li>
 											<li><a
-												href="Sistema_Integrado_de_Gestão/pages/contrato/setorunidades.xhtml">Setor
+												href="/Sistema_Integrado_de_Gestão/pages/contrato/setorunidades.xhtml">Setor
 													Unidade</a></li>
 											<li><a
 												href="/Sistema_Integrado_de_Gestão/pages/contrato/substituicoesfuncionarios.xhtml">Volantes</a></li>
@@ -457,7 +458,7 @@ $(window).bind('beforeunload', function() {
 							</h:panelGroup>
 
 							<h:panelGroup
-								rendered="#{autenticacaoBean.temPermissoes([1,11])}">
+								rendered="#{autenticacaoBean.temPermissoes([1])}">
 								<li><a href="#"><i class="pi pi-sitemap"></i> <b>Gestão
 											Colaboradores</b></a>
 									<ul>
@@ -484,7 +485,7 @@ $(window).bind('beforeunload', function() {
 					<div class="grid">
 
 						<div class="col-12">
-							<div class="grid">
+							
 
 								<div id="conteudo">
 
@@ -494,7 +495,7 @@ $(window).bind('beforeunload', function() {
 
 								</div>
 
-							</div>
+							
 						</div>
 					</div>
 				</div>
