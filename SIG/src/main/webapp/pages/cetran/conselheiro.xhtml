@@ -26,7 +26,7 @@
 
 					<f:facet name="header">
 						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
-							actionListener="#{conselheiroBean.novo()}"
+							actionListener="#{conselheiroBean.novo()}" styleClass="rounded-button ui-button-success" icon="pi pi-plus"
 							update=":formcadastro:cadastro">
 							<f:actionListener
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
@@ -78,14 +78,7 @@
 					
 					
 					<p:column headerText="Opções" style="width: 70px; text-align: center;">
-						<p:commandButton icon="pi pi-times"
-												styleClass="rounded-button ui-button-danger"
-							actionListener="#{conselheiroBean.excluir}"
-							update=":mensagem :formlista:lista">
-							<p:confirm header="Confirmação"
-								message="Deseja excluir o Conselheiro?" icon="ui-icon-alert" />
-							<f:attribute name="conselheiroSelecionado" value="#{conselheiro}" />
-						</p:commandButton>
+					
 
 						<p:commandButton icon="pi pi-pencil"
 										styleClass="rounded-button ui-button-secondary"
@@ -160,9 +153,9 @@
 				
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
-						actionListener="#{conselheiroBean.salvar()}"
+						actionListener="#{conselheiroBean.salvar()}" styleClass="rounded-button ui-button-success" icon="pi pi-save"
 						update=":mensagem :formcadastro:cadastro :formlista:lista" oncomplete="PF('dialogo').hide();" />
-					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" styleClass="rounded-button ui-button-info" />
 				</h:panelGrid>
 				
 			</h:form>

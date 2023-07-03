@@ -40,8 +40,8 @@
 							<f:facet name="header">
 
 								<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
-									actionListener="#{oficioBean.novo}"
-									update=":formcadastro:cadastro" style="background: #01B50D;">
+									actionListener="#{oficioBean.novo}" icon="pi pi-plus"
+									update=":formcadastro:cadastro" styleClass="rounded-button ui-button-success">
 									<f:actionListener
 										type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 								</p:commandButton>
@@ -61,7 +61,7 @@
 								<p:commandButton value="Consultar"
 									actionListener="#{oficioBean.consultaPorAno}"
 									update=":mensagem :tabView:formlista:lista"
-									style="background: #01B50D;">
+									styleClass="rounded-button ui-button-success">
 									<f:actionListener
 										type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 								</p:commandButton>
@@ -122,7 +122,7 @@
 								<p:commandButton value="Copiar" icon="pi pi-copy"
 									actionListener="#{oficioBean.editar}"
 									update=":dlgConfirmar:cadastroDialogo"
-									onclick="PF('dlg').show();" style="background: #18B5ED;width: 100%; align: center;">
+									onclick="PF('dlg').show();" styleClass="rounded-button" style="width: 100%; align: center;">
 									<f:attribute name="oficioSelecionado" value="#{oficio}" />
 									<f:actionListener
 										type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
@@ -130,6 +130,7 @@
 
 								<p:commandButton value="Cancelar" icon="pi pi-times"
 									actionListener="#{oficioBean.editar}"
+									styleClass="rounded-button ui-button-secondary"
 									update=":formExclusao:exclusao" style="width: 100%; align: center;"
 									oncomplete="PF('dialogoExclusao').show();">
 									<f:attribute name="oficioSelecionado" value="#{oficio}" />
@@ -208,7 +209,8 @@
 
 							<p:column headerText="Motivo Cancelamento"
 								style="width: 8%; text-align: center;">
-								<p:commandButton icon="ui-icon-info"
+								<p:commandButton icon="pi pi-info" 
+								styleClass="rounded-button ui-button-info"
 									actionListener="#{oficioBean.editar}"
 									update=":formmotivo:motivo"
 									oncomplete="PF('dialogoMotivo').show();">

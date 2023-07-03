@@ -565,13 +565,13 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista, feriasAfastamen
 					<br />
 					<br />
 					<h:panelGrid columns="2" style="margin: 0 auto;">
-						<p:commandButton value="Salvar"
+						<p:commandButton value="Salvar" 
 							actionListener="#{contratoTerceirizadoBean.salvar()}"
 							update=":mensagem tabView:formularioContratos:painelDados"
 							oncomplete="PF('dialogoNovoContrato').hide();"
-							style="background: #01B50D;" />
+							styleClass="rounded-button ui-button-success" icon="pi pi-save" />
 
-						<p:commandButton value="Cancelar"
+						<p:commandButton value="Cancelar" styleClass="rounded-button ui-button-info"
 							update="tabView:formularioContratos:painelDados"
 							oncomplete="PF('dialogoNovoContrato').hide();" />
 
@@ -785,11 +785,11 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista, feriasAfastamen
 							actionListener="#{contratoTerceirizadoBean.salvarNovoFuncionario()}"
 							update=":mensagem tabView:formularioContratos:painelDados"
 							oncomplete="PF('dialogoNovoFuncionario').hide();"
-							style="background: #01B50D;">
+							styleClass="rounded-button ui-button-success" icon="pi pi-save">
 
 						</p:commandButton>
 
-						<p:commandButton value="Cancelar"
+						<p:commandButton value="Cancelar" styleClass="rounded-button ui-button-info"
 							update="tabView:formularioContratos:painelDados"
 							oncomplete="PF('dialogoNovoFuncionario').hide();" />
 
@@ -989,10 +989,10 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista, feriasAfastamen
 					<br />
 					<br />
 					<h:panelGrid id="salvarEvento" columns="2" style="margin: 0 auto;">
-						<p:commandButton value="Salvar Evento"
+						<p:commandButton value="Salvar Evento" styleClass="rounded-button ui-button-success"
 							actionListener="#{contratoTerceirizadoBean.salvarEvento()}"
 							update=":mensagem tabView:formularioContratos:painelDados formlista:lista"
-							style="background: #01B50D;"
+							icon="pi pi-save"
 							oncomplete="PF('dialogoFeriasAfastamentoInconsistencias').hide();">
 							<f:attribute name="funcionarioSelecionado"
 								value="#{contratoTerceirizadoBean.novoEvento()}" />
@@ -1001,7 +1001,7 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista, feriasAfastamen
 
 						</p:commandButton>
 
-						<p:commandButton value="Voltar"
+						<p:commandButton value="Voltar" styleClass="rounded-button ui-button-info"
 							update="tabView:formularioContratos:painelDados"
 							oncomplete="PF('dialogoFeriasAfastamentoInconsistencias').hide();" />
 
@@ -1159,11 +1159,11 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista">
 
 				<center>
 					<h:panelGrid columns="2">
-						<p:commandButton value="Salvar"
+						<p:commandButton value="Remover" styleClass="rounded-button ui-button-danger" icon="pi pi-trash"
 							actionListener="#{contratoTerceirizadoBean.excluir}"
 							update=":mensagem tabView:formularioContratos:listaContratos tabView:formularioContratos:painelDados formlista:lista"
 							oncomplete="PF('dlg2').hide();" />
-						<p:commandButton value="Cancelar" oncomplete="PF('dlg2').hide();" />
+						<p:commandButton value="Cancelar" oncomplete="PF('dlg2').hide();" styleClass="rounded-button ui-button-info" />
 					</h:panelGrid>
 
 				</center>
@@ -1246,14 +1246,14 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista">
 					<br />
 					<br />
 					<h:panelGrid columns="2" style="margin: 0 auto;">
-						<p:commandButton value="Salvar"
+						<p:commandButton value="Salvar" styleClass="rounded-button ui-button-success" icon="pi pi-save"
 							actionListener="#{contratoTerceirizadoBean.salvarSubstituto()}"
 							update=":mensagem tabView:formularioContratos:painelDados"
-							oncomplete="PF('dlgSubs').hide();" style="background: #01B50D;">
+							oncomplete="PF('dlgSubs').hide();" >
 
 						</p:commandButton>
 
-						<p:commandButton value="Cancelar"
+						<p:commandButton value="Cancelar" styleClass="rounded-button ui-button-info"
 							update="tabView:formularioContratos:painelDados"
 							oncomplete="PF('dlgSubs').hide();" />
 

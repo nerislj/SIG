@@ -162,12 +162,12 @@
 
 
 				<h:panelGrid columns="2" style="margin: 0 auto;">
-					<p:commandButton value="Salvar"
+					<p:commandButton value="Salvar" icon="pi pi-save" styleClass="rounded-button ui-button-success"
 						actionListener="#{requerenteBean.salvar()}"
 						update=":mensagem :formcadastro:cadastro :formlista:lista" />
 						
 						<p:commandButton value="Limpar" actionListener="#{requerenteBean.novo()}"
-						
+						styleClass="rounded-button ui-button-info"
 						update=":mensagem :formcadastro:cadastro :formlista:lista"
 						/>
 
@@ -202,12 +202,7 @@
 					paginator="true" value="#{requerenteBean.listaProcessos}"
 					var="processo" rows="11" style="margin: 0 auto;">
 					<f:facet name="header">
-						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
-							actionListener="#{requerenteBean.novo()}"
-							update=":formcadastro:cadastro">
-							<f:actionListener
-								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
-						</p:commandButton>
+						
 					</f:facet>
 
 

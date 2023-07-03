@@ -78,13 +78,13 @@
 					<p:commandButton value="Pesquisar" icon="pi pi-search"
 						actionListener="#{ecvItlBean.buscarCamposPesquisa}"
 						update=":mensagem tabView:formularioEmpresas:painelDados "
-						style="background: #01B50D;">
+						styleClass="rounded-button ui-button-success">
 						<f:actionListener
 							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 					</p:commandButton>
 
 					<p:commandButton value="Cadastrar Empresa"
-						style="background: #3c8dbc;" actionListener="#{ecvItlBean.novo}"
+						styleClass="rounded-button ui-button-secondary" actionListener="#{ecvItlBean.novo}"
 						oncomplete="PF('dialogoAdicionarProcesso').show();"
 						update="tabView:formularioEmpresas:listaCorregedoria dadosForm:dadosForm"
 						rendered="#{autenticacaoBean.temPermissoes([1, 11])}">

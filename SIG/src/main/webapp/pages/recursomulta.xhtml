@@ -20,7 +20,7 @@
 							<f:facet name="header">
 								<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
 									actionListener="#{recursoMultaBean.novo()}"
-									update=":formcadastro:cadastro" style="background: #01B50D;">
+									update=":formcadastro:cadastro" icon="pi pi-plus"  styleClass="rounded-button ui-button-success">
 									<f:actionListener
 										type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 								</p:commandButton>
@@ -41,7 +41,7 @@
 								<p:commandButton value="Consultar"
 									actionListener="#{recursoMultaBean.consultaPorAno}"
 									update=":mensagem :tabView:formlista:lista"
-									style="background: #01B50D;">
+									icon="pi pi-search"  styleClass="rounded-button ui-button-success">
 									<f:actionListener
 										type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 								</p:commandButton>
@@ -105,7 +105,7 @@
 							<p:column headerText="Opções"
 								style="width: 9%; text-align: center;">
 
-								<p:commandButton value="Cancelar" icon="ui-icon-cancel"
+								<p:commandButton value="Cancelar" icon="pi pi-times" styleClass="rounded-button ui-button-info"
 									actionListener="#{recursoMultaBean.editar}"
 									update=":formExclusao:exclusao"
 									oncomplete="PF('dialogoExclusao').show();">
@@ -179,7 +179,7 @@
 
 							<p:column headerText="Motivo Cancelamento"
 								style="width: 8%; text-align: center;">
-								<p:commandButton icon="pi pi-info"
+								<p:commandButton icon="pi pi-info"  styleClass="rounded-button ui-button-info"
 									actionListener="#{recursoMultaBean.editar}"
 									update=":formmotivo:motivo"
 									oncomplete="PF('dialogoMotivo').show();">

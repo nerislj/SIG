@@ -31,10 +31,10 @@
 
 					<p:spacer width="20" height="10" />
 
-					<p:commandButton icon="pi pi-search"
+					<p:commandButton icon="pi pi-search" value="Cadastrar"
 						actionListener="#{credenciadoBean.buscar()}"
 						update=":mensagem :formulario:cadastro"
-						style="background: #01B50D;">
+						styleClass="rounded-button ui-button-success">
 						<f:actionListener
 							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 					</p:commandButton>
@@ -297,8 +297,8 @@
 								<h:panelGrid columns="3">
 									<p:commandButton value="Salvar"
 										actionListener="#{credenciadoBean.salvar()}"
-										update=":mensagem :formulario:cadastro"
-										style="background: #01B50D;" />
+										update=":mensagem :formulario:cadastro" icon="pi pi-save"
+										styleClass="rounded-button ui-button-success" />
 
 								</h:panelGrid>
 							</h:panelGrid>

@@ -285,11 +285,11 @@
 
 
 				<h:panelGrid columns="2" style="margin: 0 auto;">
-					<p:commandButton value="Salvar" style="background: #01B50D"
+					<p:commandButton value="Salvar" styleClass="rounded-button ui-button-success" icon="pi pi-plus"
 						actionListener="#{funcionarioTerceirizadoBean.salvar()}"
 						update=":mensagem :formlista:lista" />
 
-					<p:commandButton value="Limpar"
+					<p:commandButton value="Limpar" styleClass="rounded-button ui-button-info"
 						actionListener="#{funcionarioTerceirizadoBean.listar()}"
 						update=":mensagem :formlista:lista" />
 

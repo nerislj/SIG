@@ -41,11 +41,12 @@
 					var="processo" rows="10">
 					<f:facet name="header">
 						<p:commandButton value="Víncular ao Conselheiro"
-							icon="ui-icon-document"
+							icon="pi pi-save"
 							actionListener="#{processoCetranBean.finalizar}"
 							update=":mensagem :formularioFinalizar:painelFinalizar"
 							oncomplete="PF('dialogo').show();"
-							style="background: #00FF7F; color: #000000" />
+							styleClass="rounded-button ui-button-success"
+							 />
 
 
 
@@ -114,7 +115,7 @@
 						<p:commandButton value="Selecionar" icon="pi pi-plus"
 							actionListener="#{processoCetranBean.adicionar}"
 							update=":formlista:listaSelecionados"
-							style="background: #18B5ED;">
+							styleClass="rounded-button ui-button-info">
 							<f:attribute name="processoSelecionado" value="#{processo}" />
 						</p:commandButton>
 
@@ -178,7 +179,7 @@
 						<p:commandButton icon="pi pi-minus"
 							actionListener="#{processoCetranBean.remover}"
 							update=":formlista:listaSelecionados"
-							style="background: #ED9818;">
+							styleClass="rounded-button ui-button-warning">
 							<f:attribute name="processoSelecionado" value="#{saida}" />
 						</p:commandButton>
 					</p:column>
@@ -243,13 +244,13 @@
 				<br />
 				<br />
 				<h:panelGrid columns="2">
-					<p:commandButton value="Aprovar todos selecionados"
+					<p:commandButton value="Aprovar todos selecionados" styleClass="rounded-button ui-button-success"
 						actionListener="#{processoCetranBean.vincularConselheiro}"
 						update=":mensagem :formlista:listaSelecionados :formlista:lista :formularioFinalizar:painelFinalizar"
 						oncomplete="PF('dialogo').hide();">
 					</p:commandButton>
 
-					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" styleClass="rounded-button ui-button-info" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>

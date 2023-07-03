@@ -17,8 +17,8 @@
 						rendered="#{autenticacaoBean.temPermissoes([1, 2, 7])}">
 						
 								<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
-									actionListener="#{recursoMultaBean.novo()}"
-									update=":formcadastro:cadastro" style="background: #01B50D;">
+									actionListener="#{recursoMultaBean.novo()}" icon="pi pi-plus"  styleClass="rounded-button ui-button-success"
+									update=":formcadastro:cadastro">
 									<f:actionListener
 										type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 								</p:commandButton>
@@ -89,10 +89,10 @@
 
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
-						actionListener="#{recursoMultaBean.salvar()}"
+						actionListener="#{recursoMultaBean.salvar()}" styleClass="rounded-button ui-button-success"
 						update=":mensagem :formcadastro:cadastro :tabView:formlista" 
 						oncomplete="PF('dialogo').hide();" />
-					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" styleClass="rounded-button" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>

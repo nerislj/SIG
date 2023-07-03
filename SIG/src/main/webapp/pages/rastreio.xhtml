@@ -21,15 +21,16 @@
 						<p:commandButton value="Finalizar"
 							actionListener="#{rastreioBean.finalizar}"
 							update=":mensagem :formularioFinalizar:painelFinalizar formlista:lista"
-							oncomplete="PF('dialogo').show();" style="background: #01B50D;" />
+							oncomplete="PF('dialogo').show();" styleClass="rounded-button ui-button-success" />
 					</f:facet>
 
 					<p:column headerText="Opções"
 						style="width: 6% !important ; text-align: center;">
 						<p:commandButton icon="pi pi-plus"
+						styleClass="rounded-button ui-button-info"
 							actionListener="#{rastreioBean.adicionar}"
 							update=":formlista:listaSelecionados"
-							style="background: #18B5ED;">
+							>
 							<f:attribute name="oficioSelecionado" value="#{oficio}" />
 						</p:commandButton>
 					</p:column>
@@ -84,7 +85,7 @@
 						<p:commandButton icon="pi pi-minus"
 							actionListener="#{rastreioBean.remover}"
 							update=":formlista:listaSelecionados"
-							style="background: #ED9818;">
+							styleClass="rounded-button ui-button-warning">
 							<f:attribute name="oficioSelecionado" value="#{saida}" />
 						</p:commandButton>
 					</p:column>

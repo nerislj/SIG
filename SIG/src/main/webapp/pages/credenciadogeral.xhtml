@@ -24,10 +24,10 @@
 						</p:inputText>
 						<br /> <br />
 
-						<p:commandButton value="Pesquisar" icon="ui-icon-search"
+						<p:commandButton value="Pesquisar" icon="pi pi-search"
 							actionListener="#{credenciadoBean.buscarCredenciado}"
 							update=":mensagem tabView:formularioPessoais:painelDados"
-							style="background: #01B50D;">
+							styleClass="rounded-button ui-button-success">
 							<f:actionListener
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 						</p:commandButton>
@@ -223,11 +223,11 @@
 										fileUploadListener="#{credenciadoBean.carregarImagemFoto}"
 										uploadLabel="Enviar" cancelLabel="Cancelar"
 										allowTypes="/(\.|\/)(jpeg|jpg|png)$/" sizeLimit="2097152"
-										invalidSizeMessage="Tamanho do arquivo inválido, máximo 2MB!" />
+										invalidSizeMessage="Tamanho do arquivo inválido, máximo 2MB!"  />
 
 									<p:outputLabel for="ass" value="Assinatura: "
 										style="font-weight:bold" />
-									<p:fileUpload id="ass" skinSimple="true"
+									<p:fileUpload id="ass" skinSimple="true" 
 										label="Selecione a imagem" value="#{credenciadoBean.imagem}"
 										mode="advanced"
 										fileUploadListener="#{credenciadoBean.carregarImagemAss}"
@@ -235,7 +235,7 @@
 										allowTypes="/(\.|\/)(jpeg|jpg|png)$/" sizeLimit="2097152"
 										invalidSizeMessage="Tamanho do arquivo inválido, máximo 2MB!" />
 
-									<p:commandButton value="Gerar Carteira" icon="ui-icon-play"
+									<p:commandButton value="Gerar Carteira" icon="pi pi-play" styleClass="rounded-button"
 										oncomplete="PF('dialogoCart').show();" update=":cart:cart"
 										rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}" />
 
@@ -303,7 +303,7 @@
 										<f:facet name="header">
 											<h3>DOCUMENTOS ADICIONAIS</h3>
 
-											<p:commandButton value="Adicionar"
+											<p:commandButton value="Adicionar" styleClass="rounded-button"
 												oncomplete="PF('dialogoDoc').show();" update=":doc:doc"
 												rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
 												<f:actionListener
@@ -399,7 +399,7 @@
 
 										<f:facet name="header">
 											<h3>SGP-e</h3>
-											<p:commandButton value="Adicionar"
+											<p:commandButton value="Adicionar" styleClass="rounded-button"
 												oncomplete="PF('dialogosgpe').show();" update=":sgpe:sgpe"
 												rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
 												<f:actionListener
@@ -450,7 +450,7 @@
 
 										<f:facet name="header">
 											<h3>ALVARÁ</h3>
-											<p:commandButton value="Adicionar"
+											<p:commandButton value="Adicionar" styleClass="rounded-button"
 												oncomplete="PF('dialogoalvara').show();"
 												update=":alvara:alvara"
 												rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
@@ -498,7 +498,7 @@
 
 										<f:facet name="header">
 											<h3>PORTARIA</h3>
-											<p:commandButton value="Adicionar"
+											<p:commandButton value="Adicionar" styleClass="rounded-button"
 												oncomplete="PF('dialogoportaria').show();"
 												update=":portaria:portaria"
 												rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
