@@ -174,21 +174,20 @@ $(window).bind('beforeunload', function() {
 												href="/Sistema_Integrado_de_Gestão/pages/recursomultatipos.xhtml">Recurso
 													- Tipos</a></li>
 										</h:panelGroup>
-										<h:panelGroup
-											rendered="#{autenticacaoBean.temPermissoes([1, 2, 7])}">
-											<li><a
-												href="/Sistema_Integrado_de_Gestão/pages/recursomultacadastro.xhtml">Recurso
-													- Cadastrar</a></li>
-											<li><a
-												href="/Sistema_Integrado_de_Gestão/pages/recursomultarecebe.xhtml">Recurso
-													- Receber</a></li>
-											<li><a
-												href="/Sistema_Integrado_de_Gestão/pages/recursomultasaida.xhtml">Recurso
-													- Tramitar</a></li>
-											<li><a
-												href="/Sistema_Integrado_de_Gestão/pages/recursomultaconsultasaida.xhtml">Recurso
-													- Consulta</a></li>
-										</h:panelGroup>
+
+										<li><a
+											href="/Sistema_Integrado_de_Gestão/pages/recursomultacadastro.xhtml">Recurso
+												- Cadastrar</a></li>
+										<li><a
+											href="/Sistema_Integrado_de_Gestão/pages/recursomultarecebe.xhtml">Recurso
+												- Receber</a></li>
+										<li><a
+											href="/Sistema_Integrado_de_Gestão/pages/recursomultasaida.xhtml">Recurso
+												- Tramitar</a></li>
+										<li><a
+											href="/Sistema_Integrado_de_Gestão/pages/recursomultaconsultasaida.xhtml">Recurso
+												- Consulta</a></li>
+
 									</ul></li>
 
 							</h:panelGroup>
@@ -204,11 +203,13 @@ $(window).bind('beforeunload', function() {
 											<li><a
 												href="/Sistema_Integrado_de_Gestão/pages/credenciado.xhtml">Credenciado
 													- Cadastro</a></li>
+													
+													</h:panelGroup>
 											<li><a
 												href="/Sistema_Integrado_de_Gestão/pages/credenciadogeral.xhtml">Credenciado
 													- Visão Geral</a></li>
 
-										</h:panelGroup>
+										
 
 										<h:panelGroup
 											rendered="#{autenticacaoBean.temPermissoes([1, 13, 17, 18])}">
@@ -217,16 +218,17 @@ $(window).bind('beforeunload', function() {
 													- Credenciado</a></li>
 
 										</h:panelGroup>
-										 <p:separator/>
+										<p:separator />
 										<h:panelGroup
-											rendered="#{autenticacaoBean.temPermissoes([1, 13, 17, 18])}">
+											rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
 											<li><a
 												href="/Sistema_Integrado_de_Gestão/pages/credenciadoemp.xhtml">Empresa
 													- Cadastro</a></li>
+														</h:panelGroup>
 											<li><a
 												href="/Sistema_Integrado_de_Gestão/pages/credenciadoempgeral.xhtml">Empresa
 													- Visão Geral</a></li>
-										</h:panelGroup>
+									
 
 
 										<h:panelGroup
@@ -235,7 +237,7 @@ $(window).bind('beforeunload', function() {
 												href="/Sistema_Integrado_de_Gestão/pages/credencialemprelatorio.xhtml">Relatório
 													- Empresa</a></li>
 										</h:panelGroup>
- <p:separator/>
+										<p:separator />
 
 										<h:panelGroup
 											rendered="#{autenticacaoBean.temPermissoes([1])}">
@@ -268,8 +270,9 @@ $(window).bind('beforeunload', function() {
 							</h:panelGroup>
 
 							<h:panelGroup
-								rendered="#{autenticacaoBean.temPermissoes([1, 2, 3])}">
+								rendered="#{autenticacaoBean.temPermissoesPorUnidadeCodigo([1, 2, 3])}">
 								<li><a href="#"><i class="pi pi-fw pi-file"></i> <b>Ofícios</b></a>
+
 									<ul>
 										<li><a
 											href="/Sistema_Integrado_de_Gestão/pages/oficio.xhtml">Novo
@@ -301,23 +304,23 @@ $(window).bind('beforeunload', function() {
 							</h:panelGroup>
 
 							<h:panelGroup
-								rendered="#{autenticacaoBean.temPermissoes([1,2,3,22])}">
+								rendered="#{autenticacaoBean.temPermissoesPorUnidadeCodigo([1,2,3,22])}">
 								<li><a href="#"><i class="pi pi-fw pi-truck"></i> <b>Frota</b></a>
 									<ul>
 										<h:panelGroup
 											rendered="#{autenticacaoBean.temPermissoes([1, 22, 25])}">
 											<li><a
-												href="/Sistema_Integrado_de_Gestão/pages/frotaveiculo.xhtml"><i style="font-size: 0.7rem" class="pi pi-plus"></i> Veículo</a></li>
-											
-											<li><a
-												href="/Sistema_Integrado_de_Gestão/pages/frotacondutor.xhtml"><i style="font-size: 0.7rem" class="pi pi-plus"></i> Condutor</a></li>
+												href="/Sistema_Integrado_de_Gestão/pages/frotaveiculo.xhtml">Veículo</a></li>
 
 											<li><a
-												href="/Sistema_Integrado_de_Gestão/pages/frotaviagem.xhtml"><i style="font-size: 0.7rem" class="pi pi-list"></i> Gerência
+												href="/Sistema_Integrado_de_Gestão/pages/frotacondutor.xhtml">Condutor</a></li>
+
+											<li><a
+												href="/Sistema_Integrado_de_Gestão/pages/frotaviagem.xhtml">Gerência
 													Viagem</a></li>
 										</h:panelGroup>
 										<li><a
-											href="/Sistema_Integrado_de_Gestão/pages/frotasolicita.xhtml"><i style="font-size: 0.7rem" class="pi pi-list"></i> Solicitar
+											href="/Sistema_Integrado_de_Gestão/pages/frotasolicita.xhtml">Solicitar
 												Viagem</a></li>
 									</ul></li>
 							</h:panelGroup>
@@ -411,39 +414,49 @@ $(window).bind('beforeunload', function() {
 											rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}">
 											<li><a
 												href="/Sistema_Integrado_de_Gestão/pages/contrato/empresaterceirizada.xhtml">Empresas</a></li>
-											<li><a
-												href="/Sistema_Integrado_de_Gestão/pages/contrato/cargoterceirizado.xhtml">Cargo
-													Funcionários</a></li>
-											<li><a
-												href="/Sistema_Integrado_de_Gestão/pages/contrato/funcionarioterceirizado.xhtml">Funcionários</a></li>
-											<li><a
-												href="/Sistema_Integrado_de_Gestão/pages/contrato/controlecontrato.xhtml">Contratos</a></li>
-											<li><a
-												href="/Sistema_Integrado_de_Gestão/pages/contrato/setorunidades.xhtml">Setor
-													Unidade</a></li>
+										</h:panelGroup>
+										<li><a
+											href="/Sistema_Integrado_de_Gestão/pages/contrato/cargoterceirizado.xhtml">Cargo
+												Funcionários</a></li>
+										<li><a
+											href="/Sistema_Integrado_de_Gestão/pages/contrato/funcionarioterceirizado.xhtml">Funcionários</a></li>
+										<li><a
+											href="/Sistema_Integrado_de_Gestão/pages/contrato/controlecontrato.xhtml">Contratos</a></li>
+										<li><a
+											href="/Sistema_Integrado_de_Gestão/pages/contrato/setorunidades.xhtml">Setor
+												Unidade</a></li>
+
+										<h:panelGroup
+											rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}">
 											<li><a
 												href="/Sistema_Integrado_de_Gestão/pages/contrato/substituicoesfuncionarios.xhtml">Volantes</a></li>
-											<li><a
-												href="/Sistema_Integrado_de_Gestão/pages/contrato/relatorioevento.xhtml">RelatórioEventos</a></li>
-											<li><a
-												href="/Sistema_Integrado_de_Gestão/pages/contrato/relatoriocontratoxfuncionario.xhtml">Histórico
-													Funcionários</a></li>
-											<li><a
-												href="/Sistema_Integrado_de_Gestão/pages/contrato/funcionariosativos.xhtml">Funcionários
-													Ativos</a></li>
-											<h:panelGroup
-												rendered="#{autenticacaoBean.temPermissoes([1])}">
-												<li><a
-													href="/Sistema_Integrado_de_Gestão/pages/contrato/userclaimscontrato.xhtml">Usuários
-														Claims</a></li>
-											</h:panelGroup>
-											<h:panelGroup
-												rendered="#{contratoTerceirizadoBean.soVisualizar == true}">
-												<li><a
-													href="/Sistema_Integrado_de_Gestão/pages/contrato/controlecontrato.xhtml">Contratos</a></li>
-											</h:panelGroup>
-
 										</h:panelGroup>
+										
+										<li><a
+											href="/Sistema_Integrado_de_Gestão/pages/contrato/relatorioevento.xhtml">Relatório
+												Eventos</a></li>
+										<li><a
+											href="/Sistema_Integrado_de_Gestão/pages/contrato/relatoriocontratoxfuncionario.xhtml">Histórico
+												Funcionários</a></li>
+												<h:panelGroup
+											rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}">
+										<li><a
+											href="/Sistema_Integrado_de_Gestão/pages/contrato/funcionariosativos.xhtml">Funcionários
+												Ativos</a></li>
+												</h:panelGroup>
+										<h:panelGroup
+											rendered="#{autenticacaoBean.temPermissoes([1])}">
+											<li><a
+												href="/Sistema_Integrado_de_Gestão/pages/contrato/userclaimscontrato.xhtml">Usuários
+													Claims</a></li>
+										</h:panelGroup>
+										<h:panelGroup
+											rendered="#{contratoTerceirizadoBean.soVisualizar == true}">
+											<li><a
+												href="/Sistema_Integrado_de_Gestão/pages/contrato/controlecontrato.xhtml">Contratos</a></li>
+										</h:panelGroup>
+
+
 									</ul></li>
 							</h:panelGroup>
 
@@ -457,8 +470,7 @@ $(window).bind('beforeunload', function() {
 									</ul></li>
 							</h:panelGroup>
 
-							<h:panelGroup
-								rendered="#{autenticacaoBean.temPermissoes([1])}">
+							<h:panelGroup rendered="#{autenticacaoBean.temPermissoes([1])}">
 								<li><a href="#"><i class="pi pi-sitemap"></i> <b>Gestão
 											Colaboradores</b></a>
 									<ul>
@@ -485,17 +497,17 @@ $(window).bind('beforeunload', function() {
 					<div class="grid">
 
 						<div class="col-12">
-							
-
-								<div id="conteudo">
 
 
+							<div id="conteudo">
 
-									<ui:insert name="conteudo" />
 
-								</div>
 
-							
+								<ui:insert name="conteudo" />
+
+							</div>
+
+
 						</div>
 					</div>
 				</div>
@@ -503,7 +515,8 @@ $(window).bind('beforeunload', function() {
 
 				<div class="grid flex-column" style="margin: auto; color: #495057">
 					<div class="col-12">
-						<div class="box copyright">Desenvolvimento: DETRAN/SC - Departamento Estadual de Trânsito, v2.0</div>
+						<div class="box copyright">Desenvolvimento: DETRAN/SC -
+							Departamento Estadual de Trânsito, v2.0</div>
 					</div>
 
 				</div>
@@ -566,7 +579,7 @@ $(window).bind('beforeunload', function() {
 
 
 
-		
+
 	</div>
 
 	<script>

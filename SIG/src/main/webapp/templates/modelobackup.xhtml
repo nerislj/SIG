@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+
+
+
+
+
+
+	<script>
+$(document).ready(function(){
+    console.log("ready is called");
+    //PF('statusDialog').hide()
+    $('#nonAjaxLoad').hide();
+});
+
+$(window).bind('beforeunload', function() {
+     console.log("bind is called");
+    // PF('statusDialog').show()
+    $('#nonAjaxLoad').show(); 
+});
+
+
+</script>
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Sistema Integrado de Gestão - DETRAN/SC</title>
+
+	<h:outputStylesheet library="css" name="estilos.css" />
+	<h:outputScript library="js" name="scripts.js" />
+	<h:outputScript library="js" name="jquery.maskMoney.js" />
+
+</h:head>
+
+<h:body>
+
+	<p:ajaxStatus styleClass="ajax-status" onsuccess="configurarMoeda()">
+
+
+		<f:facet name="start">
+			<p:graphicImage library="images" name="loading.gif"
+				styleClass="loading" />
+		</f:facet>
+		<f:facet name="complete">
+			<h:outputText value="" />
+		</f:facet>
+	</p:ajaxStatus>
+
+	<p:growl id="mensagem" life="8000" />
+
+
+
+	<div id="geral">
+		<div id="topo" class="divTopo">
+			<p:graphicImage library="images" name="sistema.png"
+				styleClass="imagemCentralizada" />
+		</div>
+		<div id="nonAjaxLoad">
+			<p:graphicImage library="images" name="loading.gif"
+				styleClass="loading" />
+
+		</div>
+
+
+		<div id="cabecalho" class="divCabecalho">
+			<h:form id="formMenu">
+
+				<p:menubar>
+
+					<p:menuitem value="Inicio"
+						url="/pages/principal.xhtml" />
+
+					<p:submenu label="Sistema">
+						<p:menuitem value="Alterar Senha" icon="ui-icon-key"
+							actionListener="#{usuarioBean.editar}" update=":formalterasenha"
+							id="btnAlteraSenha" oncomplete="PF('alterasenha').show();" />
+
+					</p:submenu>
+
+
+					<p:submenu label="Cadastros"
+						rendered="#{autenticacaoBean.temPermissoes([1])}">
+						<p:menuitem value="Estado"
+							url="/pages/estado.xhtml" />
+						<p:menuitem value="Cidade"
+							url="/pages/cidade.xhtml" />
+						<p:menuitem value="Pessoas"
+							url="/pages/pessoas.xhtml" />
+						<p:menuitem value="Empresas"
+							url="/pages/empresas.xhtml" />
+						<p:menuitem value="Usuários"
+							url="/pages/usuarios.xhtml" />
+						<p:menuitem value="Unidade"
+							url="/pages/unidade.xhtml" />
+						<p:menuitem value="Setor"
+							url="/pages/setor.xhtml" />
+						<p:menuitem value="Usuário Nível Acesso"
+							url="/pages/usuarionivelacesso.xhtml" />
+						<p:menuitem value="Usuário Status"
+							url="/pages/usuariostatus.xhtml" />
+					</p:submenu>
+
+					<p:submenu label="Recurso Multa"
+						rendered="#{autenticacaoBean.temPermissoes([1, 2, 7])}">
+						<p:menuitem value="Recurso - Tipos"
+							url="/pages/recursomultatipos.xhtml"
+							rendered="#{autenticacaoBean.temPermissoes([1])}" />
+						<p:menuitem value="Recurso - Cadastrar" icon="ui-icon-plusthick"
+							url="/pages/recursomultacadastro.xhtml" />
+						<p:menuitem value="Recurso - Receber"
+							icon="ui-icon-transferthick-e-w"
+							url="/pages/recursomultarecebe.xhtml" />
+						<p:menuitem value="Recurso - Tramitar"
+							icon="ui-icon-arrowreturnthick-1-e"
+							url="/pages/recursomultasaida.xhtml" />
+						<p:menuitem value="Recurso - Consulta" icon="ui-icon-search"
+							url="/pages/recursomultaconsultasaida.xhtml" />
+
+
+					</p:submenu>
+
+					<p:submenu label="Credenciamento"
+						rendered="#{autenticacaoBean.temPermissoes([1, 13, 17, 18])}">
+						<p:menuitem value="Credenciado Cadastro" icon="ui-icon-plusthick"
+							url="/pages/credenciado.xhtml"
+							rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}" />
+						<p:menuitem value="Credenciado Visão Geral" icon="ui-icon-person"
+							url="/pages/credenciadogeral.xhtml" />
+						<p:menuitem value="Relatório Credenciado" icon="ui-icon-calendar"
+							url="/pages/credencialrelatorio.xhtml"
+							rendered="#{autenticacaoBean.temPermissoes([1, 13, 17, 18])}" />
+						<p:separator style="height:7px"
+							rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}" />
+						<p:menuitem value="Empresa Cadastro" icon="ui-icon-plusthick"
+							url="/pages/credenciadoemp.xhtml"
+							rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}" />
+						<p:menuitem value="Empresa Visão Geral" icon="ui-icon-suitcase"
+							url="/pages/credenciadoempgeral.xhtml" />
+						<p:menuitem value="Relatório Empresa" icon="ui-icon-calendar"
+							url="/pages/credencialemprelatorio.xhtml"
+							rendered="#{autenticacaoBean.temPermissoes([1, 13, 17, 18])}" />
+
+						<p:menuitem value="Processos andamento" icon="ui-icon-calendar"
+							url="/pages/processoscodet.xhtml"
+							rendered="#{autenticacaoBean.temPermissoes([1])}" />
+						<p:separator style="height:7px"
+							rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}" />
+						<p:menuitem value="Cadastro - Status"
+							url="/pages/credencialstatus.xhtml"
+							rendered="#{autenticacaoBean.temPermissoes([1, 18])}" />
+						<p:menuitem value="Cadastro - Tipo Credenciado"
+							url="/pages/credencialtipo.xhtml"
+							rendered="#{autenticacaoBean.temPermissoes([1, 18])}" />
+						<p:menuitem value="Cadastro - Tipo Empresa"
+							url="/pages/credencialemptipo.xhtml"
+							rendered="#{autenticacaoBean.temPermissoes([1, 18])}" />
+						<p:menuitem value="Veículo Cadastro" icon="ui-icon-plusthick"
+							url="/pages/credencialveiculo.xhtml"
+							rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}" />
+
+					</p:submenu>
+
+					<p:submenu label="Ofícios"
+						rendered="#{autenticacaoBean.temPermissoesPorUnidadeCodigo([1,2,3])}">
+						<p:menuitem value="Novo Ofício" icon="ui-icon-document"
+							url="/pages/oficio.xhtml" />
+
+
+
+
+
+
+
+						<p:menuitem icon="ui-icon-transferthick-e-w"
+							url="/pages/rastreio.xhtml">
+							<p:outputLabel value="Saída Ofício " />
+
+							<p:badge value="#{oficioBean.oficiosMenuCount.size()}"
+								severity="danger">
+
+
+							</p:badge>
+
+						</p:menuitem>
+
+
+						<p:separator style="height:7px" />
+						<p:menuitem rendered="#{autenticacaoBean.temPermissoes([1])}"
+							value="Consulta Rastreio" icon="ui-icon-search"
+							url="/pages/rastreioconsulta.xhtml" />
+						<p:menuitem value="Consulta Ofício/Rastreio" icon="ui-icon-search"
+							url="/pages/rastreioconsulta2.xhtml" />
+
+						<p:separator style="height:7px" />
+						<p:menuitem value="SGP-e Caderno" icon="ui-icon-document"
+							url="/pages/docsgpe.xhtml" />
+						<p:menuitem value="SGP-e Caderno" icon="ui-icon-search"
+							url="/pages/docsgpeconsulta.xhtml" />
+
+
+					</p:submenu>
+
+					<p:submenu label="Frota"
+						rendered="#{autenticacaoBean.temPermissoesPorUnidadeCodigo([1,2,3,22])}">
+						<p:menuitem value="Veículo" icon="ui-icon-document"
+							url="/pages/frotaveiculo.xhtml"
+							rendered="#{autenticacaoBean.temPermissoes([1,25,22])}" />
+						<p:menuitem value="Condutor" icon="ui-icon-document"
+							url="/pages/frotacondutor.xhtml"
+							rendered="#{autenticacaoBean.temPermissoes([1,25,22])}" />
+						<p:menuitem value="Gerencia Viagem" icon="ui-icon-document"
+							url="/pages/frotaviagem.xhtml"
+							rendered="#{autenticacaoBean.temPermissoes([1,25,22])}" />
+
+						<p:menuitem value="Solicitar Viagem" icon="ui-icon-document"
+							url="/pages/frotasolicita.xhtml" />
+
+
+
+					</p:submenu>
+
+
+					<p:submenu label="Almoxarifado"
+						rendered="#{autenticacaoBean.temPermissoes([1, 19, 25])}">
+						<p:menuitem value="Centro de Custo" icon="ui-icon-document"
+							url="/pages/materialcentrocusto.xhtml" />
+						<p:menuitem value="Material Tipo" icon="ui-icon-document"
+							url="/pages/materialtipo.xhtml" />
+						<p:menuitem value="Cadastro de Materiais" icon="ui-icon-document"
+							url="/pages/material.xhtml" />
+						<p:menuitem value="Estoque Material" icon="ui-icon-document"
+							url="/pages/materialentrada.xhtml" />
+						<p:menuitem value="Solicitação Material" icon="ui-icon-document"
+							url="/pages/materialsaida.xhtml" />
+						<p:menuitem value="Aprovação Pedidos" icon="ui-icon-document"
+							url="/pages/materialaprovacao.xhtml" />
+						<p:menuitem value="Relatório" icon="ui-icon-document"
+							url="/pages/materialrelatorio.xhtml" />
+
+					</p:submenu>
+
+					<p:submenu label="Cetran"
+						rendered="#{autenticacaoBean.temPermissoes([1, 27])}">
+
+						<p:menuitem value="Situações" icon="ui-icon-document"
+							url="/pages/cetran/situacao.xhtml"
+							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
+						<p:menuitem value="Representação" icon="ui-icon-document"
+							url="/pages/cetran/representacao.xhtml"
+							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
+						<p:menuitem value="Conselheiros" icon="ui-icon-document"
+							url="/pages/cetran/conselheiro.xhtml"
+							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
+
+						<p:menuitem value="Processos" icon="ui-icon-document"
+							url="/pages/cetran/requerente.xhtml"
+							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
+
+						<p:menuitem value="Vincular Conselheiro" icon="ui-icon-document"
+							url="/pages/cetran/vincularprocesso.xhtml"
+							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
+
+						<p:menuitem value="Relatório e Histórico" icon="ui-icon-document"
+							url="/pages/cetran/relatoriodistribuicao.xhtml"
+							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
+
+						<p:menuitem value="Processos à Vencer" icon="ui-icon-document"
+							url="/pages/cetran/processoavencer.xhtml"
+							rendered="#{autenticacaoBean.temPermissoes([1, 27])}" />
+
+					</p:submenu>
+
+
+					<p:submenu label="Corregedoria"
+						rendered="#{autenticacaoBean.temPermissoes([1, 13])}">
+
+						<p:menuitem value="Nomenclatura Processo" icon="ui-icon-document"
+							url="/pages/codet/nomenclaturaprocesso.xhtml"
+							rendered="#{autenticacaoBean.temPermissoes([1, 13])}" />
+						<p:menuitem value="Situação Processo" icon="ui-icon-document"
+							url="/pages/codet/situacaoprocesso.xhtml"
+							rendered="#{autenticacaoBean.temPermissoes([1, 13])}" />
+						<p:menuitem value="Setor Atual" icon="ui-icon-document"
+							url="/pages/codet/setoratual.xhtml"
+							rendered="#{autenticacaoBean.temPermissoes([1, 13])}" />
+						<p:menuitem value="Penalidade Processo" icon="ui-icon-document"
+							url="/pages/codet/penalidadeprocesso.xhtml"
+							rendered="#{autenticacaoBean.temPermissoes([1, 13])}" />
+
+
+						<p:menuitem value="Processos" icon="ui-icon-document"
+							url="/pages/codet/processos.xhtml"
+							rendered="#{autenticacaoBean.temPermissoes([1, 13])}" />
+
+						<p:menuitem value="Relatório Setor/Situação"
+							icon="ui-icon-document"
+							url="/pages/codet/relatorioprocesso.xhtml"
+							rendered="#{autenticacaoBean.temPermissoes([1, 13])}" />
+					</p:submenu>
+
+					<p:submenu
+						rendered="#{contratoTerceirizadoBean.mostrarModuloParaGerentes == true}"
+						label="Controle Terceirizados">
+						<p:menuitem value="Empresas" icon="ui-icon-plusthick"
+							rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}"
+							url="/pages/contrato/empresaterceirizada.xhtml" />
+
+						<p:menuitem value="Cargo Funcionários" icon="ui-icon-plusthick"
+							rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}"
+							url="/pages/contrato/cargoterceirizado.xhtml" />
+
+						<p:menuitem value="Funcionários" icon="ui-icon-plusthick"
+							url="/pages/contrato/funcionarioterceirizado.xhtml" />
+
+						<p:menuitem value="Contratos" icon="ui-icon-plusthick"
+							url="/pages/contrato/controlecontrato.xhtml" />
+
+						<p:menuitem value="Setor Unidade" icon="ui-icon-plusthick"
+							url="/pages/contrato/setorunidades.xhtml" />
+
+						<p:menuitem value="Volantes" icon="ui-icon-transferthick-e-w"
+							rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}"
+							url="/pages/contrato/substituicoesfuncionarios.xhtml" />
+
+						<p:menuitem value="Relatório Eventos" icon="ui-icon-document"
+							url="/pages/contrato/relatorioevento.xhtml" />
+						<p:menuitem value="Histórico Funcionários" icon="ui-icon-document"
+							url="/pages/contrato/relatoriocontratoxfuncionario.xhtml" />
+
+						<p:menuitem value="Funcionários Ativos" icon="ui-icon-document"
+							url="/pages/contrato/funcionariosativos.xhtml"
+							rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}" />
+						<p:menuitem value="Usuários Claims" icon="ui-icon-contact"
+							rendered="#{autenticacaoBean.temPermissoes([1])}"
+							url="/pages/contrato/userclaimscontrato.xhtml" />
+					</p:submenu>
+
+					<p:submenu
+						rendered="#{contratoTerceirizadoBean.soVisualizar == true}"
+						label="Controle Terceirizados">
+
+
+						<p:menuitem value="Contratos" icon="ui-icon-search"
+							rendered="#{contratoTerceirizadoBean.soVisualizar == true}"
+							url="/pages/contrato/controlecontrato.xhtml" />
+
+					</p:submenu>
+					
+					
+					<p:submenu label="Diretoria de Veículos" rendered="#{autenticacaoBean.temPermissoes([1,11])}">
+						<p:menuitem value="ECV/ITL" icon="ui-icon-document"
+							url="/pages/ecvitl/EcvItl.xhtml" />
+					</p:submenu>
+
+					<p:submenu label="Solicitações">
+						<p:menuitem value="Acessos" icon="ui-icon-document"
+							url="/pages/acessos.xhtml" />
+					</p:submenu>
+
+					<f:facet name="options">
+
+						<p:outputLabel style="margin:1px 10px 1px 1px;"
+							value="#{autenticacaoBean.usuarioLogado.pessoa.nomeCompleto}" />
+						<p:commandButton value="Logout" icon="ui-icon-power"
+							action="#{autenticacaoBean.logout}" ajax="false" />
+					</f:facet>
+
+				</p:menubar>
+
+			</h:form>
+		</div>
+
+
+
+		<p:dialog header="Alterar Senha" widgetVar="alterasenha"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="formalterasenha">
+				<h:panelGrid id="cadastro" columns="1">
+
+					<p:outputLabel value="Usuário: " rendered="false" />
+					<p:selectOneMenu value="#{autenticacaoBean.usuarioLogado}"
+						converter="omnifaces.SelectItemsConverter" required="true"
+						requiredMessage="O campo Setor Abertura é obrigatório"
+						rendered="false">
+						<f:selectItem
+							itemLabel="#{autenticacaoBean.usuarioLogado.pessoa.nomeCompleto}"
+							itemValue="#{autenticacaoBean.usuarioLogado}" rendered="false" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Informe uma senha de 4 a 10 caracteres."
+						style="background: #db8a8a; color: #000000" />
+
+
+					<p:outputLabel for="senha" value="Senha:" />
+					<p:password id="senha" maxlength="10" size="8"
+						value="#{autenticacaoBean.usuarioLogado.senha}" feedback="true"
+						promptLabel="Favor inserir nova senha." weakLabel="Fraco"
+						goodLabel="Normal" strongLabel="Forte" required="true"
+						match="confirmaSenha"
+						requiredMessage="O campo Senha é obrigatório."
+						validatorMessage="Informe uma senha de 4 a 10 caracteres.">
+						<f:validateLength minimum="4" maximum="10" />
+					</p:password>
+
+					<p:outputLabel for="confirmaSenha" value="Confirmação: " />
+					<p:password id="confirmaSenha" maxlength="10" size="8"
+						required="true" onblur="#{usuarioBean}"
+						validatorMessage="Os valore digitados não são iguais." />
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{autenticacaoBean.alterarSenha}"
+						update=":mensagem formalterasenha" />
+					<p:commandButton value="Fechar"
+						oncomplete="PF('alterasenha').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+
+
+		<div id="conteudo">
+
+
+
+			<ui:insert name="conteudo" />
+
+
+
+
+		</div>
+	</div>
+
+	<script>
+			function configurarMoeda() {
+				$(".moeda").maskMoney({ decimal: ",", thousands: ".", allowZero: true });
+			}
+			
+			$(document).ready(function() {
+				configurarMoeda();
+			});
+		</script>
+
+
+</h:body>
+</html>
+
+
+
+
+
+
+
