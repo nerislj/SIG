@@ -195,6 +195,8 @@ public class MaterialEntradaBean implements Serializable {
 			materialEntrada.setQuantidade(n);
 
 			materialEntrada.setMaterialTipo(materialEntrada.getMaterialTipo());
+			
+			materialEntrada.setAquisicao(materialEntradaFront.getAquisicao());
 
 			// materialEntrada = materialEntradaDAO.loadLast(materialEntrada.getMaterial());
 
@@ -253,6 +255,8 @@ public class MaterialEntradaBean implements Serializable {
 			materialEntrada.setQuantidade(materialEntradaFront.getQuantidade());
 
 			materialEntrada.setMaterialTipo(materialEntrada.getMaterialTipo());
+			
+			materialEntrada.setAquisicao(materialEntradaFront.getAquisicao());
 
 			// materialEntrada = materialEntradaDAO.loadLast(materialEntrada.getMaterial());
 

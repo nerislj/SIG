@@ -34,11 +34,11 @@ a:-webkit-any-link {
 					Clique no botão abaixo para solicitar materiais. <br />
 						<br />
 
-						<p:commandButton value="Solicitar Material"
-							icon="ui-icon-circle-zoomout" oncomplete="PF('dialogo').show();"
+						<p:commandButton value="Solicitar Material" styleClass="rounded-button ui-button-success"
+						 oncomplete="PF('dialogo').show();"
 							actionListener="#{materialSaidaBean.novo()}"
 							update=":formcadastro:cadastro"
-							style="background: #00FF7F; color: #000000">
+							>
 							<f:actionListener
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 						</p:commandButton>

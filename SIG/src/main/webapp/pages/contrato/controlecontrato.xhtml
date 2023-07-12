@@ -21,7 +21,8 @@
 
 		<h:outputStylesheet name="primeicons/primeicons.css"
 			library="primefaces" />
-
+			
+		
 
 
 		<style type="text/css">
@@ -101,11 +102,6 @@
 		rgb(0 0 0/ 5%) !important;
 }
 
-.ui-icon {
-	display: inline-flex !important;
-	width: 16px !important;
-	font-size: 16px !important;
-}
 
 .value {
 	font-weight: bold;
@@ -132,8 +128,8 @@
 
 
 
-							<p:dataTable id="listaContratos"
-								emptyMessage="Nenhum contrato encontrado." paginator="true"
+							<p:dataTable id="listaContratos"     paginator="true" 
+								emptyMessage="Nenhum contrato encontrado."
 								rowExpandMode="single" rows="10" rowKey="#{contrato.codigo}"
 								value="#{contratoTerceirizadoBean.listaContratosTerceirizados}"
 								var="contrato" selectionMode="single"

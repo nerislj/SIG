@@ -26,6 +26,9 @@ public class MaterialEntrada extends GenericDomain {
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private MaterialTipo materialTipo;
+	
+	@Column(length = 255)
+	private String aquisicao;
 
 	@Temporal(TemporalType.DATE)
 	@Column(nullable = false)
@@ -38,6 +41,14 @@ public class MaterialEntrada extends GenericDomain {
 
 	
 	
+	public String getAquisicao() {
+		return aquisicao;
+	}
+
+	public void setAquisicao(String aquisicao) {
+		this.aquisicao = aquisicao;
+	}
+
 	public Material getMaterial() {
 		return material;
 	}

@@ -49,10 +49,10 @@
 					value="#{materialSaidaBean.listaSaidaMateriaisPendentes}"
 					var="material" rows="10">
 					<f:facet name="header">
-						<p:commandButton value="Aprovar saída" icon="ui-icon-document"
-							actionListener="#{materialSaidaBean.finalizar}"
+						<p:commandButton value="Aprovar saída" styleClass="rounded-button ui-button-success"
+							actionListener="#{materialSaidaBean.finalizar}" icon="pi pi-check" style="margin: auto;"
 							update=":mensagem :formularioFinalizar:painelFinalizar"
-							oncomplete="PF('dialogo').show();" style="background: #00FF7F; color: #000000" />
+							oncomplete="PF('dialogo').show();" />
 					</f:facet>
 					
 					<p:column headerText="Nº"
@@ -107,8 +107,8 @@
 						style="width: 10% !important ; text-align: center;">
 						<p:commandButton value="Selecionar" icon="pi pi-check"
 							actionListener="#{materialSaidaBean.adicionar}"
-							update=":formlista:listaSelecionados"
-							style="background: #18B5ED;">
+							update=":formlista:listaSelecionados" styleClass="rounded-button"
+							>
 							<f:attribute name="materialSelecionado" value="#{material}" />
 						</p:commandButton>
 						
@@ -116,7 +116,7 @@
 												styleClass="rounded-button ui-button-danger"
 							actionListener="#{materialSaidaBean.ressalva}"
 							update=":formlista:listaSelecionados :formlista:lista :formularioFinalizarRessalva:painelFinalizarRessalva"
-							style="background: #CD5C5C; color: #000000"
+							
 							oncomplete="PF('dialogoRessalva').show();">
 							<f:attribute name="materialSelecionado" value="#{material}" />
 							<f:actionListener
@@ -168,8 +168,8 @@
 						style="width: 6%; text-align: center;">
 						<p:commandButton value="Remover" icon="pi pi-minus"
 							actionListener="#{materialSaidaBean.remover}"
-							update=":formlista:listaSelecionados"
-							style="background: #ED9818;">
+							update=":formlista:listaSelecionados" styleClass="rounded-button ui-button-warning"
+							>
 							<f:attribute name="materialSelecionado" value="#{saida}" />
 						</p:commandButton>
 					</p:column>

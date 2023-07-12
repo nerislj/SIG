@@ -8,67 +8,87 @@
 	template="/templates/modelo.xhtml">
 
 	<ui:define name="conteudo">
-		<h:form id="formlista" rendered="#{autenticacaoBean.temPermissoes([1, 25])}">
+		<h:form id="formlista"
+			rendered="#{autenticacaoBean.temPermissoes([1, 25])}">
 			<p:panel header="Material - Listagem">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
-					paginator="true" value="#{materialEntradaBean.listaEntradaMateriais}"
-					var="material" rows="10" >
+					paginator="true"
+					value="#{materialEntradaBean.listaEntradaMateriais}" var="material"
+					rows="10">
 					<f:facet name="header">
 					Clique no botão abaixo para inserir mais materiais ao estoque.
-					<p><h3>OBS: A quantidade fornecida irá somar com o Total/Estoque.</h3></p>
-						<p:commandButton icon="ui-icon-plus" value="Inserir" oncomplete="PF('dialogo').show();"
+					<p>
+							<h3>OBS: A quantidade fornecida irá somar com o
+								Total/Estoque.</h3>
+						</p>
+						<p:commandButton icon="pi pi-plus" value="Inserir"
+							oncomplete="PF('dialogo').show();"
 							actionListener="#{materialEntradaBean.novo()}"
+							styleClass="rounded-button ui-button-success"
 							update=":formcadastro:cadastro">
 							<f:actionListener
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 						</p:commandButton>
 					</f:facet>
-					
-					<p:column headerText="Material Tipo" sortBy="#{material.materialTipo.tipomaterial}"
-						filterBy="#{material.materialTipo.tipomaterial}" style="width: 70px; text-align: center;">
+
+					<p:column headerText="Material Tipo"
+						sortBy="#{material.materialTipo.tipomaterial}"
+						filterBy="#{material.materialTipo.tipomaterial}"
+						style="width: 70px; text-align: center;">
 						<h:outputText value="#{material.materialTipo.tipomaterial}" />
 					</p:column>
 
-					<p:column headerText="Material" sortBy="#{material.material.material}"
-						filterBy="#{material.material.material}" style="width: 70px; text-align: center;">
+					<p:column headerText="Material"
+						sortBy="#{material.material.material}"
+						filterBy="#{material.material.material}"
+						style="width: 70px; text-align: center;">
 						<h:outputText value="#{material.material.material}" />
 					</p:column>
-					
-					<p:column headerText="Cod Material" sortBy="#{material.material.codigoMaterial}"
-						filterBy="#{material.material.codigoMaterial}" style="width: 70px; text-align: center;">
+
+					<p:column headerText="Aquisição" sortBy="#{material.aquisicao}"
+						filterBy="#{material.aquisicao}"
+						style="width: 70px; text-align: center;">
+						<h:outputText value="#{material.aquisicao}" />
+					</p:column>
+
+					<p:column headerText="Cod Material"
+						sortBy="#{material.material.codigoMaterial}"
+						filterBy="#{material.material.codigoMaterial}"
+						style="width: 70px; text-align: center;">
 						<h:outputText value="#{material.material.codigoMaterial}" />
 					</p:column>
-					
-					<p:column headerText="Total/Estoque" sortBy="#{material.quantidade}"
-						filterBy="#{material.quantidade}" style="width: 70px; text-align: center;">
+
+					<p:column headerText="Total/Estoque"
+						sortBy="#{material.quantidade}" filterBy="#{material.quantidade}"
+						style="width: 70px; text-align: center;">
 						<h:outputText value="#{material.quantidade}" />
 					</p:column>
-					
 
-					<p:column headerText="Opções" style="width: 70px; text-align: center;" 
-					>
-						
+
+					<p:column headerText="Opções"
+						style="width: 70px; text-align: center;">
+
 
 						<p:commandButton icon="pi pi-pencil"
-										styleClass="rounded-button ui-button-secondary"
+							styleClass="rounded-button ui-button-secondary"
 							actionListener="#{materialEntradaBean.editar}"
 							update=":formedicao:edicao"
-							oncomplete="PF('dialogoEdicao').show();" 
-							>
+							oncomplete="PF('dialogoEdicao').show();">
 							<f:attribute name="materialSelecionado" value="#{material}" />
 							<f:actionListener
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 						</p:commandButton>
-						
+
 						<p:commandButton icon="pi pi-times"
-												styleClass="rounded-button ui-button-danger" immediate="true"
+							styleClass="rounded-button ui-button-danger" immediate="true"
 							actionListener="#{materialEntradaBean.excluir}"
 							update=":mensagem :formlista:lista">
 							<p:confirm header="Confirmação"
-								message="Deseja excluir o Material Estoque?" icon="ui-icon-alert" />
+								message="Deseja excluir o Material Estoque?"
+								icon="ui-icon-alert" />
 							<f:attribute name="materialSelecionado" value="#{material}" />
 							<f:actionListener
-											type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 						</p:commandButton>
 
 					</p:column>
@@ -87,16 +107,16 @@
 			draggable="false" resizable="false" modal="true" closable="false">
 			<h:form id="formcadastro">
 				<h:panelGrid id="cadastro" columns="2">
-				
-				<p:outputLabel for="tipo" value="Tipo" />
+
+					<p:outputLabel for="tipo" value="Tipo" />
 					<p:selectOneMenu id="tipo" filter="true" required="true"
 						requiredMessage="O campo Tipo é obrigatório"
 						converter="omnifaces.SelectItemsConverter"
 						value="#{materialEntradaBean.materialEntradaFront.materialTipo}">
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione um tipo" />
-						<f:selectItems value="#{materialEntradaBean.listaTipos}" var="tipo"
-							itemValue="#{tipo}" itemLabel="#{tipo.tipomaterial}" />
+						<f:selectItems value="#{materialEntradaBean.listaTipos}"
+							var="tipo" itemValue="#{tipo}" itemLabel="#{tipo.tipomaterial}" />
 						<p:ajax listener="#{materialEntradaBean.popular}"
 							update=":formcadastro:material" />
 					</p:selectOneMenu>
@@ -108,21 +128,32 @@
 						value="#{materialEntradaBean.materialEntradaFront.material}">
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione uma Material" />
-						<f:selectItems value="#{materialEntradaBean.listaMateriais}" var="material"
-							itemValue="#{material}" itemLabel="#{material.material}" />
+						<f:selectItems value="#{materialEntradaBean.listaMateriais}"
+							var="material" itemValue="#{material}"
+							itemLabel="#{material.material}" />
 					</p:selectOneMenu>
-						
-						
-					<p:outputLabel value="Quantidade *" />
-					
-					<p:spinner id="quantidade" value="#{materialEntradaBean.materialEntradaFront.quantidade}" required="true"
-						requiredMessage="O campo Quantidade é obrigatório" />
-					
 
-			</h:panelGrid>
-				
-				<br/>
-				<p:outputLabel value="Campos com (*) são obrigatórios" />	<br/>	<br/>
+					<p:outputLabel value="Quantidade *" />
+
+					<p:spinner id="quantidade"
+						value="#{materialEntradaBean.materialEntradaFront.quantidade}"
+						required="true" requiredMessage="O campo Quantidade é obrigatório" />
+
+
+					<p:outputLabel value="Aquisição: " />
+					<p:inputTextarea maxlength="255"
+						value="#{materialEntradaBean.materialEntradaFront.aquisicao}"
+						counter="display" counterTemplate="Restam {0} Caracteres." />
+					<h:outputText />
+					<h:outputText id="display" />
+
+
+				</h:panelGrid>
+
+				<br />
+				<p:outputLabel value="Campos com (*) são obrigatórios" />
+				<br />
+				<br />
 
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
@@ -133,21 +164,22 @@
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>
-		
-		
-		<p:dialog header="Material Material - Edição" widgetVar="dialogoEdicao"
-			draggable="false" resizable="false" modal="true" closable="false">
+
+
+		<p:dialog header="Material Material - Edição"
+			widgetVar="dialogoEdicao" draggable="false" resizable="false"
+			modal="true" closable="false">
 			<h:form id="formedicao">
 				<h:panelGrid id="edicao" columns="2">
-				
-				<p:outputLabel for="tipo" value="Tipo: " />
+
+					<p:outputLabel for="tipo" value="Tipo: " />
 					<p:selectOneMenu id="tipo" filter="true"
 						converter="omnifaces.SelectItemsConverter"
 						value="#{materialEntradaBean.materialEntradaFront.materialTipo}">
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione um tipo" />
-						<f:selectItems value="#{materialEntradaBean.listaTipos}" var="tipo"
-							itemValue="#{tipo}" itemLabel="#{tipo.tipomaterial}" />
+						<f:selectItems value="#{materialEntradaBean.listaTipos}"
+							var="tipo" itemValue="#{tipo}" itemLabel="#{tipo.tipomaterial}" />
 						<p:ajax listener="#{materialEntradaBean.popular}"
 							update=":formedicao:material" />
 					</p:selectOneMenu>
@@ -159,18 +191,27 @@
 						value="#{materialEntradaBean.materialEntradaFront.material}">
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione uma Material" />
-						<f:selectItems value="#{materialEntradaBean.listaMateriais}" var="material"
-							itemValue="#{material}" itemLabel="#{material.material}" />
+						<f:selectItems value="#{materialEntradaBean.listaMateriais}"
+							var="material" itemValue="#{material}"
+							itemLabel="#{material.material}" />
 					</p:selectOneMenu>
-						
-						
-					<p:outputLabel value="Quantidade" />
-					
-					<p:spinner id="quantidade" value="#{materialEntradaBean.materialEntradaFront.quantidade}" />
-					
 
-			</h:panelGrid>
-				
+
+					<p:outputLabel value="Quantidade" />
+
+					<p:spinner id="quantidade"
+						value="#{materialEntradaBean.materialEntradaFront.quantidade}" />
+
+					<p:outputLabel value="Aquisição: " />
+					<p:inputTextarea maxlength="255"
+						value="#{materialEntradaBean.materialEntradaFront.aquisicao}"
+						counter="display" counterTemplate="Restam {0} Caracteres." />
+					<h:outputText />
+					<h:outputText id="display" />
+
+
+				</h:panelGrid>
+
 				<p:outputLabel value="Campos com (*) são obrigatórios" />
 
 				<h:panelGrid columns="2">
@@ -178,13 +219,14 @@
 						actionListener="#{materialEntradaBean.salvarEdicao()}"
 						update=":mensagem :formedicao:edicao :formlista:lista"
 						oncomplete="PF('dialogoEdicao').hide();" />
-					<p:commandButton value="Fechar" oncomplete="PF('dialogoEdicao').hide();" />
-					
-					
-						
+					<p:commandButton value="Fechar"
+						oncomplete="PF('dialogoEdicao').hide();" />
+
+
+
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>
-		
+
 	</ui:define>
 </ui:composition>
