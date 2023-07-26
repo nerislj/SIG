@@ -160,6 +160,13 @@
 		<mapping class="br.gov.sc.funcionariosuf.domain.Estagiarios" />
 		<mapping class="br.gov.sc.funcionariosuf.domain.Servidores" />
 		<mapping class="br.gov.sc.funcionariosuf.domain.Terceirizados" />
+		
+		<mapping class="br.gov.sc.sgi.domain.ListaTelefonica" />
+		
+		<mapping class="br.gov.sc.visita.domain.Visita" />
+		<mapping class="br.gov.sc.visita.domain.Visitante" />
+		<mapping class="br.gov.sc.visita.domain.CategoriaVisita" />
+		<mapping class="br.gov.sc.visita.domain.DestinoVisita" />
 
 
 

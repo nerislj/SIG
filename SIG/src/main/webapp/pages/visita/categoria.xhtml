@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+
+		<style>
+/* reset on the showcase style*/
+body .ui-panelgrid .ui-panelgrid-cell {
+	background-color: transparent;
+}
+
+/* example use of styles for your form */
+.my-heading-row {
+	background-color: #c0c0c0;
+	font-weight: bold;
+}
+</style>
+
+
+
+		<h:form id="formcadastro">
+			<p:panel header="Categoria - Cadastro">
+
+				<p:panelGrid id="cadastro" columns="4" layout="flex"
+					columnClasses="col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4, col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4"
+					contentStyleClass="ui-fluid">
+
+
+
+					<p:outputLabel value="Nome: *" />
+					<p:inputText maxlength="50"
+						value="#{categoriaBean.categoriaVisita.categoria}" required="true"
+						requiredMessage="O campo Nome é obrigatório" />
+
+
+
+
+				</p:panelGrid>
+
+				<br />
+				<br />
+				<h:panelGrid columns="2" style="margin: 0 auto;">
+					<p:commandButton value="Gravar"
+						styleClass="rounded-button ui-button-success" icon="pi pi-save"
+						actionListener="#{categoriaBean.salvar()}"
+						update=":mensagem :formcadastro:cadastro :formlista:lista" />
+
+				</h:panelGrid>
+
+			</p:panel>
+		</h:form>
+		<br />
+
+
+		<h:form id="formlista">
+			<p:panel header="Lista visitantes"
+				>
+				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+					paginator="true" value="#{categoriaBean.listaCategoriaVisitas}"
+					var="cat" rows="10" stripedRows="true">
+
+
+					<p:column headerText="Nome" sortBy="#{cat.categoria}"
+						filterBy="#{cat.categoria}">
+						<h:outputText value="#{cat.categoria}" />
+					</p:column>
+
+					
+
+					<p:column headerText="Opções"
+						style="width: 15%; text-align: center;">
+
+						<p:commandButton icon="pi pi-pencil"
+							styleClass="rounded-button ui-button-secondary"
+							actionListener="#{categoriaBean.editar}"
+							update=":formcadastro:cadastro">
+							<f:attribute name="categoriaVisitaSelecionado"
+								value="#{cat}" />
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+
+						<p:commandButton icon="pi pi-trash"
+							styleClass="rounded-button ui-button-danger"
+							actionListener="#{categoriaBean.excluir}"
+							update=":mensagem :formlista:lista">
+							<p:confirm header="Confirmação"
+								message="Deseja excluir a categoria?"
+								icon="pi pi-exclamation-triangle" />
+							<f:attribute name="categoriaVisitaSelecionado"
+								value="#{cat}" />
+						</p:commandButton>
+
+
+
+
+
+					</p:column>
+				</p:dataTable>
+
+				<p:confirmDialog global="true">
+					<p:commandButton value="Sim" type="button"
+						styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
+						icon="pi pi-check" />
+					<p:commandButton value="Não" type="button"
+						styleClass="ui-confirmdialog-no rounded-button" icon="pi pi-times" />
+				</p:confirmDialog>
+			</p:panel>
+		</h:form>
+
+
+	</ui:define>
+</ui:composition>

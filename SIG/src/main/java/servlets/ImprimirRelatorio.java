@@ -98,6 +98,12 @@ public class ImprimirRelatorio extends HttpServlet {
 			if (request.getParameter("unidade") != null && !request.getParameter("unidade").equals("0")) {
 				parameters.put("UNIDADE", request.getParameter("unidade"));
 			}
+			
+			//VISITA
+			if (request.getParameter("visitaId") != null && !request.getParameter("visitaId").equals("0")) {
+				parameters.put("VISITAID", request.getParameter("visitaId"));
+			}
+			
 			/*
 			 * if (request.getParameter("instrutorId2") != null &&
 			 * !request.getParameter("instrutorId2").equals("0")){

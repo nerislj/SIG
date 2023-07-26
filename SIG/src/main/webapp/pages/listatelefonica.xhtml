@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="metadata">
+		<f:metadata>
+
+			<f:event listener="#{listaTelefonicaBean.listarListaTelefonica}"
+				type="preRenderView" />
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="conteudo">
+		<h:form id="formlista">
+			<p:panel header="Agenda telefonica - Listagem"
+				rendered="#{autenticacaoBean.temPermissoes([1])}">
+				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+					paginator="true" value="#{listaTelefonicaBean.listaTelefonicas}"
+					var="listatelefonica" rows="10">
+					<f:facet name="header">
+						<p:commandButton styleClass="rounded-button ui-button-success"
+							icon="pi pi-plus-circle" value="Novo"
+							oncomplete="PF('dialogo').show();"
+							actionListener="#{listaTelefonicaBean.novo()}"
+							update=":formcadastro:cadastro">
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+					</f:facet>
+
+					<p:column headerText="Unidade" sortBy="#{usuario.unidade.unidade}"
+						filterBy="#{listatelefonica.unidade.unidade}"
+						style="width: 20%; text-align: center;" filterMatchMode="contains">
+						<h:outputText value="#{listatelefonica.unidade.unidade}" />
+					</p:column>
+
+					<p:column headerText="Setor"
+						sortBy="#{listatelefonica.setor.setorNome}"
+						filterBy="#{listatelefonica.setor.setorNome}"
+						style="width: 35%; text-align: center;" filterMatchMode="contains">
+						<h:outputText
+							value="#{listatelefonica.setor.setor} - #{listatelefonica.setor.setorNome}" />
+					</p:column>
+
+					<p:column headerText="Nome"
+						sortBy="#{listatelefonica.pessoa.nomeCompleto}"
+						filterBy="#{listatelefonica.pessoa.nomeCompleto}"
+						style="width: 70%; text-align: center;" filterMatchMode="contains">
+						<h:outputText value="#{listatelefonica.pessoa.nomeCompleto}" />
+					</p:column>
+
+					<p:column headerText="Telefone" sortBy="#{listatelefonica.telSet}"
+						filterBy="#{listatelefonica.telSet}"
+						style="width: 15%; text-align: center;" filterMatchMode="contains">
+						<h:outputText value="#{listatelefonica.telSet}" />
+					</p:column>
+
+					<p:column headerText="Opções"
+						style="width: 15%; text-align: center;">
+						<p:commandButton icon="pi pi-times"
+							styleClass="rounded-button ui-button-danger"
+							actionListener="#{listaTelefonicaBean.excluir}"
+							update=":mensagem :formlista:lista"
+							rendered="#{autenticacaoBean.temPermissoes([1])}">
+							<p:confirm header="Confirmação"
+								message="Deseja excluir o contato?"
+								icon="pi pi-exclamation-triangle" />
+							<f:attribute name="itemSelecionado" value="#{listatelefonica}" />
+						</p:commandButton>
+
+						<p:commandButton icon="pi pi-pencil"
+							styleClass="rounded-button ui-button-secondary"
+							actionListener="#{listaTelefonicaBean.editar}"
+							update=":formcadastro:cadastro"
+							oncomplete="PF('dialogo').show();">
+							<f:attribute name="itemSelecionado" value="#{listatelefonica}" />
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+
+					</p:column>
+				</p:dataTable>
+
+				<p:confirmDialog global="true">
+					<p:commandButton value="Sim" type="button"
+						styleClass="ui-confirmdialog-yes rounded-button"
+						icon="pi pi-check" />
+					<p:commandButton value="Não" type="button"
+						styleClass="ui-confirmdialog-no rounded-button ui-button-danger"
+						icon="pi pi-times" />
+				</p:confirmDialog>
+			</p:panel>
+		</h:form>
+
+		<p:dialog header="Agenda telefonica - Cadastro" widgetVar="dialogo"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="formcadastro">
+				<h:panelGrid id="cadastro" columns="2">
+
+					<p:outputLabel value="Contato: " />
+					<p:selectOneMenu filter="true"
+						value="#{listaTelefonicaBean.listaTelefonica.pessoa}"
+						converter="omnifaces.SelectItemsConverter" required="true"
+						requiredMessage="O campo Pessoa é obrigatório"
+						filterMatchMode="contains">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma Pessoa" />
+						<f:selectItems value="#{listaTelefonicaBean.pessoas}"
+							var="pessoas" itemValue="#{pessoas}"
+							itemLabel="#{pessoas.cpf} - #{pessoas.nomeCompleto}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="unidade" value="Unidade " />
+					<p:selectOneMenu id="unidade" filter="true"
+						requiredMessage="O campo Unidade é obrigatório"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{listaTelefonicaBean.listaTelefonica.unidade}"
+						filterMatchMode="contains">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma unidade" />
+						<f:selectItems value="#{listaTelefonicaBean.unidades}"
+							var="unidade" itemValue="#{unidade}"
+							itemLabel="#{unidade.unidadeNome}" />
+						<p:ajax listener="#{listaTelefonicaBean.popular}"
+							update=":formcadastro:setor" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="setor" value="Setor: " />
+					<p:selectOneMenu id="setor" filter="true"
+						requiredMessage="O campo Setor é obrigatório"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{listaTelefonicaBean.listaTelefonica.setor}"
+						filterMatchMode="contains">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione um setor" />
+						<f:selectItems value="#{listaTelefonicaBean.setores}" var="setor"
+							itemValue="#{setor}"
+							itemLabel="#{setor.setor} - #{setor.setorNome}" />
+						<p:ajax listener="#{listaTelefonicaBean.popularSetor}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Telefone Setor (*)" />
+					<p:inputMask id="telSet" mask="(99) 9999-9999" size="10"
+						value="#{listaTelefonicaBean.listaTelefonica.telSet}">
+					</p:inputMask>
+
+				</h:panelGrid>
+
+				<div align="center">
+					<h3>(*) Campos obrigatórios para o cadastro.</h3>
+
+				</div>
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						styleClass="ui-confirmdialog-yes rounded-button"
+						icon="pi pi-check"
+						actionListener="#{listaTelefonicaBean.salvar()}"
+						update=":mensagem :formcadastro:cadastro :formlista:lista" />
+					<p:commandButton value="Fechar"
+						styleClass="ui-confirmdialog-no rounded-button ui-button-danger"
+						icon="pi pi-times" oncomplete="PF('dialogo').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

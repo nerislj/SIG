@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+
+		<style>
+/* reset on the showcase style*/
+body .ui-panelgrid .ui-panelgrid-cell {
+	background-color: transparent;
+}
+
+/* example use of styles for your form */
+.my-heading-row {
+	background-color: #c0c0c0;
+	font-weight: bold;
+}
+</style>
+
+
+
+		<h:form id="formcadastro">
+			<p:panel header="Visitante - Cadastro">
+
+				<p:panelGrid id="cadastro" columns="4" layout="flex"
+					columnClasses="col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4, col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4"
+					contentStyleClass="ui-fluid">
+
+
+
+					<p:outputLabel value="Nome Completo: *" />
+					<p:inputText maxlength="50"
+						value="#{visitanteBean.visitante.nomeCompleto}" required="true"
+						requiredMessage="O campo Nome é obrigatório" />
+
+
+					<p:outputLabel value="CPF: *" />
+					<p:inputText maxlength="50"
+						value="#{visitanteBean.visitante.cpf}" required="true"
+						requiredMessage="O campo Nome é obrigatório" />
+
+
+
+
+
+					<p:outputLabel value="RG: " />
+					<p:inputText maxlength="50"
+						value="#{visitanteBean.visitante.rg}"
+						requiredMessage="O campo Nome é obrigatório" />
+
+
+
+
+					<p:outputLabel for="estado" value="UF:" />
+					<p:selectOneMenu id="estado" filter="true" required="true"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{visitanteBean.visitante.estado}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione um estado" />
+						<f:selectItems value="#{visitanteBean.estados}" var="estado"
+							itemValue="#{estado}" itemLabel="#{estado.sigla}" />
+						<p:ajax listener="#{visitanteBean.popular}"
+							update=":formcadastro:cidade" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="cidade" value="Municipio:" />
+					<p:selectOneMenu id="cidade" filter="true" required="true"
+						requiredMessage="O campo Municipio é obrigatório"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{visitanteBean.visitante.municipio}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma cidade" />
+						<f:selectItems value="#{visitanteBean.cidades}" var="cidade"
+							itemValue="#{cidade}" itemLabel="#{cidade.nome}" />
+					</p:selectOneMenu>
+
+
+				</p:panelGrid>
+
+				<br />
+				<br />
+				<h:panelGrid columns="2" style="margin: 0 auto;">
+					<p:commandButton value="Gravar"
+						styleClass="rounded-button ui-button-success" icon="pi pi-save"
+						actionListener="#{visitanteBean.salvar()}"
+						update=":mensagem :formcadastro:cadastro :formlista:lista" />
+
+				</h:panelGrid>
+
+			</p:panel>
+		</h:form>
+		<br />
+
+
+		<h:form id="formlista">
+			<p:panel header="Lista visitantes"
+				rendered="#{autenticacaoBean.temPermissoes([1])}">
+				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+					paginator="true" value="#{visitanteBean.listaVisitantes}"
+					var="visitante" rows="10" stripedRows="true">
+
+
+					<p:column headerText="Nome" sortBy="#{visitante.nomeCompleto}"
+						filterBy="#{visitante.nomeCompleto}">
+						<h:outputText value="#{visitante.nomeCompleto}" />
+					</p:column>
+
+					<p:column headerText="CPF"
+						sortBy="#{visitante.cpf}"
+						filterBy="#{visitante.cpf}"
+						style="text-align: center;">
+						<h:outputText value="#{visitante.cpf}" />
+					</p:column>
+					
+					<p:column headerText="Estado"
+						sortBy="#{visitante.estado.nome}"
+						filterBy="#{visitante.estado.nome}"
+						style="text-align: center;">
+						<h:outputText value="#{visitante.estado.nome}" />
+					</p:column>
+					
+					<p:column headerText="Cidade"
+						sortBy="#{visitante.municipio.nome}"
+						filterBy="#{visitante.municipio.nome}"
+						style="text-align: center;">
+						<h:outputText value="#{visitante.municipio.nome}" />
+					</p:column>
+
+					<p:column headerText="Opções"
+						style="width: 15%; text-align: center;">
+
+						<p:commandButton icon="pi pi-pencil"
+							styleClass="rounded-button ui-button-secondary"
+							actionListener="#{visitanteBean.editar}"
+							update=":formcadastro:cadastro">
+							<f:attribute name="visitanteSelecionado"
+								value="#{visitante}" />
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+
+						<p:commandButton icon="pi pi-trash"
+							styleClass="rounded-button ui-button-danger"
+							actionListener="#{visitanteBean.excluir}"
+							update=":mensagem :formlista:lista">
+							<p:confirm header="Confirmação"
+								message="Deseja excluir o visitante?"
+								icon="pi pi-exclamation-triangle" />
+							<f:attribute name="visitanteSelecionado"
+								value="#{visitante}" />
+						</p:commandButton>
+
+
+
+
+
+					</p:column>
+				</p:dataTable>
+
+				<p:confirmDialog global="true">
+					<p:commandButton value="Sim" type="button"
+						styleClass="ui-confirmdialog-yes rounded-button ui-button-danger"
+						icon="pi pi-check" />
+					<p:commandButton value="Não" type="button"
+						styleClass="ui-confirmdialog-no rounded-button" icon="pi pi-times" />
+				</p:confirmDialog>
+			</p:panel>
+		</h:form>
+
+
+	</ui:define>
+</ui:composition>

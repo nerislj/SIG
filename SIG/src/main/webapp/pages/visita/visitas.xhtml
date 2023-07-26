@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+
+	<ui:define name="metadata">
+
+		<f:metadata>
+			<f:event listener="#{visitaBean.listasVisitas}" type="preRenderView" />
+		</f:metadata>
+
+	</ui:define>
+
+	<ui:define name="conteudo">
+
+		<style>
+/* reset on the showcase style*/
+body .ui-panelgrid .ui-panelgrid-cell {
+	background-color: transparent;
+}
+
+/* example use of styles for your form */
+.my-heading-row {
+	background-color: #c0c0c0;
+	font-weight: bold;
+}
+</style>
+
+
+
+
+
+
+
+		<h:form id="formlista">
+			<p:panel header="Visitas cadastradas"
+				rendered="#{autenticacaoBean.temPermissoes([1])}">
+				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+					paginator="true" value="#{visitaBean.listaVisitas}" var="v"
+					rows="10" stripedRows="true">
+
+
+					<p:column headerText="CPF">
+						<h:outputText id="cpf" value="#{v.visitante.cpf}" />
+					</p:column>
+
+					<p:column headerText="RG">
+						<h:outputText value="#{v.visitante.rg}" />
+					</p:column>
+
+
+					<p:column headerText="Nome">
+						<h:outputText id="nome" value="#{v.visitante.nomeCompleto}" />
+					</p:column>
+
+					<p:column headerText="Destino">
+						<h:outputText value="#{v.destino.destino}" />
+					</p:column>
+
+					<p:column headerText="UF">
+						<h:outputText value="#{v.visitante.estado.nome}" />
+					</p:column>
+
+					<p:column headerText="Municipio">
+						<h:outputText value="#{v.visitante.municipio.nome}" />
+					</p:column>
+
+					<p:column headerText="Data/Hora">
+						<h:outputText value="#{v.dataHora}">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
+								timeZone="GMT-03:00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Categoria">
+						<h:outputText value="#{v.categoria.categoria}" />
+					</p:column>
+
+
+
+
+
+
+
+
+
+
+
+				</p:dataTable>
+
+
+			</p:panel>
+		</h:form>
+
+
+	</ui:define>
+</ui:composition>

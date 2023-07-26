@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+
+		<style>
+/* reset on the showcase style*/
+body .ui-panelgrid .ui-panelgrid-cell {
+	background-color: transparent;
+}
+
+/* example use of styles for your form */
+.my-heading-row {
+	background-color: #c0c0c0;
+	font-weight: bold;
+}
+
+.ui-inputfield[disabled] {
+	color: #000 !important;
+	opacity: 0.3 !important
+}
+
+.contentTable {
+	align-itens: center;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.writerNegrito {
+	align-itens: center;
+	text-align: center;
+	margin: 0 auto;
+	font-weight: 500;
+}
+</style>
+
+
+
+
+
+		<h:form id="formcadastro">
+			<p:panel header="Visita - Cadastro">
+
+				<p:fieldset legend="Dados do visitante">
+					<p class="m-0">
+
+						<p:panelGrid id="cadastro" columns="4" layout="flex"
+							columnClasses="col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4, col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4"
+							contentStyleClass="ui-fluid">
+
+
+
+
+
+							<p:outputLabel value="Nome Completo: " />
+							<p:selectOneMenu filter="true"
+								value="#{visitaBean.visita.visitante}"
+								converter="omnifaces.SelectItemsConverter" required="true"
+								requiredMessage="O campo visitante é obrigatório">
+								<f:selectItem noSelectionOption="true"
+									itemLabel="Selecione um visitante" />
+								<f:selectItems value="#{visitaBean.listaVisitantes}"
+									var="visitante" itemValue="#{visitante}"
+									itemLabel="#{visitante.nomeCompleto}" />
+
+								<p:ajax listener="#{visitaBean.popularDadosVisitante}"
+									update=":formcadastro:cpf, :formcadastro:rg, :formcadastro:estado, :formcadastro:cidade" />
+
+							</p:selectOneMenu>
+
+							<p:commandButton type="button" icon="pi pi-user-plus"
+								styleClass="rounded-button ui-button-info"
+								onclick="PF('dialogoNovoVisitante').show();" />
+							<p:outputLabel value=" " />
+
+
+
+
+
+
+							<p:outputLabel value="CPF: " />
+							<p:inputText id="cpf" maxlength="50" disabled="true"
+								value="#{visitaBean.visitante.cpf}" required="true"
+								requiredMessage="O campo Nome é obrigatório" />
+
+							<p:outputLabel value="RG: " />
+							<p:inputText id="rg" maxlength="50" disabled="true"
+								value="#{visitaBean.visitante.rg}" required="true"
+								requiredMessage="O campo Nome é obrigatório" />
+
+							<p:outputLabel value="UF: " />
+							<p:inputText id="estado" maxlength="50" disabled="true"
+								value="#{visitaBean.visitante.estado.nome}" required="true"
+								requiredMessage="O campo Nome é obrigatório" />
+
+							<p:outputLabel value="Cidade: " />
+							<p:inputText id="cidade" maxlength="50" disabled="true"
+								value="#{visitaBean.visitante.municipio.nome}" required="true"
+								requiredMessage="O campo Nome é obrigatório" />
+
+
+
+
+
+						</p:panelGrid>
+
+
+
+					</p>
+				</p:fieldset>
+
+				<br />
+
+
+
+				<p:fieldset legend="Dados da visita">
+					<p class="m-0">
+
+						<p:panelGrid id="visita" columns="4" layout="flex"
+							columnClasses="col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4, col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4"
+							contentStyleClass="ui-fluid">
+
+
+
+
+
+							<p:outputLabel value="Categoria: " />
+							<p:selectOneMenu filter="true"
+								value="#{visitaBean.visita.categoria}"
+								converter="omnifaces.SelectItemsConverter" required="true"
+								requiredMessage="O campo Categoria é obrigatório">
+								<f:selectItem noSelectionOption="true"
+									itemLabel="Selecione uma Categoria" />
+								<f:selectItems value="#{visitaBean.listaCategorias}" var="cat"
+									itemValue="#{cat}" itemLabel="#{cat.categoria}" />
+							</p:selectOneMenu>
+
+							<p:outputLabel value="Destino: " />
+							<p:selectOneMenu filter="true"
+								value="#{visitaBean.visita.destino}"
+								converter="omnifaces.SelectItemsConverter" required="true"
+								requiredMessage="O campo Destino é obrigatório">
+								<f:selectItem noSelectionOption="true"
+									itemLabel="Selecione um Destino" />
+								<f:selectItems value="#{visitaBean.listaDestinos}" var="dest"
+									itemValue="#{dest}" itemLabel="#{dest.destino}" />
+							</p:selectOneMenu>
+
+
+							<p:outputLabel for="button2" value="Data/Hora:" />
+							<p:calendar id="button2" disabled="true"
+								mindate="#{visitaBean.hj}" disabledWeekends="true"
+								readonlyInput="true" yearRange="c-120:c"
+								value="#{visitaBean.hj}" pattern="dd/MM/yyyy HH:mm" />
+
+
+							<p:outputLabel value="Nº Pessoas: " />
+							<p:inputText maxlength="50" value="#{visitaBean.visita.nPessoas}" />
+
+
+
+
+
+						</p:panelGrid>
+
+					</p>
+				</p:fieldset>
+
+				<br />
+
+				<h:panelGrid columns="2" style="margin: 0 auto;">
+					<p:commandButton value="Gravar"
+						styleClass="rounded-button ui-button-success" icon="pi pi-save"
+						actionListener="#{visitaBean.salvar()}"
+						update=":mensagem :formcadastro:cadastro :formlista:lista formlista:print:readArticle" />
+
+				</h:panelGrid>
+
+			</p:panel>
+		</h:form>
+
+		<br />
+
+
+		<h:form id="formlista">
+			<p:panel header="Visitas cadastradas"
+				rendered="#{autenticacaoBean.temPermissoes([1])}">
+				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+					paginator="true" value="#{visitaBean.listaVisitas}" var="v"
+					rows="1" stripedRows="true">
+
+
+					<p:column headerText="CPF">
+						<h:outputText id="cpf" value="#{v.visitante.cpf}" />
+					</p:column>
+
+					<p:column headerText="RG">
+						<h:outputText value="#{v.visitante.rg}" />
+					</p:column>
+
+
+					<p:column headerText="Nome">
+						<h:outputText id="nome" value="#{v.visitante.nomeCompleto}" />
+					</p:column>
+
+					<p:column headerText="Destino">
+						<h:outputText value="#{v.destino.destino}" />
+					</p:column>
+
+					<p:column headerText="UF">
+						<h:outputText value="#{v.visitante.estado.nome}" />
+					</p:column>
+
+					<p:column headerText="Municipio">
+						<h:outputText value="#{v.visitante.municipio.nome}" />
+					</p:column>
+
+					<p:column headerText="Data/Hora">
+						<h:outputText value="#{v.dataHora}">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
+								timeZone="GMT-03:00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Categoria">
+						<h:outputText value="#{v.categoria.categoria}" />
+					</p:column>
+
+
+
+
+
+					<p:column headerText="Opções"
+						style="width: 15%; text-align: center;">
+
+						<p:commandButton icon="pi pi-pencil" value="Editar"
+							styleClass="rounded-button ui-button-secondary"
+							actionListener="#{visitaBean.editar}"
+							update=":formcadastro:cadastro">
+							<f:attribute name="visitaSelecionado" value="#{v}" />
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+
+						<p:commandButton icon="pi pi-print" value="Etiqueta"
+							styleClass="rounded-button ui-button-info"
+							update=":formcadastro:cadastro formlista:print:readArticle"
+							actionListener="#{visitaBean.etiqueta}">
+
+							<f:param name="codigoVisita" value="#{v}" />
+
+							<f:attribute name="visitaSelecionado" value="#{v}" />
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+
+
+							<p:printer type="pdf" target="formlista:print:readArticle"
+								fileName="products" />
+
+						</p:commandButton>
+
+
+
+
+
+
+
+
+
+
+
+
+					</p:column>
+
+
+
+
+
+				</p:dataTable>
+
+				<h:form align="center" id="print">
+
+					<h:dataTable id="readArticle" styleClass="contentTable"
+						value="#{visitaBean.listaVisitas}" var="a" rows="1">
+						<p:column>
+
+
+							<h:outputLabel style="font-weight:bold"
+								value="#{a.categoria.categoria}" />
+							<br />
+							<h:outputLabel style="font-weight:bold"
+								value="#{a.visitante.nomeCompleto}" />
+							<br />
+							<h:outputLabel style="font-weight:bold"
+								value="#{a.visitante.municipio.nome}" />
+							<br />
+							<br />
+							<h:outputLabel styleClass="writer" value="#{a.destino.destino}" />
+							<br />
+							<h:outputLabel rendered="#{!a.destino.nSala}" styleClass="writer"
+								value="Sala #{a.destino.nSala}" />
+							<br />
+							<br />
+							<h:outputLabel styleClass="writer" value="#{a.dataHora}">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
+									timeZone="GMT-03:00" />
+							</h:outputLabel>
+
+
+
+						</p:column>
+					</h:dataTable>
+				</h:form>
+
+
+
+			</p:panel>
+		</h:form>
+
+		<p:dialog header="Novo Visitante" widgetVar="dialogoNovoVisitante"
+			minHeight="40">
+
+			<h:form id="formNovoVisitante">
+
+
+				<p:panelGrid id="cadastro" columns="4" layout="flex"
+					columnClasses="col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4, col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4"
+					contentStyleClass="ui-fluid">
+
+
+
+					<p:outputLabel value="Nome Completo: *" />
+					<p:inputText maxlength="50"
+						value="#{visitanteBean.visitante.nomeCompleto}" required="true"
+						requiredMessage="O campo Nome é obrigatório"
+						style="text-transform:uppercase" />
+
+
+					<p:outputLabel value="CPF: *" />
+					<p:inputText maxlength="50" value="#{visitanteBean.visitante.cpf}"
+						required="true" requiredMessage="O campo Nome é obrigatório" />
+
+
+
+
+
+					<p:outputLabel value="RG: " />
+					<p:inputText maxlength="50" value="#{visitanteBean.visitante.rg}"
+						requiredMessage="O campo Nome é obrigatório" />
+
+
+
+
+					<p:outputLabel for="estado" value="UF:" />
+					<p:selectOneMenu id="estado" filter="true" required="true"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{visitanteBean.visitante.estado}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione um estado" />
+						<f:selectItems value="#{visitanteBean.estados}" var="estado"
+							itemValue="#{estado}" itemLabel="#{estado.sigla}" />
+						<p:ajax listener="#{visitanteBean.popular}"
+							update=":formNovoVisitante:cidade" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="cidade" value="Municipio:" />
+					<p:selectOneMenu id="cidade" filter="true" required="true"
+						requiredMessage="O campo Municipio é obrigatório"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{visitanteBean.visitante.municipio}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma cidade" />
+						<f:selectItems value="#{visitanteBean.cidades}" var="cidade"
+							itemValue="#{cidade}" itemLabel="#{cidade.nome}" />
+					</p:selectOneMenu>
+
+
+				</p:panelGrid>
+
+				<br />
+				<br />
+				<h:panelGrid columns="2" style="margin: 0 auto;">
+					<p:commandButton value="Gravar"
+						styleClass="rounded-button ui-button-success" icon="pi pi-save"
+						actionListener="#{visitanteBean.salvar()}"
+						update=":mensagem :formNovoVisitante:cadastro :formcadastro:cadastro"
+						onclick="PF('dialogoNovoVisitante').hide();" />
+
+				</h:panelGrid>
+
+
+
+
+
+
+
+
+
+			</h:form>
+
+		</p:dialog>
+
+
+
+	</ui:define>
+</ui:composition>
