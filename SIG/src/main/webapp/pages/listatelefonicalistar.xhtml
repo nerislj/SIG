@@ -18,7 +18,7 @@
 	<ui:define name="conteudo">
 		<h:form id="formlista">
 			<p:panel header="Agenda telefonica - Listagem"
-				rendered="#{autenticacaoBean.temPermissoes([1])}">
+				>
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{listaTelefonicaBean.listaTelefonicas}"
 					var="listatelefonica" rows="10"
