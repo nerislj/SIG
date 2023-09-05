@@ -76,8 +76,8 @@ public class FuncionariosBean implements Serializable {
 			listaServidores = servidoresDAO.listar();
 			listaTerceirizados = terceirizados.listar();
 			
-			listaEstagiarioAndServidores = Stream.concat(listaEstagiarios.stream(), listaServidores.stream()).toList();
-			listaTodosFunc = Stream.concat(listaEstagiarioAndServidores.stream(), listaTerceirizados.stream()).toList();
+		//	listaEstagiarioAndServidores = Stream.concat(listaEstagiarios.stream(), listaServidores.stream()).toList();
+		//	listaTodosFunc = Stream.concat(listaEstagiarioAndServidores.stream(), listaTerceirizados.stream()).toList();
 			
 			
 			

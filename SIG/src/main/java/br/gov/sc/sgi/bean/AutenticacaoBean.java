@@ -42,19 +42,21 @@ public class AutenticacaoBean {
 	@PostConstruct
 	public void iniciar() {
 		System.out.println("aqui atenticacaobean");
+
 		usuario = new Usuario();
 		usuario.setPessoa(new PessoaFisica());
+
 	}
 
 	public void autenticar() {
 		try {
+
 			UsuarioDAO usuarioDAO = new UsuarioDAO();
 			usuarioLogado = usuarioDAO.autenticar(usuario.getPessoa().getCpf(), usuario.getSenha());
-			
+
 			HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 			sessao.setAttribute("usuario", usuarioLogado);
-			
-			
+
 			if (usuarioLogado == null) {
 				Messages.addGlobalError("CPF e/ou senha incorretos");
 				return;
@@ -67,7 +69,9 @@ public class AutenticacaoBean {
 			}
 
 			Faces.redirect("./pages/dashboard.xhtml");
+
 		} catch (IOException erro) {
+
 			erro.printStackTrace();
 			Messages.addGlobalError(erro.getMessage());
 		}
@@ -79,23 +83,20 @@ public class AutenticacaoBean {
 		sessao.invalidate();
 
 		try {
-		
+
 			Faces.redirect("./pages/dashboard.xhtml");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return null;
-		
-	
 
 	}
 
 	public boolean temPermissoes(List<Long> permissoes) {
 		for (Long permissao : permissoes) {
-			
-		
+
 			if (usuarioLogado.getNivelAcesso().getCodigo() == permissao.longValue()) {
 				return true;
 			}
@@ -103,11 +104,10 @@ public class AutenticacaoBean {
 
 		return false;
 	}
-	
+
 	public boolean temPermissoesPorUnidadeCodigo(List<Long> permissoes) {
 		for (Long permissao : permissoes) {
-			
-		
+
 			if (usuarioLogado.getUnidade().getCodigo() == permissao.longValue()) {
 				return true;
 			}

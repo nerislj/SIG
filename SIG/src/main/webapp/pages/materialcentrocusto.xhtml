@@ -14,7 +14,7 @@
 			<p:panel header="Centro de Custo - Listagem">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{materialCentroCustoBean.listaCusto}"
-					var="material" rows="10" >
+					var="material" rows="10">
 					<f:facet name="header">
 						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
 							actionListener="#{materialCentroCustoBean.novo()}"
@@ -23,14 +23,6 @@
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 						</p:commandButton>
 					</f:facet>
-
-					<p:column headerText="Unidade"
-						filterBy="#{material.unidade.unidadeNome}"
-						sortBy="#{material.unidade.unidadeNome}"
-						style="width: 200px; text-align: center;">
-						<h:outputText value="#{material.unidade.unidadeNome}" />
-
-					</p:column>
 
 					<p:column headerText="Codigo" sortBy="#{material.centroCog}"
 						filterBy="#{material.centroCog}"
@@ -44,12 +36,22 @@
 						<h:outputText value="#{material.centroSigla}" />
 					</p:column>
 
+					<p:column headerText="Unidade"
+						filterBy="#{material.unidade.unidadeNome}"
+						sortBy="#{material.unidade.unidadeNome}"
+						style="width: 200px; text-align: center;">
+						<h:outputText value="#{material.unidade.unidadeNome}" />
+
+					</p:column>
+
+
+
 					<p:column headerText="Opções"
 						style="width: 70px; text-align: center;">
 
 
 						<p:commandButton icon="pi pi-pencil"
-										styleClass="rounded-button ui-button-secondary"
+							styleClass="rounded-button ui-button-secondary"
 							actionListener="#{materialCentroCustoBean.editar}"
 							update=":formcadastro:cadastro :formlista:lista"
 							oncomplete="PF('dialogo').show();">

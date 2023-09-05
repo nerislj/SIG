@@ -25,7 +25,7 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 
 		<h:form id="formcadastro">
-			<p:panel header="Visitante - Cadastro">
+			<p:panel header="Visitante - Cadastro" rendered="#{autenticacaoBean.temPermissoes([1,25,96])}">
 
 				<p:panelGrid id="cadastro" columns="4" layout="flex"
 					columnClasses="col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4, col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4"
@@ -36,11 +36,11 @@ body .ui-panelgrid .ui-panelgrid-cell {
 					<p:outputLabel value="Nome Completo: *" />
 					<p:inputText maxlength="50"
 						value="#{visitanteBean.visitante.nomeCompleto}" required="true"
-						requiredMessage="O campo Nome é obrigatório" />
+						requiredMessage="O campo Nome é obrigatório" style="text-transform:uppercase"/>
 
 
 					<p:outputLabel value="CPF: *" />
-					<p:inputText maxlength="50"
+					<p:inputText maxlength="11" size="10"
 						value="#{visitanteBean.visitante.cpf}" required="true"
 						requiredMessage="O campo Nome é obrigatório" />
 
@@ -49,7 +49,7 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 
 					<p:outputLabel value="RG: " />
-					<p:inputText maxlength="50"
+					<p:inputText maxlength="11" size="10"
 						value="#{visitanteBean.visitante.rg}"
 						requiredMessage="O campo Nome é obrigatório" />
 
@@ -98,8 +98,7 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 
 		<h:form id="formlista">
-			<p:panel header="Lista visitantes"
-				rendered="#{autenticacaoBean.temPermissoes([1])}">
+			<p:panel header="Lista visitantes">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{visitanteBean.listaVisitantes}"
 					var="visitante" rows="10" stripedRows="true">

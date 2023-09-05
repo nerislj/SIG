@@ -138,9 +138,6 @@ $(window).bind('beforeunload', function() {
 								<li><a href="#"><i class="pi pi-fw pi-plus"></i> <b>Cadastros</b>
 								</a>
 									<ul>
-										<li><a
-											href="/Sistema_Integrado_de_Gestão/pages/listatelefonica.xhtml">Lista
-												Telefônica</a></li>
 
 										<li><a
 											href="/Sistema_Integrado_de_Gestão/pages/estado.xhtml">Estado</a></li>
@@ -495,24 +492,50 @@ $(window).bind('beforeunload', function() {
 										class="pi pi-phone"></i> <b>Lista Telefônica</b></a></li>
 							</h:panelGroup>
 
+							<h:panelGroup
+								rendered="#{autenticacaoBean.temPermissoes([1,21])}">
 
-							<h:panelGroup rendered="#{autenticacaoBean.temPermissoes([1])}">
+								<li><a href="#"><i class="pi pi-book"></i> <b>Gestão
+											Lista Telefônica</b></a>
+									<ul>
+
+										<li><a
+											href="/Sistema_Integrado_de_Gestão/pages/listatelefonica.xhtml">Lista
+												Telefônica</a></li>
+
+										<li><a
+											href="/Sistema_Integrado_de_Gestão/pages/funcaolistatelefonica.xhtml">Função
+												Telefônica</a></li>
+
+									</ul></li>
+
+							</h:panelGroup>
+
+
+							<h:panelGroup
+								rendered="#{autenticacaoBean.temPermissoes([1,25,96])}">
 								<li><a href="#"><i class="pi pi-wallet"></i> <b>Visitas</b></a>
 									<ul>
+
 										<li><a
-											href="/Sistema_Integrado_de_Gestão/pages/visita/novaetiqueta.xhtml">Nova
-												Etiqueta</a></li>
+											href="/Sistema_Integrado_de_Gestão/pages/visita/visitantes.xhtml">Cadastro
+												Visitantes</a></li>
+										<li><a
+											href="/Sistema_Integrado_de_Gestão/pages/visita/categoria.xhtml">Cadastro
+												Categoria</a></li>
+										<li><a
+											href="/Sistema_Integrado_de_Gestão/pages/visita/destino.xhtml">Cadastro
+												Destino</a></li>
+										<li><a
+											href="/Sistema_Integrado_de_Gestão/pages/visita/novaetiqueta.xhtml">Gerar
+												Nova Etiqueta</a></li>
 										<li><a
 											href="/Sistema_Integrado_de_Gestão/pages/visita/declaracao.xhtml">Gerar
 												Declaração</a></li>
 										<li><a
-											href="/Sistema_Integrado_de_Gestão/pages/visita/categoria.xhtml">Categoria</a></li>
-										<li><a
-											href="/Sistema_Integrado_de_Gestão/pages/visita/destino.xhtml">Destino</a></li>
-										<li><a
-											href="/Sistema_Integrado_de_Gestão/pages/visita/visitas.xhtml">Visitas</a></li>
-										<li><a
-											href="/Sistema_Integrado_de_Gestão/pages/visita/visitantes.xhtml">Visitantes</a></li>
+											href="/Sistema_Integrado_de_Gestão/pages/visita/visitas.xhtml">Lista
+												de Visitas</a></li>
+
 									</ul></li>
 							</h:panelGroup>
 

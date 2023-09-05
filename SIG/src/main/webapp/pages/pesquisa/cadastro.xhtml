@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modeloModuloPesquisa.xhtml">
+
+	<ui:define name="conteudo">
+
+		<style>
+/* reset on the showcase style*/
+body .ui-panelgrid .ui-panelgrid-cell {
+	background-color: transparent;
+}
+
+/* example use of styles for your form */
+.my-heading-row {
+	background-color: #c0c0c0;
+	font-weight: bold;
+}
+</style>
+
+
+
+		<h:form id="formcadastro">
+			<p:panel header="Categoria - Cadastro">
+
+				<p:panelGrid id="cadastro" columns="2" style="margin: 0 auto;" styleClass="ui-noborder" layout="tabular">
+
+
+
+					<p:outputLabel value="Unidade: *" />
+					<p:inputText maxlength="50"
+						value="#{categoriaBean.categoriaVisita.categoria}" required="true"
+						requiredMessage="O campo Nome é obrigatório" />
+						
+							<p:outputLabel value="Tipo Credenciado: *" />
+					<p:inputText maxlength="50"
+						value="#{categoriaBean.categoriaVisita.categoria}" required="true"
+						requiredMessage="O campo Nome é obrigatório" />
+						
+							<p:outputLabel value="Credenciado: *" />
+					<p:inputText maxlength="50"
+						value="#{categoriaBean.categoriaVisita.categoria}" required="true"
+						requiredMessage="O campo Nome é obrigatório" />
+
+
+
+
+				</p:panelGrid>
+
+				<br />
+				<br />
+				<h:panelGrid columns="2" style="margin: 0 auto;">
+					<p:commandButton value="Gerar QRCode"
+						styleClass="rounded-button ui-button-success" icon="pi pi-save"
+						actionListener="#{categoriaBean.salvar()}"
+						update=":mensagem :formcadastro:cadastro" />
+
+				</h:panelGrid>
+
+			</p:panel>
+		</h:form>
+		<br />
+
+
+
+
+	</ui:define>
+</ui:composition>

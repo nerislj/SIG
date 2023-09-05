@@ -18,7 +18,7 @@
 	<ui:define name="conteudo">
 		<h:form id="formlista">
 			<p:panel header="Agenda telefonica - Listagem"
-				rendered="#{autenticacaoBean.temPermissoes([1])}">
+				rendered="#{autenticacaoBean.temPermissoes([1,21])}">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{listaTelefonicaBean.listaTelefonicas}"
 					var="listatelefonica" rows="10">
@@ -52,6 +52,13 @@
 						filterBy="#{listatelefonica.pessoa.nomeCompleto}"
 						style="width: 70%; text-align: center;" filterMatchMode="contains">
 						<h:outputText value="#{listatelefonica.pessoa.nomeCompleto}" />
+					</p:column>
+					
+					<p:column headerText="Função"
+						sortBy="#{listatelefonica.funcao.funcao}"
+						filterBy="#{listatelefonica.funcao.funcao}"
+						style="width: 30%; text-align: center;" filterMatchMode="contains">
+						<h:outputText value="#{listatelefonica.funcao.funcao}" />
 					</p:column>
 
 					<p:column headerText="Telefone" sortBy="#{listatelefonica.telSet}"
@@ -113,6 +120,18 @@
 						<f:selectItems value="#{listaTelefonicaBean.pessoas}"
 							var="pessoas" itemValue="#{pessoas}"
 							itemLabel="#{pessoas.cpf} - #{pessoas.nomeCompleto}" />
+					</p:selectOneMenu>
+					
+					
+					<p:outputLabel for="funcao" value="Função: " />
+					<p:selectOneMenu id="funcao" filter="true" required="true"
+						requiredMessage="O campo Função é obrigatório"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{listaTelefonicaBean.listaTelefonica.funcao}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione a função" />
+						<f:selectItems value="#{listaTelefonicaBean.listaFuncaoListaTelefonica}" var="funcao"
+							itemValue="#{funcao}" itemLabel="#{funcao.funcao}" />
 					</p:selectOneMenu>
 
 					<p:outputLabel for="unidade" value="Unidade " />

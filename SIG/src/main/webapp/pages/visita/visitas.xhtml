@@ -39,7 +39,7 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 		<h:form id="formlista">
 			<p:panel header="Visitas cadastradas"
-				rendered="#{autenticacaoBean.temPermissoes([1])}">
+				rendered="#{autenticacaoBean.temPermissoes([1,25,96])}">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{visitaBean.listaVisitas}" var="v"
 					rows="10" stripedRows="true">
