@@ -31,10 +31,19 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 
 
-					<p:outputLabel value="Unidade: *" />
-					<p:inputText maxlength="50"
-						value="#{categoriaBean.categoriaVisita.categoria}" required="true"
-						requiredMessage="O campo Nome é obrigatório" />
+					<p:outputLabel value="Cidade: *" />
+					
+					<p:selectOneMenu id="cidade" filter="true"
+						requiredMessage="O campo Unidade é obrigatório"
+						converter="omnifaces.SelectItemsConverter"
+						value="#{pesquisaBean.pesquisa.municipio}">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma cidade" />
+						<f:selectItems value="#{pesquisaBean.municipios}"   
+							var="cidade" itemValue="#{cidade}"
+							itemLabel="#{cidade.nome}" />
+						
+					</p:selectOneMenu>
 						
 							<p:outputLabel value="Tipo Credenciado: *" />
 					<p:inputText maxlength="50"

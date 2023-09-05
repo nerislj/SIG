@@ -13,6 +13,10 @@ import org.omnifaces.util.Messages;
 
 import br.gov.sc.pesquisa.dao.PesquisaDAO;
 import br.gov.sc.pesquisa.domain.Pesquisa;
+import br.gov.sc.sgi.dao.CidadeDAO;
+import br.gov.sc.sgi.dao.UnidadeDAO;
+import br.gov.sc.sgi.domain.Cidade;
+import br.gov.sc.sgi.domain.Unidade;
 
 @SuppressWarnings("serial")
 @ManagedBean
@@ -21,6 +25,8 @@ public class PesquisaBean implements Serializable {
 
 	private Pesquisa pesquisa;
 	private List<Pesquisa> listaPesquisas;
+	
+	private List<Cidade> municipios;
 
 	@PostConstruct
 	public void listar() {
@@ -28,6 +34,10 @@ public class PesquisaBean implements Serializable {
 
 			PesquisaDAO pesquisaDAO = new PesquisaDAO();
 			listaPesquisas = pesquisaDAO.listar();
+			
+			CidadeDAO unidadeDAO = new CidadeDAO();
+			
+			municipios = unidadeDAO.buscarPorEstadoNome("SC");
 
 			pesquisa = new Pesquisa();
 		} catch (RuntimeException erro) {
@@ -90,5 +100,27 @@ public class PesquisaBean implements Serializable {
 	public void setListaPesquisas(List<Pesquisa> listaPesquisas) {
 		this.listaPesquisas = listaPesquisas;
 	}
+
+	
+
+	
+
+	public List<Cidade> getMunicipios() {
+		return municipios;
+	}
+
+	public void setMunicipios(List<Cidade> municipios) {
+		this.municipios = municipios;
+	}
+
+	public Pesquisa getPesquisa() {
+		return pesquisa;
+	}
+
+	public void setPesquisa(Pesquisa pesquisa) {
+		this.pesquisa = pesquisa;
+	}
+	
+	
 
 }

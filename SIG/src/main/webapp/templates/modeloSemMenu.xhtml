@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+
+
+	<style>
+button.ui-button {
+	margin-right: .1rem;
+}
+
+body .ui-button.rounded-button.ui-button-icon-only {
+	border-radius: 50%;
+	height: 1.757rem !important;
+}
+
+body .ui-button.ui-button-icon-only {
+	width: 1.757rem !important;
+}
+
+body .ui-button.ui-button-icon-only .ui-icon {
+	position: absolute;
+	top: 55% !important;
+	left: 55% !important;
+	margin-top: -0.5rem;
+	margin-left: -0.5rem;
+	/* size: auto; */
+	font-size: 13px !important;
+}
+</style>
+
+
+
+
+
+	<script>
+$(document).ready(function(){
+    console.log("ready is called");
+    //PF('statusDialog').hide()
+    $('#nonAjaxLoad').hide();
+});
+
+$(window).bind('beforeunload', function() {
+     console.log("bind is called");
+    // PF('statusDialog').show()
+    $('#nonAjaxLoad').show(); 
+});
+
+
+</script>
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Sistema Integrado de Gestão - DETRAN/SC</title>
+
+	<h:outputStylesheet library="css" name="primeflex.css" />
+	<h:outputStylesheet library="css" name="estilos.css" />
+	<h:outputStylesheet library="css" name="menu.css" />
+	<h:outputScript library="js" name="scripts.js" />
+	<h:outputScript library="js" name="jquery.maskMoney.js" />
+	<h:outputScript library="js" name="menu.js" />
+
+</h:head>
+
+<h:body>
+
+	<p:ajaxStatus styleClass="ajax-status" onsuccess="configurarMoeda()">
+
+
+		<f:facet name="start">
+			<p:graphicImage library="images" name="loading.gif"
+				styleClass="loading" />
+		</f:facet>
+		<f:facet name="complete">
+			<h:outputText value="" />
+		</f:facet>
+	</p:ajaxStatus>
+
+	<p:growl id="mensagem" life="8000" />
+
+
+
+	<div id="geral">
+		<div id="topo" class="divTopo">
+			<p:graphicImage library="images" name="sistema.png"
+				styleClass="imagemCentralizada" />
+		</div>
+		<div id="nonAjaxLoad">
+			<p:graphicImage library="images" name="loading.gif"
+				styleClass="loading" />
+
+		</div>
+
+
+		<div class="card">
+
+			<div class="grid sample-layout">
+
+				<h:form id="formCabe" class="col-12">
+
+
+					
+
+				</h:form>
+
+				
+				<div class="col-12 md:col-12 col-nogutter">
+					<div class="grid">
+
+						<div class="col-12">
+
+
+							<div id="conteudo">
+
+
+
+								<ui:insert name="conteudo" />
+
+							</div>
+
+
+						</div>
+					</div>
+				</div>
+
+
+				<div class="grid flex-column" style="margin: auto; color: #495057">
+					<div class="col-12">
+						<div class="box copyright">Desenvolvimento: DETRAN/SC -
+							Departamento Estadual de Trânsito, v2.0</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+
+
+		<div id="cabecalho" class="divCabecalho"></div>
+
+
+
+
+		<p:dialog header="Alterar Senha" widgetVar="alterasenha"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="formalterasenha">
+				<h:panelGrid id="cadastro" columns="1">
+
+					<p:outputLabel value="Usuário: " rendered="false" />
+					<p:selectOneMenu value="#{autenticacaoBean.usuarioLogado}"
+						converter="omnifaces.SelectItemsConverter" required="true"
+						requiredMessage="O campo Setor Abertura é obrigatório"
+						rendered="false">
+						<f:selectItem
+							itemLabel="#{autenticacaoBean.usuarioLogado.pessoa.nomeCompleto}"
+							itemValue="#{autenticacaoBean.usuarioLogado}" rendered="false" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Informe uma senha de 4 a 15 caracteres."
+						style="background: #db8a8a; color: #000000" />
+
+
+					<p:outputLabel for="senha" value="Senha:" />
+					<p:password id="senha" maxlength="15" size="30"
+						value="#{autenticacaoBean.usuarioLogado.senha}" feedback="true"
+						promptLabel="Favor inserir nova senha." weakLabel="Fraco"
+						goodLabel="Normal" strongLabel="Forte" required="true"
+						match="confirmaSenha"
+						requiredMessage="O campo Senha é obrigatório."
+						validatorMessage="Informe uma senha de 4 a 15 caracteres.">
+						<f:validateLength minimum="4" maximum="15" />
+					</p:password>
+
+					<p:outputLabel for="confirmaSenha" value="Confirmação: " />
+					<p:password id="confirmaSenha" maxlength="15" size="30"
+						required="true" onblur="#{usuarioBean}"
+						validatorMessage="Os valore digitados não são iguais." />
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{autenticacaoBean.alterarSenha}"
+						update=":mensagem formalterasenha" />
+					<p:commandButton value="Fechar"
+						oncomplete="PF('alterasenha').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+
+
+
+	</div>
+
+	<script>
+			function configurarMoeda() {
+				$(".moeda").maskMoney({ decimal: ",", thousands: ".", allowZero: true });
+			}
+			
+			$(document).ready(function() {
+				configurarMoeda();
+			});
+		</script>
+
+
+</h:body>
+</html>
+
+
+
+
+
+
+

@@ -11,6 +11,8 @@ import br.gov.sc.sgi.domain.Usuario;
 
 @SuppressWarnings("serial")
 public class AutenticacaoListener implements PhaseListener {
+	
+	private Usuario usuarioLogado;
 
 	@Override
 	public void afterPhase(PhaseEvent event) {
@@ -26,7 +28,13 @@ public class AutenticacaoListener implements PhaseListener {
 				
 				Faces.navigate("/pages/pesquisa/cadastro.xhtml");
 			
-			} 
+			} else if (Faces.getRequestURL().contains("/pages/listatelefonicalistarExterno.xhtml")) {
+				
+				usuarioLogado = new Usuario();
+				
+				Faces.navigate("/pages/listatelefonicalistarExterno.xhtml");
+			}
+			
 			
 			//OU PÁGINA QUE EXIGE AUTENTICAÇÃO
 			else {
@@ -52,6 +60,14 @@ public class AutenticacaoListener implements PhaseListener {
 	@Override
 	public PhaseId getPhaseId() {
 		return PhaseId.RESTORE_VIEW;
+	}
+
+	public Usuario getUsuarioLogado() {
+		return usuarioLogado;
+	}
+
+	public void setUsuarioLogado(Usuario usuarioLogado) {
+		this.usuarioLogado = usuarioLogado;
 	}
 
 }

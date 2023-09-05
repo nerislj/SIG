@@ -133,8 +133,10 @@ public class ListaTelefonicaBean implements Serializable {
 		try {
 			System.out.println("AQUI ListaTelefonica BEAN");
 
+			
+			
 			ListaTelefonicaDAO listaTelefonicaDAO = new ListaTelefonicaDAO();
-			setListausuariosCount(listaTelefonicaDAO.listar());
+			listaTelefonicas = listaTelefonicaDAO.listar();
 
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar listar a lista.");
@@ -142,11 +144,7 @@ public class ListaTelefonicaBean implements Serializable {
 		}
 	}
 
-	public void listarListaTelefonica() {
-		ListaTelefonicaDAO listaTelefonicaDAO = new ListaTelefonicaDAO();
-		listaTelefonicas = listaTelefonicaDAO.listar();
-	}
-
+	
 	public void novo() {
 		try {
 			listaTelefonica = new ListaTelefonica();

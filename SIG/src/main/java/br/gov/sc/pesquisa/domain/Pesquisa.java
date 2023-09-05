@@ -11,6 +11,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import br.gov.sc.sgi.domain.Cidade;
+import br.gov.sc.sgi.domain.CredencialEmpTipo;
 import br.gov.sc.sgi.domain.PessoaFisica;
 import br.gov.sc.visita.domain.GenericDomain;
 
@@ -27,8 +28,9 @@ public class Pesquisa extends GenericDomain {
 	@Column(nullable = true)
 	private Date dataHora;
 
-	@Column(length = 255)
-	private String tipoCredenciado;
+	@ManyToOne
+	@JoinColumn(nullable = true)
+	private CredencialEmpTipo credencialTipo;
 	
 	@Column(length = 255)
 	private String credenciado;
@@ -49,14 +51,7 @@ public class Pesquisa extends GenericDomain {
 		this.dataHora = dataHora;
 	}
 
-	public String getTipoCredenciado() {
-		return tipoCredenciado;
-	}
-
-	public void setTipoCredenciado(String tipoCredenciado) {
-		this.tipoCredenciado = tipoCredenciado;
-	}
-
+	
 	public String getCredenciado() {
 		return credenciado;
 	}
