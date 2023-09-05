@@ -11,10 +11,12 @@ import javax.faces.event.ActionEvent;
 
 import org.omnifaces.util.Messages;
 
+import br.gov.sc.sgi.dao.FuncaoListaTelefonicaDAO;
 import br.gov.sc.sgi.dao.ListaTelefonicaDAO;
 import br.gov.sc.sgi.dao.PessoaDAO;
 import br.gov.sc.sgi.dao.SetorDAO;
 import br.gov.sc.sgi.dao.UnidadeDAO;
+import br.gov.sc.sgi.domain.FuncaoListaTelefonica;
 import br.gov.sc.sgi.domain.ListaTelefonica;
 import br.gov.sc.sgi.domain.PessoaFisica;
 import br.gov.sc.sgi.domain.Setor;
@@ -29,11 +31,30 @@ public class ListaTelefonicaBean implements Serializable {
 	private List<ListaTelefonica> listaTelefonicas;
 	private List<PessoaFisica> pessoas;
 	private List<ListaTelefonica> listausuariosCount;
+	private FuncaoListaTelefonica funcaoListaTelefonica;
+	private List<FuncaoListaTelefonica> listaFuncaoListaTelefonica;
 	private Setor setor;
 	private List<Setor> listSetor;
 	private List<Setor> setores;
 	private List<Unidade> Unidades;
 	private Unidade unidade;
+	
+
+	public FuncaoListaTelefonica getFuncaoListaTelefonica() {
+		return funcaoListaTelefonica;
+	}
+
+	public void setFuncaoListaTelefonica(FuncaoListaTelefonica funcaoListaTelefonica) {
+		this.funcaoListaTelefonica = funcaoListaTelefonica;
+	}
+
+	public List<FuncaoListaTelefonica> getListaFuncaoListaTelefonica() {
+		return listaFuncaoListaTelefonica;
+	}
+
+	public void setListaFuncaoListaTelefonica(List<FuncaoListaTelefonica> listaFuncaoListaTelefonica) {
+		this.listaFuncaoListaTelefonica = listaFuncaoListaTelefonica;
+	}
 
 	public List<Setor> getListSetor() {
 		return listSetor;
@@ -135,6 +156,9 @@ public class ListaTelefonicaBean implements Serializable {
 
 			UnidadeDAO unidadeDAO = new UnidadeDAO();
 			Unidades = unidadeDAO.listar();
+			
+			FuncaoListaTelefonicaDAO funcaoListaTelefonicaDAO = new FuncaoListaTelefonicaDAO();
+			listaFuncaoListaTelefonica = funcaoListaTelefonicaDAO.listar();
 
 			setores = new ArrayList<>();
 
@@ -188,6 +212,9 @@ public class ListaTelefonicaBean implements Serializable {
 
 			SetorDAO setorDAO = new SetorDAO();
 			setores = setorDAO.listar();
+			
+			FuncaoListaTelefonicaDAO funcaoListaTelefonicaDAO = new FuncaoListaTelefonicaDAO();
+			listaFuncaoListaTelefonica = funcaoListaTelefonicaDAO.listar();
 
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar buscar um item.");
@@ -222,6 +249,9 @@ public class ListaTelefonicaBean implements Serializable {
 			erro.printStackTrace();
 		}
 	}
+	
+	
+	
 
 	public String removeAcentos(String s) {
 		if (s == null) {

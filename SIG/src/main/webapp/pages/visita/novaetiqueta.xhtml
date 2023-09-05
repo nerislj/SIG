@@ -45,7 +45,7 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 
 		<h:form id="formcadastro">
-			<p:panel header="Visita - Cadastro">
+			<p:panel header="Visita - Cadastro" rendered="#{autenticacaoBean.temPermissoes([1,25,96])}">
 
 				<p:fieldset legend="Dados do visitante">
 					<p class="m-0">
@@ -189,8 +189,7 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 
 		<h:form id="formlista">
-			<p:panel header="Visitas cadastradas"
-				rendered="#{autenticacaoBean.temPermissoes([1])}">
+			<p:panel header="Visitas cadastradas">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{visitaBean.listaVisitas}" var="v"
 					rows="1" stripedRows="true">
@@ -343,16 +342,16 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 
 					<p:outputLabel value="CPF: *" />
-					<p:inputText maxlength="50" value="#{visitanteBean.visitante.cpf}"
-						required="true" requiredMessage="O campo Nome é obrigatório" />
+					<p:inputText maxlength="11" size="10" value="#{visitanteBean.visitante.cpf}"
+						required="true" requiredMessage="O campo CPF é obrigatório" />
 
 
 
 
 
 					<p:outputLabel value="RG: " />
-					<p:inputText maxlength="50" value="#{visitanteBean.visitante.rg}"
-						requiredMessage="O campo Nome é obrigatório" />
+					<p:inputText maxlength="11" size="10" value="#{visitanteBean.visitante.rg}"
+						requiredMessage="O campo RG é obrigatório" />
 
 
 

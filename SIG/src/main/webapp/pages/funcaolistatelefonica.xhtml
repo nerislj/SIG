@@ -25,30 +25,25 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 
 		<h:form id="formcadastro">
-			<p:panel header="Categoria - Cadastro" rendered="#{autenticacaoBean.temPermissoes([1,25,96])}">
+			<p:panel header="Funções - Cadastro">
 
 				<p:panelGrid id="cadastro" columns="4" layout="flex"
 					columnClasses="col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4, col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4"
 					contentStyleClass="ui-fluid">
-
-
-
-					<p:outputLabel value="Nome: *" />
+		
+						<p:outputLabel value="Função: *" />
 					<p:inputText maxlength="50"
-						value="#{categoriaBean.categoriaVisita.categoria}" required="true"
-						requiredMessage="O campo Nome é obrigatório" />
-
-
-
+						value="#{funcaoListaTelefonicaBean.funcaoListaTelefonica.funcao}" required="true"
+						requiredMessage="O campo Função é obrigatório" />
 
 				</p:panelGrid>
 
 				<br />
 				<br />
 				<h:panelGrid columns="2" style="margin: 0 auto;">
-					<p:commandButton value="Gravar"
+					<p:commandButton value="salvar"
 						styleClass="rounded-button ui-button-success" icon="pi pi-save"
-						actionListener="#{categoriaBean.salvar()}"
+						actionListener="#{funcaoListaTelefonicaBean.salvar()}"
 						update=":mensagem :formcadastro:cadastro :formlista:lista" />
 
 				</h:panelGrid>
@@ -59,16 +54,16 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 
 		<h:form id="formlista">
-			<p:panel header="Lista visitantes"
+			<p:panel header="Lista de funções"
 				>
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
-					paginator="true" value="#{categoriaBean.listaCategoriaVisitas}"
-					var="cat" rows="10" stripedRows="true">
+					paginator="true" value="#{funcaoListaTelefonicaBean.listaFuncaoListaTelefonica}"
+					var="funcao" rows="10" stripedRows="true">
 
 
-					<p:column headerText="Nome" sortBy="#{cat.categoria}"
-						filterBy="#{cat.categoria}">
-						<h:outputText value="#{cat.categoria}" />
+					<p:column headerText="Função" sortBy="#{funcao.funcao}"
+						filterBy="#{funcao.funcao}" style="text-align: center;" filterMatchMode="contains">
+						<h:outputText value="#{funcao.funcao}" />
 					</p:column>
 
 					
@@ -78,23 +73,23 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 						<p:commandButton icon="pi pi-pencil"
 							styleClass="rounded-button ui-button-secondary"
-							actionListener="#{categoriaBean.editar}"
+							actionListener="#{funcaoListaTelefonicaBean.editar}"
 							update=":formcadastro:cadastro">
-							<f:attribute name="categoriaVisitaSelecionado"
-								value="#{cat}" />
+							<f:attribute name="funcaoSelecionada"
+								value="#{funcao}" />
 							<f:actionListener
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 						</p:commandButton>
 
 						<p:commandButton icon="pi pi-trash"
 							styleClass="rounded-button ui-button-danger"
-							actionListener="#{categoriaBean.excluir}"
+							actionListener="#{funcaoListaTelefonicaBean.excluir}"
 							update=":mensagem :formlista:lista">
 							<p:confirm header="Confirmação"
 								message="Deseja excluir a categoria?"
 								icon="pi pi-exclamation-triangle" />
-							<f:attribute name="categoriaVisitaSelecionado"
-								value="#{cat}" />
+							<f:attribute name="funcaoSelecionada"
+								value="#{funcao}" />
 						</p:commandButton>
 
 

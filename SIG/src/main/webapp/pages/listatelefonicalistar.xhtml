@@ -17,8 +17,7 @@
 
 	<ui:define name="conteudo">
 		<h:form id="formlista">
-			<p:panel header="Agenda telefonica - Listagem"
-				rendered="#{autenticacaoBean.temPermissoes([1])}">
+			<p:panel header="Agenda telefonica - Listagem">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{listaTelefonicaBean.listaTelefonicas}"
 					var="listatelefonica" rows="10"
@@ -40,7 +39,7 @@
 					<p:column headerText="Sigla SGPE"
 						sortBy="#{listatelefonica.setor.setor}"
 						filterBy="#{listatelefonica.setor.setor}"
-						style="width: 12%; text-align: center;" filterMatchMode="contains">
+						style="width: 15%; text-align: center;" filterMatchMode="contains">
 						<h:outputText value="#{listatelefonica.setor.setor}" />
 					</p:column>
 
@@ -48,15 +47,22 @@
 						sortBy="#{listatelefonica.setor.setorNome}"
 						filterMatchMode="contains"
 						filterBy="#{listatelefonica.setor.setorNome}"
-						style="width: 35%; text-align: center;">
+						style="width: 30%; text-align: center;">
 						<h:outputText value="#{listatelefonica.setor.setorNome}" />
 					</p:column>
 
 					<p:column headerText="Nome"
 						sortBy="#{listatelefonica.pessoa.nomeCompleto}"
 						filterBy="#{listatelefonica.pessoa.nomeCompleto}"
-						style="width: 70%; text-align: center;" filterMatchMode="contains">
+						style="width: 50%; text-align: center;" filterMatchMode="contains">
 						<h:outputText value="#{listatelefonica.pessoa.nomeCompleto}" />
+					</p:column>
+					
+					<p:column headerText="Função"
+						sortBy="#{listatelefonica.funcao.funcao}"
+						filterBy="#{listatelefonica.funcao.funcao}"
+						style="width: 30%; text-align: center;" filterMatchMode="contains">
+						<h:outputText value="#{listatelefonica.funcao.funcao}" />
 					</p:column>
 
 					<p:column headerText="Telefone" sortBy="#{listatelefonica.telSet}"

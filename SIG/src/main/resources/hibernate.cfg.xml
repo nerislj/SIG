@@ -96,6 +96,7 @@
 		<mapping class="br.gov.sc.sgi.domain.Usuario" />
 		<mapping class="br.gov.sc.sgi.domain.UsuarioNivelAcesso" />
 		<mapping class="br.gov.sc.sgi.domain.UsuarioStatus" />
+		<mapping class="br.gov.sc.sgi.domain.FuncaoListaTelefonica" />
 
 		<mapping class="br.gov.sc.geapo.domain.Material" />
 		<mapping class="br.gov.sc.geapo.domain.MaterialEntrada" />

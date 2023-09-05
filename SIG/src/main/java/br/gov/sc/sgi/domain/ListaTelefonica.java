@@ -21,9 +21,21 @@ public class ListaTelefonica extends GenericDomain {
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Setor setor;
+	
+	@ManyToOne
+	@JoinColumn(nullable = false)
+	private FuncaoListaTelefonica funcao;
 
 	@Column(length = 15)
 	private String telSet;
+
+	public FuncaoListaTelefonica getFuncao() {
+		return funcao;
+	}
+
+	public void setFuncao(FuncaoListaTelefonica funcao) {
+		this.funcao = funcao;
+	}
 
 	public PessoaFisica getPessoa() {
 		return pessoa;
