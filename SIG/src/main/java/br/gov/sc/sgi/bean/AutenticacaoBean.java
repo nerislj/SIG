@@ -22,6 +22,7 @@ import br.gov.sc.sgi.domain.Usuario;
 public class AutenticacaoBean {
 	private Usuario usuario;
 	private Usuario usuarioLogado;
+	
 
 	public Usuario getUsuario() {
 		return usuario;
@@ -52,7 +53,10 @@ public class AutenticacaoBean {
 		try {
 
 			UsuarioDAO usuarioDAO = new UsuarioDAO();
+
 			usuarioLogado = usuarioDAO.autenticar(usuario.getPessoa().getCpf(), usuario.getSenha());
+
+			System.out.println(usuarioLogado.getPessoa().getNomeCompleto());
 
 			HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 			sessao.setAttribute("usuario", usuarioLogado);
@@ -134,5 +138,7 @@ public class AutenticacaoBean {
 			erro.printStackTrace();
 		}
 	}
+
+	
 
 }

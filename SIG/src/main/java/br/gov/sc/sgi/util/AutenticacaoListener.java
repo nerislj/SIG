@@ -30,7 +30,7 @@ public class AutenticacaoListener implements PhaseListener {
 			
 			} else if (Faces.getRequestURL().contains("/pages/listatelefonicalistarExterno.xhtml")) {
 				
-				usuarioLogado = new Usuario();
+				
 				
 				Faces.navigate("/pages/listatelefonicalistarExterno.xhtml");
 			}

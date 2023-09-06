@@ -17,7 +17,7 @@
 					paginator="true" value="#{listaTelefonicaBean.listaTelefonicas}"
 					var="listatelefonica" rows="10"
 					widgetVar="tabelaListaTelefonicaFilter"
-					filteredValue="#{listaTelefonicaBean.listaTelefonicas}">
+				>
 					<f:facet name="header">
 						<h:outputText value="Pesquisar em todas as colunas: " />
 						<p:inputText id="globalFilter"
@@ -25,7 +25,7 @@
 							style="width:150px" placeholder="Digite ..." />
 					</f:facet>
 
-					<p:column headerText="Unidade" sortBy="#{usuario.unidade.unidade}"
+					<p:column headerText="Unidade" sortBy="#{listatelefonica.unidade.unidade}"
 						filterBy="#{listatelefonica.unidade.unidade}"
 						style="width: 20%; text-align: center;" filterMatchMode="contains">
 						<h:outputText value="#{listatelefonica.unidade.unidade}" />
