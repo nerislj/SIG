@@ -44,13 +44,13 @@ body .ui-panelgrid .ui-panelgrid-cell {
 						<p:panelGrid columns="1" layout="grid">
 
 							<p:dataTable id="listaUnidades"
-								emptyMessage="Nenhum processo encontrado." paginator="true"
-								rowKey="#{unidade}" rows="10"
+								emptyMessage="Nenhum Posto de atendimento encontrado."
+								paginator="true" rowKey="#{unidade}" rows="10"
 								value="#{unidadeCiretranCitranBean.listaUnidadeCiretranCitran}"
 								var="unidade" stripedRows="true" rowExpandMode="single">
 
 								<f:facet name="header">
-									<h3>Unidades x Funcionários</h3>
+									<h3>Unidades e Funcionários</h3>
 
 									<p:commandButton value="Nova Unidade"
 										styleClass="rounded-button ui-button-success"
@@ -68,12 +68,6 @@ body .ui-panelgrid .ui-panelgrid-cell {
 									update="tabView:formularioEmpresas:listaUnidades" />
 								<p:column style="width:1%">
 									<p:rowToggler />
-								</p:column>
-
-
-								<p:column headerText="Ciretran"
-									style="width: 5%; text-align: center;">
-									<h:outputText value="#{unidade.ciretran.nome}" />
 								</p:column>
 
 
@@ -128,7 +122,7 @@ body .ui-panelgrid .ui-panelgrid-cell {
 										<f:setPropertyActionListener
 											target="#{estagiariosBean.unidadeCiretranCitran}"
 											value="#{unidade}" />
-											
+
 
 									</p:commandButton>
 
@@ -193,6 +187,16 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 										<p:column headerText="Ações"
 											style="width: 1%; text-align: center;">
+
+											<p:commandButton icon="pi pi-pencil"
+												styleClass="rounded-button ui-button-info"
+												actionListener="#{servidoresBean.editar}"
+												update=":mensagem tabView:formularioEmpresas:listaUnidades">
+												<f:attribute name="servidoresSelecionado"
+													value="#{servidores}" />
+												<f:actionListener
+													type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+											</p:commandButton>
 
 											<p:commandButton icon="pi pi-times"
 												styleClass="rounded-button ui-button-danger"
@@ -400,23 +404,8 @@ body .ui-panelgrid .ui-panelgrid-cell {
 						columnClasses="col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4, col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4"
 						contentStyleClass="ui-fluid">
 
-						<p:outputLabel value="Ciretran: " />
-						<p:selectOneMenu filter="true"
-							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.ciretran}"
-							converter="omnifaces.SelectItemsConverter" required="true"
-							requiredMessage="O campo Ciretran é obrigatório">
-							<f:selectItem noSelectionOption="true"
-								itemLabel="Selecione uma Ciretran" />
-							<f:selectItems value="#{unidadeCiretranCitranBean.listaCiretran}"
-								var="ciretran" itemValue="#{ciretran}"
-								itemLabel="#{ciretran.nome}" />
-							<p:ajax listener="#{unidadeCiretranCitranBean.popularCITRAN}"
-								update="newUnidade:citran, newUnidade:setor" />
-						</p:selectOneMenu>
 
-
-
-						<p:outputLabel for="citran" value="Ciretran/Citran" />
+						<p:outputLabel for="citran" value="Unidade" />
 						<p:selectOneMenu id="citran" filter="true" required="true"
 							requiredMessage="O campo Municipio é obrigatório"
 							converter="omnifaces.SelectItemsConverter"
@@ -479,7 +468,7 @@ body .ui-panelgrid .ui-panelgrid-cell {
 							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.setor}">
 							<f:selectItem noSelectionOption="true"
 								itemLabel="Selecione um setor" />
-							<f:selectItems value="#{unidadeCiretranCitranBean.setores}"
+							<f:selectItems value="#{unidadeCiretranCitranBean.listasetores}"
 								var="setor" itemValue="#{setor}" itemLabel="#{setor.setorNome}" />
 						</p:selectOneMenu>
 
@@ -1470,23 +1459,10 @@ body .ui-panelgrid .ui-panelgrid-cell {
 						columnClasses="col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4, col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4"
 						contentStyleClass="ui-fluid">
 
-						<p:outputLabel value="Ciretran: " />
-						<p:selectOneMenu filter="true" disabled="true"
-							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.ciretran}"
-							converter="omnifaces.SelectItemsConverter" required="true"
-							requiredMessage="O campo Ciretran é obrigatório">
-							<f:selectItem noSelectionOption="true"
-								itemLabel="Selecione uma Ciretran" />
-							<f:selectItems value="#{unidadeCiretranCitranBean.listaCiretran}"
-								var="ciretran" itemValue="#{ciretran}"
-								itemLabel="#{ciretran.nome}" />
-							<p:ajax listener="#{unidadeCiretranCitranBean.popularCITRAN}"
-								update="unidadeJustView:citran, unidadeJustView:setor" />
-						</p:selectOneMenu>
 
 
 
-						<p:outputLabel for="citran" value="Ciretran/Citran" />
+						<p:outputLabel for="citran" value="Unidade" />
 						<p:selectOneMenu id="citran" filter="true" required="true"
 							disabled="true" requiredMessage="O campo Municipio é obrigatório"
 							converter="omnifaces.SelectItemsConverter"
@@ -1550,7 +1526,7 @@ body .ui-panelgrid .ui-panelgrid-cell {
 							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.setor}">
 							<f:selectItem noSelectionOption="true"
 								itemLabel="Selecione um setor" />
-							<f:selectItems value="#{unidadeCiretranCitranBean.setores}"
+							<f:selectItems value="#{unidadeCiretranCitranBean.listasetores}"
 								var="setor" itemValue="#{setor}" itemLabel="#{setor.setorNome}" />
 						</p:selectOneMenu>
 

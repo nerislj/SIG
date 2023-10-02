@@ -18,12 +18,21 @@ import com.google.gson.annotations.SerializedName;
 import br.gov.sc.sgi.domain.Cidade;
 import br.gov.sc.sgi.domain.Estado;
 import br.gov.sc.sgi.domain.Setor;
+import br.gov.sc.sgi.domain.Unidade;
 
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "funcionariosuf_unidades")
-public class UnidadeCiretranCitran extends GenericDomain {
-	
+public class UnidadeFunc extends GenericDomain {
+
+	@ManyToOne
+	@JoinColumn(nullable = true)
+	private Unidade unidade;
+
+	@ManyToOne
+	@JoinColumn(nullable = false)
+	private Setor setor;
+
 	@Column(length = 10, nullable = true)
 	private String cep;
 
@@ -38,34 +47,35 @@ public class UnidadeCiretranCitran extends GenericDomain {
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Estado estadoEndereco;
-	
+
 	@Column(length = 255, nullable = false)
 	private String horarioAtendimento;
-	
+
 	@Column(length = 255, nullable = false)
 	private String email;
-	
+
 	@Column(length = 255)
 	private String nCircuito;
-	
+
 	@Column(length = 255)
 	private String enderecoIp;
-	
+
 	@Column(length = 255, nullable = false)
 	private String telefone;
 	
-	@ManyToOne
-	@JoinColumn(nullable = false)
-	private Ciretran ciretran;
-	
-	@ManyToOne
-	@JoinColumn(nullable = false)
-	private CiretranCitran ciretranCitran;
-	
-	@ManyToOne
-	@JoinColumn(nullable = false)
-	private Setor setor;
-	
+	/*
+	 * @OneToMany(mappedBy = "unidadeFunc")
+	 * 
+	 * @Fetch(FetchMode.SUBSELECT) private List<Estagiarios> estagiarios;
+	 * 
+	 * @OneToMany(mappedBy = "unidadeFunc")
+	 * 
+	 * @Fetch(FetchMode.SUBSELECT) private List<Servidores> servidores;
+	 * 
+	 * @OneToMany(mappedBy = "unidadeFunc")
+	 * 
+	 * @Fetch(FetchMode.SUBSELECT) private List<Terceirizados> terceirizados;
+	 */
 	
 	
 	
@@ -128,27 +138,14 @@ public class UnidadeCiretranCitran extends GenericDomain {
 		this.email = email;
 	}
 
-	public Ciretran getCiretran() {
-		return ciretran;
+	public Unidade getUnidade() {
+		return unidade;
 	}
 
-	public void setCiretran(Ciretran ciretran) {
-		this.ciretran = ciretran;
+	public void setUnidade(Unidade unidade) {
+		this.unidade = unidade;
 	}
 
-	public CiretranCitran getCiretranCitran() {
-		return ciretranCitran;
-	}
-
-	public void setCiretranCitran(CiretranCitran ciretranCitran) {
-		this.ciretranCitran = ciretranCitran;
-	}
-
-	
-
-	
-
-	
 	public String getnCircuito() {
 		return nCircuito;
 	}
@@ -172,9 +169,5 @@ public class UnidadeCiretranCitran extends GenericDomain {
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
-	
-	
-	
-	
 
 }

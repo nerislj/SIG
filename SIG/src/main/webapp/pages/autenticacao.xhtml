@@ -21,22 +21,23 @@
 	<p:growl id="mensagem" />
 
 
-	
-<body>
-	<div class="section">
-		<h:form>
+
+	<body>
+		<div class="section">
+			<h:form>
 
 
 
-			
-
-	<div class="inputbox">
-				
-				<p:graphicImage library="images" name="sig4.png" styleClass="divLogo" />
-				
 
 
-			<span class="ui-input-icon-left"> <i class="pi pi-id-card"></i>
+				<div class="inputbox">
+
+					<p:graphicImage library="images" name="sig4.png"
+						styleClass="divLogo" />
+
+
+
+					<span class="ui-input-icon-left"> <i class="pi pi-id-card"></i>
 
 						<p:inputText id="cpf" maxlength="11" size="20" placeholder="CPF"
 							required="true" requiredMessage="O campo CPF é obrigatório"
@@ -52,8 +53,9 @@
 
 				</div>
 				<div class="forget"></div>
-				
-					<p:commandButton value="ENTRAR" update=":mensagem" styleClass="rounded-button ui-button-success"
+
+				<p:commandButton value="ENTRAR" update=":mensagem"
+					styleClass="rounded-button ui-button-success"
 					actionListener="#{autenticacaoBean.autenticar}" />
 
 				<div class="register">
@@ -61,21 +63,21 @@
 						Não tem conta? <a href="mailto:intranet@detran.sc.gov.br">Registrar</a>
 					</p>
 				</div>
-				
-			<div class="register" align="center">
+
+				<div class="register" align="center">
 					<p>
-						 <a href="/pages/listatelefonicalistarExterno.xhtml">Lista Telefônica</a>
+						<a href="/listatelefonica">Lista Telefônica</a>
 					</p>
-				</div> 
+				</div>
 
 
 
-				
-		</h:form>
+
+			</h:form>
 		</div>
 	</body>
-	
-	
+
+
 
 
 

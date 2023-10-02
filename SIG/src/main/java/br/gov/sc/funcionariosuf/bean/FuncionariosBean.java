@@ -9,7 +9,6 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.Application;
@@ -33,7 +32,7 @@ import br.gov.sc.funcionariosuf.domain.Estagiarios;
 import br.gov.sc.funcionariosuf.domain.GenericDomain;
 import br.gov.sc.funcionariosuf.domain.Servidores;
 import br.gov.sc.funcionariosuf.domain.Terceirizados;
-import br.gov.sc.funcionariosuf.domain.UnidadeCiretranCitran;
+import br.gov.sc.funcionariosuf.domain.UnidadeFunc;
 import br.gov.sc.sgi.dao.CidadeDAO;
 import br.gov.sc.sgi.dao.EstadoDAO;
 import br.gov.sc.sgi.dao.PessoaDAO;
@@ -55,9 +54,8 @@ public class FuncionariosBean implements Serializable {
 	private List<Terceirizados> listaTerceirizados;
 	private List<GenericDomain> listaEstagiarioAndServidores;
 	private List<GenericDomain> listaTodosFunc;
-	
-	
-	private UnidadeCiretranCitran unidadeCiretranCitran;
+
+	private UnidadeFunc unidadeFunc;
 	private PessoaFisica pessoa;
 	private Estado estado;
 	private List<Estado> Estados;
@@ -67,21 +65,19 @@ public class FuncionariosBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
-			
+
 			TerceirizadosDAO terceirizados = new TerceirizadosDAO();
 			ServidoresDAO servidoresDAO = new ServidoresDAO();
 			EstagiariosDAO estagiariosDAO = new EstagiariosDAO();
 			listaEstagiarios = estagiariosDAO.listar();
-			
 			listaServidores = servidoresDAO.listar();
 			listaTerceirizados = terceirizados.listar();
-			
-		//	listaEstagiarioAndServidores = Stream.concat(listaEstagiarios.stream(), listaServidores.stream()).toList();
-		//	listaTodosFunc = Stream.concat(listaEstagiarioAndServidores.stream(), listaTerceirizados.stream()).toList();
-			
-			
-			
-			
+
+			// listaEstagiarioAndServidores = Stream.concat(listaEstagiarios.stream(),
+			// listaServidores.stream()).toList();
+			// listaTodosFunc = Stream.concat(listaEstagiarioAndServidores.stream(),
+			// listaTerceirizados.stream()).toList();
+
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar listar os Estagiários.");
 			erro.printStackTrace();
@@ -94,30 +90,26 @@ public class FuncionariosBean implements Serializable {
 			this.setUsuarioLogado((Usuario) sessao.getAttribute("usuario"));
 
 			EstagiariosDAO estagiariosDAO = new EstagiariosDAO();
-			
+
 			PessoaDAO pessoaDAO = new PessoaDAO();
 			pessoaDAO.merge(this.pessoa);
 			this.pessoa = PessoaDAO.carregarCpf(this.pessoa.getCpf());
-			
+
 			estagiarios.setUsuarioCadastro(usuarioLogado);
 			estagiarios.setPessoa(pessoa);
 			estagiarios.setDataCadastro(new Date());
-			System.out.println("SERVIDORES UNIDADE " + unidadeCiretranCitran);
-			estagiarios.setSetor(unidadeCiretranCitran.getSetor());
-			//estagiarios.setUnidadeCiretranCitran(unidadeCiretranCitran);
-			
-			estagiariosDAO.merge(estagiarios); 
+			System.out.println("SERVIDORES UNIDADE " + unidadeFunc);
+			estagiarios.setSetor(unidadeFunc.getSetor());
+			// estagiarios.setUnidadeCiretranCitran(unidadeCiretranCitran);
+
+			estagiariosDAO.merge(estagiarios);
 
 			estagiarios = new Estagiarios();
 
-			
-			
-		
-
 			Messages.addGlobalInfo("Estagiário cadastrado com Sucesso!");
-			
+
 			refresh();
-			
+
 			this.refresh();
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar salvar o Estagiário.");
@@ -125,7 +117,6 @@ public class FuncionariosBean implements Serializable {
 		}
 	}
 
-	
 	public void refresh() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		Application application = context.getApplication();
@@ -134,7 +125,7 @@ public class FuncionariosBean implements Serializable {
 		context.setViewRoot(viewRoot);
 		context.renderResponse();
 	}
-	
+
 	public void excluir(ActionEvent evento) {
 
 		try {
@@ -146,7 +137,7 @@ public class FuncionariosBean implements Serializable {
 			listaEstagiarios = estagiariosDAO.listar();
 
 			Messages.addGlobalInfo("Estagiário removido com sucesso.");
-			
+
 			this.refresh();
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar excluir o Estagiário.");
@@ -165,14 +156,14 @@ public class FuncionariosBean implements Serializable {
 			erro.printStackTrace();
 		}
 	}
-	
+
 	public void buscarCPF() {
-		EstagiariosDAO servidoresDAO = new EstagiariosDAO();
-		this.pessoa = servidoresDAO.carregarCpf(this.pessoa.getCpf());
+		EstagiariosDAO estagiariosDAO = new EstagiariosDAO();
+		this.pessoa = estagiariosDAO.carregarCpf(this.pessoa.getCpf());
 		CidadeDAO municipioDAO = new CidadeDAO();
 		this.Cidades = municipioDAO.buscarPorEstado(this.pessoa.getEstadoEndereco().getCodigo());
 	}
-	
+
 	public void pesquisaCep(AjaxBehaviorEvent event) {
 		try {
 
@@ -220,7 +211,7 @@ public class FuncionariosBean implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void popular() {
 		try {
 			if (this.pessoa.getEstadoEndereco() != null) {
@@ -233,16 +224,6 @@ public class FuncionariosBean implements Serializable {
 			Messages.addGlobalError("Ocorreu um erro ao tentar filtrar as cidades", new Object[0]);
 		}
 
-	}
-
-
-
-	public UnidadeCiretranCitran getUnidadeCiretranCitran() {
-		return unidadeCiretranCitran;
-	}
-
-	public void setUnidadeCiretranCitran(UnidadeCiretranCitran unidadeCiretranCitran) {
-		this.unidadeCiretranCitran = unidadeCiretranCitran;
 	}
 
 	public PessoaFisica getPessoa() {
@@ -309,8 +290,6 @@ public class FuncionariosBean implements Serializable {
 		this.estagiarios = estagiarios;
 	}
 
-	
-
 	public List<Terceirizados> getListaTerceirizados() {
 		return listaTerceirizados;
 	}
@@ -335,9 +314,12 @@ public class FuncionariosBean implements Serializable {
 		this.listaTodosFunc = listaTodosFunc;
 	}
 
-	
-	
-	
+	public UnidadeFunc getUnidadeFunc() {
+		return unidadeFunc;
+	}
 
-	
+	public void setUnidadeFunc(UnidadeFunc unidadeFunc) {
+		this.unidadeFunc = unidadeFunc;
+	}
+
 }

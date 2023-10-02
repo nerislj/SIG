@@ -37,9 +37,11 @@ public class Estagiarios extends GenericDomain {
 	@JoinColumn(nullable = false)
 	private Usuario usuarioCadastro;
 
-	@ManyToOne
-	@JoinColumn(name = "ciretranCitran_codigo")
-	private CiretranCitran ciretranCitran;
+	/*
+	 * @ManyToOne
+	 * 
+	 * @JoinColumn(name = "unidade_codigo") private UnidadeFunc unidadefunc;
+	 */
 
 	public PessoaFisica getPessoa() {
 		return pessoa;
@@ -73,12 +75,6 @@ public class Estagiarios extends GenericDomain {
 		this.usuarioCadastro = usuarioCadastro;
 	}
 
-	public CiretranCitran getCiretranCitran() {
-		return ciretranCitran;
-	}
-
-	public void setCiretranCitran(CiretranCitran ciretranCitran) {
-		this.ciretranCitran = ciretranCitran;
-	}
+	
 
 }

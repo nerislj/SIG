@@ -26,11 +26,9 @@ import org.omnifaces.util.Messages;
 
 import com.google.gson.Gson;
 
-import br.gov.sc.contrato.dao.FuncionarioTerceirizadoDAO;
 import br.gov.sc.funcionariosuf.dao.ServidoresDAO;
-import br.gov.sc.funcionariosuf.domain.CiretranCitran;
 import br.gov.sc.funcionariosuf.domain.Servidores;
-import br.gov.sc.funcionariosuf.domain.UnidadeCiretranCitran;
+import br.gov.sc.funcionariosuf.domain.UnidadeFunc;
 import br.gov.sc.sgi.dao.CidadeDAO;
 import br.gov.sc.sgi.dao.EstadoDAO;
 import br.gov.sc.sgi.dao.PessoaDAO;
@@ -49,11 +47,10 @@ public class ServidoresBean implements Serializable {
 	private Servidores servidores;
 
 	private List<Servidores> listaServidores;
-	
-	private CiretranCitran ciretranCitran;
-	private UnidadeCiretranCitran unidadeCiretranCitran;
+
+	private UnidadeFunc unidadeFunc;
 	private Setor setor;
-	
+
 	private PessoaFisica pessoa;
 	private Estado estado;
 	private List<Estado> Estados;
@@ -63,16 +60,15 @@ public class ServidoresBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
-			
-			
+
 			estado = new Estado();
 			pessoa = new PessoaFisica();
-			
-			//System.out.println("unidadeCiretranCitran " + unidadeCiretranCitran);
+
+			// System.out.println("unidadeCiretranCitran " + unidadeCiretranCitran);
 
 			ServidoresDAO servidoresDAO = new ServidoresDAO();
 			listaServidores = servidoresDAO.listar();
-			
+
 			EstadoDAO estadoDAO = new EstadoDAO();
 			this.setEstados(estadoDAO.listar("sigla"));
 
@@ -89,31 +85,27 @@ public class ServidoresBean implements Serializable {
 			this.setUsuarioLogado((Usuario) sessao.getAttribute("usuario"));
 
 			ServidoresDAO servidoresDAO = new ServidoresDAO();
-			
+
 			PessoaDAO pessoaDAO = new PessoaDAO();
 			pessoaDAO.merge(this.pessoa);
 			this.pessoa = PessoaDAO.carregarCpf(this.pessoa.getCpf());
-			
+
 			servidores.setUsuarioCadastro(usuarioLogado);
 			servidores.setPessoa(pessoa);
 			servidores.setDataCadastro(new Date());
-			System.out.println("SERVIDORES UNIDADE " + unidadeCiretranCitran);
-			servidores.setSetor(unidadeCiretranCitran.getSetor());
-			servidores.setCiretranCitran(unidadeCiretranCitran.getCiretranCitran());
-			//servidores.setUnidadeCiretranCitran(unidadeCiretranCitran);
-			
+			System.out.println("SERVIDORES UNIDADE " + unidadeFunc);
+			servidores.setSetor(unidadeFunc.getSetor());
+			// servidores.setUnidadeFunc(unidadeFunc.getUnidadeFunc());
+			// servidores.setUnidadeCiretranCitran(unidadeCiretranCitran);
+
 			servidoresDAO.merge(servidores);
 
 			servidores = new Servidores();
 
-			
-			
-		
-
 			Messages.addGlobalInfo("Servidores cadastrado com Sucesso!");
-			
+
 			refresh();
-			
+
 			this.refresh();
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar salvar a Servidores.");
@@ -121,7 +113,6 @@ public class ServidoresBean implements Serializable {
 		}
 	}
 
-	
 	public void refresh() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		Application application = context.getApplication();
@@ -130,7 +121,7 @@ public class ServidoresBean implements Serializable {
 		context.setViewRoot(viewRoot);
 		context.renderResponse();
 	}
-	
+
 	public void excluir(ActionEvent evento) {
 
 		try {
@@ -142,7 +133,7 @@ public class ServidoresBean implements Serializable {
 			listaServidores = servidoresDAO.listar();
 
 			Messages.addGlobalInfo("Servidores removido com sucesso.");
-			
+
 			this.refresh();
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar excluir o Servidores.");
@@ -161,14 +152,14 @@ public class ServidoresBean implements Serializable {
 			erro.printStackTrace();
 		}
 	}
-	
+
 	public void buscarCPF() {
 		ServidoresDAO servidoresDAO = new ServidoresDAO();
 		this.pessoa = servidoresDAO.carregarCpf(this.pessoa.getCpf());
 		CidadeDAO municipioDAO = new CidadeDAO();
 		this.Cidades = municipioDAO.buscarPorEstado(this.pessoa.getEstadoEndereco().getCodigo());
 	}
-	
+
 	public void pesquisaCep(AjaxBehaviorEvent event) {
 		try {
 
@@ -216,7 +207,7 @@ public class ServidoresBean implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void popular() {
 		try {
 			if (this.pessoa.getEstadoEndereco() != null) {
@@ -247,12 +238,12 @@ public class ServidoresBean implements Serializable {
 		this.listaServidores = listaServidores;
 	}
 
-	public UnidadeCiretranCitran getUnidadeCiretranCitran() {
-		return unidadeCiretranCitran;
+	public UnidadeFunc getUnidadeFunc() {
+		return unidadeFunc;
 	}
 
-	public void setUnidadeCiretranCitran(UnidadeCiretranCitran unidadeCiretranCitran) {
-		this.unidadeCiretranCitran = unidadeCiretranCitran;
+	public void setUnidadeFunc(UnidadeFunc unidadeFunc) {
+		this.unidadeFunc = unidadeFunc;
 	}
 
 	public PessoaFisica getPessoa() {
@@ -295,14 +286,6 @@ public class ServidoresBean implements Serializable {
 		this.usuarioLogado = usuarioLogado;
 	}
 
-	public CiretranCitran getCiretranCitran() {
-		return ciretranCitran;
-	}
-
-	public void setCiretranCitran(CiretranCitran ciretranCitran) {
-		this.ciretranCitran = ciretranCitran;
-	}
-
 	public Setor getSetor() {
 		return setor;
 	}
@@ -310,8 +293,5 @@ public class ServidoresBean implements Serializable {
 	public void setSetor(Setor setor) {
 		this.setor = setor;
 	}
-	
-	
-	
 
 }

@@ -32,11 +32,10 @@ import br.gov.sc.contrato.dao.FuncionarioTerceirizadoDAO;
 import br.gov.sc.contrato.domain.CargoTerceirizado;
 import br.gov.sc.contrato.domain.ContratoRelacao;
 import br.gov.sc.contrato.domain.FuncionarioTerceirizado;
-import br.gov.sc.funcionariosuf.dao.CiretranCitranDAO;
 import br.gov.sc.funcionariosuf.dao.TerceirizadosDAO;
-import br.gov.sc.funcionariosuf.domain.CiretranCitran;
+import br.gov.sc.funcionariosuf.dao.UnidadeFuncDAO;
 import br.gov.sc.funcionariosuf.domain.Terceirizados;
-import br.gov.sc.funcionariosuf.domain.UnidadeCiretranCitran;
+import br.gov.sc.funcionariosuf.domain.UnidadeFunc;
 import br.gov.sc.sgi.dao.CidadeDAO;
 import br.gov.sc.sgi.dao.EstadoDAO;
 import br.gov.sc.sgi.dao.PessoaDAO;
@@ -56,17 +55,15 @@ public class TerceirizadosBean implements Serializable {
 
 	private Terceirizados terceirizados;
 	private List<Terceirizados> listaTerceirizados;
-	
-	private UnidadeCiretranCitran unidadeCiretranCitran;
+
+	private UnidadeFunc unidadeFunc;
 	private Setor setor;
-	private List<UnidadeCiretranCitran> listaUnidades;
-	
+	private List<UnidadeFunc> listaUnidades;
+
 	private Unidade unidade;
 	private FuncionarioTerceirizado funcionarioTerceirizado;
 	private ContratoRelacao contratoFuncionario;
-	private CiretranCitran ciretranCitran;
-	
-	
+
 	private PessoaFisica pessoa;
 	private List<Estado> Estados;
 	private Estado estado;
@@ -82,30 +79,25 @@ public class TerceirizadosBean implements Serializable {
 
 			TerceirizadosDAO terceirizadosDAO = new TerceirizadosDAO();
 			listaTerceirizados = terceirizadosDAO.listar();
-			
+
 			funcionarioTerceirizado = new FuncionarioTerceirizado();
 			terceirizados = new Terceirizados();
 			estado = new Estado();
 			pessoa = new PessoaFisica();
-			
+
 			EstadoDAO estadoDAO = new EstadoDAO();
 			this.Estados = estadoDAO.listar("sigla");
 
 			this.setores = new ArrayList();
 			CargoTerceirizadoDAO cargoDAO = new CargoTerceirizadoDAO();
 			this.cargos = cargoDAO.listar();
-			
-			
-			
+
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar listar os terceirizados.");
 			erro.printStackTrace();
 		}
 	}
 
-	
-	 
-	
 	public void salvar() throws Exception {
 		try {
 			funcionarioTerceirizado = new FuncionarioTerceirizado();
@@ -113,53 +105,46 @@ public class TerceirizadosBean implements Serializable {
 			this.usuarioLogado = (Usuario) sessao.getAttribute("usuario");
 
 			TerceirizadosDAO terceirizadosDAO = new TerceirizadosDAO();
-			
+
 			PessoaDAO pessoaDAO = new PessoaDAO();
 			pessoaDAO.merge(this.pessoa);
 			this.pessoa = PessoaDAO.carregarCpf(this.pessoa.getCpf());
-			
+
 			funcionarioTerceirizado = terceirizadosDAO.loadFuncionario(pessoa.getCpf());
-		
-				
-			
-			
-			System.out.println("unidadeCiretranCitran "+ unidadeCiretranCitran);
-			
-			//Passado por <f:setPropertyActionListener/>
-			//terceirizados.setUnidadeCiretranCitran(unidadeCiretranCitran);
-			terceirizados.setSetor(unidadeCiretranCitran.getSetor());
-			terceirizados.setCiretranCitran(unidadeCiretranCitran.getCiretranCitran());
+
+			System.out.println("unidadeCiretranCitran " + unidadeFunc);
+
+			// Passado por <f:setPropertyActionListener/>
+			// terceirizados.setUnidadeCiretranCitran(unidadeCiretranCitran);
+			terceirizados.setSetor(unidadeFunc.getSetor());
+			// terceirizados.setUnidadefunc(unidadeFunc.getUnidade());
 			terceirizados.setPessoa(pessoa);
 			terceirizados.setDataCadastro(new Date());
 			terceirizados.setUsuarioCadastro(usuarioLogado);
-			
-			unidade = terceirizadosDAO.loadUnidadePorNome(unidadeCiretranCitran.getCiretranCitran().getNome());
-			
-			System.out.println("unidadeunidade " + unidade);
-			 
-			terceirizadosDAO.salvarFuncionarioTerceirizado(unidade, funcionarioTerceirizado, terceirizados, usuarioLogado);
 
-			
+			unidade = terceirizadosDAO.loadUnidadePorNome(unidadeFunc.getUnidade().getUnidadeNome());
+
+			System.out.println("unidadeunidade " + unidade);
+
+			terceirizadosDAO.salvarFuncionarioTerceirizado(unidade, funcionarioTerceirizado, terceirizados,
+					usuarioLogado);
+
 			terceirizadosDAO.merge(terceirizados);
-			
-			
-			
-			
-			
+
 			terceirizados = new Terceirizados();
 
 			listaTerceirizados = terceirizadosDAO.listar();
 
 			Messages.addGlobalInfo("Terceirizado cadastrado com Sucesso!");
-			
+
 			this.refresh();
 		} catch (RuntimeException erro) {
-			Messages.addGlobalError("Funcionário já cadastrado na Unidade " + funcionarioTerceirizado.getUnidade().getUnidadeNome());
+			Messages.addGlobalError(
+					"Funcionário já cadastrado na Unidade " + funcionarioTerceirizado.getUnidade().getUnidadeNome());
 			erro.printStackTrace();
 		}
 	}
 
-	
 	public void excluir(ActionEvent evento) throws Exception {
 
 		try {
@@ -167,40 +152,33 @@ public class TerceirizadosBean implements Serializable {
 			terceirizados = (Terceirizados) evento.getComponent().getAttributes().get("terceirizadoSelecionado");
 
 			TerceirizadosDAO terceirizadosDAO = new TerceirizadosDAO();
-			
-			
-			
+
 			pessoa = terceirizados.getPessoa();
 			funcionarioTerceirizado = terceirizadosDAO.loadFuncionario(pessoa.getCpf());
-			
-			
-			
-			
+
 			contratoFuncionario = ContratoRelacaoDAO.carregaFuncionario(funcionarioTerceirizado);
-			
-			if(funcionarioTerceirizado!=null) {
-			TerceirizadosDAO.excluirFuncionarioTerceirizadoById(funcionarioTerceirizado.getCodigo());
+
+			if (funcionarioTerceirizado != null) {
+				TerceirizadosDAO.excluirFuncionarioTerceirizadoById(funcionarioTerceirizado.getCodigo());
 			}
 			terceirizadosDAO.excluir(terceirizados);
-			
-			
-			
+
 			Messages.addGlobalInfo("Terceirizado removido com sucesso.");
-			
-			
 
 			listaTerceirizados = terceirizadosDAO.listar();
 
 			this.refresh();
-			
+
 		} catch (RuntimeException erro) {
-			if(contratoFuncionario!=null) {
-			Messages.addGlobalError("Funcionário vinculado ao contrato: " + contratoFuncionario.getContratoTerceirizado().getnContrato() +" "+ contratoFuncionario.getContratoTerceirizado().getUnidade().getUnidadeNome());
-			erro.printStackTrace();
+			if (contratoFuncionario != null) {
+				Messages.addGlobalError("Funcionário vinculado ao contrato: "
+						+ contratoFuncionario.getContratoTerceirizado().getnContrato() + " "
+						+ contratoFuncionario.getContratoTerceirizado().getUnidade().getUnidadeNome());
+				erro.printStackTrace();
 			}
 		}
 	}
-	
+
 	public void refresh() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		Application application = context.getApplication();
@@ -221,14 +199,14 @@ public class TerceirizadosBean implements Serializable {
 			erro.printStackTrace();
 		}
 	}
-	
+
 	public void buscarCPF() {
 		new FuncionarioTerceirizadoDAO();
 		this.pessoa = FuncionarioTerceirizadoDAO.carregarCpf(this.pessoa.getCpf());
 		CidadeDAO municipioDAO = new CidadeDAO();
 		this.Cidades = municipioDAO.buscarPorEstado(this.pessoa.getEstadoEndereco().getCodigo());
 	}
-	
+
 	public void pesquisaCep(AjaxBehaviorEvent event) {
 		try {
 
@@ -276,7 +254,7 @@ public class TerceirizadosBean implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void popular() {
 		try {
 			if (this.pessoa.getEstadoEndereco() != null) {
@@ -290,28 +268,23 @@ public class TerceirizadosBean implements Serializable {
 		}
 
 	}
-	
-	
-	
-	public void popularSetores() {
-		try {
-			if (terceirizados.getCiretranCitran() != null) {
-				
-				CiretranCitranDAO ciretranCITRANDAO = new CiretranCitranDAO();
-				//listaCiretranCitran = ciretranCITRANDAO.buscarPorCiretran(unidadeCiretranCitran.getCiretran().getCodigo());
-				SetorDAO setorDAO = new SetorDAO();
-				System.out.println(terceirizados.getCiretranCitran().getNome());
-				setores = setorDAO.buscarPorCiretranNome(terceirizados.getCiretranCitran().getNome());
-				System.out.println(setores);
-			} else {
-				Cidades = new ArrayList<>();
-				
-			}
-		} catch (RuntimeException erro) {
-			Messages.addGlobalError("Ocorreu um erro ao tentar filtrar as CIRETRAN/CITRAN");
-			erro.printStackTrace();
-		}
-	}
+
+	/*
+	 * public void popularSetores() { try { if (terceirizados.getUnidadefunc() !=
+	 * null) {
+	 * 
+	 * UnidadeFuncDAO unidadeFuncDAO = new UnidadeFuncDAO(); // listaCiretranCitran
+	 * = // ciretranCITRANDAO.buscarPorCiretran(unidadeCiretranCitran.getCiretran().
+	 * getCodigo()); SetorDAO setorDAO = new SetorDAO();
+	 * System.out.println(terceirizados.getUnidadefunc().getUnidade()); setores =
+	 * setorDAO.buscarPorCiretranNome(terceirizados.getUnidadefunc().getUnidade().
+	 * getUnidadeNome()); System.out.println(setores); } else { Cidades = new
+	 * ArrayList<>();
+	 * 
+	 * } } catch (RuntimeException erro) { Messages.
+	 * addGlobalError("Ocorreu um erro ao tentar filtrar as CIRETRAN/CITRAN");
+	 * erro.printStackTrace(); } }
+	 */
 
 	public Terceirizados getTerceirizados() {
 		return terceirizados;
@@ -393,93 +366,52 @@ public class TerceirizadosBean implements Serializable {
 		this.usuarioLogado = usuarioLogado;
 	}
 
-	public UnidadeCiretranCitran getUnidadeCiretranCitran() {
-		return unidadeCiretranCitran;
+	public UnidadeFunc getUnidadeFunc() {
+		return unidadeFunc;
 	}
 
-	public void setUnidadeCiretranCitran(UnidadeCiretranCitran unidadeCiretranCitran) {
-		this.unidadeCiretranCitran = unidadeCiretranCitran;
+	public void setUnidadeFunc(UnidadeFunc unidadeFunc) {
+		this.unidadeFunc = unidadeFunc;
 	}
 
-	public List<UnidadeCiretranCitran> getListaUnidades() {
+	public List<UnidadeFunc> getListaUnidades() {
 		return listaUnidades;
 	}
 
-	public void setListaUnidades(List<UnidadeCiretranCitran> listaUnidades) {
+	public void setListaUnidades(List<UnidadeFunc> listaUnidades) {
 		this.listaUnidades = listaUnidades;
 	}
-
-
-
 
 	public Unidade getUnidade() {
 		return unidade;
 	}
 
-
-
-
 	public void setUnidade(Unidade unidade) {
 		this.unidade = unidade;
 	}
-
-
-
 
 	public FuncionarioTerceirizado getFuncionarioTerceirizado() {
 		return funcionarioTerceirizado;
 	}
 
-
-
-
 	public void setFuncionarioTerceirizado(FuncionarioTerceirizado funcionarioTerceirizado) {
 		this.funcionarioTerceirizado = funcionarioTerceirizado;
 	}
-
-
-
 
 	public Setor getSetor() {
 		return setor;
 	}
 
-
-
-
 	public void setSetor(Setor setor) {
 		this.setor = setor;
 	}
-
-
-
-
-	public CiretranCitran getCiretranCitran() {
-		return ciretranCitran;
-	}
-
-
-
-
-	public void setCiretranCitran(CiretranCitran ciretranCitran) {
-		this.ciretranCitran = ciretranCitran;
-	}
-
-
-
 
 	public ContratoRelacao getContratoFuncionario() {
 		return contratoFuncionario;
 	}
 
-
-
-
 	public void setContratoFuncionario(ContratoRelacao contratoFuncionario) {
 		this.contratoFuncionario = contratoFuncionario;
 	}
-	
-	
-	
 
 }

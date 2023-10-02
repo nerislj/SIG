@@ -73,7 +73,7 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 								<p:column headerText="Ciretran"
 									style="width: 5%; text-align: center;">
-									<h:outputText value="#{unidade.ciretran.nome}" />
+									<h:outputText value="#{unidade.unidade.unidadeNome}" />
 								</p:column>
 
 
@@ -402,14 +402,14 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 						<p:outputLabel value="Ciretran: " />
 						<p:selectOneMenu filter="true"
-							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.ciretran}"
+							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.unidade}"
 							converter="omnifaces.SelectItemsConverter" required="true"
 							requiredMessage="O campo Ciretran é obrigatório">
 							<f:selectItem noSelectionOption="true"
 								itemLabel="Selecione uma Ciretran" />
-							<f:selectItems value="#{unidadeCiretranCitranBean.listaCiretran}"
-								var="ciretran" itemValue="#{ciretran}"
-								itemLabel="#{ciretran.nome}" />
+							<f:selectItems value="#{unidadeCiretranCitranBean.listaUnidade}"
+								var="unidade" itemValue="#{unidade}"
+								itemLabel="#{unidade.unidadeNome}" />
 							<p:ajax listener="#{unidadeCiretranCitranBean.popularCITRAN}"
 								update="newUnidade:citran, newUnidade:setor" />
 						</p:selectOneMenu>

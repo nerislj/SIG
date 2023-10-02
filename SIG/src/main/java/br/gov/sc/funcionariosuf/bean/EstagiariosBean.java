@@ -27,10 +27,8 @@ import org.omnifaces.util.Messages;
 import com.google.gson.Gson;
 
 import br.gov.sc.funcionariosuf.dao.EstagiariosDAO;
-import br.gov.sc.funcionariosuf.dao.ServidoresDAO;
-import br.gov.sc.funcionariosuf.domain.CiretranCitran;
 import br.gov.sc.funcionariosuf.domain.Estagiarios;
-import br.gov.sc.funcionariosuf.domain.UnidadeCiretranCitran;
+import br.gov.sc.funcionariosuf.domain.UnidadeFunc;
 import br.gov.sc.sgi.dao.CidadeDAO;
 import br.gov.sc.sgi.dao.EstadoDAO;
 import br.gov.sc.sgi.dao.PessoaDAO;
@@ -48,9 +46,8 @@ public class EstagiariosBean implements Serializable {
 	private Estagiarios estagiarios;
 
 	private List<Estagiarios> listaEstagiarios;
-	
-	private UnidadeCiretranCitran unidadeCiretranCitran;
-	private CiretranCitran ciretranCitran;
+
+	private UnidadeFunc unidadeFunc;
 	private PessoaFisica pessoa;
 	private Estado estado;
 	private List<Estado> Estados;
@@ -60,19 +57,17 @@ public class EstagiariosBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
-			
-			
+
 			estado = new Estado();
 			pessoa = new PessoaFisica();
-			
-			System.out.println("unidadeCiretranCitran " + unidadeCiretranCitran);
+
+			System.out.println("unidadeCiretranCitran " + unidadeFunc);
 
 			EstagiariosDAO estagiariosDAO = new EstagiariosDAO();
 			listaEstagiarios = estagiariosDAO.listar();
-			
+
 			EstadoDAO estadoDAO = new EstadoDAO();
 			this.setEstados(estadoDAO.listar("sigla"));
-
 
 			estagiarios = new Estagiarios();
 		} catch (RuntimeException erro) {
@@ -87,31 +82,27 @@ public class EstagiariosBean implements Serializable {
 			this.setUsuarioLogado((Usuario) sessao.getAttribute("usuario"));
 
 			EstagiariosDAO estagiariosDAO = new EstagiariosDAO();
-			
+
 			PessoaDAO pessoaDAO = new PessoaDAO();
 			pessoaDAO.merge(this.pessoa);
 			this.pessoa = PessoaDAO.carregarCpf(this.pessoa.getCpf());
-			
+
 			estagiarios.setUsuarioCadastro(usuarioLogado);
 			estagiarios.setPessoa(pessoa);
 			estagiarios.setDataCadastro(new Date());
-			System.out.println("SERVIDORES UNIDADE " + unidadeCiretranCitran);
-			estagiarios.setSetor(unidadeCiretranCitran.getSetor());
-			estagiarios.setCiretranCitran(unidadeCiretranCitran.getCiretranCitran());
-			//estagiarios.setUnidadeCiretranCitran(unidadeCiretranCitran);
-			
-			estagiariosDAO.merge(estagiarios); 
+			System.out.println("SERVIDORES UNIDADE " + unidadeFunc);
+			estagiarios.setSetor(unidadeFunc.getSetor());
+			// estagiarios.setUnidadefunc(unidadeFunc.getUnidade());
+			// estagiarios.setUnidadeCiretranCitran(unidadeCiretranCitran);
+
+			estagiariosDAO.merge(estagiarios);
 
 			estagiarios = new Estagiarios();
 
-			
-			
-		
-
 			Messages.addGlobalInfo("Estagiário cadastrado com Sucesso!");
-			
+
 			refresh();
-			
+
 			this.refresh();
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar salvar o Estagiário.");
@@ -119,7 +110,6 @@ public class EstagiariosBean implements Serializable {
 		}
 	}
 
-	
 	public void refresh() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		Application application = context.getApplication();
@@ -128,7 +118,7 @@ public class EstagiariosBean implements Serializable {
 		context.setViewRoot(viewRoot);
 		context.renderResponse();
 	}
-	
+
 	public void excluir(ActionEvent evento) {
 
 		try {
@@ -140,7 +130,7 @@ public class EstagiariosBean implements Serializable {
 			listaEstagiarios = estagiariosDAO.listar();
 
 			Messages.addGlobalInfo("Estagiário removido com sucesso.");
-			
+
 			this.refresh();
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar excluir o Estagiário.");
@@ -159,14 +149,14 @@ public class EstagiariosBean implements Serializable {
 			erro.printStackTrace();
 		}
 	}
-	
+
 	public void buscarCPF() {
-		EstagiariosDAO servidoresDAO = new EstagiariosDAO();
-		this.pessoa = servidoresDAO.carregarCpf(this.pessoa.getCpf());
+		EstagiariosDAO estagiariosDAO = new EstagiariosDAO();
+		this.pessoa = estagiariosDAO.carregarCpf(this.pessoa.getCpf());
 		CidadeDAO municipioDAO = new CidadeDAO();
 		this.Cidades = municipioDAO.buscarPorEstado(this.pessoa.getEstadoEndereco().getCodigo());
 	}
-	
+
 	public void pesquisaCep(AjaxBehaviorEvent event) {
 		try {
 
@@ -214,7 +204,7 @@ public class EstagiariosBean implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void popular() {
 		try {
 			if (this.pessoa.getEstadoEndereco() != null) {
@@ -229,14 +219,20 @@ public class EstagiariosBean implements Serializable {
 
 	}
 
-
-
-	public UnidadeCiretranCitran getUnidadeCiretranCitran() {
-		return unidadeCiretranCitran;
+	public Estagiarios getEstagiarios() {
+		return estagiarios;
 	}
 
-	public void setUnidadeCiretranCitran(UnidadeCiretranCitran unidadeCiretranCitran) {
-		this.unidadeCiretranCitran = unidadeCiretranCitran;
+	public void setEstagiarios(Estagiarios estagiarios) {
+		this.estagiarios = estagiarios;
+	}
+
+	public UnidadeFunc getUnidadeFunc() {
+		return unidadeFunc;
+	}
+
+	public void setUnidadeFunc(UnidadeFunc unidadeFunc) {
+		this.unidadeFunc = unidadeFunc;
 	}
 
 	public PessoaFisica getPessoa() {
@@ -287,17 +283,4 @@ public class EstagiariosBean implements Serializable {
 		this.listaEstagiarios = listaEstagiarios;
 	}
 
-	public CiretranCitran getCiretranCitran() {
-		return ciretranCitran;
-	}
-
-	public void setCiretranCitran(CiretranCitran ciretranCitran) {
-		this.ciretranCitran = ciretranCitran;
-	}
-	
-	
-	
-	
-
-	
 }

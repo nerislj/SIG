@@ -15,38 +15,38 @@ import javax.persistence.TemporalType;
 import br.gov.sc.contrato.domain.CargoTerceirizado;
 import br.gov.sc.sgi.domain.PessoaFisica;
 import br.gov.sc.sgi.domain.Setor;
-import br.gov.sc.sgi.domain.Unidade;
 import br.gov.sc.sgi.domain.Usuario;
 
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "funcionariosuf_terceirizados")
 public class Terceirizados extends GenericDomain {
-	
+
 	@OneToOne
 	@JoinColumn(nullable = false, unique = true)
 	private PessoaFisica pessoa;
-	
+
 	@ManyToOne
 	@JoinColumn(nullable = true)
 	private Setor setor;
-	
+
 	@Temporal(TemporalType.DATE)
 	@Column(nullable = false)
 	private Date dataCadastro;
-	
+
 	@OneToOne
 	@JoinColumn(nullable = false)
 	private Usuario usuarioCadastro;
-	
+
 	@OneToOne
 	@JoinColumn
 	private CargoTerceirizado cargoTerceirizado;
-	
 
-	@ManyToOne
-	@JoinColumn(name = "ciretranCitran_codigo")
-	private CiretranCitran ciretranCitran;
+	/*
+	 * @ManyToOne
+	 * 
+	 * @JoinColumn(name = "unidade_codigo") private UnidadeFunc unidadefunc;
+	 */
 
 	public PessoaFisica getPessoa() {
 		return pessoa;
@@ -80,8 +80,6 @@ public class Terceirizados extends GenericDomain {
 		this.usuarioCadastro = usuarioCadastro;
 	}
 
-
-
 	
 
 	public CargoTerceirizado getCargoTerceirizado() {
@@ -91,20 +89,5 @@ public class Terceirizados extends GenericDomain {
 	public void setCargoTerceirizado(CargoTerceirizado cargoTerceirizado) {
 		this.cargoTerceirizado = cargoTerceirizado;
 	}
-
-	public CiretranCitran getCiretranCitran() {
-		return ciretranCitran;
-	}
-
-	public void setCiretranCitran(CiretranCitran ciretranCitran) {
-		this.ciretranCitran = ciretranCitran;
-	}
-
-	
-	
-	
-	
-
-	
 
 }

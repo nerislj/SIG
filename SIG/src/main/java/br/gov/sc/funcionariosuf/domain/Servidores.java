@@ -22,27 +22,28 @@ public class Servidores extends GenericDomain {
 
 	@Column(length = 50, nullable = false, unique = true)
 	private String matricula;
-	
+
 	@OneToOne
 	@JoinColumn(nullable = false, unique = true)
 	private PessoaFisica pessoa;
-	
+
 	@ManyToOne
 	@JoinColumn(nullable = true)
 	private Setor setor;
-	
+
 	@Temporal(TemporalType.DATE)
 	@Column(nullable = false)
 	private Date dataCadastro;
-	
+
 	@OneToOne
 	@JoinColumn(nullable = false)
 	private Usuario usuarioCadastro;
-	
-	@ManyToOne
-	@JoinColumn(name = "ciretranCitran_codigo")
-	private CiretranCitran ciretranCitran;
 
+	/*
+	 * @ManyToOne
+	 * 
+	 * @JoinColumn(name = "unidade_codigo") private UnidadeFunc unidadefunc;
+	 */
 
 	public PessoaFisica getPessoa() {
 		return pessoa;
@@ -83,19 +84,6 @@ public class Servidores extends GenericDomain {
 	public void setMatricula(String matricula) {
 		this.matricula = matricula;
 	}
-
-	public CiretranCitran getCiretranCitran() {
-		return ciretranCitran;
-	}
-
-	public void setCiretranCitran(CiretranCitran ciretranCitran) {
-		this.ciretranCitran = ciretranCitran;
-	}
-
-	
-	
-	
-	
 
 	
 
