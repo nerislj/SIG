@@ -11,6 +11,8 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.omnifaces.util.Messages;
 
+import br.gov.sc.pesquisa.domain.Pesquisa;
+import br.gov.sc.sgi.domain.Cidade;
 import br.gov.sc.sgi.domain.Credenciado;
 import br.gov.sc.sgi.domain.CredenciadoEmp;
 import br.gov.sc.sgi.domain.CredenciadoHist;
@@ -175,8 +177,14 @@ System.out.println(consulta);
 	}
 	}
 
+	
+	
+
+
+
 
 }
+
 
 
 

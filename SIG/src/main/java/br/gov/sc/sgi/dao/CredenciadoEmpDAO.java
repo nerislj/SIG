@@ -14,6 +14,8 @@ import org.omnifaces.util.Messages;
 import br.gov.sc.cetran.domain.Conselheiro;
 import br.gov.sc.codet.domain.NomenclaturaProcesso;
 import br.gov.sc.codet.domain.Processo;
+import br.gov.sc.pesquisa.domain.Pesquisa;
+import br.gov.sc.sgi.domain.Cidade;
 import br.gov.sc.sgi.domain.Credenciado;
 import br.gov.sc.sgi.domain.CredenciadoEmp;
 import br.gov.sc.sgi.domain.CredenciadoEmpHist;
@@ -310,8 +312,8 @@ System.out.println(consulta);
 		sessao.close();
 	}
 	}
-
 }
 
-
+	
+	
 

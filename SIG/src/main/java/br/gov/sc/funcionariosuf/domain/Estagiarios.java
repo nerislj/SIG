@@ -14,6 +14,7 @@ import javax.persistence.TemporalType;
 
 import br.gov.sc.sgi.domain.PessoaFisica;
 import br.gov.sc.sgi.domain.Setor;
+import br.gov.sc.sgi.domain.Unidade;
 import br.gov.sc.sgi.domain.Usuario;
 
 @SuppressWarnings("serial")
@@ -24,6 +25,10 @@ public class Estagiarios extends GenericDomain {
 	@OneToOne
 	@JoinColumn(nullable = false, unique = true)
 	private PessoaFisica pessoa;
+	
+	@ManyToOne
+	@JoinColumn(nullable = true)
+	private Unidade unidade;
 
 	@ManyToOne
 	@JoinColumn(nullable = true)
@@ -37,11 +42,11 @@ public class Estagiarios extends GenericDomain {
 	@JoinColumn(nullable = false)
 	private Usuario usuarioCadastro;
 
-	/*
-	 * @ManyToOne
-	 * 
-	 * @JoinColumn(name = "unidade_codigo") private UnidadeFunc unidadefunc;
-	 */
+	  @OneToOne
+	   @JoinColumn(
+	      nullable = false
+	   )
+	  private UnidadeFunc unidadeFunc;
 
 	public PessoaFisica getPessoa() {
 		return pessoa;
@@ -75,6 +80,24 @@ public class Estagiarios extends GenericDomain {
 		this.usuarioCadastro = usuarioCadastro;
 	}
 
+	public UnidadeFunc getUnidadeFunc() {
+		return unidadeFunc;
+	}
+
+	public void setUnidadeFunc(UnidadeFunc unidadeFunc) {
+		this.unidadeFunc = unidadeFunc;
+	}
+
+	public Unidade getUnidade() {
+		return unidade;
+	}
+
+	public void setUnidade(Unidade unidade) {
+		this.unidade = unidade;
+	}
+
+	
+	
 	
 
 }

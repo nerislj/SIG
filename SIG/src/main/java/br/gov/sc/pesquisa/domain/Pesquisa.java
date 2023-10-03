@@ -6,13 +6,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import br.gov.sc.sgi.domain.Cidade;
-import br.gov.sc.sgi.domain.CredencialEmpTipo;
-import br.gov.sc.sgi.domain.PessoaFisica;
 import br.gov.sc.visita.domain.GenericDomain;
 
 @SuppressWarnings("serial")
@@ -20,27 +17,22 @@ import br.gov.sc.visita.domain.GenericDomain;
 public class Pesquisa extends GenericDomain {
 
 	
-	@ManyToOne
-	@JoinColumn(nullable = false)
-	private Cidade municipio;
+	@Column(length = 255)
+	private String nomeCredenciado;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = true)
 	private Date dataHora;
 
-	@ManyToOne
-	@JoinColumn(nullable = true)
-	private CredencialEmpTipo credencialTipo;
-	
-	@Column(length = 255)
-	private String credenciado;
 
-	public Cidade getMunicipio() {
-		return municipio;
+	
+
+	public String getNomeCredenciado() {
+		return nomeCredenciado;
 	}
 
-	public void setMunicipio(Cidade municipio) {
-		this.municipio = municipio;
+	public void setNomeCredenciado(String nomeCredenciado) {
+		this.nomeCredenciado = nomeCredenciado;
 	}
 
 	public Date getDataHora() {
@@ -51,14 +43,11 @@ public class Pesquisa extends GenericDomain {
 		this.dataHora = dataHora;
 	}
 
-	
-	public String getCredenciado() {
-		return credenciado;
-	}
 
-	public void setCredenciado(String credenciado) {
-		this.credenciado = credenciado;
-	}
+	
+
+
+
 	
 	
 

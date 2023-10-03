@@ -29,13 +29,13 @@ public class ServidoresDAO extends GenericDAO<Servidores> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Servidores> listarPorUnidade(Object processo, Setor setor) {
+	public List<Servidores> listarPorUnidade(Object processo) {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 		try {
 			Criteria consulta = sessao.createCriteria(Servidores.class);
-			consulta.add(Restrictions.eq("unidadecad", processo));
-			consulta.add(Restrictions.eq("setor", setor));
-			consulta.addOrder(Order.asc("codigo"));
+			consulta.add(Restrictions.eq("unidadeFunc", processo));
+		
+			consulta.addOrder(Order.desc("codigo"));
 			List<Servidores> resultado = consulta.list();
 			return resultado;
 		} catch (RuntimeException erro) {
@@ -46,12 +46,12 @@ public class ServidoresDAO extends GenericDAO<Servidores> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Servidores> listarPorUnidadeCodigo(UnidadeFunc processo, Setor setor) {
+	public List<Servidores> listarPorUnidadeCodigo(UnidadeFunc processo) {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 		try {
 			Criteria consulta = sessao.createCriteria(Servidores.class);
 			consulta.add(Restrictions.eq("unidade", processo));
-			consulta.add(Restrictions.eq("setor", setor));
+		
 			consulta.addOrder(Order.asc("codigo"));
 			List<Servidores> resultado = consulta.list();
 			return resultado;

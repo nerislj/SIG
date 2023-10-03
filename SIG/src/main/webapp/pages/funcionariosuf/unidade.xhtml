@@ -7,6 +7,8 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	template="/templates/modelo.xhtml">
 
+
+
 	<ui:define name="conteudo">
 
 		<h:outputStylesheet name="primeicons/primeicons.css"
@@ -23,8 +25,16 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 /* example use of styles for your form */
 .my-heading-row {
-	background-color: var(- -surface-c);
+	background-color: #c0c0c0;
 	font-weight: bold;
+}
+
+.ui-inputfield[disabled] {
+	color: #000 !important;
+	opacity: 0.7 !important
+}
+body .ui-state-disabled {
+    opacity: 0.7 !important;
 }
 </style>
 
@@ -45,17 +55,17 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 							<p:dataTable id="listaUnidades"
 								emptyMessage="Nenhum processo encontrado." paginator="true"
-								rowKey="#{unidade}" rows="10"
-								value="#{unidadeCiretranCitranBean.listaUnidadeCiretranCitran}"
-								var="unidade" stripedRows="true" rowExpandMode="single">
+								rowKey="#{unidade.codigo}" rows="10"
+								value="#{unidadeFuncBean.listaUnidadeFunc}" var="unidade"
+								stripedRows="true" rowExpandMode="single">
 
 								<f:facet name="header">
-									<h3>Unidades x Funcionários</h3>
+									<h3>Unidades - Cadastro</h3>
 
 									<p:commandButton value="Nova Unidade"
 										styleClass="rounded-button ui-button-success"
 										icon="pi pi-plus-circle"
-										actionListener="#{unidadeCiretranCitranBean.listar}"
+										actionListener="#{unidadeFuncBean.listar}"
 										oncomplete="PF('dialogoNew').show();"
 										update="newUnidade:newUnidade">
 
@@ -63,28 +73,15 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 								</f:facet>
 
-								<p:ajax event="rowToggle"
-									listener="#{unidadeCiretranCitranBean.onRowToggle}"
-									update="tabView:formularioEmpresas:listaUnidades" />
-								<p:column style="width:1%">
-									<p:rowToggler />
-								</p:column>
 
 
-								<p:column headerText="Ciretran"
-									style="width: 5%; text-align: center;">
+
+
+
+
+								<p:column headerText="Unidade"
+									style="width: 12%; text-align: center;">
 									<h:outputText value="#{unidade.unidade.unidadeNome}" />
-								</p:column>
-
-
-								<p:column headerText="Ciretran/Citran"
-									style="width: 4%; text-align: center;">
-									<h:outputText value="#{unidade.ciretranCitran.nome}" />
-								</p:column>
-
-								<p:column headerText="Setor"
-									style="width: 4%; text-align: center;">
-									<h:outputText value="#{unidade.setor.setorNome}" />
 								</p:column>
 
 								<p:column headerText="Horário atendimento"
@@ -103,38 +100,56 @@ body .ui-panelgrid .ui-panelgrid-cell {
 									<h:outputText value="#{unidade.telefone}" />
 								</p:column>
 
+								<p:column headerText="Atende CNH"
+									style="width: 9%; text-align: center;">
+									<h:outputText rendered="#{unidade.atendeCNH == true}"
+										value="Sim" />
+									<h:outputText rendered="#{unidade.atendeCNH == false}"
+										value="Não" />
+								</p:column>
+
+								<p:column headerText="Atende Veiculo"
+									style="width: 9%; text-align: center;">
+									<h:outputText rendered="#{unidade.atendeVeiculos == true}"
+										value="Sim" />
+									<h:outputText rendered="#{unidade.atendeVeiculos == false}"
+										value="Não" />
+								</p:column>
+
+								<p:column headerText="Atende Multa"
+									style="width: 9%; text-align: center;">
+									<h:outputText rendered="#{unidade.atendeMulta == true}"
+										value="Sim" />
+									<h:outputText rendered="#{unidade.atendeMulta == false}"
+										value="Não" />
+								</p:column>
+
+								<p:column headerText="Atende Penalidade"
+									style="width: 9%; text-align: center;">
+									<h:outputText rendered="#{unidade.atendePenalidade == true}"
+										value="Sim" />
+									<h:outputText rendered="#{unidade.atendePenalidade == false}"
+										value="Não" />
+								</p:column>
+
+								<p:column headerText="Atende Foto"
+									style="width: 9%; text-align: center;">
+									<h:outputText rendered="#{unidade.atendeFoto == true}"
+										value="Sim" />
+									<h:outputText rendered="#{unidade.atendeFoto == false}"
+										value="Não" />
+								</p:column>
+
 
 
 								<p:column headerText="Ações"
 									style="width: 8%; text-align: center;">
 
-									<p:commandButton styleClass="rounded-button ui-button-info"
-										actionListener="#{unidadeCiretranCitranBean.viewUnidade}"
-										icon="pi pi-user-plus" onclick="PF('dialogoView').show();"
-										style="align: center;"
-										update=":mensagem unidadeView:unidadeView 
-										unidadeView:tabViewProcesso:listaServidores 
-										unidadeView:tabViewProcesso:listaTerceirizados
-										unidadeView:tabViewProcesso:listaEstagiarios">
-										<f:attribute name="unidadeSelecionado" value="#{unidade}" />
-										<f:actionListener
-											type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
-										<f:setPropertyActionListener
-											target="#{terceirizadosBean.unidadeCiretranCitran}"
-											value="#{unidade}" />
-										<f:setPropertyActionListener
-											target="#{servidoresBean.unidadeCiretranCitran}"
-											value="#{unidade}" />
-										<f:setPropertyActionListener
-											target="#{estagiariosBean.unidadeCiretranCitran}"
-											value="#{unidade}" />
-											
 
-									</p:commandButton>
 
 									<p:commandButton icon="pi pi-eye"
 										styleClass="rounded-button ui-button-warning"
-										actionListener="#{unidadeCiretranCitranBean.viewUnidade}"
+										actionListener="#{unidadeFuncBean.viewUnidade}"
 										update="unidadeJustView:unidadeJustView"
 										oncomplete="PF('dialogoJustView').show();">
 										<f:attribute name="unidadeSelecionado" value="#{unidade}" />
@@ -146,177 +161,16 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 									<p:commandButton icon="pi pi-pencil"
 										styleClass="rounded-button ui-button-secondary"
-										actionListener="#{unidadeCiretranCitranBean.editar}"
+										actionListener="#{unidadeFuncBean.editar}"
 										update="unidadeView:unidadeView"
 										oncomplete="PF('dialogoNew').show();">
-										<f:attribute name="ciretranCitranSelecionado"
-											value="#{unidade}" />
+										<f:attribute name="unidadeSelecionado" value="#{unidade}" />
 										<f:actionListener
 											type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 									</p:commandButton>
 
 
 								</p:column>
-
-								<p:rowExpansion>
-									<p:dataTable id="listaServidoresExpansion" showGridlines="true"
-										emptyMessage="Nenhum registro encontrado." rows="100"
-										value="#{unidadeCiretranCitranBean.listaServidores}"
-										var="servidores" editable="true">
-
-										<f:facet name="header">
-											<div class="flex justify-content-between align-items-center">
-												Lista Servidores</div>
-										</f:facet>
-
-
-
-										<p:column headerText="Nome"
-											style="width: 5%; text-align: center;">
-											<h:outputText value="#{servidores.pessoa.nomeCompleto}" />
-										</p:column>
-
-										<p:column headerText="CPF"
-											style="width: 5%; text-align: center;">
-											<h:outputText value="#{servidores.pessoa.cpf}" />
-										</p:column>
-
-										<p:column headerText="E-mail"
-											style="width: 5%; text-align: center;">
-											<h:outputText value="#{servidores.pessoa.email}" />
-										</p:column>
-
-										<p:column headerText="Telefone Celular"
-											style="width: 5%; text-align: center;">
-											<h:outputText value="#{servidores.pessoa.cel}" />
-										</p:column>
-
-										<p:column headerText="Ações"
-											style="width: 1%; text-align: center;">
-
-											<p:commandButton icon="pi pi-times"
-												styleClass="rounded-button ui-button-danger"
-												actionListener="#{servidoresBean.excluir}"
-												update=":mensagem tabView:formularioEmpresas:listaUnidades">
-												<p:confirm header="Confirmação" message="Deseja excluir?"
-													icon="pi pi-exclamation-triangle" />
-												<f:attribute name="servidoresSelecionado"
-													value="#{servidores}" />
-											</p:commandButton>
-
-										</p:column>
-
-
-
-
-									</p:dataTable>
-
-									<p:dataTable id="listaTerceirizadosExpansion"
-										showGridlines="true"
-										emptyMessage="Nenhum registro encontrado." rows="100"
-										value="#{unidadeCiretranCitranBean.listaTerceirizados}"
-										var="terceirizado" editable="true">
-
-										<f:facet name="header">
-											<div class="flex justify-content-between align-items-center">
-												Lista Terceirizados</div>
-										</f:facet>
-
-
-
-										<p:column headerText="Nome"
-											style="width: 5%; text-align: center;">
-											<h:outputText value="#{terceirizado.pessoa.nomeCompleto}" />
-										</p:column>
-
-										<p:column headerText="CPF"
-											style="width: 5%; text-align: center;">
-											<h:outputText value="#{terceirizado.pessoa.cpf}" />
-										</p:column>
-
-										<p:column headerText="E-mail"
-											style="width: 5%; text-align: center;">
-											<h:outputText value="#{terceirizado.pessoa.email}" />
-										</p:column>
-
-										<p:column headerText="Telefone Celular"
-											style="width: 5%; text-align: center;">
-											<h:outputText value="#{terceirizado.pessoa.cel}" />
-										</p:column>
-
-										<p:column headerText="Ações"
-											style="width: 1%; text-align: center;">
-
-											<p:commandButton icon="pi pi-times"
-												styleClass="rounded-button ui-button-danger"
-												actionListener="#{terceirizadosBean.excluir}"
-												update=":mensagem tabView:formularioEmpresas:listaUnidades">
-												<p:confirm header="Confirmação" message="Deseja excluir?"
-													icon="pi pi-exclamation-triangle" />
-												<f:attribute name="terceirizadoSelecionado"
-													value="#{terceirizado}" />
-											</p:commandButton>
-
-										</p:column>
-
-
-
-									</p:dataTable>
-
-									<p:dataTable id="listaEstagiariosExpansion"
-										showGridlines="true"
-										emptyMessage="Nenhum registro encontrado." rows="100"
-										value="#{unidadeCiretranCitranBean.listaEstagiarios}"
-										var="estagiario" editable="true">
-
-										<f:facet name="header">
-											<div class="flex justify-content-between align-items-center">
-												Lista Estagiários</div>
-										</f:facet>
-
-										<p:column headerText="Nome"
-											style="width: 5%; text-align: center;">
-											<h:outputText value="#{estagiario.pessoa.nomeCompleto}" />
-										</p:column>
-
-										<p:column headerText="CPF"
-											style="width: 5%; text-align: center;">
-											<h:outputText value="#{estagiario.pessoa.cpf}" />
-										</p:column>
-
-										<p:column headerText="E-mail"
-											style="width: 5%; text-align: center;">
-											<h:outputText value="#{estagiario.pessoa.email}" />
-										</p:column>
-
-										<p:column headerText="Telefone Celular"
-											style="width: 5%; text-align: center;">
-											<h:outputText value="#{estagiario.pessoa.cel}" />
-										</p:column>
-
-										<p:column headerText="Ações"
-											style="width: 1%; text-align: center;">
-
-											<p:commandButton icon="pi pi-times"
-												styleClass="rounded-button ui-button-danger"
-												actionListener="#{estagiariosBean.excluir}"
-												update=":mensagem tabView:formularioEmpresas:listaUnidades">
-												<p:confirm header="Confirmação" message="Deseja excluir?"
-													icon="pi pi-exclamation-triangle" />
-												<f:attribute name="estagiarioSelecionado"
-													value="#{estagiario}" />
-											</p:commandButton>
-
-										</p:column>
-
-
-
-
-
-
-
-									</p:dataTable>
-								</p:rowExpansion>
 
 
 
@@ -400,50 +254,39 @@ body .ui-panelgrid .ui-panelgrid-cell {
 						columnClasses="col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4, col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4"
 						contentStyleClass="ui-fluid">
 
-						<p:outputLabel value="Ciretran: " />
-						<p:selectOneMenu filter="true"
-							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.unidade}"
-							converter="omnifaces.SelectItemsConverter" required="true"
-							requiredMessage="O campo Ciretran é obrigatório">
-							<f:selectItem noSelectionOption="true"
-								itemLabel="Selecione uma Ciretran" />
-							<f:selectItems value="#{unidadeCiretranCitranBean.listaUnidade}"
-								var="unidade" itemValue="#{unidade}"
-								itemLabel="#{unidade.unidadeNome}" />
-							<p:ajax listener="#{unidadeCiretranCitranBean.popularCITRAN}"
-								update="newUnidade:citran, newUnidade:setor" />
-						</p:selectOneMenu>
 
 
-
-						<p:outputLabel for="citran" value="Ciretran/Citran" />
-						<p:selectOneMenu id="citran" filter="true" required="true"
-							requiredMessage="O campo Municipio é obrigatório"
+						<p:outputLabel value="Unidade: " />
+						<p:selectOneMenu id="unidade" filter="true"
 							converter="omnifaces.SelectItemsConverter"
-							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.ciretranCitran}">
+							value="#{unidadeFuncBean.unidadeFunc.unidade}">
 							<f:selectItem noSelectionOption="true"
-								itemLabel="Selecione uma Ciretran/Citran" />
-							<f:selectItems
-								value="#{unidadeCiretranCitranBean.listaCiretranCitran}"
-								var="ciretrancitran" itemValue="#{ciretrancitran}"
-								itemLabel="#{ciretrancitran.nome}" />
+								itemLabel="Selecione um estado" />
+							<f:selectItems value="#{unidadeFuncBean.listaUnidade}" var="un"
+								itemValue="#{un}" itemLabel="#{un.unidadeNome}" />
+
 						</p:selectOneMenu>
+
+
+
+
+
+				
 
 
 
 						<p:outputLabel value="CEP:" />
 						<p:inputMask id="cepEnd" mask="99.999-999" maxlength="11"
-							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.cep}"
-							required="true" requiredMessage="O campo CEP é obrigatório">
+							value="#{unidadeFuncBean.unidadeFunc.cep}" required="true"
+							requiredMessage="O campo CEP é obrigatório">
 							<f:ajax event="blur" execute="@this"
 								render="estado cidade endResi"
-								listener="#{unidadeCiretranCitranBean.pesquisaCep}"></f:ajax>
+								listener="#{unidadeFuncBean.pesquisaCep}"></f:ajax>
 						</p:inputMask>
 
 						<p:outputLabel value="Endereço: " />
 						<p:inputText maxlength="255" id="endResi"
-							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.endereco}"
-							required="true"
+							value="#{unidadeFuncBean.unidadeFunc.endereco}" required="true"
 							requiredMessage="O campo Endereço Residência é obrigatório"
 							style="text-transform:uppercase;" />
 
@@ -452,12 +295,12 @@ body .ui-panelgrid .ui-panelgrid-cell {
 						<p:outputLabel for="estado" value="UF: " />
 						<p:selectOneMenu id="estado" filter="true"
 							converter="omnifaces.SelectItemsConverter"
-							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.estadoEndereco}">
+							value="#{unidadeFuncBean.unidadeFunc.estadoEndereco}">
 							<f:selectItem noSelectionOption="true"
 								itemLabel="Selecione um estado" />
-							<f:selectItems value="#{unidadeCiretranCitranBean.estados}"
-								var="estado" itemValue="#{estado}" itemLabel="#{estado.nome}" />
-							<p:ajax listener="#{unidadeCiretranCitranBean.popular}"
+							<f:selectItems value="#{unidadeFuncBean.estados}" var="estado"
+								itemValue="#{estado}" itemLabel="#{estado.nome}" />
+							<p:ajax listener="#{unidadeFuncBean.popular}"
 								update="newUnidade:cidade" />
 						</p:selectOneMenu>
 
@@ -465,60 +308,72 @@ body .ui-panelgrid .ui-panelgrid-cell {
 						<p:selectOneMenu id="cidade" filter="true" required="true"
 							requiredMessage="O campo Municipio é obrigatório"
 							converter="omnifaces.SelectItemsConverter"
-							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.municipioEndereco}">
+							value="#{unidadeFuncBean.unidadeFunc.municipioEndereco}">
 							<f:selectItem noSelectionOption="true"
 								itemLabel="Selecione uma cidade" />
-							<f:selectItems value="#{unidadeCiretranCitranBean.cidades}"
-								var="cidade" itemValue="#{cidade}" itemLabel="#{cidade.nome}" />
+							<f:selectItems value="#{unidadeFuncBean.cidades}" var="cidade"
+								itemValue="#{cidade}" itemLabel="#{cidade.nome}" />
 						</p:selectOneMenu>
 
-						<p:outputLabel for="setor" value="Setor: " />
-						<p:selectOneMenu id="setor" filter="true" required="true"
-							requiredMessage="O campo Setor é obrigatório"
-							converter="omnifaces.SelectItemsConverter"
-							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.setor}">
-							<f:selectItem noSelectionOption="true"
-								itemLabel="Selecione um setor" />
-							<f:selectItems value="#{unidadeCiretranCitranBean.setores}"
-								var="setor" itemValue="#{setor}" itemLabel="#{setor.setorNome}" />
-						</p:selectOneMenu>
+
 
 
 
 
 						<p:outputLabel value="Horário de Atendimento: " />
 						<p:inputMask
-							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.horarioAtendimento}"
+							value="#{unidadeFuncBean.unidadeFunc.horarioAtendimento}"
 							mask="99:99h às 99:99h" validateMask="true" required="true"
 							requiredMessage="O campo Horário Atendimento é obrigatório" />
 
 						<p:outputLabel value="Número Circuito: " />
 						<p:inputText maxlength="255"
-							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.nCircuito}"
-							required="true" style="text-transform:uppercase;" />
+							value="#{unidadeFuncBean.unidadeFunc.nCircuito}" required="true"
+							style="text-transform:uppercase;" />
 
 
 						<p:outputLabel value="Endereço IP: " />
 						<p:inputText maxlength="255"
-							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.enderecoIp}"
-							required="true" style="text-transform:uppercase;" />
+							value="#{unidadeFuncBean.unidadeFunc.enderecoIp}" required="true"
+							style="text-transform:uppercase;" />
 
 
 						<p:outputLabel value="E-mails: " />
 						<p:inputTextarea maxlength="255"
-							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.email}"
-							counter="display" counterTemplate="Restam {0} Caracteres.">
+							value="#{unidadeFuncBean.unidadeFunc.email}" counter="display"
+							counterTemplate="Restam {0} Caracteres.">
 							<h:outputText id="display" />
 						</p:inputTextarea>
 
 						<p:outputLabel value="Telefones: " />
 						<p:inputTextarea maxlength="255"
-							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.telefone}"
+							value="#{unidadeFuncBean.unidadeFunc.telefone}"
 							counter="display2" counterTemplate="Restam {0} Caracteres.">
 							<h:outputText id="display2" />
 						</p:inputTextarea>
 
 
+						<p:panelGrid columns="2" layout="flex"
+							columnClasses="col-12 md:col-6 xl:col-4, col-12 md:col-9 xl:col-4, col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4"
+							contentStyleClass="ui-fluid">
+							<p:outputLabel value="Atende?" />
+							<p:selectBooleanCheckbox
+								value="#{unidadeFuncBean.unidadeFunc.atendeCNH}" itemLabel="CNH" />
+							<p:selectBooleanCheckbox
+								value="#{unidadeFuncBean.unidadeFunc.atendeVeiculos}"
+								itemLabel="Veículo" />
+							<p:selectBooleanCheckbox
+								value="#{unidadeFuncBean.unidadeFunc.atendeMulta}"
+								itemLabel="Multa" />
+							<p:selectBooleanCheckbox
+								value="#{unidadeFuncBean.unidadeFunc.atendePenalidade}"
+								itemLabel="Penalidade" />
+							<p:selectBooleanCheckbox
+								value="#{unidadeFuncBean.unidadeFunc.atendeFoto}"
+								itemLabel="Foto" />
+
+
+						</p:panelGrid>
 
 
 
@@ -536,7 +391,7 @@ body .ui-panelgrid .ui-panelgrid-cell {
 						<p:commandButton value="Salvar" icon="pi pi-save"
 							styleClass="rounded-button ui-button-success"
 							oncomplete="PF('dialogoNew').hide();"
-							actionListener="#{unidadeCiretranCitranBean.salvar}"
+							actionListener="#{unidadeFuncBean.salvar}"
 							update=":mensagem tabView:formularioEmpresas:painelDados" />
 
 
@@ -591,191 +446,7 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 
 
-					<p:tabView id="tabViewProcesso">
 
-
-						<p:tab title="Servidores">
-
-							<f:facet name="title">
-							Servidores <i class="pi pi-users"></i>
-							</f:facet>
-
-
-
-
-							<p:panel header="Lista Servidores">
-
-								<p:dataTable id="listaServidores" showGridlines="true"
-									emptyMessage="Nenhum registro encontrado." paginator="true"
-									rows="5" value="#{unidadeCiretranCitranBean.listaServidores}"
-									var="servidores" editable="true">
-
-
-									<f:facet name="header">
-
-
-										<p:commandButton value="Novo Servidor" icon="pi pi-plus"
-											styleClass="rounded-button ui-button-success"
-											oncomplete="PF('newServidor').show();"
-											actionListener="#{servidoresBean.listar()}"
-											update=":mensagem tabView:formularioEmpresas:painelDados" />
-
-
-
-									</f:facet>
-
-									<p:column headerText="Nome"
-										style="width: 5%; text-align: center;">
-										<h:outputText value="#{servidores.pessoa.nomeCompleto}" />
-									</p:column>
-
-									<p:column headerText="CPF"
-										style="width: 5%; text-align: center;">
-										<h:outputText value="#{servidores.pessoa.cpf}" />
-									</p:column>
-
-									<p:column headerText="Setor"
-										style="width: 5%; text-align: center;">
-										<h:outputText value="#{servidores.setor.setorNome}" />
-									</p:column>
-
-									<p:column headerText="E-mail"
-										style="width: 5%; text-align: center;">
-										<h:outputText value="#{servidores.pessoa.email}" />
-									</p:column>
-
-									<p:column headerText="Telefone Celular"
-										style="width: 5%; text-align: center;">
-										<h:outputText value="#{servidores.pessoa.cel}" />
-									</p:column>
-
-								</p:dataTable>
-
-							</p:panel>
-
-						</p:tab>
-
-
-						<p:tab title="Terceirizados">
-
-							<f:facet name="title">
-							Terceirizados <i class="pi pi-users"></i>
-							</f:facet>
-
-							<p:panel header="Lista Terceirizados">
-
-								<p:dataTable id="listaTerceirizados" showGridlines="true"
-									emptyMessage="Nenhum registro encontrado." paginator="true"
-									rows="5"
-									value="#{unidadeCiretranCitranBean.listaTerceirizados}"
-									var="terceirizado" editable="true">
-
-									<f:facet name="header">
-										<p:commandButton value="Novo Terceirizado" icon="pi pi-plus"
-											styleClass="rounded-button ui-button-success"
-											oncomplete="PF('newTerceirizado').show();"
-											actionListener="#{terceirizadosBean.listar()}"
-											update=":mensagem tabView:formularioEmpresas:painelDados " />
-									</f:facet>
-
-									<p:column headerText="Nome"
-										style="width: 5%; text-align: center;">
-										<h:outputText value="#{terceirizado.pessoa.nomeCompleto}" />
-									</p:column>
-
-									<p:column headerText="CPF"
-										style="width: 5%; text-align: center;">
-										<h:outputText value="#{terceirizado.pessoa.cpf}" />
-									</p:column>
-
-									<p:column headerText="Setor"
-										style="width: 5%; text-align: center;">
-										<h:outputText value="#{terceirizado.setor.setorNome}" />
-									</p:column>
-
-									<p:column headerText="E-mail"
-										style="width: 5%; text-align: center;">
-										<h:outputText value="#{terceirizado.pessoa.email}" />
-									</p:column>
-
-									<p:column headerText="Telefone Celular"
-										style="width: 5%; text-align: center;">
-										<h:outputText value="#{terceirizado.pessoa.cel}" />
-									</p:column>
-
-
-
-								</p:dataTable>
-
-							</p:panel>
-
-						</p:tab>
-
-						<p:tab title="Estagiários">
-
-							<f:facet name="title">
-							Estagiários <i class="pi pi-users"></i>
-							</f:facet>
-
-
-							<p:panel header="Lista Estagiários">
-
-								<p:dataTable id="listaEstagiarios" showGridlines="true"
-									emptyMessage="Nenhum registro encontrado." paginator="true"
-									rows="5" value="#{unidadeCiretranCitranBean.listaEstagiarios}"
-									var="estagiario" editable="true">
-
-									<f:facet name="header">
-
-
-										<p:commandButton value="Novo Estagiário" icon="pi pi-plus"
-											styleClass="rounded-button ui-button-success"
-											oncomplete="PF('newEstagiario').show();"
-											actionListener="#{estagiariosBean.listar()}"
-											update=":mensagem tabView:formularioEmpresas:painelDados" />
-
-
-
-									</f:facet>
-
-									<p:column headerText="Nome"
-										style="width: 5%; text-align: center;">
-										<h:outputText value="#{estagiario.pessoa.nomeCompleto}" />
-									</p:column>
-
-									<p:column headerText="CPF"
-										style="width: 5%; text-align: center;">
-										<h:outputText value="#{estagiario.pessoa.cpf}" />
-									</p:column>
-
-									<p:column headerText="Setor"
-										style="width: 5%; text-align: center;">
-										<h:outputText value="#{estagiario.setor.setorNome}" />
-									</p:column>
-
-									<p:column headerText="E-mail"
-										style="width: 5%; text-align: center;">
-										<h:outputText value="#{estagiario.pessoa.email}" />
-									</p:column>
-
-									<p:column headerText="Telefone Celular"
-										style="width: 5%; text-align: center;">
-										<h:outputText value="#{estagiario.pessoa.cel}" />
-									</p:column>
-
-
-
-								</p:dataTable>
-
-							</p:panel>
-
-						</p:tab>
-
-
-
-
-
-					</p:tabView>
 
 
 
@@ -788,669 +459,11 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 		</p:dialog>
 
-		<p:dialog widgetVar="newTerceirizado" draggable="false"
-			resizable="true" modal="true" closable="true" responsive="true"
-			height="700px" width="100%" dynamic="true">
 
 
-			<f:facet name="header">
 
-				<h:outputText id="someDialogTerceirizado"
-					value="Cadastro Terceirizado" />
 
-			</f:facet>
 
-			<h:form id="newTerceirizado">
-
-
-
-
-
-
-				<p:panel header="Cadastro Terceirizado">
-
-					<p:panelGrid id="newTerceirizado" columns="4"
-						columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
-						layout="grid" styleClass="ui-panelgrid-blank ui-fluid"
-						style="border:0px none; background-color:transparent;">
-
-
-						<p:row styleClass="my-heading-row">
-							<i class="pi pi-user"></i>
-							<b style="color: #518e2e; margin: 0 auto;">DADOS PESSOAIS</b>
-
-						</p:row>
-
-
-						<p:outputLabel value="CPF: *" />
-						<p:inputText id="cpf" maxlength="11" placeholder="Digite o CPF"
-							value="#{terceirizadosBean.pessoa.cpf}" required="true"
-							requiredMessage="O campo CPF é obrigatório">
-							<p:ajax event="blur" listener="#{terceirizadosBean.buscarCPF}"
-								update="newTerceirizado:rg,newTerceirizado:orgao,newTerceirizado:ufrg,newTerceirizado:nomeCompleto,newTerceirizado:nomeMae,newTerceirizado:nomePai,newTerceirizado:dtNascimento,newTerceirizado:sexo,newTerceirizado:email,newTerceirizado:telres,newTerceirizado:cel,
-								newTerceirizado:cepEnd,newTerceirizado:endResi,newTerceirizado:complemento,newTerceirizado:estado,newTerceirizado:cidade" />
-							<f:validator validatorId="CpfValidator" />
-						</p:inputText>
-
-
-						<p:outputLabel value="RG: *" />
-						<p:inputText maxlength="11" id="rg"
-							value="#{terceirizadosBean.pessoa.rg}" required="true"
-							requiredMessage="O campo RG é obrigatório" />
-
-						<p:outputLabel value="Órgão Emissor: *" />
-						<p:inputText maxlength="10" id="orgao"
-							value="#{terceirizadosBean.pessoa.rgOrgaoEmissor}"
-							required="true"
-							requiredMessage="O campo Órgão Emissor é obrigatório"
-							style="text-transform:uppercase;" />
-
-
-
-						<p:outputLabel value="UF RG: *" />
-						<p:selectOneMenu filter="true"
-							value="#{terceirizadosBean.pessoa.rgEstadoEmissao}" id="ufrg"
-							converter="omnifaces.SelectItemsConverter" required="true"
-							requiredMessage="O campo UF é obrigatório">
-							<f:selectItem noSelectionOption="true"
-								itemLabel="Selecione uma UF" />
-							<f:selectItems value="#{terceirizadosBean.estados}" var="estado"
-								itemValue="#{estado}" itemLabel="#{estado.sigla}" />
-						</p:selectOneMenu>
-
-						<p:outputLabel value="Nome Completo: *" />
-						<p:inputText maxlength="50" id="nomeCompleto"
-							value="#{terceirizadosBean.pessoa.nomeCompleto}" required="true"
-							requiredMessage="O campo Nome Completo é obrigatório"
-							style="text-transform:uppercase;" />
-
-						<p:outputLabel value="Nome da Mãe: *" />
-						<p:inputText maxlength="50" id="nomeMae"
-							value="#{terceirizadosBean.pessoa.nomeMae}" required="true"
-							requiredMessage="O campo Nome da Mãe é obrigatório"
-							style="text-transform:uppercase;" />
-
-						<p:outputLabel value="Nome do Pai: *" />
-						<p:inputText maxlength="50" id="nomePai"
-							value="#{terceirizadosBean.pessoa.nomePai}" required="true"
-							requiredMessage="O campo Nome do Pai é obrigatório"
-							style="text-transform:uppercase;" />
-
-
-						<p:outputLabel value="Data Nascimento: *" />
-						<p:calendar id="dtNascimento" pattern="dd/MM/yyyy" mask="true"
-							required="true"
-							requiredMessage="O campo Data de Nascimento é obrigatório"
-							value="#{terceirizadosBean.pessoa.dataNascimento}"
-							showOn="button">
-							<f:converter converterId="converterData" />
-						</p:calendar>
-
-						<p:outputLabel value="Sexo: *" />
-						<p:selectOneMenu id="sexo" required="true"
-							value="#{terceirizadosBean.pessoa.sexo}"
-							requiredMessage="O campo Sexo é obrigatório">
-							<f:selectItem itemValue="Feminino" itemLabel="Feminino" />
-							<f:selectItem itemValue="Masculino" itemLabel="Masculino" />
-						</p:selectOneMenu>
-
-						<p:outputLabel value="E-mail: *" />
-						<p:inputText maxlength="50" id="email"
-							value="#{terceirizadosBean.pessoa.email}" required="true"
-							requiredMessage="O campo E-mail é obrigatório"
-							style="text-transform:lowercase;" />
-
-						<p:outputLabel value="Telefone Res.:" />
-						<p:inputMask id="telres" mask="(99) 99999-9999"
-							value="#{terceirizadosBean.pessoa.telRes}">
-						</p:inputMask>
-
-						<p:outputLabel value="Celular:" />
-						<p:inputMask id="cel" mask="(99) 99999-9999"
-							value="#{terceirizadosBean.pessoa.cel}">
-						</p:inputMask>
-
-						<p:row id="enderecoicon" styleClass="my-heading-row"
-							style="font-weight: bold">
-							<i class="pi pi-globe"></i>
-							<b style="color: #518e2e; margin: 0 auto;">ENDEREÇO</b>
-						</p:row>
-
-
-
-						<p:outputLabel value="CEP:" />
-						<p:inputMask id="cepEnd" mask="99.999-999" maxlength="11"
-							value="#{terceirizadosBean.pessoa.cep}" required="true"
-							requiredMessage="O campo CEP é obrigatório">
-							<f:ajax event="blur" execute="@this"
-								render="estado cidade endResi"
-								listener="#{terceirizadosBean.pesquisaCep}"></f:ajax>
-						</p:inputMask>
-
-						<p:outputLabel value="Endereço Residência: " />
-						<p:inputText maxlength="255" id="endResi"
-							value="#{terceirizadosBean.pessoa.endereco}" required="true"
-							requiredMessage="O campo Endereço Residência é obrigatório"
-							style="text-transform:uppercase;" />
-
-						<p:outputLabel value="Complemento:" />
-						<p:inputText maxlength="50" id="complemento"
-							value="#{terceirizadosBean.pessoa.complemento}"
-							style="text-transform:uppercase;" />
-
-						<p:outputLabel for="estado" value="UF: " />
-						<p:selectOneMenu id="estado" filter="true"
-							converter="omnifaces.SelectItemsConverter"
-							value="#{terceirizadosBean.pessoa.estadoEndereco}">
-							<f:selectItem noSelectionOption="true"
-								itemLabel="Selecione um estado" />
-							<f:selectItems value="#{terceirizadosBean.estados}" var="estado"
-								itemValue="#{estado}" itemLabel="#{estado.sigla}" />
-							<p:ajax listener="#{terceirizadosBean.popular}"
-								update=":newTerceirizado:cidade" />
-						</p:selectOneMenu>
-
-						<p:outputLabel for="cidade" value="Municipio" />
-						<p:selectOneMenu id="cidade" filter="true" required="true"
-							requiredMessage="O campo Municipio é obrigatório"
-							converter="omnifaces.SelectItemsConverter"
-							value="#{terceirizadosBean.pessoa.municipioEndereco}">
-							<f:selectItem noSelectionOption="true"
-								itemLabel="Selecione uma cidade" />
-							<f:selectItems value="#{terceirizadosBean.cidades}" var="cidade"
-								itemValue="#{cidade}" itemLabel="#{cidade.nome}" />
-						</p:selectOneMenu>
-
-						<p:row id="locacaoicon" styleClass="my-heading-row"
-							style="font-weight: bold">
-							<i class="pi pi-briefcase"></i>
-							<b style="color: #518e2e; margin: 0 auto;">LOCAÇÃO</b>
-						</p:row>
-
-
-
-
-
-
-						<p:outputLabel value="Cargo: " />
-						<p:selectOneMenu id="cargo" filter="true" required="true"
-							requiredMessage="O campo Cargo é obrigatório"
-							converter="omnifaces.SelectItemsConverter"
-							value="#{terceirizadosBean.terceirizados.cargoTerceirizado}">
-							<f:selectItem noSelectionOption="true"
-								itemLabel="Selecione um cargo" />
-							<f:selectItems value="#{terceirizadosBean.cargos}" var="cargo"
-								itemValue="#{cargo}" itemLabel="#{cargo.descricao}" />
-						</p:selectOneMenu>
-
-
-
-
-					</p:panelGrid>
-
-
-
-
-
-
-
-					<h:panelGrid columns="2" style="margin: 0 auto;">
-						<p:commandButton value="Salvar" icon="pi pi-save"
-							styleClass="rounded-button ui-button-success"
-							oncomplete="PF('dialogoView').hide();"
-							onsuccess="PF('newTerceirizado').hide();"
-							actionListener="#{terceirizadosBean.salvar()}"
-							update=":mensagem tabView:formularioEmpresas:listaUnidades unidadeView:tabViewProcesso:listaTerceirizados" />
-
-
-
-					</h:panelGrid>
-
-
-				</p:panel>
-
-
-			</h:form>
-
-
-
-		</p:dialog>
-
-
-		<p:dialog widgetVar="newServidor" draggable="false" resizable="true"
-			modal="true" closable="true" responsive="true" height="700px"
-			width="100%" dynamic="true">
-
-
-			<f:facet name="header">
-
-				<h:outputText id="someDialogServidor" value="Cadastro Servidor" />
-
-			</f:facet>
-
-			<h:form id="newServidor">
-
-
-
-
-
-
-				<p:panel header="Cadastro Servidor">
-
-					<p:panelGrid id="newServidor" columns="4"
-						columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
-						layout="grid" styleClass="ui-panelgrid-blank ui-fluid"
-						style="border:0px none; background-color:transparent;">
-
-
-						<p:row styleClass="my-heading-row">
-							<i class="pi pi-user"></i>
-							<b style="color: #518e2e; margin: 0 auto;">DADOS PESSOAIS</b>
-
-						</p:row>
-
-
-						<p:outputLabel value="CPF: *" />
-						<p:inputText id="cpf" maxlength="11" placeholder="Digite o CPF"
-							value="#{servidoresBean.pessoa.cpf}" required="true"
-							requiredMessage="O campo CPF é obrigatório">
-							<p:ajax event="blur" listener="#{servidoresBean.buscarCPF}"
-								update="newServidor:rg,newServidor:orgao,newServidor:ufrg,newServidor:nomeCompleto,newServidor:nomeMae,
-								newServidor:nomePai,newServidor:dtNascimento,newServidor:sexo,newServidor:email,
-								newServidor:telres,newServidor:cel,
-								newServidor:cepEnd,newServidor:endResi,newServidor:complemento,newServidor:estado,
-								newServidor:cidade" />
-							<f:validator validatorId="CpfValidator" />
-						</p:inputText>
-
-
-						<p:outputLabel value="RG: *" />
-						<p:inputText maxlength="11" id="rg"
-							value="#{servidoresBean.pessoa.rg}" required="true"
-							requiredMessage="O campo RG é obrigatório" />
-
-						<p:outputLabel value="Órgão Emissor: *" />
-						<p:inputText maxlength="10" id="orgao"
-							value="#{servidoresBean.pessoa.rgOrgaoEmissor}" required="true"
-							requiredMessage="O campo Órgão Emissor é obrigatório"
-							style="text-transform:uppercase;" />
-
-
-
-						<p:outputLabel value="UF RG: *" />
-						<p:selectOneMenu filter="true"
-							value="#{servidoresBean.pessoa.rgEstadoEmissao}" id="ufrg"
-							converter="omnifaces.SelectItemsConverter" required="true"
-							requiredMessage="O campo UF é obrigatório">
-							<f:selectItem noSelectionOption="true"
-								itemLabel="Selecione uma UF" />
-							<f:selectItems value="#{terceirizadosBean.estados}" var="estado"
-								itemValue="#{estado}" itemLabel="#{estado.sigla}" />
-						</p:selectOneMenu>
-
-						<p:outputLabel value="Nome Completo: *" />
-						<p:inputText maxlength="50" id="nomeCompleto"
-							value="#{servidoresBean.pessoa.nomeCompleto}" required="true"
-							requiredMessage="O campo Nome Completo é obrigatório"
-							style="text-transform:uppercase;" />
-
-						<p:outputLabel value="Nome da Mãe: *" />
-						<p:inputText maxlength="50" id="nomeMae"
-							value="#{servidoresBean.pessoa.nomeMae}" required="true"
-							requiredMessage="O campo Nome da Mãe é obrigatório"
-							style="text-transform:uppercase;" />
-
-						<p:outputLabel value="Nome do Pai: *" />
-						<p:inputText maxlength="50" id="nomePai"
-							value="#{servidoresBean.pessoa.nomePai}" required="true"
-							requiredMessage="O campo Nome do Pai é obrigatório"
-							style="text-transform:uppercase;" />
-
-
-						<p:outputLabel value="Data Nascimento: *" />
-						<p:calendar id="dtNascimento" pattern="dd/MM/yyyy" mask="true"
-							required="true"
-							requiredMessage="O campo Data de Nascimento é obrigatório"
-							value="#{servidoresBean.pessoa.dataNascimento}" showOn="button">
-							<f:converter converterId="converterData" />
-						</p:calendar>
-
-						<p:outputLabel value="Sexo: *" />
-						<p:selectOneMenu id="sexo" required="true"
-							value="#{servidoresBean.pessoa.sexo}"
-							requiredMessage="O campo Sexo é obrigatório">
-							<f:selectItem itemValue="Feminino" itemLabel="Feminino" />
-							<f:selectItem itemValue="Masculino" itemLabel="Masculino" />
-						</p:selectOneMenu>
-
-						<p:outputLabel value="E-mail: *" />
-						<p:inputText maxlength="50" id="email"
-							value="#{servidoresBean.pessoa.email}" required="true"
-							requiredMessage="O campo E-mail é obrigatório"
-							style="text-transform:lowercase;" />
-
-						<p:outputLabel value="Telefone Res.:" />
-						<p:inputMask id="telres" mask="(99) 99999-9999"
-							value="#{servidoresBean.pessoa.telRes}">
-						</p:inputMask>
-
-						<p:outputLabel value="Celular:" />
-						<p:inputMask id="cel" mask="(99) 99999-9999"
-							value="#{servidoresBean.pessoa.cel}">
-						</p:inputMask>
-
-						<p:row id="enderecoicon" styleClass="my-heading-row"
-							style="font-weight: bold">
-							<i class="pi pi-globe"></i>
-							<b style="color: #518e2e; margin: 0 auto;">ENDEREÇO</b>
-						</p:row>
-
-
-
-						<p:outputLabel value="CEP:" />
-						<p:inputMask id="cepEnd" mask="99.999-999" maxlength="11"
-							value="#{servidoresBean.pessoa.cep}" required="true"
-							requiredMessage="O campo CEP é obrigatório">
-							<f:ajax event="blur" execute="@this"
-								render="estado cidade endResi"
-								listener="#{servidoresBean.pesquisaCep}"></f:ajax>
-						</p:inputMask>
-
-						<p:outputLabel value="Endereço Residência: " />
-						<p:inputText maxlength="255" id="endResi"
-							value="#{servidoresBean.pessoa.endereco}" required="true"
-							requiredMessage="O campo Endereço Residência é obrigatório"
-							style="text-transform:uppercase;" />
-
-						<p:outputLabel value="Complemento:" />
-						<p:inputText maxlength="50" id="complemento"
-							value="#{servidoresBean.pessoa.complemento}"
-							style="text-transform:uppercase;" />
-
-						<p:outputLabel for="estado" value="UF: " />
-						<p:selectOneMenu id="estado" filter="true"
-							converter="omnifaces.SelectItemsConverter"
-							value="#{servidoresBean.pessoa.estadoEndereco}">
-							<f:selectItem noSelectionOption="true"
-								itemLabel="Selecione um estado" />
-							<f:selectItems value="#{servidoresBean.estados}" var="estado"
-								itemValue="#{estado}" itemLabel="#{estado.sigla}" />
-							<p:ajax listener="#{servidoresBean.popular}"
-								update=":newServidor:cidade" />
-						</p:selectOneMenu>
-
-						<p:outputLabel for="cidade" value="Municipio" />
-						<p:selectOneMenu id="cidade" filter="true" required="true"
-							requiredMessage="O campo Municipio é obrigatório"
-							converter="omnifaces.SelectItemsConverter"
-							value="#{servidoresBean.pessoa.municipioEndereco}">
-							<f:selectItem noSelectionOption="true"
-								itemLabel="Selecione uma cidade" />
-							<f:selectItems value="#{servidoresBean.cidades}" var="cidade"
-								itemValue="#{cidade}" itemLabel="#{cidade.nome}" />
-						</p:selectOneMenu>
-
-						<p:row id="locacaoicon" styleClass="my-heading-row"
-							style="font-weight: bold">
-							<i class="pi pi-briefcase"></i>
-							<b style="color: #518e2e; margin: 0 auto;">MATRÍCULA</b>
-						</p:row>
-
-
-
-
-
-
-						<p:outputLabel value="Matrícula: " />
-						<p:inputText maxlength="50" id="matricula"
-							value="#{servidoresBean.servidores.matricula}" required="true"
-							requiredMessage="O campo Matricula é obrigatório"
-							style="text-transform:lowercase;" />
-
-
-
-
-					</p:panelGrid>
-
-
-
-
-
-
-
-					<h:panelGrid columns="2" style="margin: 0 auto;">
-						<p:commandButton value="Salvar" icon="pi pi-save"
-							styleClass="rounded-button ui-button-success"
-							oncomplete="PF('dialogoView').hide();"
-							onsuccess="PF('newServidor').hide();"
-							actionListener="#{servidoresBean.salvar()}"
-							update=":mensagem tabView:formularioEmpresas:painelDados unidadeView:tabViewProcesso:listaServidores" />
-
-
-
-					</h:panelGrid>
-
-
-				</p:panel>
-
-
-			</h:form>
-
-
-
-		</p:dialog>
-
-		<p:dialog widgetVar="newEstagiario" draggable="false" resizable="true"
-			modal="true" closable="true" responsive="true" height="700px"
-			width="100%" dynamic="true">
-
-
-			<f:facet name="header">
-
-				<h:outputText id="someDialogEstagiario" value="Cadastro Estagiário" />
-
-			</f:facet>
-
-			<h:form id="newEstagiario">
-
-
-
-
-
-
-				<p:panel header="Cadastro Estagiário">
-
-					<p:panelGrid id="newEstagiario" columns="4"
-						columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
-						layout="grid" styleClass="ui-panelgrid-blank ui-fluid"
-						style="border:0px none; background-color:transparent;">
-
-
-						<p:row styleClass="my-heading-row">
-							<i class="pi pi-user"></i>
-							<b style="color: #518e2e; margin: 0 auto;">DADOS PESSOAIS</b>
-
-						</p:row>
-
-
-						<p:outputLabel value="CPF: *" />
-						<p:inputText id="cpf" maxlength="11" placeholder="Digite o CPF"
-							value="#{estagiariosBean.pessoa.cpf}" required="true"
-							requiredMessage="O campo CPF é obrigatório">
-							<p:ajax event="blur" listener="#{estagiariosBean.buscarCPF}"
-								update="newEstagiario:rg,newEstagiario:orgao,newEstagiario:ufrg,
-								newEstagiario:nomeCompleto,newEstagiario:nomeMae,newEstagiario:nomePai,
-								newEstagiario:dtNascimento,newEstagiario:sexo,newEstagiario:email,
-								newEstagiario:telres,newEstagiario:cel,
-								newEstagiario:cepEnd,newEstagiario:endResi,newEstagiario:complemento,
-								newEstagiario:estado,newEstagiario:cidade" />
-							<f:validator validatorId="CpfValidator" />
-						</p:inputText>
-
-
-						<p:outputLabel value="RG: *" />
-						<p:inputText maxlength="11" id="rg"
-							value="#{estagiariosBean.pessoa.rg}" required="true"
-							requiredMessage="O campo RG é obrigatório" />
-
-						<p:outputLabel value="Órgão Emissor: *" />
-						<p:inputText maxlength="10" id="orgao"
-							value="#{estagiariosBean.pessoa.rgOrgaoEmissor}" required="true"
-							requiredMessage="O campo Órgão Emissor é obrigatório"
-							style="text-transform:uppercase;" />
-
-
-
-						<p:outputLabel value="UF RG: *" />
-						<p:selectOneMenu filter="true"
-							value="#{estagiariosBean.pessoa.rgEstadoEmissao}" id="ufrg"
-							converter="omnifaces.SelectItemsConverter" required="true"
-							requiredMessage="O campo UF é obrigatório">
-							<f:selectItem noSelectionOption="true"
-								itemLabel="Selecione uma UF" />
-							<f:selectItems value="#{estagiariosBean.estados}" var="estado"
-								itemValue="#{estado}" itemLabel="#{estado.sigla}" />
-						</p:selectOneMenu>
-
-						<p:outputLabel value="Nome Completo: *" />
-						<p:inputText maxlength="50" id="nomeCompleto"
-							value="#{estagiariosBean.pessoa.nomeCompleto}" required="true"
-							requiredMessage="O campo Nome Completo é obrigatório"
-							style="text-transform:uppercase;" />
-
-						<p:outputLabel value="Nome da Mãe: *" />
-						<p:inputText maxlength="50" id="nomeMae"
-							value="#{estagiariosBean.pessoa.nomeMae}" required="true"
-							requiredMessage="O campo Nome da Mãe é obrigatório"
-							style="text-transform:uppercase;" />
-
-						<p:outputLabel value="Nome do Pai: *" />
-						<p:inputText maxlength="50" id="nomePai"
-							value="#{estagiariosBean.pessoa.nomePai}" required="true"
-							requiredMessage="O campo Nome do Pai é obrigatório"
-							style="text-transform:uppercase;" />
-
-
-						<p:outputLabel value="Data Nascimento: *" />
-						<p:calendar id="dtNascimento" pattern="dd/MM/yyyy" mask="true"
-							required="true"
-							requiredMessage="O campo Data de Nascimento é obrigatório"
-							value="#{estagiariosBean.pessoa.dataNascimento}" showOn="button">
-							<f:converter converterId="converterData" />
-						</p:calendar>
-
-						<p:outputLabel value="Sexo: *" />
-						<p:selectOneMenu id="sexo" required="true"
-							value="#{estagiariosBean.pessoa.sexo}"
-							requiredMessage="O campo Sexo é obrigatório">
-							<f:selectItem itemValue="Feminino" itemLabel="Feminino" />
-							<f:selectItem itemValue="Masculino" itemLabel="Masculino" />
-						</p:selectOneMenu>
-
-						<p:outputLabel value="E-mail: *" />
-						<p:inputText maxlength="50" id="email"
-							value="#{estagiariosBean.pessoa.email}" required="true"
-							requiredMessage="O campo E-mail é obrigatório"
-							style="text-transform:lowercase;" />
-
-						<p:outputLabel value="Telefone Res.:" />
-						<p:inputMask id="telres" mask="(99) 99999-9999"
-							value="#{estagiariosBean.pessoa.telRes}">
-						</p:inputMask>
-
-						<p:outputLabel value="Celular:" />
-						<p:inputMask id="cel" mask="(99) 99999-9999"
-							value="#{estagiariosBean.pessoa.cel}">
-						</p:inputMask>
-
-						<p:row id="enderecoicon" styleClass="my-heading-row"
-							style="font-weight: bold">
-							<i class="pi pi-globe"></i>
-							<b style="color: #518e2e; margin: 0 auto;">ENDEREÇO</b>
-						</p:row>
-
-
-
-						<p:outputLabel value="CEP:" />
-						<p:inputMask id="cepEnd" mask="99.999-999" maxlength="11"
-							value="#{estagiariosBean.pessoa.cep}" required="true"
-							requiredMessage="O campo CEP é obrigatório">
-							<f:ajax event="blur" execute="@this"
-								render="estado cidade endResi"
-								listener="#{estagiariosBean.pesquisaCep}"></f:ajax>
-						</p:inputMask>
-
-						<p:outputLabel value="Endereço Residência: " />
-						<p:inputText maxlength="255" id="endResi"
-							value="#{estagiariosBean.pessoa.endereco}" required="true"
-							requiredMessage="O campo Endereço Residência é obrigatório"
-							style="text-transform:uppercase;" />
-
-						<p:outputLabel value="Complemento:" />
-						<p:inputText maxlength="50" id="complemento"
-							value="#{estagiariosBean.pessoa.complemento}"
-							style="text-transform:uppercase;" />
-
-						<p:outputLabel for="estado" value="UF: " />
-						<p:selectOneMenu id="estado" filter="true"
-							converter="omnifaces.SelectItemsConverter"
-							value="#{estagiariosBean.pessoa.estadoEndereco}">
-							<f:selectItem noSelectionOption="true"
-								itemLabel="Selecione um estado" />
-							<f:selectItems value="#{estagiariosBean.estados}" var="estado"
-								itemValue="#{estado}" itemLabel="#{estado.sigla}" />
-							<p:ajax listener="#{estagiariosBean.popular}"
-								update=":newEstagiario:cidade" />
-						</p:selectOneMenu>
-
-						<p:outputLabel for="cidade" value="Municipio" />
-						<p:selectOneMenu id="cidade" filter="true" required="true"
-							requiredMessage="O campo Municipio é obrigatório"
-							converter="omnifaces.SelectItemsConverter"
-							value="#{estagiariosBean.pessoa.municipioEndereco}">
-							<f:selectItem noSelectionOption="true"
-								itemLabel="Selecione uma cidade" />
-							<f:selectItems value="#{estagiariosBean.cidades}" var="cidade"
-								itemValue="#{cidade}" itemLabel="#{cidade.nome}" />
-						</p:selectOneMenu>
-
-
-
-
-
-
-
-
-
-					</p:panelGrid>
-
-
-
-
-
-
-
-					<h:panelGrid columns="2" style="margin: 0 auto;">
-						<p:commandButton value="Salvar" icon="pi pi-save"
-							styleClass="rounded-button ui-button-success"
-							oncomplete="PF('dialogoView').hide();"
-							onsuccess="PF('newEstagiario').hide();"
-							actionListener="#{estagiariosBean.salvar()}"
-							update=":mensagem tabView:formularioEmpresas:listaUnidades unidadeView:tabViewProcesso:listaEstagiarios" />
-
-
-
-					</h:panelGrid>
-
-
-				</p:panel>
-
-
-			</h:form>
-
-
-
-		</p:dialog>
 
 		<p:dialog widgetVar="dialogoJustView" draggable="false"
 			resizable="true" modal="true" closable="true" responsive="true"
@@ -1470,51 +483,34 @@ body .ui-panelgrid .ui-panelgrid-cell {
 						columnClasses="col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4, col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4"
 						contentStyleClass="ui-fluid">
 
-						<p:outputLabel value="Ciretran: " />
-						<p:selectOneMenu filter="true" disabled="true"
-							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.ciretran}"
-							converter="omnifaces.SelectItemsConverter" required="true"
-							requiredMessage="O campo Ciretran é obrigatório">
-							<f:selectItem noSelectionOption="true"
-								itemLabel="Selecione uma Ciretran" />
-							<f:selectItems value="#{unidadeCiretranCitranBean.listaCiretran}"
-								var="ciretran" itemValue="#{ciretran}"
-								itemLabel="#{ciretran.nome}" />
-							<p:ajax listener="#{unidadeCiretranCitranBean.popularCITRAN}"
-								update="unidadeJustView:citran, unidadeJustView:setor" />
-						</p:selectOneMenu>
 
 
 
-						<p:outputLabel for="citran" value="Ciretran/Citran" />
-						<p:selectOneMenu id="citran" filter="true" required="true"
-							disabled="true" requiredMessage="O campo Municipio é obrigatório"
+
+						<p:outputLabel for="unidade" value="Unidade: " />
+						<p:selectOneMenu id="unidade" filter="true" disabled="true"
+							required="true" requiredMessage="O campo Unidade é obrigatório"
 							converter="omnifaces.SelectItemsConverter"
-							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.ciretranCitran}">
-							<f:selectItem noSelectionOption="true"
-								itemLabel="Selecione uma Ciretran/Citran" />
-							<f:selectItems
-								value="#{unidadeCiretranCitranBean.listaCiretranCitran}"
-								var="ciretrancitran" itemValue="#{ciretrancitran}"
-								itemLabel="#{ciretrancitran.nome}" />
-						</p:selectOneMenu>
+							value="#{unidadeFuncBean.unidadeFunc.unidade}">
+							<f:selectItem itemValue="#{unidadeFuncBean.unidadeFunc}"
+								itemLabel="#{unidadeFuncBean.unidadeFunc.unidade.unidadeNome}" />
 
+
+						</p:selectOneMenu>
 
 
 						<p:outputLabel value="CEP:" />
 						<p:inputMask id="cepEnd" mask="99.999-999" maxlength="11"
-							disabled="true"
-							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.cep}"
+							disabled="true" value="#{unidadeFuncBean.unidadeFunc.cep}"
 							required="true" requiredMessage="O campo CEP é obrigatório">
 							<f:ajax event="blur" execute="@this"
 								render="estado cidade endResi"
-								listener="#{unidadeCiretranCitranBean.pesquisaCep}"></f:ajax>
+								listener="#{unidadeFuncBean.pesquisaCep}"></f:ajax>
 						</p:inputMask>
 
 						<p:outputLabel value="Endereço: " />
 						<p:inputText maxlength="255" id="endResi" disabled="true"
-							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.endereco}"
-							required="true"
+							value="#{unidadeFuncBean.unidadeFunc.endereco}" required="true"
 							requiredMessage="O campo Endereço Residência é obrigatório"
 							style="text-transform:uppercase;" />
 
@@ -1523,12 +519,12 @@ body .ui-panelgrid .ui-panelgrid-cell {
 						<p:outputLabel for="estado" value="UF: " />
 						<p:selectOneMenu id="estado" filter="true" disabled="true"
 							converter="omnifaces.SelectItemsConverter"
-							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.estadoEndereco}">
+							value="#{unidadeFuncBean.unidadeFunc.estadoEndereco}">
 							<f:selectItem noSelectionOption="true"
 								itemLabel="Selecione um estado" />
-							<f:selectItems value="#{unidadeCiretranCitranBean.estados}"
-								var="estado" itemValue="#{estado}" itemLabel="#{estado.nome}" />
-							<p:ajax listener="#{unidadeCiretranCitranBean.popular}"
+							<f:selectItems value="#{unidadeFuncBean.estados}" var="estado"
+								itemValue="#{estado}" itemLabel="#{estado.nome}" />
+							<p:ajax listener="#{unidadeFuncBean.popular}"
 								update="unidadeJustView:cidade" />
 						</p:selectOneMenu>
 
@@ -1536,52 +532,58 @@ body .ui-panelgrid .ui-panelgrid-cell {
 						<p:selectOneMenu id="cidade" filter="true" required="true"
 							disabled="true" requiredMessage="O campo Municipio é obrigatório"
 							converter="omnifaces.SelectItemsConverter"
-							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.municipioEndereco}">
+							value="#{unidadeFuncBean.unidadeFunc.municipioEndereco}">
 							<f:selectItem noSelectionOption="true"
 								itemLabel="Selecione uma cidade" />
-							<f:selectItems value="#{unidadeCiretranCitranBean.cidades}"
-								var="cidade" itemValue="#{cidade}" itemLabel="#{cidade.nome}" />
+							<f:selectItems value="#{unidadeFuncBean.cidades}" var="cidade"
+								itemValue="#{cidade}" itemLabel="#{cidade.nome}" />
 						</p:selectOneMenu>
 
-						<p:outputLabel for="setor" value="Setor: " />
-						<p:selectOneMenu id="setor" filter="true" disabled="true"
-							required="true" requiredMessage="O campo Setor é obrigatório"
-							converter="omnifaces.SelectItemsConverter"
-							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.setor}">
-							<f:selectItem noSelectionOption="true"
-								itemLabel="Selecione um setor" />
-							<f:selectItems value="#{unidadeCiretranCitranBean.setores}"
-								var="setor" itemValue="#{setor}" itemLabel="#{setor.setorNome}" />
-						</p:selectOneMenu>
+
 
 						<p:outputLabel value="Horário de Atendimento: " />
 						<p:inputMask disabled="true"
-							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.horarioAtendimento}"
+							value="#{unidadeFuncBean.unidadeFunc.horarioAtendimento}"
 							mask="99:99h às 99:99h" validateMask="true" required="true"
 							requiredMessage="O campo Horário Atendimento é obrigatório" />
 
 						<p:outputLabel value="Nº Circuito: " />
 						<p:inputMask disabled="true"
-							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.nCircuito}" />
+							value="#{unidadeFuncBean.unidadeFunc.nCircuito}" />
 
 						<p:outputLabel value="Endereço Ip: " />
 						<p:inputMask disabled="true"
-							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.enderecoIp}" />
+							value="#{unidadeFuncBean.unidadeFunc.enderecoIp}" />
 
 
 
 						<p:outputLabel value="E-mails: " />
 						<p:inputTextarea maxlength="255" disabled="true"
-							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.email}" />
+							value="#{unidadeFuncBean.unidadeFunc.email}" />
 
 
 
 						<p:outputLabel value="Telefones: " />
 						<p:inputTextarea maxlength="255" disabled="true"
-							value="#{unidadeCiretranCitranBean.unidadeCiretranCitran.telefone}" />
+							value="#{unidadeFuncBean.unidadeFunc.telefone}" />
 
 
-
+						<p:outputLabel value="Atende?" />
+						<p:selectBooleanCheckbox
+							value="#{unidadeFuncBean.unidadeFunc.atendeCNH}" itemLabel="CNH"
+							disabled="true" />
+						<p:selectBooleanCheckbox
+							value="#{unidadeFuncBean.unidadeFunc.atendeVeiculos}"
+							itemLabel="Veículo" disabled="true" />
+						<p:selectBooleanCheckbox
+							value="#{unidadeFuncBean.unidadeFunc.atendeMulta}"
+							itemLabel="Multa" disabled="true" />
+						<p:selectBooleanCheckbox
+							value="#{unidadeFuncBean.unidadeFunc.atendePenalidade}"
+							itemLabel="Penalidade" disabled="true" />
+						<p:selectBooleanCheckbox
+							value="#{unidadeFuncBean.unidadeFunc.atendeFoto}"
+							itemLabel="Foto" disabled="true" />
 
 
 

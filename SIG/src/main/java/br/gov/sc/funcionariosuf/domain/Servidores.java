@@ -11,8 +11,10 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import br.gov.sc.contrato.domain.FuncionarioTerceirizado;
 import br.gov.sc.sgi.domain.PessoaFisica;
 import br.gov.sc.sgi.domain.Setor;
+import br.gov.sc.sgi.domain.Unidade;
 import br.gov.sc.sgi.domain.Usuario;
 
 @SuppressWarnings("serial")
@@ -22,6 +24,14 @@ public class Servidores extends GenericDomain {
 
 	@Column(length = 50, nullable = false, unique = true)
 	private String matricula;
+	
+	@ManyToOne
+	@JoinColumn(nullable = true)
+	private Unidade unidade;
+	
+	@ManyToOne
+	@JoinColumn(nullable = true)
+	private CargoServidores cargo;
 
 	@OneToOne
 	@JoinColumn(nullable = false, unique = true)
@@ -39,11 +49,13 @@ public class Servidores extends GenericDomain {
 	@JoinColumn(nullable = false)
 	private Usuario usuarioCadastro;
 
-	/*
-	 * @ManyToOne
-	 * 
-	 * @JoinColumn(name = "unidade_codigo") private UnidadeFunc unidadefunc;
-	 */
+
+	  @OneToOne
+	   @JoinColumn(
+	      nullable = false
+	   )
+	  private UnidadeFunc unidadeFunc;
+	
 
 	public PessoaFisica getPessoa() {
 		return pessoa;
@@ -84,6 +96,32 @@ public class Servidores extends GenericDomain {
 	public void setMatricula(String matricula) {
 		this.matricula = matricula;
 	}
+
+	public UnidadeFunc getUnidadeFunc() {
+		return unidadeFunc;
+	}
+
+	public void setUnidadeFunc(UnidadeFunc unidadeFunc) {
+		this.unidadeFunc = unidadeFunc;
+	}
+
+	public Unidade getUnidade() {
+		return unidade;
+	}
+
+	public void setUnidade(Unidade unidade) {
+		this.unidade = unidade;
+	}
+
+	public CargoServidores getCargo() {
+		return cargo;
+	}
+
+	public void setCargo(CargoServidores cargo) {
+		this.cargo = cargo;
+	}
+
+	
 
 	
 

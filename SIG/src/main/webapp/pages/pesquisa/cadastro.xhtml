@@ -9,6 +9,7 @@
 
 	<ui:define name="conteudo">
 
+
 		<style>
 /* reset on the showcase style*/
 body .ui-panelgrid .ui-panelgrid-cell {
@@ -24,54 +25,67 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 
 
-		<h:form id="formcadastro">
+		<h:form>
 			<p:panel header="Categoria - Cadastro">
 
-				<p:panelGrid id="cadastro" columns="2" style="margin: 0 auto;" styleClass="ui-noborder" layout="tabular">
+				<h:panelGrid columns="2" style="margin: 0 auto;"
+					styleClass="ui-noborder" layout="tabular">
 
 
 
-					<p:outputLabel value="Cidade: *" />
-					
-					<p:selectOneMenu id="cidade" filter="true"
-						requiredMessage="O campo Unidade é obrigatório"
+
+
+
+
+
+					<p:outputLabel for="cred" value="Credenciado: *" />
+					<p:selectOneMenu id="cred" filter="true" filterMatchMode="contains"
+						requiredMessage="O campo tipo é obrigatório"
 						converter="omnifaces.SelectItemsConverter"
-						value="#{pesquisaBean.pesquisa.municipio}">
+						value="#{pesquisaBean.pesquisa.nomeCredenciado}">
 						<f:selectItem noSelectionOption="true"
-							itemLabel="Selecione uma cidade" />
-						<f:selectItems value="#{pesquisaBean.municipios}"   
-							var="cidade" itemValue="#{cidade}"
-							itemLabel="#{cidade.nome}" />
-						
+							itemLabel="Selecione o credenciado" />
+						<f:selectItems value="#{pesquisaBean.listaCredenciados}"
+							var="tipo" itemValue="#{tipo}" itemLabel="#{tipo}" />
+
 					</p:selectOneMenu>
-						
-							<p:outputLabel value="Tipo Credenciado: *" />
-					<p:inputText maxlength="50"
-						value="#{categoriaBean.categoriaVisita.categoria}" required="true"
-						requiredMessage="O campo Nome é obrigatório" />
-						
-							<p:outputLabel value="Credenciado: *" />
-					<p:inputText maxlength="50"
-						value="#{categoriaBean.categoriaVisita.categoria}" required="true"
-						requiredMessage="O campo Nome é obrigatório" />
 
 
 
+<p:outputLabel value="Credenciado : #{pesquisaBean.pesquisa.nomeCredenciado}" />
 
-				</p:panelGrid>
-
-				<br />
-				<br />
-				<h:panelGrid columns="2" style="margin: 0 auto;">
-					<p:commandButton value="Gerar QRCode"
-						styleClass="rounded-button ui-button-success" icon="pi pi-save"
-						actionListener="#{categoriaBean.salvar()}"
-						update=":mensagem :formcadastro:cadastro" />
 
 				</h:panelGrid>
 
+				<br />
+				<br />
+				
+
+
+
 			</p:panel>
 		</h:form>
+		
+		
+		<h:form id="test">
+				
+						<p:commandButton icon="pi pi-print" value="Imprimir declaração"
+							styleClass="rounded-button ui-button-info"
+						 target="_new" immediate="true"
+							actionListener="#{pesquisaBean.runSubmit}" process="@this">
+
+							<f:param name="nome" value="#{pesquisaBean.pesquisa.nomeCredenciado}" />
+
+							<f:attribute name="nome" value="#{pesquisaBean.pesquisa.nomeCredenciado}" />
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+
+
+							
+
+						</p:commandButton>
+</h:form>
+		
 		<br />
 
 

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -17,7 +18,7 @@ import com.google.gson.annotations.SerializedName;
 
 import br.gov.sc.sgi.domain.Cidade;
 import br.gov.sc.sgi.domain.Estado;
-import br.gov.sc.sgi.domain.Setor;
+import br.gov.sc.sgi.domain.GenericDomain;
 import br.gov.sc.sgi.domain.Unidade;
 
 @SuppressWarnings("serial")
@@ -29,29 +30,25 @@ public class UnidadeFunc extends GenericDomain {
 	@JoinColumn(nullable = true)
 	private Unidade unidade;
 
-	@ManyToOne
-	@JoinColumn(nullable = false)
-	private Setor setor;
-
-	@Column(length = 10, nullable = true)
+	@Column(length = 10)
 	private String cep;
 
 	@SerializedName("logradouro")
-	@Column(length = 255, nullable = false)
+	@Column(length = 255)
 	private String endereco;
 
 	@ManyToOne
-	@JoinColumn(nullable = false)
+	@JoinColumn
 	private Cidade municipioEndereco;
 
 	@ManyToOne
-	@JoinColumn(nullable = false)
+	@JoinColumn
 	private Estado estadoEndereco;
 
-	@Column(length = 255, nullable = false)
+	@Column(length = 255)
 	private String horarioAtendimento;
 
-	@Column(length = 255, nullable = false)
+	@Column(length = 255)
 	private String email;
 
 	@Column(length = 255)
@@ -60,35 +57,105 @@ public class UnidadeFunc extends GenericDomain {
 	@Column(length = 255)
 	private String enderecoIp;
 
-	@Column(length = 255, nullable = false)
+	@Column(length = 255)
 	private String telefone;
 	
-	/*
-	 * @OneToMany(mappedBy = "unidadeFunc")
-	 * 
-	 * @Fetch(FetchMode.SUBSELECT) private List<Estagiarios> estagiarios;
-	 * 
-	 * @OneToMany(mappedBy = "unidadeFunc")
-	 * 
-	 * @Fetch(FetchMode.SUBSELECT) private List<Servidores> servidores;
-	 * 
-	 * @OneToMany(mappedBy = "unidadeFunc")
-	 * 
-	 * @Fetch(FetchMode.SUBSELECT) private List<Terceirizados> terceirizados;
-	 */
+	@Column(length = 255)
+	private String latitude;
+	
+	@Column(length = 255)
+	private String logitude;
+	
+	@Column
+	private boolean atendeCNH;
+	
+	@Column
+	private boolean atendeVeiculos;
+	
+	@Column
+	private boolean atendeMulta;
+	
+	@Column
+	private boolean atendePenalidade;
+	
+	@Column
+	private boolean atendeFoto;
+	
+	
+	
+	
+	
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "unidadeFunc")
+	@Fetch(FetchMode.SUBSELECT)
+	private List<Servidores> servidores;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "unidadeFunc")
+	@Fetch(FetchMode.SUBSELECT)
+	private List<Estagiarios> estagiarios;
 	
 	
 	
 
 	
 
-	public Setor getSetor() {
-		return setor;
+	public Boolean getAtendeCNH() {
+		return atendeCNH;
 	}
 
-	public void setSetor(Setor setor) {
-		this.setor = setor;
+	public void setAtendeCNH(Boolean atendeCNH) {
+		this.atendeCNH = atendeCNH;
 	}
+
+	public Boolean getAtendeVeiculos() {
+		return atendeVeiculos;
+	}
+
+	public void setAtendeVeiculos(Boolean atendeVeiculos) {
+		this.atendeVeiculos = atendeVeiculos;
+	}
+
+	public Boolean getAtendeMulta() {
+		return atendeMulta;
+	}
+
+	public void setAtendeMulta(Boolean atendeMulta) {
+		this.atendeMulta = atendeMulta;
+	}
+
+	public Boolean getAtendePenalidade() {
+		return atendePenalidade;
+	}
+
+	public void setAtendePenalidade(Boolean atendePenalidade) {
+		this.atendePenalidade = atendePenalidade;
+	}
+
+	public Boolean getAtendeFoto() {
+		return atendeFoto;
+	}
+
+	public void setAtendeFoto(Boolean atendeFoto) {
+		this.atendeFoto = atendeFoto;
+	}
+
+	public String getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+
+	public String getLogitude() {
+		return logitude;
+	}
+
+	public void setLogitude(String logitude) {
+		this.logitude = logitude;
+	}
+
+	
 
 	public String getCep() {
 		return cep;
@@ -169,5 +236,42 @@ public class UnidadeFunc extends GenericDomain {
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
+
+	public List<Servidores> getServidores() {
+		return servidores;
+	}
+
+	public void setServidores(List<Servidores> servidores) {
+		this.servidores = servidores;
+	}
+
+	public List<Estagiarios> getEstagiarios() {
+		return estagiarios;
+	}
+
+	public void setEstagiarios(List<Estagiarios> estagiarios) {
+		this.estagiarios = estagiarios;
+	}
+
+	public void setAtendeCNH(boolean atendeCNH) {
+		this.atendeCNH = atendeCNH;
+	}
+
+	public void setAtendeVeiculos(boolean atendeVeiculos) {
+		this.atendeVeiculos = atendeVeiculos;
+	}
+
+	public void setAtendeMulta(boolean atendeMulta) {
+		this.atendeMulta = atendeMulta;
+	}
+
+	public void setAtendePenalidade(boolean atendePenalidade) {
+		this.atendePenalidade = atendePenalidade;
+	}
+
+	public void setAtendeFoto(boolean atendeFoto) {
+		this.atendeFoto = atendeFoto;
+	}
+	
 
 }

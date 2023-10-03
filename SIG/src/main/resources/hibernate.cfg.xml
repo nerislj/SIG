@@ -155,11 +155,11 @@
 		<mapping class="br.gov.sc.ecvitl.domain.PessoaEcvItl" />
 		
 	
-		<mapping class="br.gov.sc.funcionariosuf.domain.Ciretran" />
+		
 		<mapping class="br.gov.sc.funcionariosuf.domain.Estagiarios" />
 		<mapping class="br.gov.sc.funcionariosuf.domain.Servidores" />
-		<mapping class="br.gov.sc.funcionariosuf.domain.Terceirizados" />
 		<mapping class="br.gov.sc.funcionariosuf.domain.UnidadeFunc" />
+		<mapping class="br.gov.sc.funcionariosuf.domain.CargoServidores" />
 		
 		<mapping class="br.gov.sc.sgi.domain.ListaTelefonica" />
 		

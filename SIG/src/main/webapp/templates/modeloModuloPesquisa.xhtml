@@ -56,7 +56,13 @@ body .ui-button.ui-button-icon-only .ui-icon {
 
 <h:body>
 
-	
+	<f:facet name="start">
+			<p:graphicImage library="images" name="loading.gif"
+				styleClass="loading" />
+		</f:facet>
+		<f:facet name="complete">
+			<h:outputText value="" />
+		</f:facet>
 
 	<p:growl id="mensagem" life="3000" />
 

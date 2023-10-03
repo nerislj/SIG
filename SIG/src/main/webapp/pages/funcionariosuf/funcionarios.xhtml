@@ -7,6 +7,15 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	template="/templates/modelo.xhtml">
 
+	<ui:define name="metadata">
+
+		<f:metadata>
+
+			<f:event listener="#{unidadeFuncBean.popularTodosFuncionarios()}"
+				type="preRenderView" />
+		</f:metadata>
+	</ui:define>
+
 	<ui:define name="conteudo">
 
 		<style>
@@ -24,14 +33,17 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 
 
-		
+
 
 
 		<h:form id="formlista">
-			<p:panel header="Funcinários - Listagem"
+			<p:panel header="Funcionários - Listagem"
 				rendered="#{autenticacaoBean.temPermissoes([1])}">
+
+
+
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
-					paginator="true" value="#{funcionariosBean.listaTodosFunc}"
+					paginator="true" value="#{unidadeFuncBean.combinedList3}"
 					var="func" rows="10" stripedRows="true">
 
 
@@ -39,36 +51,42 @@ body .ui-panelgrid .ui-panelgrid-cell {
 						filterBy="#{func.pessoa.nomeCompleto}" filterMatchMode="contains">
 						<h:outputText value="#{func.pessoa.nomeCompleto}" />
 					</p:column>
-					
-					<p:column headerText="Unidade" sortBy="#{func.ciretranCitran.nome}"
-						filterBy="#{func.ciretranCitran.nome}" filterMatchMode="contains">
-						<h:outputText value="#{func.ciretranCitran.nome}" />
+
+					<p:column headerText="CPF" sortBy="#{func.pessoa.cpf}"
+						filterBy="#{func.pessoa.cpf}" filterMatchMode="contains">
+						<h:outputText value="#{func.pessoa.cpf}" />
 					</p:column>
-					
-						<p:column headerText="Setor" sortBy="#{func.setor.setorNome}"
+
+					<p:column headerText="Unidade" sortBy="#{func.unidade.unidadeNome}"
+						filterBy="#{func.unidade.unidadeNome}" filterMatchMode="contains">
+						<h:outputText value="#{func.unidade.unidadeNome}" />
+					</p:column>
+
+					<p:column headerText="Setor" sortBy="#{func.setor.setorNome}"
 						filterBy="#{func.setor.setorNome}" filterMatchMode="contains">
 						<h:outputText value="#{func.setor.setorNome}" />
 					</p:column>
-					
-					
-					<p:column headerText="Celular" sortBy="#{func.pessoa.cel}"
+
+					<p:column headerText="Tel/Cel" sortBy="#{func.pessoa.cel}"
 						filterBy="#{func.pessoa.cel}" filterMatchMode="contains">
 						<h:outputText value="#{func.pessoa.cel}" />
 					</p:column>
-					
-					<p:column headerText="E-mail" sortBy="#{func.pessoa.email}"
-						filterBy="#{func.pessoa.email}" filterMatchMode="contains">
-						<h:outputText value="#{func.pessoa.email}" />
-					</p:column>
-					
-
-			
 
 
 
 
 
-					
+
+
+
+
+
+
+
+
+
+
+
 				</p:dataTable>
 
 				<p:confirmDialog global="true">

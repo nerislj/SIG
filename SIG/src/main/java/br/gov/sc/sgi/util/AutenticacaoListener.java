@@ -1,12 +1,15 @@
 package br.gov.sc.sgi.util;
 
+import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
+import javax.servlet.http.HttpSession;
 
 import org.omnifaces.util.Faces;
 
 import br.gov.sc.sgi.bean.AutenticacaoBean;
+import br.gov.sc.sgi.dao.UsuarioDAO;
 import br.gov.sc.sgi.domain.Usuario;
 
 @SuppressWarnings("serial")
@@ -17,6 +20,7 @@ public class AutenticacaoListener implements PhaseListener {
 	@Override
 	public void afterPhase(PhaseEvent event) {
 		String paginaAtual = Faces.getViewId();
+	
 
 		boolean ehPaginaDeAutenticacao = paginaAtual.contains("autenticacao.xhtml");
 
@@ -26,6 +30,11 @@ public class AutenticacaoListener implements PhaseListener {
 			//PÁGINA SEM LOGIN/AUTENTICAÇÃO
 			if (Faces.getRequestURL().contains("/pesquisa/cadastro.xhtml")) {
 				
+				UsuarioDAO userDAO = new UsuarioDAO();
+				usuarioLogado = userDAO.autenticarPorCpf("00000000000");
+				
+				Usuario usuario = usuarioLogado;
+				FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentUser", usuario);
 				Faces.navigate("/pages/pesquisa/cadastro.xhtml");
 			
 			} else if (Faces.getRequestURL().contains("/pages/listatelefonicalistarExterno.xhtml")) {

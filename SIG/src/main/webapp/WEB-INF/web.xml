@@ -10,8 +10,6 @@
 	<!-- Página Principal -->
 	<welcome-file-list>
 		<welcome-file>pages/dashboard.xhtml</welcome-file>
-		<welcome-file>pages/pesquisa/cadastro.xhtml</welcome-file>
-		
 	</welcome-file-list>
 
 	<!-- Estágio do projeto -->

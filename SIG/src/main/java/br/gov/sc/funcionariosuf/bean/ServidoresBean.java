@@ -94,7 +94,7 @@ public class ServidoresBean implements Serializable {
 			servidores.setPessoa(pessoa);
 			servidores.setDataCadastro(new Date());
 			System.out.println("SERVIDORES UNIDADE " + unidadeFunc);
-			servidores.setSetor(unidadeFunc.getSetor());
+			
 			// servidores.setUnidadeFunc(unidadeFunc.getUnidadeFunc());
 			// servidores.setUnidadeCiretranCitran(unidadeCiretranCitran);
 

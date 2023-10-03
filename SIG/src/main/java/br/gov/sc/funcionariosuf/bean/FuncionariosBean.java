@@ -27,11 +27,9 @@ import com.google.gson.Gson;
 
 import br.gov.sc.funcionariosuf.dao.EstagiariosDAO;
 import br.gov.sc.funcionariosuf.dao.ServidoresDAO;
-import br.gov.sc.funcionariosuf.dao.TerceirizadosDAO;
 import br.gov.sc.funcionariosuf.domain.Estagiarios;
 import br.gov.sc.funcionariosuf.domain.GenericDomain;
 import br.gov.sc.funcionariosuf.domain.Servidores;
-import br.gov.sc.funcionariosuf.domain.Terceirizados;
 import br.gov.sc.funcionariosuf.domain.UnidadeFunc;
 import br.gov.sc.sgi.dao.CidadeDAO;
 import br.gov.sc.sgi.dao.EstadoDAO;
@@ -51,7 +49,7 @@ public class FuncionariosBean implements Serializable {
 
 	private List<Estagiarios> listaEstagiarios;
 	private List<Servidores> listaServidores;
-	private List<Terceirizados> listaTerceirizados;
+	
 	private List<GenericDomain> listaEstagiarioAndServidores;
 	private List<GenericDomain> listaTodosFunc;
 
@@ -66,12 +64,12 @@ public class FuncionariosBean implements Serializable {
 	public void listar() {
 		try {
 
-			TerceirizadosDAO terceirizados = new TerceirizadosDAO();
+		
 			ServidoresDAO servidoresDAO = new ServidoresDAO();
 			EstagiariosDAO estagiariosDAO = new EstagiariosDAO();
 			listaEstagiarios = estagiariosDAO.listar();
 			listaServidores = servidoresDAO.listar();
-			listaTerceirizados = terceirizados.listar();
+		
 
 			// listaEstagiarioAndServidores = Stream.concat(listaEstagiarios.stream(),
 			// listaServidores.stream()).toList();
@@ -99,8 +97,7 @@ public class FuncionariosBean implements Serializable {
 			estagiarios.setPessoa(pessoa);
 			estagiarios.setDataCadastro(new Date());
 			System.out.println("SERVIDORES UNIDADE " + unidadeFunc);
-			estagiarios.setSetor(unidadeFunc.getSetor());
-			// estagiarios.setUnidadeCiretranCitran(unidadeCiretranCitran);
+			
 
 			estagiariosDAO.merge(estagiarios);
 
@@ -290,13 +287,7 @@ public class FuncionariosBean implements Serializable {
 		this.estagiarios = estagiarios;
 	}
 
-	public List<Terceirizados> getListaTerceirizados() {
-		return listaTerceirizados;
-	}
-
-	public void setListaTerceirizados(List<Terceirizados> listaTerceirizados) {
-		this.listaTerceirizados = listaTerceirizados;
-	}
+	
 
 	public List<GenericDomain> getListaEstagiarioAndServidores() {
 		return listaEstagiarioAndServidores;

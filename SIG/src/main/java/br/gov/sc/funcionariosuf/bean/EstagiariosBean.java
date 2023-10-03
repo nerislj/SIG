@@ -90,8 +90,9 @@ public class EstagiariosBean implements Serializable {
 			estagiarios.setUsuarioCadastro(usuarioLogado);
 			estagiarios.setPessoa(pessoa);
 			estagiarios.setDataCadastro(new Date());
+
 			System.out.println("SERVIDORES UNIDADE " + unidadeFunc);
-			estagiarios.setSetor(unidadeFunc.getSetor());
+			
 			// estagiarios.setUnidadefunc(unidadeFunc.getUnidade());
 			// estagiarios.setUnidadeCiretranCitran(unidadeCiretranCitran);
 
