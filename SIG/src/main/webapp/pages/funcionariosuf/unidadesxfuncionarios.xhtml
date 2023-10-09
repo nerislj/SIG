@@ -42,8 +42,9 @@ body .ui-panelgrid .ui-panelgrid-cell {
 	color: #000 !important;
 	opacity: 0.7 !important
 }
+
 body .ui-state-disabled {
-    opacity: 0.7 !important;
+	opacity: 0.7 !important;
 }
 
 .contentTable {
@@ -58,16 +59,35 @@ body .ui-state-disabled {
 	width: 100%;
 	font-weight: 500;
 }
+
 .col-offset-3 {
-    margin-left: 39% !important;
+	margin-left: 39% !important;
 }
+
 .colStats {
-    flex-grow: 1;
-    flex-basis: 0;
-    padding: 3.5rem;
-    margin-left: 10% !important;
+	flex-grow: 1;
+	flex-basis: 0;
+	padding: 3.5rem;
+	margin-left: 10% !important;
+	text-align: center;
 }
 </style>
+
+<script>
+$(document).ready(function(){
+    console.log("ready is called");
+    //PF('statusDialog').hide()
+    $('#nonAjaxLoad').hide();
+});
+
+$(window).bind('beforeunload', function() {
+     console.log("bind is called");
+    // PF('statusDialog').show()
+    $('#nonAjaxLoad').hide(); 
+});
+
+
+</script>
 
 
 
@@ -77,9 +97,91 @@ body .ui-state-disabled {
 				<h:form id="formularioEmpresas">
 
 
+					<div class="card">
+
+						<div class="grid align-items-start vertical-container">
+
+							<div class="col-12 md:col-6 lg:col-3">
+								<div class="colStats">
+
+									<div class="item">
+										<i class="pi pi-building" style="font-size: 5rem"></i>
+										<p id="number2" class="number">
+											<span
+												style="color: #8fb13a; font-size: 36px; font-weight: 800;"><h:outputLabel
+													value="#{unidadeFuncBean.listaUnidadeFunc.size()}" /></span>
+											<p class="fontStats">UNIDADES</p>
+										</p>
+
+									</div>
+
+								</div>
+
+							</div>
+
+							<div class="col-12 md:col-6 lg:col-3">
+								<div class="colStats">
+
+									<div class="item">
+										<i class="pi pi-users" style="font-size: 5rem"></i>
+										<p id="number3" class="number">
+											<span
+												style="color: #8fb13a; font-size: 36px; font-weight: 800;"><h:outputLabel
+													value="#{unidadeFuncBean.listaServidores.size()}" /></span>
+										</p>
+										<p class="fontStats">SERVIDORES</p>
+									</div>
+
+								</div>
+							</div>
+							<div class="col-12 md:col-6 lg:col-3">
+								<div class="colStats">
+
+									<div class="item">
+										<i class="pi pi-users" style="font-size: 5rem"></i>
+										<p id="number3" class="number">
+											<span
+												style="color: #8fb13a; font-size: 36px; font-weight: 800;"><h:outputLabel
+													value="#{unidadeFuncBean.listaTerceirizados.size()}" /></span>
+										</p>
+										<p class="fontStats">TERCEIRIZADOS</p>
+									</div>
+
+								</div>
+							</div>
+							<div class="col-12 md:col-6 lg:col-3">
+								<div class="colStats">
+
+									<div class="item">
+										<i class="pi pi-users" style="font-size: 5rem"></i>
+										<p id="number3" class="number">
+											<span
+												style="color: #8fb13a; font-size: 36px; font-weight: 800;"><h:outputLabel
+													value="#{unidadeFuncBean.listaEstagiarios.size()}" /></span>
+										</p>
+										<p class="fontStats">ESTAGIÁRIOS</p>
+									</div>
+
+								</div>
+							</div>
+
+
+
+
+
+						</div>
+					</div>
+
+
+
+
+
+
 					<h:panelGroup id="painelDados" layout="block">
 
 						<p:panelGrid columns="1" layout="grid">
+
+
 
 							<p:dataTable id="listaUnidades"
 								emptyMessage="Nenhum Posto de atendimento encontrado."
@@ -111,6 +213,7 @@ body .ui-state-disabled {
 								<p:column headerText="Unidade"
 									sortBy="#{unidade.unidade.unidadeNome}"
 									filterBy="#{unidade.unidade.unidadeNome}"
+									filterMatchMode="contains"
 									style="width: 12%; text-align: center;">
 									<h:outputText value="#{unidade.unidade.unidadeNome}" />
 								</p:column>
@@ -118,68 +221,72 @@ body .ui-state-disabled {
 
 
 								<p:column headerText="Horário atendimento"
+									sortBy="#{unidade.horarioAtendimento}"
+									filterBy="#{unidade.horarioAtendimento}"
+									filterMatchMode="contains"
 									style="width: 9%; text-align: center;">
 									<h:outputText value="#{unidade.horarioAtendimento}" />
 								</p:column>
 
-								<p:column headerText="E-mail"
+								<p:column headerText="E-mail" sortBy="#{unidade.email}"
+									filterBy="#{unidade.email}" filterMatchMode="contains"
 									style="width: 12%; text-align: center;">
 									<h:outputText value="#{unidade.email}" />
 								</p:column>
 
 
-								<p:column headerText="Telefone"
+								<p:column headerText="Telefone" sortBy="#{unidade.telefone}"
+									filterBy="#{unidade.telefone}" filterMatchMode="contains"
 									style="width: 8%; text-align: center;">
 									<h:outputText value="#{unidade.telefone}" />
 								</p:column>
-								
-									<p:column headerText="Atende CNH"
+
+								<p:column headerText="Atende CNH" sortBy="#{unidade.atendeCNH}"
+									filterBy="#{unidade.atendeCNH}" filterMatchMode="contains"
 									style="width: 5%; text-align: center;">
-									<h:outputText rendered="#{unidade.atendeCNH == true}"
-										value="Sim" />
-									<h:outputText rendered="#{unidade.atendeCNH == false}"
-										value="Não" />
+									<h:outputText value="#{unidade.atendeCNH}" />
+
 								</p:column>
 
 								<p:column headerText="Atende Veiculo"
+									sortBy="#{unidade.atendeVeiculos}"
+									filterBy="#{unidade.atendeVeiculos}" filterMatchMode="contains"
 									style="width: 5%; text-align: center;">
-									<h:outputText rendered="#{unidade.atendeVeiculos == true}"
-										value="Sim" />
-									<h:outputText rendered="#{unidade.atendeVeiculos == false}"
-										value="Não" />
+									<h:outputText value="#{unidade.atendeVeiculos}" />
 								</p:column>
 
 								<p:column headerText="Atende Multa"
+									sortBy="#{unidade.atendeMulta}"
+									filterBy="#{unidade.atendeMulta}" filterMatchMode="contains"
 									style="width: 5%; text-align: center;">
-									<h:outputText rendered="#{unidade.atendeMulta == true}"
-										value="Sim" />
-									<h:outputText rendered="#{unidade.atendeMulta == false}"
-										value="Não" />
+									<h:outputText value="#{unidade.atendeMulta}" />
+
 								</p:column>
 
 								<p:column headerText="Atende Penalidade"
+									sortBy="#{unidade.atendePenalidade}"
+									filterBy="#{unidade.atendePenalidade}"
+									filterMatchMode="contains"
 									style="width: 5%; text-align: center;">
-									<h:outputText rendered="#{unidade.atendePenalidade == true}"
-										value="Sim" />
-									<h:outputText rendered="#{unidade.atendePenalidade == false}"
-										value="Não" />
+									<h:outputText value="#{unidade.atendePenalidade}" />
+
 								</p:column>
 
 								<p:column headerText="Atende Foto"
+									sortBy="#{unidade.atendeFoto}" filterBy="#{unidade.atendeFoto}"
+									filterMatchMode="contains"
 									style="width: 5%; text-align: center;">
-									<h:outputText rendered="#{unidade.atendeFoto == true}"
-										value="Sim" />
-									<h:outputText rendered="#{unidade.atendeFoto == false}"
-										value="Não" />
+									<h:outputText value="#{unidade.atendeFoto}" />
+
 								</p:column>
 
 
-								
+
 
 
 
 								<p:column headerText="Ações"
-									style="width: 8%; text-align: center;">
+									style="width: 15%; text-align: center;">
 
 									<p:commandButton styleClass="rounded-button ui-button-info"
 										actionListener="#{unidadeFuncBean.viewUnidade}"
@@ -220,11 +327,31 @@ body .ui-state-disabled {
 										actionListener="#{unidadeFuncBean.editar}"
 										update="unidadeView:unidadeView"
 										oncomplete="PF('dialogoNew').show();">
-										<f:attribute name="unidadeSelecionado"
-											value="#{unidade}" />
+										<f:attribute name="unidadeSelecionado" value="#{unidade}" />
 										<f:actionListener
 											type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 									</p:commandButton>
+
+
+
+									<p:commandButton icon="pi pi-file-pdf"
+										styleClass="rounded-button ui-button-danger"
+										actionListener="#{unidadeFuncBean.imprimirRelatorio}"
+										update="unidadeView:unidadeView">
+										<f:attribute name="unidadeSelecionado" value="#{unidade}" />
+										<f:actionListener
+											type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+									</p:commandButton>
+
+									<p:commandButton icon="pi pi-file-excel"
+										styleClass="rounded-button ui-button-success"
+										actionListener="#{unidadeFuncBean.testFunc}" process="@this"
+										ajax="false">
+
+									</p:commandButton>
+
+
+
 
 
 								</p:column>
@@ -564,26 +691,41 @@ body .ui-state-disabled {
 						</p:inputTextarea>
 
 
+						<p:outputLabel value="" />
 
-
-	<p:panelGrid columns="2" layout="flex"
+						<p:panelGrid columns="2" layout="flex"
 							columnClasses="col-12 md:col-6 xl:col-4, col-12 md:col-9 xl:col-4, col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4"
 							contentStyleClass="ui-fluid">
 							<p:outputLabel value="Atende?" />
-							<p:selectBooleanCheckbox
-								value="#{unidadeFuncBean.unidadeFunc.atendeCNH}" itemLabel="CNH" />
-							<p:selectBooleanCheckbox
-								value="#{unidadeFuncBean.unidadeFunc.atendeVeiculos}"
-								itemLabel="Veículo" />
-							<p:selectBooleanCheckbox
-								value="#{unidadeFuncBean.unidadeFunc.atendeMulta}"
-								itemLabel="Multa" />
-							<p:selectBooleanCheckbox
-								value="#{unidadeFuncBean.unidadeFunc.atendePenalidade}"
-								itemLabel="Penalidade" />
-							<p:selectBooleanCheckbox
-								value="#{unidadeFuncBean.unidadeFunc.atendeFoto}"
-								itemLabel="Foto" />
+
+
+
+
+							<p:selectOneButton
+								value="#{unidadeFuncBean.unidadeFunc.atendeCNH}">
+								<f:selectItem itemLabel="Sim" itemValue="Sim" />
+								<f:selectItem itemLabel="Não" itemValue="Não" /> CNH
+							</p:selectOneButton>
+							<p:selectOneButton
+								value="#{unidadeFuncBean.unidadeFunc.atendeVeiculos}">
+								<f:selectItem itemLabel="Sim" itemValue="Sim" />
+								<f:selectItem itemLabel="Não" itemValue="Não" /> Veículo
+							</p:selectOneButton>
+							<p:selectOneButton
+								value="#{unidadeFuncBean.unidadeFunc.atendeMulta}">
+								<f:selectItem itemLabel="Sim" itemValue="Sim" />
+								<f:selectItem itemLabel="Não" itemValue="Não" />Multa
+							</p:selectOneButton>
+							<p:selectOneButton
+								value="#{unidadeFuncBean.unidadeFunc.atendePenalidade}">
+								<f:selectItem itemLabel="Sim" itemValue="Sim" />
+								<f:selectItem itemLabel="Não" itemValue="Não" /> Penalidade
+							</p:selectOneButton>
+							<p:selectOneButton
+								value="#{unidadeFuncBean.unidadeFunc.atendeFoto}">
+								<f:selectItem itemLabel="Sim" itemValue="Sim" />
+								<f:selectItem itemLabel="Não" itemValue="Não" /> Foto
+							</p:selectOneButton>
 
 
 						</p:panelGrid>
@@ -1700,13 +1842,23 @@ body .ui-state-disabled {
 							value="#{unidadeFuncBean.unidadeFunc.telefone}" />
 
 
-<p:outputLabel value="Atende?" />
-						    <p:selectBooleanCheckbox value="#{unidadeFuncBean.unidadeFunc.atendeCNH}" itemLabel="CNH" disabled="true"/>
-						    <p:selectBooleanCheckbox value="#{unidadeFuncBean.unidadeFunc.atendeVeiculos}" itemLabel="Veículo" disabled="true"/>
-						    <p:selectBooleanCheckbox value="#{unidadeFuncBean.unidadeFunc.atendeMulta}" itemLabel="Multa" disabled="true"/>
-						    <p:selectBooleanCheckbox value="#{unidadeFuncBean.unidadeFunc.atendePenalidade}" itemLabel="Penalidade" disabled="true"/>
-						    <p:selectBooleanCheckbox value="#{unidadeFuncBean.unidadeFunc.atendeFoto}" itemLabel="Foto" disabled="true"/>
-						    
+						<p:outputLabel value="Atende?" />
+						<p:selectBooleanCheckbox
+							value="#{unidadeFuncBean.unidadeFunc.atendeCNH}" itemLabel="CNH"
+							disabled="true" />
+						<p:selectBooleanCheckbox
+							value="#{unidadeFuncBean.unidadeFunc.atendeVeiculos}"
+							itemLabel="Veículo" disabled="true" />
+						<p:selectBooleanCheckbox
+							value="#{unidadeFuncBean.unidadeFunc.atendeMulta}"
+							itemLabel="Multa" disabled="true" />
+						<p:selectBooleanCheckbox
+							value="#{unidadeFuncBean.unidadeFunc.atendePenalidade}"
+							itemLabel="Penalidade" disabled="true" />
+						<p:selectBooleanCheckbox
+							value="#{unidadeFuncBean.unidadeFunc.atendeFoto}"
+							itemLabel="Foto" disabled="true" />
+
 
 
 
@@ -1785,33 +1937,7 @@ body .ui-state-disabled {
 
 
 
-		<div class="card">
 
-			<div class="grid">
-
-
-				 <div class="col-6 col-offset-3">
-					<div class="box">
-
-						<div class="item">
-							<i class="pi pi-building" style="font-size: 5rem"></i>
-							<p id="number2" class="number">
-								<span style="color: #8fb13a; font-size: 36px; font-weight: 800;"><h:outputLabel
-										value="#{unidadeFuncBean.listaUnidadeFunc.size()}" /></span>
-										<p class="fontStats">UNIDADES</p>
-							</p>
-							
-						</div>
-
-					</div>
-				</div>
-
-
-
-
-
-			</div>
-		</div>
 
 
 

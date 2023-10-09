@@ -59,83 +59,75 @@ public class UnidadeFunc extends GenericDomain {
 
 	@Column(length = 255)
 	private String telefone;
-	
+
 	@Column(length = 255)
 	private String latitude;
-	
+
 	@Column(length = 255)
 	private String logitude;
-	
-	@Column
-	private boolean atendeCNH;
-	
-	@Column
-	private boolean atendeVeiculos;
-	
-	@Column
-	private boolean atendeMulta;
-	
-	@Column
-	private boolean atendePenalidade;
-	
-	@Column
-	private boolean atendeFoto;
-	
-	
-	
-	
-	
+
+	@Column(length = 10)
+	private String atendeCNH;
+
+	@Column(length = 10)
+	private String atendeVeiculos;
+
+	@Column(length = 10)
+	private String atendeMulta;
+
+	@Column(length = 10)
+	private String atendePenalidade;
+
+	@Column(length = 10)
+	private String atendeFoto;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "unidadeFunc")
 	@Fetch(FetchMode.SUBSELECT)
 	private List<Servidores> servidores;
-	
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "unidadeFunc")
 	@Fetch(FetchMode.SUBSELECT)
 	private List<Estagiarios> estagiarios;
-	
-	
-	
 
 	
 
-	public Boolean getAtendeCNH() {
+	public String getAtendeCNH() {
 		return atendeCNH;
 	}
 
-	public void setAtendeCNH(Boolean atendeCNH) {
+	public void setAtendeCNH(String atendeCNH) {
 		this.atendeCNH = atendeCNH;
 	}
 
-	public Boolean getAtendeVeiculos() {
+	public String getAtendeVeiculos() {
 		return atendeVeiculos;
 	}
 
-	public void setAtendeVeiculos(Boolean atendeVeiculos) {
+	public void setAtendeVeiculos(String atendeVeiculos) {
 		this.atendeVeiculos = atendeVeiculos;
 	}
 
-	public Boolean getAtendeMulta() {
+	public String getAtendeMulta() {
 		return atendeMulta;
 	}
 
-	public void setAtendeMulta(Boolean atendeMulta) {
+	public void setAtendeMulta(String atendeMulta) {
 		this.atendeMulta = atendeMulta;
 	}
 
-	public Boolean getAtendePenalidade() {
+	public String getAtendePenalidade() {
 		return atendePenalidade;
 	}
 
-	public void setAtendePenalidade(Boolean atendePenalidade) {
+	public void setAtendePenalidade(String atendePenalidade) {
 		this.atendePenalidade = atendePenalidade;
 	}
 
-	public Boolean getAtendeFoto() {
+	public String getAtendeFoto() {
 		return atendeFoto;
 	}
 
-	public void setAtendeFoto(Boolean atendeFoto) {
+	public void setAtendeFoto(String atendeFoto) {
 		this.atendeFoto = atendeFoto;
 	}
 
@@ -154,8 +146,6 @@ public class UnidadeFunc extends GenericDomain {
 	public void setLogitude(String logitude) {
 		this.logitude = logitude;
 	}
-
-	
 
 	public String getCep() {
 		return cep;
@@ -253,25 +243,6 @@ public class UnidadeFunc extends GenericDomain {
 		this.estagiarios = estagiarios;
 	}
 
-	public void setAtendeCNH(boolean atendeCNH) {
-		this.atendeCNH = atendeCNH;
-	}
-
-	public void setAtendeVeiculos(boolean atendeVeiculos) {
-		this.atendeVeiculos = atendeVeiculos;
-	}
-
-	public void setAtendeMulta(boolean atendeMulta) {
-		this.atendeMulta = atendeMulta;
-	}
-
-	public void setAtendePenalidade(boolean atendePenalidade) {
-		this.atendePenalidade = atendePenalidade;
-	}
-
-	public void setAtendeFoto(boolean atendeFoto) {
-		this.atendeFoto = atendeFoto;
-	}
 	
 
 }

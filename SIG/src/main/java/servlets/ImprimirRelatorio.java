@@ -104,6 +104,11 @@ public class ImprimirRelatorio extends HttpServlet {
 				parameters.put("VISITAID", request.getParameter("visitaId"));
 			}
 			
+			//RELATORIO UNIDADE
+			if (request.getParameter("unidadeId") != null && !request.getParameter("unidadeId").equals("0")) {
+				parameters.put("UNIDADEID", Integer.parseInt(request.getParameter("unidadeId")));
+			}
+			
 			/*
 			 * if (request.getParameter("instrutorId2") != null &&
 			 * !request.getParameter("instrutorId2").equals("0")){

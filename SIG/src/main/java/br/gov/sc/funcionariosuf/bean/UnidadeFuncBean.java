@@ -1,36 +1,55 @@
-
 package br.gov.sc.funcionariosuf.bean;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.net.URL;
 import java.net.URLConnection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.ViewHandler;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.collections.ListUtils;
+import java.io.*;
+import java.sql.*;
+
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.*;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+
 import org.omnifaces.util.Messages;
 import org.primefaces.event.ToggleEvent;
 
 import com.google.gson.Gson;
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
+import com.mysql.jdbc.Statement;
 
+import bd.Conexao;
 import br.gov.sc.contrato.dao.CargoTerceirizadoDAO;
 import br.gov.sc.contrato.dao.FuncionarioTerceirizadoDAO;
 import br.gov.sc.contrato.domain.CargoTerceirizado;
@@ -56,12 +75,14 @@ import br.gov.sc.sgi.domain.PessoaJuridica;
 import br.gov.sc.sgi.domain.Setor;
 import br.gov.sc.sgi.domain.Unidade;
 import br.gov.sc.sgi.domain.Usuario;
+import util.JSFUtil;
 
 @SuppressWarnings("serial")
 @ManagedBean
 @ViewScoped
 public class UnidadeFuncBean implements Serializable {
 
+	
 	private UnidadeFunc unidadeFunc;
 	private List<UnidadeFunc> listaUnidadeFunc;
 
@@ -150,6 +171,15 @@ public class UnidadeFuncBean implements Serializable {
 			listaCargosServidores = cargoServidoresDAO.listar();
 
 			unidadeFunc = new UnidadeFunc();
+			
+			FuncionarioTerceirizadoDAO terceirizadosDAO = new FuncionarioTerceirizadoDAO();
+			listaTerceirizados = terceirizadosDAO.listar();
+
+			ServidoresDAO servidoresDAO = new ServidoresDAO();
+			listaServidores = servidoresDAO.listar();
+
+			EstagiariosDAO estagiarioDAO = new EstagiariosDAO();
+			listaEstagiarios = estagiarioDAO.listar();
 
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar listar as Ciretran Citran.");
@@ -325,11 +355,16 @@ public class UnidadeFuncBean implements Serializable {
 		}
 	}
 
+	
+	@SuppressWarnings("unlikely-arg-type")
 	public void salvar() {
 		try {
 
 			UnidadeFuncDAO unidadeFuncDAO = new UnidadeFuncDAO();
 
+			
+		
+			
 			unidadeFuncDAO.merge(unidadeFunc);
 
 			unidadeFunc = new UnidadeFunc();
@@ -508,6 +543,72 @@ public class UnidadeFuncBean implements Serializable {
 				.flatMap(x -> x.stream()).collect(Collectors.toList());
 
 	}
+	
+	public void imprimirRelatorio(ActionEvent evento) {
+
+		try {
+			unidadeFunc = (UnidadeFunc) evento.getComponent().getAttributes().get("unidadeSelecionado");
+			
+			System.out.println(unidadeFunc.getUnidade() + " VALOR P RELATORIO");
+			
+
+			JSFUtil.redirect("../ImprimirRelatorio?rlt_nome=relatoriounidade" + "&unidadeId=" + unidadeFunc.getUnidade().getCodigo());
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (NullPointerException nulo) {
+			throw new NullPointerException(
+					"Erro ao imprimir o relatório. Valores das variáveis inválidos " + nulo.getMessage());
+		}
+
+	
+	}
+	
+	public void imprimirRelatorioExcel(ActionEvent evento) {
+
+		try {
+			unidadeFunc = (UnidadeFunc) evento.getComponent().getAttributes().get("unidadeSelecionado");
+			
+			System.out.println(unidadeFunc.getUnidade() + " VALOR P RELATORIO");
+			
+
+			JSFUtil.redirect("../ImprimirRelatorioExcel?rlt_nome=relatoriounidadeexcel" + "&unidadeId=" + unidadeFunc.getUnidade().getCodigo());
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (NullPointerException nulo) {
+			throw new NullPointerException(
+					"Erro ao imprimir o relatório. Valores das variáveis inválidos " + nulo.getMessage());
+		}
+
+	
+	}
+	
+	public void testFunc() {
+		
+		
+			try {
+				JSFUtil.redirect("../ImprimirRelatorioExcelTest");
+				this.refresh();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+
+	}
+	public void refresh() {
+		FacesContext context = FacesContext.getCurrentInstance();
+		Application application = context.getApplication();
+		ViewHandler viewHandler = application.getViewHandler();
+		UIViewRoot viewRoot = viewHandler.createView(context, context.getViewRoot().getViewId());
+		context.setViewRoot(viewRoot);
+		context.renderResponse();
+	}
+	
+
+	  
+	
 
 	public Unidade getUnidade() {
 		return unidade;
