@@ -33,6 +33,20 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 
 
+		<script>
+			$(document).ready(function() {
+				console.log("ready is called");
+				//PF('statusDialog').hide()
+				$('#nonAjaxLoad').hide();
+			});
+
+			$(window).bind('beforeunload', function() {
+				console.log("bind is called");
+				// PF('statusDialog').show()
+				$('#nonAjaxLoad').hide();
+			});
+		</script>
+
 
 
 
@@ -45,17 +59,26 @@ body .ui-panelgrid .ui-panelgrid-cell {
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{unidadeFuncBean.combinedList3}"
 					var="func" rows="10" stripedRows="true">
+					
+					<f:facet name="header">
+									<h4>Funcionários</h4>
+
+<p:commandButton icon="pi pi-file-excel"
+										styleClass="rounded-button ui-button-success"
+										actionListener="#{unidadeFuncBean.relatorioExcelGeral}"> 
+
+										
+									</p:commandButton>
 
 
-					<p:column headerText="Nome" sortBy="#{func.pessoa.nomeCompleto}"
+								</f:facet>
+
+
+					<p:column headerText="Nome" sortBy="#{func.pessoa.funcionarioTerceirizado.nomeCompleto}"
 						filterBy="#{func.pessoa.nomeCompleto}" filterMatchMode="contains">
 						<h:outputText value="#{func.pessoa.nomeCompleto}" />
 					</p:column>
 
-					<p:column headerText="CPF" sortBy="#{func.pessoa.cpf}"
-						filterBy="#{func.pessoa.cpf}" filterMatchMode="contains">
-						<h:outputText value="#{func.pessoa.cpf}" />
-					</p:column>
 
 					<p:column headerText="Unidade" sortBy="#{func.unidade.unidadeNome}"
 						filterBy="#{func.unidade.unidadeNome}" filterMatchMode="contains">

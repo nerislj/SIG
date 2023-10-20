@@ -1,6 +1,9 @@
 /* Decompiler 24ms, total 168ms, lines 85 */
 package br.gov.sc.contrato.domain;
 
+import br.gov.sc.sgi.domain.PessoaFisica;
+import br.gov.sc.sgi.domain.Setor;
+import br.gov.sc.sgi.domain.Unidade;
 import br.gov.sc.sgi.domain.Usuario;
 import java.util.Date;
 import javax.persistence.Column;
@@ -41,6 +44,9 @@ public class ContratoRelacao extends GenericDomainContrato {
       nullable = false
    )
    private Date dataCadastro;
+   
+  
+   
 
    public Date getDataCadastro() {
       return this.dataCadastro;

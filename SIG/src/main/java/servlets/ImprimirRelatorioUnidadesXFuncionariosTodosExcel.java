@@ -16,8 +16,8 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import bd.Conexao;
 
-@WebServlet("/pages/ImprimirRelatorioUnidadesXFuncionariosExcel")
-public class ImprimirRelatorioUnidadesXFuncionariosExcel extends HttpServlet {
+@WebServlet("/pages/ImprimirRelatorioUnidadesXFuncionariosTodosExcel")
+public class ImprimirRelatorioUnidadesXFuncionariosTodosExcel extends HttpServlet {
 	/**
 	 * 
 	 */
@@ -27,18 +27,15 @@ public class ImprimirRelatorioUnidadesXFuncionariosExcel extends HttpServlet {
 		OutputStream out = null;
 		try {
 			response.setContentType("application/vnd.ms-excel");
-			response.setHeader("Content-Disposition", "attachment; filename=FuncionariosAtivos.xls");
+			response.setHeader("Content-Disposition", "attachment; filename=FuncionariosAtivosGeral.xls");
 
 			Conexao con = new Conexao();
 
 			ResultSet rs = con.consulta("SELECT * FROM  ("
-					+ "SELECT nomeCompleto, cpf, unidadeNome, setorNome, 'TERCEIRIZADO' as Tipo FROM controle_relacaocontratoterceirizado LEFT JOIN controle_funcionarioterceirizado ON controle_funcionarioterceirizado.codigo = controle_relacaocontratoterceirizado.funcionarioTerceirizado_codigo LEFT JOIN pessoafisica ON pessoafisica.codigo = controle_funcionarioterceirizado.pessoa_codigo LEFT JOIN unidade ON unidade.codigo = controle_funcionarioterceirizado.unidade_codigo LEFT JOIN setor ON setor.codigo = controle_funcionarioterceirizado.setor_codigo WHERE controle_funcionarioterceirizado.unidade_codigo ="
-					+ request.getParameter("unidadeId") + ""
-					+ " UNION ALL SELECT nomeCompleto, cpf, unidadeNome, setorNome, 'SERVIDOR' as Tipo FROM funcionariosuf_servidores LEFT JOIN pessoafisica ON pessoafisica.codigo = funcionariosuf_servidores.pessoa_codigo LEFT JOIN unidade ON unidade.codigo = funcionariosuf_servidores.unidade_codigo LEFT JOIN setor ON setor.codigo = funcionariosuf_servidores.setor_codigo WHERE funcionariosuf_servidores.unidade_codigo ="
-					+ request.getParameter("unidadeId") + ""
-					+ " UNION ALL SELECT nomeCompleto, cpf, unidadeNome, setorNome, 'ESTAGIÁRIO' as Tipo FROM funcionariosuf_estagiarios LEFT JOIN pessoafisica ON pessoafisica.codigo = funcionariosuf_estagiarios.pessoa_codigo LEFT JOIN unidade ON unidade.codigo = funcionariosuf_estagiarios.unidade_codigo LEFT JOIN setor ON setor.codigo = funcionariosuf_estagiarios.setor_codigo WHERE funcionariosuf_estagiarios.unidade_codigo ="
-					+ request.getParameter("unidadeId") + ") as T"
-
+					+ "SELECT nomeCompleto, cpf, unidadeNome, setorNome, 'TERCEIRIZADO' as Tipo FROM controle_relacaocontratoterceirizado LEFT JOIN controle_funcionarioterceirizado ON controle_funcionarioterceirizado.codigo = controle_relacaocontratoterceirizado.funcionarioTerceirizado_codigo LEFT JOIN pessoafisica ON pessoafisica.codigo = controle_funcionarioterceirizado.pessoa_codigo LEFT JOIN unidade ON unidade.codigo = controle_funcionarioterceirizado.unidade_codigo LEFT JOIN setor ON setor.codigo = controle_funcionarioterceirizado.setor_codigo"
+					+ " UNION ALL SELECT nomeCompleto, cpf, unidadeNome, setorNome, 'SERVIDOR' as Tipo FROM funcionariosuf_servidores LEFT JOIN pessoafisica ON pessoafisica.codigo = funcionariosuf_servidores.pessoa_codigo LEFT JOIN unidade ON unidade.codigo = funcionariosuf_servidores.unidade_codigo LEFT JOIN setor ON setor.codigo = funcionariosuf_servidores.setor_codigo"
+					+ " UNION ALL SELECT nomeCompleto, cpf, unidadeNome, setorNome, 'ESTAGIÁRIO' as Tipo FROM funcionariosuf_estagiarios LEFT JOIN pessoafisica ON pessoafisica.codigo = funcionariosuf_estagiarios.pessoa_codigo LEFT JOIN unidade ON unidade.codigo = funcionariosuf_estagiarios.unidade_codigo LEFT JOIN setor ON setor.codigo = funcionariosuf_estagiarios.setor_codigo"
+					+ ") as T order by unidadeNome asc"
 					+ ";");
 
 			HSSFWorkbook workbook = new HSSFWorkbook();

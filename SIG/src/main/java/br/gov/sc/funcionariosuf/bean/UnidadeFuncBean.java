@@ -127,9 +127,17 @@ public class UnidadeFuncBean implements Serializable {
 
 	private List<CargoServidores> listaCargosServidores;
 
-	private List<FuncionarioTerceirizado> combinedList;
+	private List<String> combinedList;
 
-	private List<FuncionarioTerceirizado> combinedList3;
+	private List<String> combinedList3;
+	
+
+	
+
+	
+	
+	
+
 
 	public List<CargoServidores> getListaCargosServidores() {
 		return listaCargosServidores;
@@ -207,7 +215,7 @@ public class UnidadeFuncBean implements Serializable {
 			
 			filteredUnidades = listaUnidadeFunc;
 
-			listaTodosFunc = unidadeFuncDAO.listaTodosFuncionarios();
+			//listaTodosFunc = unidadeFuncDAO.listaTodosFuncionarios();
 
 			SetorDAO setorDAO = new SetorDAO();
 			listasetores = setorDAO.listar("setorNome");
@@ -583,7 +591,7 @@ public class UnidadeFuncBean implements Serializable {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "unlikely-arg-type" })
 	public void popularTodosFuncionarios() {
 
 		FuncionarioTerceirizadoDAO terceirizadosDAO = new FuncionarioTerceirizadoDAO();
@@ -594,11 +602,20 @@ public class UnidadeFuncBean implements Serializable {
 
 		EstagiariosDAO estagiarioDAO = new EstagiariosDAO();
 		listaEstagiarios = estagiarioDAO.listar();
+		
+		ContratoRelacaoDAO contratoDAO = new ContratoRelacaoDAO();
+		
+		
+		
+		List<FuncionarioTerceirizado> expected = contratoDAO.listarPorTodos();
+		
+		  System.out.println(expected.size());
 
-		combinedList = (List<FuncionarioTerceirizado>) Stream.of(listaTerceirizados, listaServidores)
+		  
+		combinedList = (List<String>) Stream.of(expected, listaServidores)
 				.flatMap(x -> x.stream()).collect(Collectors.toList());
 
-		combinedList3 = (List<FuncionarioTerceirizado>) Stream.of(combinedList, listaEstagiarios)
+		combinedList3 = (List<String>) Stream.of(combinedList, listaEstagiarios)
 				.flatMap(x -> x.stream()).collect(Collectors.toList());
 
 	}
@@ -647,6 +664,18 @@ public class UnidadeFuncBean implements Serializable {
 		try {
 			JSFUtil.redirect("../ImprimirRelatorioUnidadesXFuncionariosExcel?" + "unidadeId="
 					+ unidadeFunc.getUnidade().getCodigo());
+			this.refresh();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	public void relatorioExcelGeral(ActionEvent evento) {
+		
+
+		try {
+			JSFUtil.redirect("../ImprimirRelatorioUnidadesXFuncionariosTodosExcel");
 			this.refresh();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -832,19 +861,19 @@ public class UnidadeFuncBean implements Serializable {
 		this.listaTodosFunc = listaTodosFunc;
 	}
 
-	public List<FuncionarioTerceirizado> getCombinedList() {
+	public List<String> getCombinedList() {
 		return combinedList;
 	}
 
-	public void setCombinedList(List<FuncionarioTerceirizado> combinedList) {
+	public void setCombinedList(List<String> combinedList) {
 		this.combinedList = combinedList;
 	}
 
-	public List<FuncionarioTerceirizado> getCombinedList3() {
+	public List<String> getCombinedList3() {
 		return combinedList3;
 	}
 
-	public void setCombinedList3(List<FuncionarioTerceirizado> combinedList3) {
+	public void setCombinedList3(List<String> combinedList3) {
 		this.combinedList3 = combinedList3;
 	}
 
@@ -863,5 +892,15 @@ public class UnidadeFuncBean implements Serializable {
 	public void setListaTerceirizadosAtivos(List<ContratoRelacao> listaTerceirizadosAtivos) {
 		this.listaTerceirizadosAtivos = listaTerceirizadosAtivos;
 	}
+
+	
+
+	public void setFilterBy(List<FilterMeta> filterBy) {
+		this.filterBy = filterBy;
+	}
+
+	
+
+	
 
 }

@@ -33,7 +33,7 @@ public class EstagiariosDAO extends GenericDAO<Estagiarios> {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 		try {
 			Criteria consulta = sessao.createCriteria(Estagiarios.class);
-			consulta.add(Restrictions.eq("unidadeFunc", processo));
+			consulta.add(Restrictions.eq("unidade", processo));
 			
 			consulta.addOrder(Order.desc("codigo"));
 			List<Estagiarios> resultado = consulta.list();

@@ -5,12 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import br.gov.sc.cetran.domain.Conselheiro;
 import br.gov.sc.codet.dao.GenericDAO;
 import br.gov.sc.contrato.dao.FuncionarioTerceirizadoDAO;
+import br.gov.sc.contrato.domain.ContratoRelacao;
 import br.gov.sc.contrato.domain.FuncionarioTerceirizado;
 import br.gov.sc.funcionariosuf.domain.Servidores;
 import br.gov.sc.funcionariosuf.domain.UnidadeFunc;
@@ -129,5 +132,7 @@ public class UnidadeFuncDAO extends GenericDAO<UnidadeFunc> {
 	public void setListaServidores(List<Servidores> listaServidores) {
 		this.listaServidores = listaServidores;
 	}
+	
+	
 
 }

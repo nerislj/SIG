@@ -9,12 +9,15 @@ import br.gov.sc.sgi.util.HibernateUtil;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 
 public class ContratoRelacaoDAO extends GenericDAO<ContratoRelacao> {
+	
 	public List<ContratoRelacao> listarPorContratoTerceirizadoObject(Object contratoTerceirizado) {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 
@@ -24,6 +27,33 @@ public class ContratoRelacaoDAO extends GenericDAO<ContratoRelacao> {
 			consulta.add(Restrictions.eq("contratoTerceirizado", contratoTerceirizado));
 			consulta.addOrder(Order.asc("codigo"));
 			List<ContratoRelacao> resultado = consulta.list();
+			var6 = resultado;
+		} catch (RuntimeException var9) {
+			throw var9;
+		} finally {
+			sessao.close();
+		}
+
+		return var6;
+	}
+	
+	public List<FuncionarioTerceirizado> listarPorTodos() {
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+
+		List var6;
+		try {
+			
+			
+			Criteria consulta = sessao.createCriteria(FuncionarioTerceirizado.class);
+			
+			consulta.createAlias("contratoRelacao", "h", JoinType.INNER_JOIN);
+			
+		
+			
+			//consulta.setFetchMode( "contrato.funcionarioTerceirizado", FetchMode.SELECT);
+			
+		
+			List<FuncionarioTerceirizado> resultado = consulta.list();
 			var6 = resultado;
 		} catch (RuntimeException var9) {
 			throw var9;

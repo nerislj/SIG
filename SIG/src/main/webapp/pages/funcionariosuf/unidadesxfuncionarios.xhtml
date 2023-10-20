@@ -181,6 +181,8 @@ body .ui-state-disabled {
 
 						<p:panelGrid columns="1" layout="grid">
 
+	
+
 
 <p:remoteCommand name="rmtCommand" action="#{unidadeFuncBean.filterListener2}" update="tabView:formularioEmpresas:updatePanelGroup"/>
 							<p:dataTable id="listaUnidades"
@@ -200,7 +202,12 @@ body .ui-state-disabled {
 								<f:facet name="header">
 									<h4>Unidades x Funcionários</h4>
 
+<p:commandButton icon="pi pi-file-excel"
+										styleClass="rounded-button ui-button-success"
+										actionListener="#{unidadeFuncBean.relatorioExcelGeral}"> 
 
+										
+									</p:commandButton>
 
 
 								</f:facet>
@@ -445,7 +452,7 @@ body .ui-state-disabled {
 											sortBy="#{terceirizado.funcionarioTerceirizado.pessoa.nomeCompleto}"
 											filterBy="#{terceirizado.funcionarioTerceirizado.pessoa.nomeCompleto}"
 											style="width: 5%; text-align: center;">
-											<h:outputText value="#{terceirizado.funcionarioTerceirizado.pessoa.nomeCompleto}" />
+											<h:outputText value="#{terceirizado.funcionarioTerceirizado.pessoa.nomeCompleto}" style="text-transform:uppercase;"/>
 										</p:column>
 
 										<p:column headerText="Empresa / Carga Horária"
@@ -1902,7 +1909,7 @@ body .ui-state-disabled {
 										<p id="number3" class="number">
 											<span
 												style="color: #8fb13a; font-size: 36px; font-weight: 800;"><h:outputLabel
-													value="#{unidadeFuncBean.listaTerceirizados.size()}" /></span>
+													value="#{unidadeFuncBean.listaTerceirizadosAtivos.size()}" /></span>
 										</p>
 										<p class="fontStats">TERCEIRIZADOS</p>
 									</div>

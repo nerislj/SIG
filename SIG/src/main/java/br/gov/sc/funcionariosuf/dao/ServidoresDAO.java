@@ -34,7 +34,7 @@ public class ServidoresDAO extends GenericDAO<Servidores> {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 		try {
 			Criteria consulta = sessao.createCriteria(Servidores.class);
-			consulta.add(Restrictions.eq("unidadeFunc", processo));
+			consulta.add(Restrictions.eq("unidade", processo));
 		
 			consulta.addOrder(Order.desc("codigo"));
 			List<Servidores> resultado = consulta.list();
