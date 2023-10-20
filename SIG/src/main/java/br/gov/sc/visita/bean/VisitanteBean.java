@@ -3,6 +3,8 @@ package br.gov.sc.visita.bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -53,12 +55,31 @@ public class VisitanteBean implements Serializable {
 		}
 	}
 
+	public Date getHj() {
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.DATE, 0);
+		System.out.println(c.getTime());
+		return c.getTime();
+	}
+	
+	
 	public void salvar() {
 		try {
 
 			VisitanteDAO visitanteDAO = new VisitanteDAO();
 
 			visitante.setNomeCompleto(visitante.getNomeCompleto().toUpperCase());
+			
+			String celularFormatado = "";
+			String celularFormatado2 = "";
+			String result = "";
+			
+			celularFormatado = visitante.getCelular().replace(")9", "");
+			celularFormatado2 = celularFormatado;
+			result = celularFormatado2.replace("(", "");
+			
+			visitante.setDataHoraCadastro(getHj());
+			visitante.setCelular("55" + result);
 			
 			visitanteDAO.merge(visitante);
 

@@ -10,7 +10,9 @@ import javax.faces.event.ActionEvent;
 
 import org.omnifaces.util.Messages;
 
+import br.gov.sc.sgi.dao.RegionalDAO;
 import br.gov.sc.sgi.dao.UnidadeDAO;
+import br.gov.sc.sgi.domain.RegionalUnidade;
 import br.gov.sc.sgi.domain.Unidade;
 
 @SuppressWarnings("serial")
@@ -20,6 +22,8 @@ public class UnidadeBean implements Serializable {
 
 	private Unidade unidade;
 	private List<Unidade> unidades;
+	
+	private List<RegionalUnidade> regionais;
 
 	public Unidade getUnidade() {
 		return unidade;
@@ -41,6 +45,11 @@ public class UnidadeBean implements Serializable {
 	public void listar() {
 		try {
 			System.out.println("unidade bean");
+			
+			RegionalDAO regionalDAO = new RegionalDAO();
+			
+			setRegionais(regionalDAO.listar());
+			
 			UnidadeDAO unidadeDAO = new UnidadeDAO();
 			unidades = unidadeDAO.listar();
 		} catch (RuntimeException erro) {
@@ -88,5 +97,13 @@ public class UnidadeBean implements Serializable {
 
 	public void editar(ActionEvent evento) {
 		unidade = (Unidade) evento.getComponent().getAttributes().get("unidadeSelecionada");
+	}
+
+	public List<RegionalUnidade> getRegionais() {
+		return regionais;
+	}
+
+	public void setRegionais(List<RegionalUnidade> regionais) {
+		this.regionais = regionais;
 	}
 }

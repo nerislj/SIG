@@ -198,8 +198,6 @@
 
 
 
-
-
 		<dependency>
 			<groupId>io.nayuki</groupId>
 			<artifactId>qrcodegen</artifactId>

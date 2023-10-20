@@ -67,27 +67,27 @@ body .ui-state-disabled {
 .colStats {
 	flex-grow: 1;
 	flex-basis: 0;
-	padding: 3.5rem;
+	padding: 1.0rem;
 	margin-left: 10% !important;
 	text-align: center;
 }
 </style>
 
-<script>
-$(document).ready(function(){
-    console.log("ready is called");
-    //PF('statusDialog').hide()
-    $('#nonAjaxLoad').hide();
-});
+ 
 
-$(window).bind('beforeunload', function() {
-     console.log("bind is called");
-    // PF('statusDialog').show()
-    $('#nonAjaxLoad').hide(); 
-});
+		<script>
+			$(document).ready(function() {
+				console.log("ready is called");
+				//PF('statusDialog').hide()
+				$('#nonAjaxLoad').hide();
+			});
 
-
-</script>
+			$(window).bind('beforeunload', function() {
+				console.log("bind is called");
+				// PF('statusDialog').show()
+				$('#nonAjaxLoad').hide();
+			});
+		</script>
 
 
 
@@ -96,8 +96,8 @@ $(window).bind('beforeunload', function() {
 			<p:tab title="Unidades">
 				<h:form id="formularioEmpresas">
 
-
-					<div class="card">
+<h:panelGroup id="updatePanelGroup">
+					<div class="cardUnidadexFunc">
 
 						<div class="grid align-items-start vertical-container">
 
@@ -105,11 +105,11 @@ $(window).bind('beforeunload', function() {
 								<div class="colStats">
 
 									<div class="item">
-										<i class="pi pi-building" style="font-size: 5rem"></i>
+										<i class="pi pi-building" style="font-size: 4rem"></i>
 										<p id="number2" class="number">
 											<span
-												style="color: #8fb13a; font-size: 36px; font-weight: 800;"><h:outputLabel
-													value="#{unidadeFuncBean.listaUnidadeFunc.size()}" /></span>
+												style="color: #8fb13a; font-size: 30px; font-weight: 800;"><h:outputLabel
+													value="#{unidadeFuncBean.filteredUnidades.size()}" /></span>
 											<p class="fontStats">UNIDADES</p>
 										</p>
 
@@ -123,10 +123,10 @@ $(window).bind('beforeunload', function() {
 								<div class="colStats">
 
 									<div class="item">
-										<i class="pi pi-users" style="font-size: 5rem"></i>
+										<i class="pi pi-users" style="font-size: 4rem"></i>
 										<p id="number3" class="number">
 											<span
-												style="color: #8fb13a; font-size: 36px; font-weight: 800;"><h:outputLabel
+												style="color: #8fb13a; font-size: 30px; font-weight: 800;"><h:outputLabel
 													value="#{unidadeFuncBean.listaServidores.size()}" /></span>
 										</p>
 										<p class="fontStats">SERVIDORES</p>
@@ -138,11 +138,11 @@ $(window).bind('beforeunload', function() {
 								<div class="colStats">
 
 									<div class="item">
-										<i class="pi pi-users" style="font-size: 5rem"></i>
+										<i class="pi pi-users" style="font-size: 4rem"></i>
 										<p id="number3" class="number">
 											<span
-												style="color: #8fb13a; font-size: 36px; font-weight: 800;"><h:outputLabel
-													value="#{unidadeFuncBean.listaTerceirizados.size()}" /></span>
+												style="color: #8fb13a; font-size: 30px; font-weight: 800;"><h:outputLabel
+													value="#{unidadeFuncBean.listaTerceirizadosAtivos.size()}" /></span>
 										</p>
 										<p class="fontStats">TERCEIRIZADOS</p>
 									</div>
@@ -153,10 +153,10 @@ $(window).bind('beforeunload', function() {
 								<div class="colStats">
 
 									<div class="item">
-										<i class="pi pi-users" style="font-size: 5rem"></i>
+										<i class="pi pi-users" style="font-size: 4rem"></i>
 										<p id="number3" class="number">
 											<span
-												style="color: #8fb13a; font-size: 36px; font-weight: 800;"><h:outputLabel
+												style="color: #8fb13a; font-size: 30px; font-weight: 800;"><h:outputLabel
 													value="#{unidadeFuncBean.listaEstagiarios.size()}" /></span>
 										</p>
 										<p class="fontStats">ESTAGIÁRIOS</p>
@@ -172,7 +172,7 @@ $(window).bind('beforeunload', function() {
 						</div>
 					</div>
 
-
+</h:panelGroup>
 
 
 
@@ -182,7 +182,7 @@ $(window).bind('beforeunload', function() {
 						<p:panelGrid columns="1" layout="grid">
 
 
-
+<p:remoteCommand name="rmtCommand" action="#{unidadeFuncBean.filterListener2}" update="tabView:formularioEmpresas:updatePanelGroup"/>
 							<p:dataTable id="listaUnidades"
 								emptyMessage="Nenhum Posto de atendimento encontrado."
 								paginator="true" rowKey="#{unidade.codigo}" rows="10"
@@ -190,17 +190,22 @@ $(window).bind('beforeunload', function() {
 								stripedRows="true" rowExpandMode="single"
 								currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} linhas"
 								rowsPerPageTemplate="5,10,{ShowAll|'All'}"
+								
+								widgetVar="myTableWidget"
+								filteredValue="#{unidadeFuncBean.filteredUnidades}"
+								filterBy="#{dtFilterView.filterBy}"
+								
 								paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
 								<f:facet name="header">
-									<h3>Unidades x Funcionários</h3>
+									<h4>Unidades x Funcionários</h4>
 
 
 
 
 								</f:facet>
 
-
+ <p:ajax event="filter" oncomplete="rmtCommand()" />
 
 								<p:ajax event="rowToggle"
 									listener="#{unidadeFuncBean.onRowToggle}"
@@ -213,7 +218,7 @@ $(window).bind('beforeunload', function() {
 								<p:column headerText="Unidade"
 									sortBy="#{unidade.unidade.unidadeNome}"
 									filterBy="#{unidade.unidade.unidadeNome}"
-									filterMatchMode="contains"
+									filterMatchMode="contains" oncomplete="PF('myTableWidget').filter()"
 									style="width: 12%; text-align: center;">
 									<h:outputText value="#{unidade.unidade.unidadeNome}" />
 								</p:column>
@@ -345,12 +350,16 @@ $(window).bind('beforeunload', function() {
 
 									<p:commandButton icon="pi pi-file-excel"
 										styleClass="rounded-button ui-button-success"
-										actionListener="#{unidadeFuncBean.testFunc}" process="@this"
-										ajax="false">
+										actionListener="#{unidadeFuncBean.testFunc}">
+
+										<f:attribute name="unidadeSelecionado" value="#{unidade}" />
+										<f:actionListener
+											type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 
 									</p:commandButton>
 
 
+									
 
 
 
@@ -422,7 +431,7 @@ $(window).bind('beforeunload', function() {
 									<p:dataTable id="listaTerceirizadosExpansion"
 										showGridlines="true"
 										emptyMessage="Nenhum registro encontrado." rows="100"
-										value="#{unidadeFuncBean.listaTerceirizados}"
+										value="#{unidadeFuncBean.listaTerceirizadosAtivos}"
 										var="terceirizado" editable="true">
 
 										<f:facet name="header">
@@ -433,25 +442,25 @@ $(window).bind('beforeunload', function() {
 
 
 										<p:column headerText="Nome"
-											sortBy="#{terceirizado.pessoa.nomeCompleto}"
-											filterBy="#{terceirizado.pessoa.nomeCompleto}"
+											sortBy="#{terceirizado.funcionarioTerceirizado.pessoa.nomeCompleto}"
+											filterBy="#{terceirizado.funcionarioTerceirizado.pessoa.nomeCompleto}"
 											style="width: 5%; text-align: center;">
-											<h:outputText value="#{terceirizado.pessoa.nomeCompleto}" />
+											<h:outputText value="#{terceirizado.funcionarioTerceirizado.pessoa.nomeCompleto}" />
 										</p:column>
 
-										<p:column headerText="CPF"
+										<p:column headerText="Empresa / Carga Horária"
 											style="width: 5%; text-align: center;">
-											<h:outputText value="#{terceirizado.pessoa.cpf}" />
+											<h:outputText value="#{terceirizado.contratoTerceirizado.empresaTerceirizada.pessoaJuridica.nomeFantasia} - #{terceirizado.contratoTerceirizado.hrContrato}" />
 										</p:column>
 
 										<p:column headerText="E-mail"
 											style="width: 5%; text-align: center;">
-											<h:outputText value="#{terceirizado.pessoa.email}" />
+											<h:outputText value="#{terceirizado.funcionarioTerceirizado.pessoa.email}" />
 										</p:column>
 
 										<p:column headerText="Telefone Celular"
 											style="width: 5%; text-align: center;">
-											<h:outputText value="#{terceirizado.pessoa.cel}" />
+											<h:outputText value="#{terceirizado.funcionarioTerceirizado.pessoa.cel}" />
 										</p:column>
 
 										<p:column headerText="Ações"

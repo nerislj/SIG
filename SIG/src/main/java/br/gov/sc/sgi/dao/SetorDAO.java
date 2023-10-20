@@ -53,7 +53,7 @@ public class SetorDAO extends GenericDAO<Setor>{
 		try {
 			Criteria consulta = sessao.createCriteria(Setor.class);
 			consulta.add(Restrictions.eq("unidade.codigo", unidadeCodigo));	
-			consulta.add(Restrictions.isNull("setor"));	
+			//consulta.add(Restrictions.isNull("setor"));	
 			List<Setor> resultado = consulta.list();
 			return resultado;
 		} catch (RuntimeException erro) {

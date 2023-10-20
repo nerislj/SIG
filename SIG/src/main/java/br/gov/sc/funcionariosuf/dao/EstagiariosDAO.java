@@ -12,6 +12,7 @@ import org.hibernate.criterion.SimpleExpression;
 
 import br.gov.sc.codet.dao.GenericDAO;
 import br.gov.sc.funcionariosuf.domain.Estagiarios;
+import br.gov.sc.funcionariosuf.domain.Servidores;
 import br.gov.sc.sgi.domain.PessoaFisica;
 import br.gov.sc.sgi.domain.Setor;
 import br.gov.sc.sgi.util.HibernateUtil;
@@ -43,6 +44,28 @@ public class EstagiariosDAO extends GenericDAO<Estagiarios> {
 			sessao.close();
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+  	public List<Estagiarios> listarUnidades(List<String> unidades) {
+
+  		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+  		try {
+
+  			Criteria consulta = sessao.createCriteria(Estagiarios.class);
+  			consulta.createAlias("unidade", "u");
+  			consulta.add(Restrictions.in("u.unidadeNome", unidades));
+  			
+
+  			List<Estagiarios> resultado = consulta.list();
+
+  			return resultado;
+
+  		} catch (RuntimeException erro) {
+  			throw erro;
+  		} finally {
+  			sessao.close();
+  		}
+  	}
 
 
 }

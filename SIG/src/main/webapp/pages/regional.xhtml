@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="formlista"
+			rendered="#{autenticacaoBean.temPermissoes([1])}">
+			<p:panel header="Regional - Listagem">
+			
+			<p:panelGrid columns="1" layout="grid">
+			
+			<p:dataTable id="lista"
+								emptyMessage="Nenhum processo encontrado." paginator="true"
+								rowKey="#{regional}" rows="10"
+								value="#{regionalBean.regionais}"
+								var="regional" stripedRows="true" rowExpandMode="single">
+								
+			
+					<f:facet name="header">
+						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
+							actionListener="#{regionalBean.novo()}"
+							update=":formcadastro:cadastro">
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+					</f:facet>
+					
+					<p:column headerText="Código" sortBy="#{regional.codigo}"
+						filterBy="#{regional.codigo}">
+						<h:outputText value="#{regional.codigo}" />
+					</p:column>
+
+					
+
+					<p:column headerText="Re" sortBy="#{regional.regional}"
+						filterBy="#{regional.regional}">
+						<h:outputText value="#{regional.regional}" />
+					</p:column>
+
+					<p:column headerText="Opções">
+						<p:commandButton icon="pi pi-times"
+												styleClass="rounded-button ui-button-danger"
+							actionListener="#{regionalBean.excluir}"
+							update=":mensagem :formlista:lista">
+							<p:confirm header="Confirmação" message="Deseja excluir a Regional?"
+								icon="ui-icon-alert" />
+							<f:attribute name="regionalSelecionado" value="#{regional}" />
+						</p:commandButton>
+
+						<p:commandButton icon="pi pi-pencil"
+										styleClass="rounded-button ui-button-secondary"
+							actionListener="#{regionalBean.editar}"
+							update=":formcadastro:cadastro"
+							oncomplete="PF('dialogo').show();">
+							<f:attribute name="regionalSelecionada" value="#{regional}" />
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+
+					</p:column>
+				</p:dataTable>
+
+				<p:confirmDialog global="true">
+					<p:commandButton value="Sim" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="Não" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+				
+				</p:panelGrid>
+				
+			</p:panel>
+		</h:form>
+
+		<p:dialog header="Regigonal - Cadastro" widgetVar="dialogo"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="formcadastro">
+				<h:panelGrid id="cadastro" columns="2">
+
+					
+
+					<p:outputLabel value="Regional:" />
+					<p:inputText maxlength="50" size="30"
+						value="#{regionalBean.regional.regional}" required="true"
+						requiredMessage="O campo Regional é obrigatório" />
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{regionalBean.salvar()}"
+						update=":mensagem :formcadastro:cadastro :formlista:lista" />
+					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

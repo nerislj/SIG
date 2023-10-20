@@ -11,15 +11,66 @@
 		<h:form id="formlista"
 			rendered="#{autenticacaoBean.temPermissoes([1])}">
 			<p:panel header="Unidade - Listagem">
+<<<<<<< HEAD
+=======
+			
+			<p:panelGrid columns="1" layout="grid">
+			
+			<p:dataTable id="lista"
+								emptyMessage="Nenhum processo encontrado." paginator="true"
+								rowKey="#{unidade}" rows="10"
+								value="#{unidadeBean.unidades}"
+								var="unidade" stripedRows="true" rowExpandMode="single">
+								
+			
+					<f:facet name="header">
+						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
+							actionListener="#{unidadeBean.novo()}"
+							update=":formcadastro:cadastro">
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+					</f:facet>
+					
+					<p:column headerText="Código" sortBy="#{unidade.codigo}"
+						filterBy="#{unidade.codigo}">
+						<h:outputText value="#{unidade.codigo}" />
+					</p:column>
+>>>>>>> branch 'main' of https://github.com/nerislj/SIG.git
 
 				<p:panelGrid columns="1" layout="grid">
 
+<<<<<<< HEAD
 					<p:dataTable id="lista" emptyMessage="Nenhum processo encontrado."
 						paginator="true" rowKey="#{unidade}" rows="10"
 						value="#{unidadeBean.unidades}" var="unidade" stripedRows="true"
 						rowExpandMode="single">
+=======
+					<p:column headerText="Sigla" sortBy="#{unidade.unidade}"
+						filterBy="#{unidade.unidade}">
+						<h:outputText value="#{unidade.unidade}" />
+					</p:column>
+					
+					<p:column headerText="Regional" sortBy="#{unidade.regional.regional}"
+						filterBy="#{unidade.regional.regional}">
+						<h:outputText value="#{unidade.regional.regional}" />
+					</p:column>
+>>>>>>> branch 'main' of https://github.com/nerislj/SIG.git
 
+<<<<<<< HEAD
+=======
+					<p:column headerText="Opções">
+						<p:commandButton icon="pi pi-times"
+												styleClass="rounded-button ui-button-danger"
+							actionListener="#{unidadeBean.excluir}"
+							update=":mensagem :formlista:lista">
+							<p:confirm header="Confirmação" message="Deseja excluir o Setor?"
+								icon="ui-icon-alert" />
+							<f:attribute name="unidadeSelecionado" value="#{unidade}" />
+						</p:commandButton>
+>>>>>>> branch 'main' of https://github.com/nerislj/SIG.git
 
+<<<<<<< HEAD
 						<f:facet name="header">
 							<p:commandButton styleClass="rounded-button ui-button-success"
 								icon="pi pi-plus-circle" value="Novo"
@@ -30,6 +81,17 @@
 									type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 							</p:commandButton>
 						</f:facet>
+=======
+						<p:commandButton icon="pi pi-pencil"
+										styleClass="rounded-button ui-button-secondary"
+							actionListener="#{unidadeBean.editar}"
+							update=":formcadastro:cadastro"
+							oncomplete="PF('dialogo').show();">
+							<f:attribute name="unidadeSelecionada" value="#{unidade}" />
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+>>>>>>> branch 'main' of https://github.com/nerislj/SIG.git
 
 						<p:column headerText="Código" sortBy="#{unidade.codigo}"
 							filterBy="#{unidade.codigo}" filterMatchMode="contains">
@@ -98,6 +160,17 @@
 					<p:inputText maxlength="50" size="30"
 						value="#{unidadeBean.unidade.unidade}" required="true"
 						requiredMessage="O campo Sigla é obrigatório" />
+						
+						<p:outputLabel value="Regional: " />
+					<p:selectOneMenu filter="true"
+						value="#{unidadeBean.unidade.regional}"
+						converter="omnifaces.SelectItemsConverter" required="true"
+						requiredMessage="O campo Regional é obrigatório">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma Regional" />
+						<f:selectItems value="#{unidadeBean.regionais}" var="reg" 
+							itemValue="#{reg}" itemLabel="#{reg.regional}" />
+					</p:selectOneMenu>
 
 				</h:panelGrid>
 
