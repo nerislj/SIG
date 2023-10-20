@@ -15,7 +15,9 @@
 					paginator="true" value="#{pessoaJuridicaBean.empresas}"
 					var="pessoaJuridica" rows="10">
 					<f:facet name="header">
-						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
+						<p:commandButton styleClass="rounded-button ui-button-success"
+							icon="pi pi-plus-circle" value="Novo"
+							oncomplete="PF('dialogo').show();"
 							actionListener="#{pessoaJuridicaBean.novo()}"
 							update=":formcadastro:cadastro">
 							<f:actionListener
@@ -25,21 +27,21 @@
 
 					<p:column headerText="CNPJ" sortBy="#{pessoaJuridica.cnpj}"
 						filterBy="#{pessoaJuridica.cnpj}"
-						style="width: 15%; text-align: center;">
+						style="width: 15%; text-align: center;" filterMatchMode="contains">
 						<h:outputText value="#{pessoaJuridica.cnpj}" />
 					</p:column>
 
 					<p:column headerText="Razão Social"
 						sortBy="#{pessoaJuridica.razaoSocial}"
 						filterBy="#{pessoaJuridica.razaoSocial}"
-						style="text-transform:uppercase;">
+						style="text-transform:uppercase;" filterMatchMode="contains">
 						<h:outputText value="#{pessoaJuridica.razaoSocial}" />
 					</p:column>
 
 					<p:column headerText="Nome Fantasia"
 						sortBy="#{pessoaJuridica.nomeFantasia}"
 						filterBy="#{pessoaJuridica.nomeFantasia}"
-						style="text-transform:uppercase;">
+						style="text-transform:uppercase;" filterMatchMode="contains">
 						<h:outputText value="#{pessoaJuridica.nomeFantasia}" />
 					</p:column>
 
@@ -51,23 +53,24 @@
 
 					<p:column headerText="E-mail" sortBy="#{pessoaJuridica.email}"
 						filterBy="#{pessoaJuridica.email}"
-						style="text-transform:uppercase;">
+						style="text-transform:uppercase;" filterMatchMode="contains">
 						<h:outputText value="#{pessoaJuridica.email}" />
 					</p:column>
 
 					<p:column headerText="Opções"
 						style="width: 6%; text-align: center;">
 						<p:commandButton icon="pi pi-times"
-												styleClass="rounded-button ui-button-danger"
+							styleClass="rounded-button ui-button-danger"
 							actionListener="#{pessoaJuridicaBean.excluir}"
 							update=":mensagem :formlista:lista">
 							<p:confirm header="Confirmação"
-								message="Deseja excluir a Pessoa?" icon="ui-icon-alert" />
+								message="Deseja excluir a Pessoa?"
+								icon="pi pi-exclamation-triangle" />
 							<f:attribute name="empresaSelecionada" value="#{pessoaJuridica}" />
 						</p:commandButton>
 
 						<p:commandButton icon="pi pi-pencil"
-										styleClass="rounded-button ui-button-secondary"
+							styleClass="rounded-button ui-button-secondary"
 							actionListener="#{pessoaJuridicaBean.editar}"
 							update=":formcadastro:cadastro"
 							oncomplete="PF('dialogo').show();">
@@ -81,9 +84,11 @@
 
 				<p:confirmDialog global="true">
 					<p:commandButton value="Sim" type="button"
-						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						styleClass="ui-confirmdialog-yes rounded-button"
+						icon="pi pi-check" />
 					<p:commandButton value="Não" type="button"
-						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						styleClass="ui-confirmdialog-no rounded-button ui-button-danger"
+						icon="pi pi-times" />
 				</p:confirmDialog>
 			</p:panel>
 		</h:form>
@@ -145,7 +150,8 @@
 					<p:outputLabel for="estado" value="UF: " />
 					<p:selectOneMenu id="estado" filter="true"
 						converter="omnifaces.SelectItemsConverter"
-						value="#{pessoaJuridicaBean.empresa.estadoEndereco}">
+						value="#{pessoaJuridicaBean.empresa.estadoEndereco}"
+						filterMatchMode="contains">
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione um estado" />
 						<f:selectItems value="#{pessoaJuridicaBean.estados}" var="estado"
@@ -158,7 +164,8 @@
 					<p:selectOneMenu id="cidade" filter="true" required="true"
 						requiredMessage="O campo Municipio é obrigatório"
 						converter="omnifaces.SelectItemsConverter"
-						value="#{pessoaJuridicaBean.empresa.municipioEndereco}">
+						value="#{pessoaJuridicaBean.empresa.municipioEndereco}"
+						filterMatchMode="contains">
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione uma cidade" />
 						<f:selectItems value="#{pessoaJuridicaBean.cidades}" var="cidade"
@@ -174,10 +181,14 @@
 				</h:panelGrid>
 
 				<h:panelGrid columns="2">
-					<p:commandButton value="Salvar"
+					<p:commandButton styleClass="ui-confirmdialog-yes rounded-button"
+						icon="pi pi-check" value="Salvar"
 						actionListener="#{pessoaJuridicaBean.salvar()}"
 						update=":mensagem :formcadastro:cadastro :formlista:lista" />
-					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+					<p:commandButton
+						styleClass="ui-confirmdialog-no rounded-button ui-button-danger"
+						icon="pi pi-times" value="Fechar"
+						oncomplete="PF('dialogo').hide();" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>

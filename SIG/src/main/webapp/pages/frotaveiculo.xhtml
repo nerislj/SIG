@@ -11,19 +11,17 @@
 		<h:form id="formlista">
 			<p:panel header="Veiculo - Listagem"
 				rendered="#{autenticacaoBean.temPermissoes([1,25,29])}">
-				
-				<p:dataTable id="lista"
-								emptyMessage="Nenhum registro encontrado." paginator="true"
-								rowKey="#{veiculo}" rows="10"
-								value="#{frotaVeiculoBean.veiculos}"
-								var="veiculo" stripedRows="true" rowExpandMode="single">
-				
-			
+
+				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
+					paginator="true" rowKey="#{veiculo}" rows="10"
+					value="#{frotaVeiculoBean.veiculos}" var="veiculo"
+					stripedRows="true" rowExpandMode="single">
+
+
 					<f:facet name="header">
-						<p:commandButton 
-						styleClass="rounded-button ui-button-success"
-										icon="pi pi-plus-circle"
-						value="Novo" oncomplete="PF('dialogo').show();"
+						<p:commandButton styleClass="rounded-button ui-button-success"
+							icon="pi pi-plus-circle" value="Novo"
+							oncomplete="PF('dialogo').show();"
 							actionListener="#{frotaVeiculoBean.novo()}"
 							update=":formcadastro:cadastro">
 							<f:actionListener
@@ -37,17 +35,17 @@
 					</p:column>
 
 					<p:column headerText="Marca" sortBy="#{veiculo.marca}"
-						filterBy="#{veiculo.marca}">
+						filterBy="#{veiculo.marca}" filterMatchMode="contains">
 						<h:outputText value="#{veiculo.marca}" />
 					</p:column>
 
 					<p:column headerText="Modelo" sortBy="#{veiculo.modelo}"
-						filterBy="#{veiculo.modelo}">
+						filterBy="#{veiculo.modelo}" filterMatchMode="contains">
 						<h:outputText value="#{veiculo.modelo}" />
 					</p:column>
 
 					<p:column headerText="RENAVAM" sortBy="#{veiculo.renavam}"
-						filterBy="#{veiculo.renavam}">
+						filterBy="#{veiculo.renavam}" filterMatchMode="contains">
 						<h:outputText value="#{veiculo.renavam}" />
 					</p:column>
 
@@ -57,12 +55,12 @@
 					</p:column>
 
 					<p:column headerText="Tipo" sortBy="#{veiculo.tipoVeiculo}"
-						filterBy="#{veiculo.tipoVeiculo}">
+						filterBy="#{veiculo.tipoVeiculo}" filterMatchMode="contains">
 						<h:outputText value="#{veiculo.tipoVeiculo}" />
 					</p:column>
 
 					<p:column headerText="Status" sortBy="#{veiculo.status}"
-						filterBy="#{veiculo.status}">
+						filterBy="#{veiculo.status}" filterMatchMode="contains">
 						<h:outputText value="#{veiculo.status}" />
 					</p:column>
 
@@ -70,7 +68,8 @@
 
 					<p:column headerText="Unidade" sortBy="#{veiculo.unidade}"
 						filterBy="#{veiculo.unidade}"
-						style="width: 170px; text-align: center;">
+						style="width: 170px; text-align: center;"
+						filterMatchMode="contains">
 						<h:outputText value="#{veiculo.unidade.frotaUnidade}" />
 					</p:column>
 
@@ -78,9 +77,8 @@
 						style="width: 70px; text-align: center;">
 
 
-						<p:commandButton 
-						icon="pi pi-pencil"
-										styleClass="rounded-button ui-button-secondary"
+						<p:commandButton icon="pi pi-pencil"
+							styleClass="rounded-button ui-button-secondary"
 							actionListener="#{frotaVeiculoBean.editar}"
 							update=":formcadastro:cadastro"
 							oncomplete="PF('dialogo').show();">
@@ -94,9 +92,11 @@
 
 				<p:confirmDialog global="true">
 					<p:commandButton value="Sim" type="button"
-						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						styleClass="ui-confirmdialog-yes rounded-button"
+						icon="pi pi-check" />
 					<p:commandButton value="Não" type="button"
-						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						styleClass="ui-confirmdialog-no rounded-button ui-button-danger"
+						icon="pi pi-times" />
 				</p:confirmDialog>
 			</p:panel>
 		</h:form>
@@ -106,18 +106,18 @@
 			<h:form id="formcadastro">
 				<h:panelGrid id="cadastro" columns="2">
 					<p:outputLabel value="Placa:" />
-							<p:inputMask id="placa" maxlength="7" size="10" mask="aaa9*99"
+					<p:inputMask id="placa" maxlength="7" size="10" mask="aaa9*99"
 						value="#{frotaVeiculoBean.veiculo.placa}" required="true"
 						requiredMessage="O campo Placa é obrigatório"
 						style="text-transform:uppercase;" />
-						
+
 
 
 					<p:outputLabel value="Marca:" />
 					<p:inputText maxlength="50" size="30"
 						value="#{frotaVeiculoBean.veiculo.marca}" required="true"
-						requiredMessage="O campo Marca é obrigatório" 
-						style="text-transform:uppercase;"/>
+						requiredMessage="O campo Marca é obrigatório"
+						style="text-transform:uppercase;" />
 
 					<p:outputLabel value="Modelo:" />
 					<p:inputText maxlength="50" size="30"
@@ -126,8 +126,8 @@
 						style="text-transform:uppercase;" />
 
 					<p:outputLabel value="RENAVAM:" />
-					<p:inputNumber maxValue="99999999999" 
-						thousandSeparator="" decimalSeparator="." decimalPlaces="0"
+					<p:inputNumber maxValue="99999999999" thousandSeparator=""
+						decimalSeparator="." decimalPlaces="0"
 						value="#{frotaVeiculoBean.veiculo.renavam}" required="true"
 						requiredMessage="O campo RENAVAM é obrigatório"
 						converterMessage="Informe um valor numerico para o campo 'Renavam'" />
@@ -137,8 +137,8 @@
 						value="#{frotaVeiculoBean.veiculo.km}" required="true"
 						converter="javax.faces.Integer"
 						requiredMessage="O campo KM é obrigatório"
-						validatorMessage="Apenas numeros para o campo 'KM'" 
-						converterMessage="Informe um valor numerico para o campo 'KM'"/>
+						validatorMessage="Apenas numeros para o campo 'KM'"
+						converterMessage="Informe um valor numerico para o campo 'KM'" />
 
 					<p:outputLabel value="Unidade: " />
 					<p:selectOneMenu filter="true"
@@ -153,7 +153,7 @@
 
 					<p:outputLabel value="Tipo Veículo: " />
 					<p:selectOneMenu value="#{frotaVeiculoBean.veiculo.tipoVeiculo}"
-						style="width:125px">
+						style="width:160px">
 						<f:selectItem itemLabel="Selecione o tipo" itemValue="" />
 						<f:selectItem itemLabel="Passeio" itemValue="Passeio" />
 						<f:selectItem itemLabel="Carga" itemValue="Carga" />
@@ -161,7 +161,7 @@
 
 					<p:outputLabel value="Status: " />
 					<p:selectOneMenu value="#{frotaVeiculoBean.veiculo.status}"
-						style="width:125px">
+						style="width:160px">
 						<f:selectItem itemLabel="Selecione o status" itemValue="" />
 						<f:selectItem itemLabel="Disponível" itemValue="Disponível" />
 						<f:selectItem itemLabel="Reservado" itemValue="Reservado" />
@@ -170,11 +170,15 @@
 				</h:panelGrid>
 
 				<h:panelGrid columns="2">
-					<p:commandButton value="Salvar"
+					<p:commandButton styleClass="ui-confirmdialog-yes rounded-button"
+						icon="pi pi-check" value="Salvar"
 						actionListener="#{frotaVeiculoBean.salvar()}"
 						update=":mensagem :formcadastro:cadastro :formlista:lista"
 						oncomplete="PF('dialogo').hide();" />
-					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+					<p:commandButton
+						styleClass="ui-confirmdialog-no rounded-button ui-button-danger"
+						icon="pi pi-times" value="Fechar"
+						oncomplete="PF('dialogo').hide();" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>

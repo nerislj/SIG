@@ -8,13 +8,16 @@
 	template="/templates/modelo.xhtml">
 
 	<ui:define name="conteudo">
-		<h:form id="formlista" rendered="#{autenticacaoBean.temPermissoes([1, 25])}">
+		<h:form id="formlista"
+			rendered="#{autenticacaoBean.temPermissoes([1, 25])}">
 			<p:panel header="Material Tipo - Listagem">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{materialTipoBean.listaTipos}"
-					var="material" rows="10" >
+					var="material" rows="10">
 					<f:facet name="header">
-						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
+						<p:commandButton styleClass="rounded-button ui-button-success"
+							icon="pi pi-plus-circle" value="Novo"
+							oncomplete="PF('dialogo').show();"
 							actionListener="#{materialTipoBean.novo()}"
 							update=":formcadastro:cadastro">
 							<f:actionListener
@@ -23,22 +26,26 @@
 					</f:facet>
 
 					<p:column headerText="Nome" sortBy="#{material.tipomaterial}"
-						filterBy="#{material.tipomaterial}" style="width: 70px; text-align: center;">
+						filterBy="#{material.tipomaterial}"
+						style="width: 70px; text-align: center;"
+						filterMatchMode="contains">
 						<h:outputText value="#{material.tipomaterial}" />
 					</p:column>
 
-					<p:column headerText="Opções" style="width: 70px; text-align: center;">
+					<p:column headerText="Opções"
+						style="width: 70px; text-align: center;">
 						<p:commandButton icon="pi pi-times"
-												styleClass="rounded-button ui-button-danger"
+							styleClass="rounded-button ui-button-danger"
 							actionListener="#{materialTipoBean.excluir}"
 							update=":mensagem :formlista:lista">
 							<p:confirm header="Confirmação"
-								message="Deseja excluir o Status?" icon="ui-icon-alert" />
+								message="Deseja excluir o Status?"
+								icon="pi pi-exclamation-triangle" />
 							<f:attribute name="materialstatusSelecionado" value="#{material}" />
 						</p:commandButton>
 
 						<p:commandButton icon="pi pi-pencil"
-										styleClass="rounded-button ui-button-secondary"
+							styleClass="rounded-button ui-button-secondary"
 							actionListener="#{materialTipoBean.editar}"
 							update=":formcadastro:cadastro"
 							oncomplete="PF('dialogo').show();">
@@ -52,9 +59,11 @@
 
 				<p:confirmDialog global="true">
 					<p:commandButton value="Sim" type="button"
-						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						styleClass="ui-confirmdialog-yes rounded-button"
+						icon="pi pi-check" />
 					<p:commandButton value="Não" type="button"
-						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						styleClass="ui-confirmdialog-no rounded-button ui-button-danger"
+						icon="pi pi-times" />
 				</p:confirmDialog>
 			</p:panel>
 		</h:form>
@@ -65,18 +74,22 @@
 				<h:panelGrid id="cadastro" columns="2">
 					<p:outputLabel value="Nome:" />
 					<p:inputText maxlength="40" size="30"
-						value="#{materialTipoBean.materialtipo.tipomaterial}" required="true"
-						style="text-transform:uppercase;"
+						value="#{materialTipoBean.materialtipo.tipomaterial}"
+						required="true" style="text-transform:uppercase;"
 						requiredMessage="O campo Nome é obrigatório" />
 
 				</h:panelGrid>
 
 				<h:panelGrid columns="2">
-					<p:commandButton value="Salvar"
+					<p:commandButton styleClass="ui-confirmdialog-yes rounded-button"
+						icon="pi pi-check" value="Salvar"
 						actionListener="#{materialTipoBean.salvar()}"
 						update=":mensagem :formcadastro:cadastro :formlista:lista"
 						oncomplete="PF('dialogo').hide();" />
-					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+					<p:commandButton
+						styleClass="ui-confirmdialog-no rounded-button ui-button-danger"
+						icon="pi pi-times" value="Fechar"
+						oncomplete="PF('dialogo').hide();" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>

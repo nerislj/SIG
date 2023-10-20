@@ -10,75 +10,81 @@
 	<ui:define name="conteudo">
 		<h:form id="formlista"
 			rendered="#{autenticacaoBean.temPermissoes([1])}">
-			<p:panel header="Setor - Listagem">
-			
-			<p:panelGrid columns="1" layout="grid">
-			
-			<p:dataTable id="lista"
-								emptyMessage="Nenhum processo encontrado." paginator="true"
-								rowKey="#{unidade}" rows="10"
-								value="#{unidadeBean.unidades}"
-								var="unidade" stripedRows="true" rowExpandMode="single">
-								
-			
-					<f:facet name="header">
-						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
-							actionListener="#{unidadeBean.novo()}"
-							update=":formcadastro:cadastro">
-							<f:actionListener
-								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
-						</p:commandButton>
-					</f:facet>
-					
-					<p:column headerText="Código" sortBy="#{unidade.codigo}"
-						filterBy="#{unidade.codigo}">
-						<h:outputText value="#{unidade.codigo}" />
-					</p:column>
+			<p:panel header="Unidade - Listagem">
 
-					<p:column headerText="Nome" sortBy="#{unidade.unidadeNome}"
-						filterBy="#{unidade.unidadeNome}">
-						<h:outputText value="#{unidade.unidadeNome}" />
-					</p:column>
+				<p:panelGrid columns="1" layout="grid">
 
-					<p:column headerText="Sigla" sortBy="#{unidade.unidade}"
-						filterBy="#{unidade.unidade}">
-						<h:outputText value="#{unidade.unidade}" />
-					</p:column>
+					<p:dataTable id="lista" emptyMessage="Nenhum processo encontrado."
+						paginator="true" rowKey="#{unidade}" rows="10"
+						value="#{unidadeBean.unidades}" var="unidade" stripedRows="true"
+						rowExpandMode="single">
 
-					<p:column headerText="Opções">
-						<p:commandButton icon="ui-icon-trash"
-							actionListener="#{unidadeBean.excluir}"
-							update=":mensagem :formlista:lista">
-							<p:confirm header="Confirmação" message="Deseja excluir o Setor?"
-								icon="ui-icon-alert" />
-							<f:attribute name="unidadeSelecionado" value="#{unidade}" />
-						</p:commandButton>
 
-						<p:commandButton icon="ui-icon-pencil"
-							actionListener="#{unidadeBean.editar}"
-							update=":formcadastro:cadastro"
-							oncomplete="PF('dialogo').show();">
-							<f:attribute name="unidadeSelecionada" value="#{unidade}" />
-							<f:actionListener
-								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
-						</p:commandButton>
+						<f:facet name="header">
+							<p:commandButton styleClass="rounded-button ui-button-success"
+								icon="pi pi-plus-circle" value="Novo"
+								oncomplete="PF('dialogo').show();"
+								actionListener="#{unidadeBean.novo()}"
+								update=":formcadastro:cadastro">
+								<f:actionListener
+									type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+							</p:commandButton>
+						</f:facet>
 
-					</p:column>
-				</p:dataTable>
+						<p:column headerText="Código" sortBy="#{unidade.codigo}"
+							filterBy="#{unidade.codigo}" filterMatchMode="contains">
+							<h:outputText value="#{unidade.codigo}" />
+						</p:column>
 
-				<p:confirmDialog global="true">
-					<p:commandButton value="Sim" type="button"
-						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-					<p:commandButton value="Não" type="button"
-						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-				</p:confirmDialog>
-				
+						<p:column headerText="Nome" sortBy="#{unidade.unidadeNome}"
+							filterBy="#{unidade.unidadeNome}" filterMatchMode="contains">
+							<h:outputText value="#{unidade.unidadeNome}" />
+						</p:column>
+
+						<p:column headerText="Sigla" sortBy="#{unidade.unidade}"
+							filterBy="#{unidade.unidade}" filterMatchMode="contains">
+							<h:outputText value="#{unidade.unidade}" />
+						</p:column>
+
+						<p:column headerText="Opções">
+							<p:commandButton icon="pi pi-times"
+								styleClass="rounded-button ui-button-danger"
+								actionListener="#{unidadeBean.excluir}"
+								update=":mensagem :formlista:lista">
+								<p:confirm header="Confirmação"
+									message="Deseja excluir o Setor?"
+									icon="pi pi-exclamation-triangle" />
+								<f:attribute name="unidadeSelecionado" value="#{unidade}" />
+							</p:commandButton>
+
+							<p:commandButton icon="pi pi-pencil"
+								styleClass="rounded-button ui-button-secondary"
+								actionListener="#{unidadeBean.editar}"
+								update=":formcadastro:cadastro"
+								oncomplete="PF('dialogo').show();">
+								<f:attribute name="unidadeSelecionada" value="#{unidade}" />
+								<f:actionListener
+									type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+							</p:commandButton>
+
+						</p:column>
+					</p:dataTable>
+
+					<p:confirmDialog global="true">
+						<p:commandButton value="Sim" type="button"
+							styleClass="ui-confirmdialog-yes rounded-button"
+							icon="pi pi-check" />
+						<p:commandButton value="Não" type="button"
+							styleClass="ui-confirmdialog-no rounded-button ui-button-danger"
+							icon="pi pi-times" />
+					</p:confirmDialog>
+
 				</p:panelGrid>
-				
+
 			</p:panel>
 		</h:form>
 
-		<p:dialog header="Setor - Cadastro" widgetVar="dialogo"
+		<p:dialog header="Unidade - Cadastro" widgetVar="dialogo"
 			draggable="false" resizable="false" modal="true" closable="false">
 			<h:form id="formcadastro">
 				<h:panelGrid id="cadastro" columns="2">
@@ -96,10 +102,14 @@
 				</h:panelGrid>
 
 				<h:panelGrid columns="2">
-					<p:commandButton value="Salvar"
+					<p:commandButton styleClass="ui-confirmdialog-yes rounded-button"
+						icon="pi pi-check" value="Salvar"
 						actionListener="#{unidadeBean.salvar()}"
 						update=":mensagem :formcadastro:cadastro :formlista:lista" />
-					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+					<p:commandButton
+						styleClass="ui-confirmdialog-no rounded-button ui-button-danger"
+						icon="pi pi-times" value="Fechar"
+						oncomplete="PF('dialogo').hide();" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>

@@ -46,7 +46,7 @@
 
 					<p:column headerText="Data Entrada"
 						sortBy="#{credenciado.vencimentoCredencial}"
-						style="width: 28px; text-align: center;">
+						style="width: 28px; text-align: center;" filterMatchMode="contains">
 						<h:outputText
 							value="#{credenciado.vencimentoCredencial.date}/#{credenciado.vencimentoCredencial.month+1}/#{credenciado.vencimentoCredencial.year+1900}" />
 					</p:column>
@@ -54,14 +54,14 @@
 					<p:column headerText="CNPJ"
 						sortBy="#{credenciado.pessoaJuridica.cnpj}"
 						filterBy="#{credenciado.pessoaJuridica.cnpj}"
-						style="width: 25px; text-align: center;">
+						style="width: 25px; text-align: center;" filterMatchMode="contains">
 						<h:outputText value="#{credenciado.pessoaJuridica.cnpj}" />
 					</p:column>
 
 					<p:column headerText="Nome Fantasia"
 						sortBy="#{credenciado.pessoaJuridica.nomeFantasia}"
 						filterBy="#{credenciado.pessoaJuridica.nomeFantasia}"
-						style="width: 70px; text-align: center;">
+						style="width: 70px; text-align: center;" filterMatchMode="contains">
 						<h:outputText
 							value="#{credenciado.pessoaJuridica.nomeFantasia.toUpperCase()}" />
 					</p:column>
@@ -71,14 +71,14 @@
 					<p:column headerText="Objeto da ação"
 						sortBy="#{credenciado.credencialTipo.tipocredencial}"
 						filterBy="#{credenciado.credencialTipo.tipocredencial}"
-						style="width: 30px; text-align: center;">
+						style="width: 30px; text-align: center;" filterMatchMode="contains">
 						<h:outputText value="#{credenciado.credencialTipo.tipocredencial}" />
 					</p:column>
 					
 					<p:column headerText="SGPE Processo"
 						sortBy="#{credenciado.credencialTipo.tipocredencial}"
 						filterBy="#{credenciado.credencialTipo.tipocredencial}"
-						style="width: 30px; text-align: center;">
+						style="width: 30px; text-align: center;" filterMatchMode="contains">
 						<h:outputText value="#{credenciado.pessoaJuridica.cnpj}" />
 					</p:column>
 
@@ -86,14 +86,14 @@
 					<p:column headerText="Situação"
 						sortBy="#{credenciado.credencialTipo.tipocredencial}"
 						filterBy="#{credenciado.credencialTipo.tipocredencial}"
-						style="width: 30px; text-align: center;">
+						style="width: 30px; text-align: center;" filterMatchMode="contains">
 						<h:outputText value="#{credenciado.credencialTipo.tipocredencial}" />
 					</p:column>
 
 
 					<p:column headerText="Data Vencimento"
 						sortBy="#{credenciado.vencimentoCredencial}"
-						style="width: 28px; text-align: center;">
+						style="width: 28px; text-align: center;" filterMatchMode="contains">
 						<h:outputText
 							value="#{credenciado.vencimentoCredencial.date}/#{credenciado.vencimentoCredencial.month+1}/#{credenciado.vencimentoCredencial.year+1900}" />
 					</p:column>
@@ -101,7 +101,7 @@
 					<p:column headerText="Status"
 						sortBy="#{credenciado.credencialStatus.tipoStatus}"
 						filterBy="#{credenciado.credencialStatus.tipoStatus}"
-						style="width: 20px; text-align: center;">
+						style="width: 20px; text-align: center;" filterMatchMode="contains">
 						<h:outputText value="#{credenciado.credencialStatus.tipoStatus}" />
 					</p:column>
 

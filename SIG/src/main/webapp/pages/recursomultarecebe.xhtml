@@ -16,11 +16,11 @@
 					value="#{recursoMultaTramitaBean.recursosPendentes}" var="recurso"
 					rows="10">
 					<f:facet name="header">
-						<p:commandButton value="Receber" styleClass="rounded-button ui-button-success"
+						<p:commandButton value="Receber"
+							styleClass="rounded-button ui-button-success"
 							actionListener="#{recursoMultaTramitaBean.finalizar}"
 							update=":mensagem :formularioConfirmacao"
-							oncomplete="PF('confirmacao').show();"
-							>
+							oncomplete="PF('confirmacao').show();">
 						</p:commandButton>
 
 					</f:facet>
@@ -37,20 +37,23 @@
 
 					<p:column headerText="Placa" sortBy="#{recurso.placa}"
 						filterBy="#{recurso.placa}"
-						style="width: 9%; text-align: center; text-transform:uppercase;">
+						style="width: 9%; text-align: center; text-transform:uppercase;"
+						filterMatchMode="contains">
 						<h:outputText value="#{recurso.placa}" />
 					</p:column>
 
 					<p:column headerText="Auto infração"
 						sortBy="#{recurso.autoInfracao}"
 						filterBy="#{recurso.autoInfracao}"
-						style="width: 12%; text-align: center; text-transform:uppercase;">
+						style="width: 12%; text-align: center; text-transform:uppercase;"
+						filterMatchMode="contains">
 						<h:outputText value="#{recurso.autoInfracao}" />
 					</p:column>
 
 					<p:column headerText="Tipo"
 						sortBy="#{recurso.tipoProcesso.tipoProcesso}"
-						filterBy="#{recurso.tipoProcesso.tipoProcesso}">
+						filterBy="#{recurso.tipoProcesso.tipoProcesso}"
+						filterMatchMode="contains">
 						<h:outputText value="#{recurso.tipoProcesso.tipoProcesso}" />
 					</p:column>
 
@@ -104,25 +107,28 @@
 
 					<p:column headerText="Placa" sortBy="#{saida.placa}"
 						filterBy="#{saida.placa}"
-						style="width: 9%; text-align: center; text-transform:uppercase;">
+						style="width: 9%; text-align: center; text-transform:uppercase;"
+						filterMatchMode="contains">
 						<h:outputText value="#{saida.placa}" />
 					</p:column>
 
 					<p:column headerText="Auto infração" sortBy="#{saida.autoInfracao}"
 						filterBy="#{saida.autoInfracao}"
-						style="width: 12%; text-align: center; text-transform:uppercase;">
+						style="width: 12%; text-align: center; text-transform:uppercase;"
+						filterMatchMode="contains">
 						<h:outputText value="#{saida.autoInfracao}" />
 					</p:column>
 
 					<p:column headerText="Tipo"
 						sortBy="#{saida.tipoProcesso.tipoProcesso}"
-						filterBy="#{saida.tipoProcesso.tipoProcesso}">
+						filterBy="#{saida.tipoProcesso.tipoProcesso}"
+						filterMatchMode="contains">
 						<h:outputText value="#{saida.tipoProcesso.tipoProcesso}" />
 					</p:column>
 
 					<p:column headerText="Data Recebimento"
 						sortBy="#{saida.dataCadastro}" filterBy="#{saida.dataCadastro}"
-						style="width: 12%; text-align: center;">
+						style="width: 12%; text-align: center;" filterMatchMode="contains">
 						<h:outputText
 							value="#{saida.dataCadastro.date}/#{saida.dataCadastro.month+1}/#{saida.dataCadastro.year+1900}" />
 					</p:column>
@@ -163,14 +169,16 @@
 				<br />
 						<br />
 
-						<p:commandButton value="Sim" styleClass="ui-confirmdialog-yes rounded-button ui-button-info"
+						<p:commandButton value="Sim"
+							styleClass="ui-confirmdialog-yes rounded-button ui-button-info"
 							icon="pi pi-check"
 							actionListener="#{recursoMultaTramitaBean.recebeProcesso}"
 							update=":mensagem :formlista:listaSelecionados :formlista:lista"
 							oncomplete="PF('confirmacao').hide();">
 						</p:commandButton>
 
-						<p:commandButton value="Não" styleClass="ui-confirmdialog-no rounded-button ui-button-info"
+						<p:commandButton value="Não"
+							styleClass="ui-confirmdialog-no rounded-button ui-button-danger"
 							icon="pi pi-times" oncomplete="PF('confirmacao').hide();" />
 					</p:column>
 				</h:panelGrid>

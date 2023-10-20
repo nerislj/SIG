@@ -67,14 +67,16 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 							<p:column headerText="COD" sortBy="#{viagem.codigo}"
 								filterBy="#{viagem.codigo}"
-								style="text-align: center; text-transform:uppercase;width: 30px">
+								style="text-align: center; text-transform:uppercase;width: 35px"
+								filterMatchMode="contains">
 								<h:outputText value="#{viagem.codigo}" />
 							</p:column>
 
 
 							<p:column headerText="Data/Hora Inicial"
 								sortBy="#{viagem.dataInicial}" filterBy="#{viagem.dataInicial}"
-								style="text-align: center; text-transform:uppercase;">
+								style="text-align: center; text-transform:uppercase;"
+								filterMatchMode="contains">
 								<h:outputText
 									value="#{viagem.dataInicial.date}/#{viagem.dataInicial.month+1}/#{viagem.dataInicial.year+1900} - #{viagem.horaInicial}" />
 							</p:column>
@@ -82,7 +84,8 @@ body .ui-panelgrid .ui-panelgrid-cell {
 							<p:column headerText="Data Entrega (Prevista)"
 								sortBy="#{viagem.dataPrevista}"
 								filterBy="#{viagem.dataPrevista}"
-								style="text-align: center; text-transform:uppercase;">
+								style="text-align: center; text-transform:uppercase;"
+								filterMatchMode="contains">
 								<h:outputText
 									value="#{viagem.dataPrevista.date}/#{viagem.dataPrevista.month+1}/#{viagem.dataPrevista.year+1900}" />
 							</p:column>
@@ -90,7 +93,8 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 							<p:column headerText="Destino" sortBy="#{viagem.destino}"
 								filterBy="#{viagem.destino}"
-								style="text-align: center; text-transform:uppercase;">
+								style="text-align: center; text-transform:uppercase;"
+								filterMatchMode="contains">
 								<h:outputText value="#{viagem.destino}" />
 							</p:column>
 
@@ -98,7 +102,8 @@ body .ui-panelgrid .ui-panelgrid-cell {
 							<p:column headerText="Veículo"
 								sortBy="#{viagem.frotaVeiculo.placa}"
 								filterBy="#{viagem.frotaVeiculo.placa}"
-								style="text-align: center; text-transform:uppercase;">
+								style="text-align: center; text-transform:uppercase;"
+								filterMatchMode="contains">
 								<h:outputText
 									value="#{viagem.frotaVeiculo.placa} - #{viagem.frotaVeiculo.modelo}" />
 							</p:column>
@@ -106,7 +111,8 @@ body .ui-panelgrid .ui-panelgrid-cell {
 							<p:column headerText="Condutor"
 								sortBy="#{viagem.frotaCondutor.pessoa.nomeCompleto}"
 								filterBy="#{viagem.frotaCondutor.pessoa.nomeCompleto}"
-								style="text-align: center; text-transform:uppercase;">
+								style="text-align: center; text-transform:uppercase;"
+								filterMatchMode="contains">
 								<h:outputText
 									value="#{viagem.frotaCondutor.pessoa.nomeCompleto} - #{viagem.usuarioCadastro.setor.setorNome}" />
 							</p:column>
@@ -118,7 +124,8 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 							<p:column headerText="Status" sortBy="#{viagem.statusFormatado}"
 								filterBy="#{viagem.statusFormatado}"
-								style="text-align: center; text-transform:uppercase;">
+								style="text-align: center; text-transform:uppercase;"
+								filterMatchMode="contains">
 								<h:outputText value="#{viagem.statusFormatado}" />
 							</p:column>
 
@@ -127,7 +134,7 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 
 								<p:commandButton value="Recusar" icon="pi pi-times"
-							styleClass="rounded-button ui-button-danger"
+									styleClass="rounded-button ui-button-danger"
 									actionListener="#{frotaViagemBean.recusar}"
 									onclick="PF('dlg2').show();" update="formularioCancelar:lista"
 									disabled="#{viagem.statusFormatado eq 'Baixada' or viagem.statusFormatado eq 'Reprovada' or viagem.statusFormatado eq 'Cancelada'}"
@@ -145,7 +152,8 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 
 
-								<p:commandButton value="Visualizar" styleClass="rounded-button ui-button-info" icon="pi pi-search" 
+								<p:commandButton value="Visualizar"
+									styleClass="rounded-button ui-button-info" icon="pi pi-search"
 									actionListener="#{frotaViagemBean.visualizar}"
 									onclick="PF('dlgVisualizar').show();"
 									update="formularioVisualizar:lista"
@@ -158,7 +166,7 @@ body .ui-panelgrid .ui-panelgrid-cell {
 								<p:commandButton value="Aprovar"
 									actionListener="#{frotaViagemBean.visualizar}"
 									icon="pi pi-thumbs-up-fill"
-							styleClass="rounded-button ui-button-success"
+									styleClass="rounded-button ui-button-success"
 									onclick="PF('dlgAprovar').show();"
 									style="width: 100%; align: center;"
 									update="formularioAprovar:lista"
@@ -168,11 +176,10 @@ body .ui-panelgrid .ui-panelgrid-cell {
 								</p:commandButton>
 
 
-								<p:commandButton value="Baixa veículo"
-								icon="pi pi-book"
-							styleClass="rounded-button ui-button-success"
+								<p:commandButton value="Baixa veículo" icon="pi pi-book"
+									styleClass="rounded-button ui-button-success"
 									actionListener="#{frotaViagemBean.editar}"
-									 onclick="PF('dlg1').show();"
+									onclick="PF('dlg1').show();"
 									style="width: 100%; align: center;"
 									update="formularioEntrega:lista"
 									disabled="#{viagem.statusFormatado eq 'Reprovada' or viagem.statusFormatado eq 'Baixada' or viagem.statusFormatado eq 'Cancelada' or viagem.statusFormatado eq 'Solicitada'}">
@@ -190,9 +197,11 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 						<p:confirmDialog global="true">
 							<p:commandButton value="Sim" type="button"
-								styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+								styleClass="ui-confirmdialog-yes rounded-button"
+								icon="pi pi-check" />
 							<p:commandButton value="Não" type="button"
-								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+								styleClass="ui-confirmdialog-no rounded-button ui-button-danger"
+								icon="pi pi-times" />
 						</p:confirmDialog>
 
 
@@ -202,15 +211,14 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 
 			</p:tab>
-			
+
 			<p:tab title="Aprovadas">
 
 				<h:form id="formlistaAprovadas">
 
 					<p:dataTable id="listaAprovadas"
 						emptyMessage="Nenhum registro encontrado." paginator="true"
-						value="#{frotaViagemBean.viagensAprovadas}" var="viagem"
-						rows="10">
+						value="#{frotaViagemBean.viagensAprovadas}" var="viagem" rows="10">
 						<f:facet name="header">
 
 
@@ -221,21 +229,24 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 						<p:column headerText="COD" sortBy="#{viagem.codigo}"
 							filterBy="#{viagem.codigo}"
-							style="text-align: center; text-transform:uppercase;width: 30px">
+							style="text-align: center; text-transform:uppercase;width: 35px"
+							filterMatchMode="contains">
 							<h:outputText value="#{viagem.codigo}" />
 						</p:column>
 
 
 						<p:column headerText="Data/Hora Inicial"
 							sortBy="#{viagem.dataInicial}" filterBy="#{viagem.dataInicial}"
-							style="text-align: center; text-transform:uppercase;">
+							style="text-align: center; text-transform:uppercase;"
+							filterMatchMode="contains">
 							<h:outputText
 								value="#{viagem.dataInicial.date}/#{viagem.dataInicial.month+1}/#{viagem.dataInicial.year+1900} - #{viagem.horaInicial}" />
 						</p:column>
 
 						<p:column headerText="Data Entrega (Prevista)"
 							sortBy="#{viagem.dataPrevista}" filterBy="#{viagem.dataPrevista}"
-							style="text-align: center; text-transform:uppercase;">
+							style="text-align: center; text-transform:uppercase;"
+							filterMatchMode="contains">
 							<h:outputText
 								value="#{viagem.dataPrevista.date}/#{viagem.dataPrevista.month+1}/#{viagem.dataPrevista.year+1900}" />
 						</p:column>
@@ -243,7 +254,8 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 						<p:column headerText="Destino" sortBy="#{viagem.destino}"
 							filterBy="#{viagem.destino}"
-							style="text-align: center; text-transform:uppercase;">
+							style="text-align: center; text-transform:uppercase;"
+							filterMatchMode="contains">
 							<h:outputText value="#{viagem.destino}" />
 						</p:column>
 
@@ -251,7 +263,8 @@ body .ui-panelgrid .ui-panelgrid-cell {
 						<p:column headerText="Veículo"
 							sortBy="#{viagem.frotaVeiculo.placa}"
 							filterBy="#{viagem.frotaVeiculo.placa}"
-							style="text-align: center; text-transform:uppercase;">
+							style="text-align: center; text-transform:uppercase;"
+							filterMatchMode="contains">
 							<h:outputText
 								value="#{viagem.frotaVeiculo.placa} - #{viagem.frotaVeiculo.modelo}" />
 						</p:column>
@@ -259,7 +272,8 @@ body .ui-panelgrid .ui-panelgrid-cell {
 						<p:column headerText="Condutor"
 							sortBy="#{viagem.frotaCondutor.pessoa.nomeCompleto}"
 							filterBy="#{viagem.frotaCondutor.pessoa.nomeCompleto}"
-							style="text-align: center; text-transform:uppercase;">
+							style="text-align: center; text-transform:uppercase;"
+							filterMatchMode="contains">
 							<h:outputText
 								value="#{viagem.frotaCondutor.pessoa.nomeCompleto} - #{viagem.usuarioCadastro.setor.setorNome}" />
 						</p:column>
@@ -280,7 +294,8 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 
 
-						<p:commandButton value="Visualizar" styleClass="rounded-button ui-button-info" icon="pi pi-search" 
+							<p:commandButton value="Visualizar"
+								styleClass="rounded-button ui-button-info" icon="pi pi-search"
 								actionListener="#{frotaViagemBean.visualizar}"
 								onclick="PF('dlgVisualizar').show();"
 								update="formularioVisualizar"
@@ -289,19 +304,18 @@ body .ui-panelgrid .ui-panelgrid-cell {
 								<f:attribute name="viagemSelecionado" value="#{viagem}" />
 
 							</p:commandButton>
-							
-							
-								<p:commandButton value="Baixa veículo"
-									actionListener="#{frotaViagemBean.editar}"
-									icon="pi pi-book"
-							styleClass="rounded-button ui-button-success" onclick="PF('dlg1').show();"
-									style="width: 100%; align: center;"
-									update="formularioEntrega:lista"
-									disabled="#{viagem.statusFormatado eq 'Reprovada' or viagem.statusFormatado eq 'Baixada' or viagem.statusFormatado eq 'Cancelada' or viagem.statusFormatado eq 'Solicitada'}">
-									<f:attribute name="viagemSelecionado" value="#{viagem}" />
-									<f:actionListener
-										type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
-								</p:commandButton>
+
+
+							<p:commandButton value="Baixa veículo"
+								actionListener="#{frotaViagemBean.editar}" icon="pi pi-book"
+								styleClass="rounded-button ui-button-success"
+								onclick="PF('dlg1').show();" style="width: 100%; align: center;"
+								update="formularioEntrega:lista"
+								disabled="#{viagem.statusFormatado eq 'Reprovada' or viagem.statusFormatado eq 'Baixada' or viagem.statusFormatado eq 'Cancelada' or viagem.statusFormatado eq 'Solicitada'}">
+								<f:attribute name="viagemSelecionado" value="#{viagem}" />
+								<f:actionListener
+									type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+							</p:commandButton>
 
 
 
@@ -338,21 +352,23 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 						<p:column headerText="COD" sortBy="#{viagem.codigo}"
 							filterBy="#{viagem.codigo}"
-							style="text-align: center; text-transform:uppercase;width: 30px">
+							style="text-align: center; text-transform:uppercase;width: 35px">
 							<h:outputText value="#{viagem.codigo}" />
 						</p:column>
 
 
 						<p:column headerText="Data/Hora Inicial"
 							sortBy="#{viagem.dataInicial}" filterBy="#{viagem.dataInicial}"
-							style="text-align: center; text-transform:uppercase;">
+							style="text-align: center; text-transform:uppercase;"
+							filterMatchMode="contains">
 							<h:outputText
 								value="#{viagem.dataInicial.date}/#{viagem.dataInicial.month+1}/#{viagem.dataInicial.year+1900} - #{viagem.horaInicial}" />
 						</p:column>
 
 						<p:column headerText="Data Entrega (Prevista)"
 							sortBy="#{viagem.dataPrevista}" filterBy="#{viagem.dataPrevista}"
-							style="text-align: center; text-transform:uppercase;">
+							style="text-align: center; text-transform:uppercase;"
+							filterMatchMode="contains">
 							<h:outputText
 								value="#{viagem.dataPrevista.date}/#{viagem.dataPrevista.month+1}/#{viagem.dataPrevista.year+1900}" />
 						</p:column>
@@ -360,7 +376,8 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 						<p:column headerText="Destino" sortBy="#{viagem.destino}"
 							filterBy="#{viagem.destino}"
-							style="text-align: center; text-transform:uppercase;">
+							style="text-align: center; text-transform:uppercase;"
+							filterMatchMode="contains">
 							<h:outputText value="#{viagem.destino}" />
 						</p:column>
 
@@ -368,7 +385,8 @@ body .ui-panelgrid .ui-panelgrid-cell {
 						<p:column headerText="Veículo"
 							sortBy="#{viagem.frotaVeiculo.placa}"
 							filterBy="#{viagem.frotaVeiculo.placa}"
-							style="text-align: center; text-transform:uppercase;">
+							style="text-align: center; text-transform:uppercase;"
+							filterMatchMode="contains">
 							<h:outputText
 								value="#{viagem.frotaVeiculo.placa} - #{viagem.frotaVeiculo.modelo}" />
 						</p:column>
@@ -376,7 +394,8 @@ body .ui-panelgrid .ui-panelgrid-cell {
 						<p:column headerText="Condutor"
 							sortBy="#{viagem.frotaCondutor.pessoa.nomeCompleto}"
 							filterBy="#{viagem.frotaCondutor.pessoa.nomeCompleto}"
-							style="text-align: center; text-transform:uppercase;">
+							style="text-align: center; text-transform:uppercase;"
+							filterMatchMode="contains">
 							<h:outputText
 								value="#{viagem.frotaCondutor.pessoa.nomeCompleto} - #{viagem.usuarioCadastro.setor.setorNome}" />
 						</p:column>
@@ -388,7 +407,8 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 						<p:column headerText="Status" sortBy="#{viagem.statusFormatado}"
 							filterBy="#{viagem.statusFormatado}"
-							style="text-align: center; text-transform:uppercase;">
+							style="text-align: center; text-transform:uppercase;"
+							filterMatchMode="contains">
 							<h:outputText value="#{viagem.statusFormatado}" />
 						</p:column>
 
@@ -397,7 +417,8 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 
 
-							<p:commandButton value="Visualizar" styleClass="rounded-button ui-button-info" icon="pi pi-search" 
+							<p:commandButton value="Visualizar"
+								styleClass="rounded-button ui-button-info" icon="pi pi-search"
 								actionListener="#{frotaViagemBean.visualizar}"
 								onclick="PF('dlgVisualizar').show();"
 								update="formularioVisualizar"
@@ -443,21 +464,23 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 						<p:column headerText="COD" sortBy="#{viagem.codigo}"
 							filterBy="#{viagem.codigo}"
-							style="text-align: center; text-transform:uppercase;width: 30px">
+							style="text-align: center; text-transform:uppercase;width: 35px">
 							<h:outputText value="#{viagem.codigo}" />
 						</p:column>
 
 
 						<p:column headerText="Data/Hora Inicial"
 							sortBy="#{viagem.dataInicial}" filterBy="#{viagem.dataInicial}"
-							style="text-align: center; text-transform:uppercase;">
+							style="text-align: center; text-transform:uppercase;"
+							filterMatchMode="contains">
 							<h:outputText
 								value="#{viagem.dataInicial.date}/#{viagem.dataInicial.month+1}/#{viagem.dataInicial.year+1900} - #{viagem.horaInicial}" />
 						</p:column>
 
 						<p:column headerText="Data Entrega (Prevista)"
 							sortBy="#{viagem.dataPrevista}" filterBy="#{viagem.dataPrevista}"
-							style="text-align: center; text-transform:uppercase;">
+							style="text-align: center; text-transform:uppercase;"
+							filterMatchMode="contains">
 							<h:outputText
 								value="#{viagem.dataPrevista.date}/#{viagem.dataPrevista.month+1}/#{viagem.dataPrevista.year+1900}" />
 						</p:column>
@@ -465,7 +488,8 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 						<p:column headerText="Destino" sortBy="#{viagem.destino}"
 							filterBy="#{viagem.destino}"
-							style="text-align: center; text-transform:uppercase;">
+							style="text-align: center; text-transform:uppercase;"
+							filterMatchMode="contains">
 							<h:outputText value="#{viagem.destino}" />
 						</p:column>
 
@@ -473,7 +497,8 @@ body .ui-panelgrid .ui-panelgrid-cell {
 						<p:column headerText="Veículo"
 							sortBy="#{viagem.frotaVeiculo.placa}"
 							filterBy="#{viagem.frotaVeiculo.placa}"
-							style="text-align: center; text-transform:uppercase;">
+							style="text-align: center; text-transform:uppercase;"
+							filterMatchMode="contains">
 							<h:outputText
 								value="#{viagem.frotaVeiculo.placa} - #{viagem.frotaVeiculo.modelo}" />
 						</p:column>
@@ -481,7 +506,8 @@ body .ui-panelgrid .ui-panelgrid-cell {
 						<p:column headerText="Condutor"
 							sortBy="#{viagem.frotaCondutor.pessoa.nomeCompleto}"
 							filterBy="#{viagem.frotaCondutor.pessoa.nomeCompleto}"
-							style="text-align: center; text-transform:uppercase;">
+							style="text-align: center; text-transform:uppercase;"
+							filterMatchMode="contains">
 							<h:outputText
 								value="#{viagem.frotaCondutor.pessoa.nomeCompleto} - #{viagem.usuarioCadastro.setor.setorNome}" />
 						</p:column>
@@ -502,7 +528,8 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 
 
-							<p:commandButton value="Visualizar" styleClass="rounded-button ui-button-info" icon="pi pi-search" 
+							<p:commandButton value="Visualizar"
+								styleClass="rounded-button ui-button-info" icon="pi pi-search"
 								actionListener="#{frotaViagemBean.visualizar}"
 								onclick="PF('dlgVisualizar').show();"
 								update="formularioVisualizar"
@@ -549,21 +576,24 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 						<p:column headerText="COD" sortBy="#{viagem.codigo}"
 							filterBy="#{viagem.codigo}"
-							style="text-align: center; text-transform:uppercase;width: 30px">
+							style="text-align: center; text-transform:uppercase;width: 35px"
+							filterMatchMode="contains">
 							<h:outputText value="#{viagem.codigo}" />
 						</p:column>
 
 
 						<p:column headerText="Data/Hora Inicial"
 							sortBy="#{viagem.dataInicial}" filterBy="#{viagem.dataInicial}"
-							style="text-align: center; text-transform:uppercase;">
+							style="text-align: center; text-transform:uppercase;"
+							filterMatchMode="contains">
 							<h:outputText
 								value="#{viagem.dataInicial.date}/#{viagem.dataInicial.month+1}/#{viagem.dataInicial.year+1900} - #{viagem.horaInicial}" />
 						</p:column>
 
 						<p:column headerText="Data Entrega (Prevista)"
 							sortBy="#{viagem.dataPrevista}" filterBy="#{viagem.dataPrevista}"
-							style="text-align: center; text-transform:uppercase;">
+							style="text-align: center; text-transform:uppercase;"
+							filterMatchMode="contains">
 							<h:outputText
 								value="#{viagem.dataPrevista.date}/#{viagem.dataPrevista.month+1}/#{viagem.dataPrevista.year+1900}" />
 						</p:column>
@@ -571,7 +601,8 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 						<p:column headerText="Destino" sortBy="#{viagem.destino}"
 							filterBy="#{viagem.destino}"
-							style="text-align: center; text-transform:uppercase;">
+							style="text-align: center; text-transform:uppercase;"
+							filterMatchMode="contains">
 							<h:outputText value="#{viagem.destino}" />
 						</p:column>
 
@@ -579,7 +610,8 @@ body .ui-panelgrid .ui-panelgrid-cell {
 						<p:column headerText="Veículo"
 							sortBy="#{viagem.frotaVeiculo.placa}"
 							filterBy="#{viagem.frotaVeiculo.placa}"
-							style="text-align: center; text-transform:uppercase;">
+							style="text-align: center; text-transform:uppercase;"
+							filterMatchMode="contains">
 							<h:outputText
 								value="#{viagem.frotaVeiculo.placa} - #{viagem.frotaVeiculo.modelo}" />
 						</p:column>
@@ -587,7 +619,8 @@ body .ui-panelgrid .ui-panelgrid-cell {
 						<p:column headerText="Condutor"
 							sortBy="#{viagem.frotaCondutor.pessoa.nomeCompleto}"
 							filterBy="#{viagem.frotaCondutor.pessoa.nomeCompleto}"
-							style="text-align: center; text-transform:uppercase;">
+							style="text-align: center; text-transform:uppercase;"
+							filterMatchMode="contains">
 							<h:outputText
 								value="#{viagem.frotaCondutor.pessoa.nomeCompleto} - #{viagem.usuarioCadastro.setor.setorNome}" />
 						</p:column>
@@ -599,7 +632,8 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 						<p:column headerText="Status" sortBy="#{viagem.statusFormatado}"
 							filterBy="#{viagem.statusFormatado}"
-							style="text-align: center; text-transform:uppercase;">
+							style="text-align: center; text-transform:uppercase;"
+							filterMatchMode="contains">
 							<h:outputText value="#{viagem.statusFormatado}" />
 						</p:column>
 
@@ -608,7 +642,8 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 
 
-						<p:commandButton value="Visualizar" styleClass="rounded-button ui-button-info" icon="pi pi-search" 
+							<p:commandButton value="Visualizar"
+								styleClass="rounded-button ui-button-info" icon="pi pi-search"
 								actionListener="#{frotaViagemBean.visualizar}"
 								onclick="PF('dlgVisualizar').show();"
 								update="formularioVisualizar"
@@ -746,11 +781,15 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 				<center>
 					<h:panelGrid columns="2">
-						<p:commandButton value="Salvar"
+						<p:commandButton styleClass="ui-confirmdialog-yes rounded-button"
+							icon="pi pi-check" value="Salvar"
 							actionListener="#{frotaViagemBean.salvarExcluir}"
 							update=":mensagem tabView:formlista:lista"
 							oncomplete="PF('dlg2').hide();" />
-						<p:commandButton value="Cancelar" oncomplete="PF('dlg2').hide();" />
+						<p:commandButton
+							styleClass="ui-confirmdialog-no rounded-button ui-button-danger"
+							icon="pi pi-times" value="Cancelar"
+							oncomplete="PF('dlg2').hide();" />
 					</h:panelGrid>
 
 				</center>
@@ -853,11 +892,15 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 				<center>
 					<h:panelGrid columns="2">
-						<p:commandButton value="Salvar"
+						<p:commandButton styleClass="ui-confirmdialog-yes rounded-button"
+							icon="pi pi-check" value="Salvar"
 							actionListener="#{frotaViagemBean.baixaViagem}"
 							update=":mensagem tabView:formlista:lista"
 							oncomplete="PF('dlg1').hide(); window.location.reload();" />
-						<p:commandButton value="Cancelar" oncomplete="PF('dlg1').hide();" />
+						<p:commandButton
+							styleClass="ui-confirmdialog-no rounded-button ui-button-danger"
+							icon="pi pi-times" value="Cancelar"
+							oncomplete="PF('dlg1').hide();" />
 					</h:panelGrid>
 
 				</center>

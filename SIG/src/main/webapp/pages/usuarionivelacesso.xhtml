@@ -13,9 +13,11 @@
 			<p:panel header="Nível de Acesso Usuário - Listagem">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{usuarioNivelAcessoBean.acessos}"
-					var="acessos" rows="10" style="width: 50%; padding-left: 25%; ">
+					var="acessos" rows="10">
 					<f:facet name="header">
-						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
+						<p:commandButton styleClass="rounded-button ui-button-success"
+							icon="pi pi-plus-circle" value="Novo"
+							oncomplete="PF('dialogo').show();"
 							actionListener="#{usuarioNivelAcessoBean.novo()}"
 							update=":formcadastro:cadastro">
 							<f:actionListener
@@ -24,36 +26,39 @@
 					</f:facet>
 
 					<p:column headerText="Código" sortBy="#{acessos.codigo}"
-						filterBy="#{acessos.codigo}">
+						filterBy="#{acessos.codigo}" filterMatchMode="contains">
 						<h:outputText value="#{acessos.codigo}" />
 					</p:column>
 
 					<p:column headerText="Nome" sortBy="#{acessos.nivel}"
-						filterBy="#{acessos.nivel}">
+						filterBy="#{acessos.nivel}" filterMatchMode="contains">
 						<h:outputText value="#{acessos.nivel}" />
 					</p:column>
 
 					<p:column headerText="Unidade" sortBy="#{acessos.unidade.unidade}"
-						filterBy="#{acessos.unidade.unidade}">
+						filterBy="#{acessos.unidade.unidade}" filterMatchMode="contains">
 						<h:outputText value="#{acessos.unidade.unidade}" />
 					</p:column>
 
 					<p:column headerText="Setor" sortBy="#{acessos.setor.setor}"
-						filterBy="#{acessos.setor.setor}">
+						filterBy="#{acessos.setor.setor}" filterMatchMode="contains">
 						<h:outputText value="#{acessos.setor.setor}" />
 					</p:column>
 
 					<p:column headerText="Opções"
 						style="width: 70px; text-align: center;">
-						<p:commandButton icon="ui-icon-trash"
+						<p:commandButton icon="pi pi-times"
+							styleClass="rounded-button ui-button-danger"
 							actionListener="#{usuarioNivelAcessoBean.excluir}"
 							update=":mensagem :formlista:lista">
 							<p:confirm header="Confirmação"
-								message="Deseja excluir o Nível de Acesso?" icon="ui-icon-alert" />
+								message="Deseja excluir o Nível de Acesso?"
+								icon="pi pi-exclamation-triangle" />
 							<f:attribute name="acessoSelecionado" value="#{acessos}" />
 						</p:commandButton>
 
-						<p:commandButton icon="ui-icon-pencil"
+						<p:commandButton icon="pi pi-pencil"
+							styleClass="rounded-button ui-button-secondary"
 							actionListener="#{usuarioNivelAcessoBean.editar}"
 							update=":formcadastro:cadastro"
 							oncomplete="PF('dialogo').show();">
@@ -67,15 +72,18 @@
 
 				<p:confirmDialog global="true">
 					<p:commandButton value="Sim" type="button"
-						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						styleClass="ui-confirmdialog-yes rounded-button"
+						icon="pi pi-check" />
 					<p:commandButton value="Não" type="button"
-						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						styleClass="ui-confirmdialog-no rounded-button ui-button-danger"
+						icon="pi pi-times" />
 				</p:confirmDialog>
 			</p:panel>
 		</h:form>
 
-		<p:dialog header="Perfil - Cadastro" widgetVar="dialogo"
-			draggable="false" resizable="false" modal="true" closable="false">
+		<p:dialog header="Nível de Acesso Usuário - Cadastro"
+			widgetVar="dialogo" draggable="false" resizable="false" modal="true"
+			closable="false">
 			<h:form id="formcadastro">
 				<h:panelGrid id="cadastro" columns="2">
 
@@ -88,7 +96,8 @@
 					<p:selectOneMenu id="unidade" filter="true"
 						requiredMessage="O campo Unidade é obrigatório"
 						converter="omnifaces.SelectItemsConverter"
-						value="#{usuarioNivelAcessoBean.acesso.unidade}">
+						value="#{usuarioNivelAcessoBean.acesso.unidade}"
+						filterMatchMode="contains">
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione uma unidade" />
 						<f:selectItems value="#{usuarioNivelAcessoBean.unidades}"
@@ -102,7 +111,8 @@
 					<p:selectOneMenu id="setor" filter="true" required="true"
 						requiredMessage="O campo Setor é obrigatório"
 						converter="omnifaces.SelectItemsConverter"
-						value="#{usuarioNivelAcessoBean.acesso.setor}">
+						value="#{usuarioNivelAcessoBean.acesso.setor}"
+						filterMatchMode="contains">
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione um setor" />
 						<f:selectItems value="#{usuarioNivelAcessoBean.setores}"
@@ -112,10 +122,14 @@
 				</h:panelGrid>
 
 				<h:panelGrid columns="2">
-					<p:commandButton value="Salvar"
+					<p:commandButton styleClass="ui-confirmdialog-yes rounded-button"
+						icon="pi pi-check" value="Salvar"
 						actionListener="#{usuarioNivelAcessoBean.salvar()}"
 						update=":mensagem :formcadastro:cadastro :formlista:lista" />
-					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+					<p:commandButton
+						styleClass="ui-confirmdialog-no rounded-button ui-button-danger"
+						icon="pi pi-times" value="Fechar"
+						oncomplete="PF('dialogo').hide();" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>

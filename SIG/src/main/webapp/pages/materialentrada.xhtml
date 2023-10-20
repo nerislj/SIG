@@ -34,33 +34,38 @@
 					<p:column headerText="Material Tipo"
 						sortBy="#{material.materialTipo.tipomaterial}"
 						filterBy="#{material.materialTipo.tipomaterial}"
-						style="width: 70px; text-align: center;">
+						style="width: 70px; text-align: center;"
+						filterMatchMode="contains">
 						<h:outputText value="#{material.materialTipo.tipomaterial}" />
 					</p:column>
 
 					<p:column headerText="Material"
 						sortBy="#{material.material.material}"
 						filterBy="#{material.material.material}"
-						style="width: 70px; text-align: center;">
+						style="width: 70px; text-align: center;"
+						filterMatchMode="contains">
 						<h:outputText value="#{material.material.material}" />
 					</p:column>
 
 					<p:column headerText="Aquisição" sortBy="#{material.aquisicao}"
 						filterBy="#{material.aquisicao}"
-						style="width: 70px; text-align: center;">
+						style="width: 70px; text-align: center;"
+						filterMatchMode="contains">
 						<h:outputText value="#{material.aquisicao}" />
 					</p:column>
 
 					<p:column headerText="Cod Material"
 						sortBy="#{material.material.codigoMaterial}"
 						filterBy="#{material.material.codigoMaterial}"
-						style="width: 70px; text-align: center;">
+						style="width: 70px; text-align: center;"
+						filterMatchMode="contains">
 						<h:outputText value="#{material.material.codigoMaterial}" />
 					</p:column>
 
 					<p:column headerText="Total/Estoque"
 						sortBy="#{material.quantidade}" filterBy="#{material.quantidade}"
-						style="width: 70px; text-align: center;">
+						style="width: 70px; text-align: center;"
+						filterMatchMode="contains">
 						<h:outputText value="#{material.quantidade}" />
 					</p:column>
 
@@ -85,7 +90,7 @@
 							update=":mensagem :formlista:lista">
 							<p:confirm header="Confirmação"
 								message="Deseja excluir o Material Estoque?"
-								icon="ui-icon-alert" />
+								icon="pi pi-exclamation-triangle" />
 							<f:attribute name="materialSelecionado" value="#{material}" />
 							<f:actionListener
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
@@ -96,9 +101,11 @@
 
 				<p:confirmDialog global="true">
 					<p:commandButton value="Sim" type="button"
-						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						styleClass="ui-confirmdialog-yes rounded-button"
+						icon="pi pi-check" />
 					<p:commandButton value="Não" type="button"
-						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						styleClass="ui-confirmdialog-no rounded-button ui-button-danger"
+						icon="pi pi-times" />
 				</p:confirmDialog>
 			</p:panel>
 		</h:form>
@@ -112,7 +119,8 @@
 					<p:selectOneMenu id="tipo" filter="true" required="true"
 						requiredMessage="O campo Tipo é obrigatório"
 						converter="omnifaces.SelectItemsConverter"
-						value="#{materialEntradaBean.materialEntradaFront.materialTipo}">
+						value="#{materialEntradaBean.materialEntradaFront.materialTipo}"
+						filterMatchMode="contains">
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione um tipo" />
 						<f:selectItems value="#{materialEntradaBean.listaTipos}"
@@ -125,7 +133,8 @@
 					<p:selectOneMenu id="material" filter="true" required="true"
 						requiredMessage="O campo Material é obrigatório"
 						converter="omnifaces.SelectItemsConverter"
-						value="#{materialEntradaBean.materialEntradaFront.material}">
+						value="#{materialEntradaBean.materialEntradaFront.material}"
+						filterMatchMode="contains">
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione uma Material" />
 						<f:selectItems value="#{materialEntradaBean.listaMateriais}"
@@ -175,7 +184,8 @@
 					<p:outputLabel for="tipo" value="Tipo: " />
 					<p:selectOneMenu id="tipo" filter="true"
 						converter="omnifaces.SelectItemsConverter"
-						value="#{materialEntradaBean.materialEntradaFront.materialTipo}">
+						value="#{materialEntradaBean.materialEntradaFront.materialTipo}"
+						filterMatchMode="contains">
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione um tipo" />
 						<f:selectItems value="#{materialEntradaBean.listaTipos}"
@@ -188,7 +198,8 @@
 					<p:selectOneMenu id="material" filter="true" required="true"
 						requiredMessage="O campo Material é obrigatório"
 						converter="omnifaces.SelectItemsConverter"
-						value="#{materialEntradaBean.materialEntradaFront.material}">
+						value="#{materialEntradaBean.materialEntradaFront.material}"
+						filterMatchMode="contains">
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione uma Material" />
 						<f:selectItems value="#{materialEntradaBean.listaMateriais}"
@@ -215,11 +226,14 @@
 				<p:outputLabel value="Campos com (*) são obrigatórios" />
 
 				<h:panelGrid columns="2">
-					<p:commandButton value="Salvar"
+					<p:commandButton styleClass="ui-confirmdialog-yes rounded-button"
+						icon="pi pi-check" value="Salvar"
 						actionListener="#{materialEntradaBean.salvarEdicao()}"
 						update=":mensagem :formedicao:edicao :formlista:lista"
 						oncomplete="PF('dialogoEdicao').hide();" />
-					<p:commandButton value="Fechar"
+					<p:commandButton
+						styleClass="ui-confirmdialog-no rounded-button ui-button-danger"
+						icon="pi pi-times" value="Fechar"
 						oncomplete="PF('dialogoEdicao').hide();" />
 
 

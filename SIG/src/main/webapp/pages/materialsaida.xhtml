@@ -34,11 +34,11 @@ a:-webkit-any-link {
 					Clique no botão abaixo para solicitar materiais. <br />
 						<br />
 
-						<p:commandButton value="Solicitar Material" styleClass="rounded-button ui-button-success"
-						 oncomplete="PF('dialogo').show();"
+						<p:commandButton value="Solicitar Material"
+							styleClass="rounded-button ui-button-success"
+							oncomplete="PF('dialogo').show();"
 							actionListener="#{materialSaidaBean.novo()}"
-							update=":formcadastro:cadastro"
-							>
+							update=":formcadastro:cadastro">
 							<f:actionListener
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 						</p:commandButton>
@@ -53,29 +53,30 @@ a:-webkit-any-link {
 					<p:column headerText="Material Tipo"
 						sortBy="#{material.materialTipo.tipomaterial}"
 						filterBy="#{material.materialTipo.tipomaterial}"
-						style="width: 90px; text-align: center;">
+						style="width: 90px; text-align: center;" filterMatchMode="contains">
 						<h:outputText value="#{material.materialTipo.tipomaterial}" />
 					</p:column>
 
 					<p:column headerText="Material"
 						sortBy="#{material.material.material}"
 						filterBy="#{material.material.material}"
-						style="width: 120px; text-align: center;">
+						style="width: 120px; text-align: center;" filterMatchMode="contains">
 						<h:outputText value="#{material.material.material}" />
 					</p:column>
 
-					<p:column headerText="Unidade" sortBy="#{material.materialCentroDeCusto.unidade.unidadeNome}"
+					<p:column headerText="Unidade"
+						sortBy="#{material.materialCentroDeCusto.unidade.unidadeNome}"
 						filterBy="#{material.materialCentroDeCusto.unidade.unidadeNome}"
-						style="width: 120px; text-align: center;">
+						style="width: 120px; text-align: center;" filterMatchMode="contains">
 						<h:outputText
 							value="#{material.materialCentroDeCusto.unidade.unidadeNome}" />
 					</p:column>
 
-				
+
 
 					<p:column headerText="Nº SGPE" sortBy="#{material.nSGPE}"
 						filterBy="#{material.nSGPE}"
-						style="width: 60px; text-align: center;">
+						style="width: 60px; text-align: center;" filterMatchMode="contains">
 						<h:outputText value="#{material.nSGPE}" />
 					</p:column>
 
@@ -88,13 +89,13 @@ a:-webkit-any-link {
 					<p:column headerText="Status"
 						sortBy="#{material.materialStatus.materialStatus}"
 						filterBy="#{material.materialStatus.materialStatus}"
-						style="width: 70px; text-align: center;">
+						style="width: 70px; text-align: center;" filterMatchMode="contains">
 						<h:outputText value="#{material.materialStatus.materialStatus}" />
 					</p:column>
 
 					<p:column headerText="Ressalva" sortBy="#{material.ressalva}"
 						filterBy="#{material.ressalva}"
-						style="width: 90px; text-align: center;" styleClass="singleLine">
+						style="width: 90px; text-align: center;" styleClass="singleLine" filterMatchMode="contains">
 						<h:outputLink onmouseover="$(this).removeClass('ui-state-hover')"
 							id="track" value="#">
 							<h:outputText rendered="#{material.ressalva != null}"
@@ -109,7 +110,7 @@ a:-webkit-any-link {
 					<p:column headerText="Por"
 						sortBy="#{material.usuarioCadastro.pessoa.nomeCompleto}"
 						filterBy="#{material.usuarioCadastro.pessoa.nomeCompleto}"
-						style="width: 170px; text-align: center;">
+						style="width: 170px; text-align: center;" filterMatchMode="contains">
 						<h:outputText
 							value="#{material.usuarioCadastro.pessoa.nomeCompleto}" />
 					</p:column>
@@ -118,9 +119,10 @@ a:-webkit-any-link {
 
 				<p:confirmDialog global="true">
 					<p:commandButton value="Sim" type="button"
-						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						styleClass="ui-confirmdialog-yes rounded-button"
+						icon="pi pi-check" />
 					<p:commandButton value="Não" type="button"
-						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						styleClass="ui-confirmdialog-no rounded-button ui-button-danger" icon="pi pi-times" />
 				</p:confirmDialog>
 			</p:panel>
 		</h:form>
@@ -134,7 +136,7 @@ a:-webkit-any-link {
 					<p:selectOneMenu id="tipo" filter="true" required="true"
 						requiredMessage="O campo Tipo é obrigatório"
 						converter="omnifaces.SelectItemsConverter"
-						value="#{materialSaidaBean.materialSaidaFront.materialTipo}">
+						value="#{materialSaidaBean.materialSaidaFront.materialTipo}" filterMatchMode="contains">
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione um tipo" />
 						<f:selectItems value="#{materialSaidaBean.listaTipos}" var="tipo"
@@ -147,7 +149,7 @@ a:-webkit-any-link {
 					<p:selectOneMenu id="material" filter="true" required="true"
 						requiredMessage="O campo Material é obrigatório"
 						converter="omnifaces.SelectItemsConverter"
-						value="#{materialSaidaBean.materialSaidaFront.material}">
+						value="#{materialSaidaBean.materialSaidaFront.material}" filterMatchMode="contains">
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione uma Material" />
 						<f:selectItems value="#{materialSaidaBean.listaMateriais}"
@@ -159,15 +161,16 @@ a:-webkit-any-link {
 					<p:selectOneMenu id="unidade" filter="true"
 						requiredMessage="O campo Unidade é obrigatório"
 						converter="omnifaces.SelectItemsConverter"
-						value="#{materialSaidaBean.materialSaidaFront.materialCentroDeCusto}">
+						value="#{materialSaidaBean.materialSaidaFront.materialCentroDeCusto}" filterMatchMode="contains">
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione uma unidade" />
 						<f:selectItems value="#{materialSaidaBean.listaCusto}" var="c"
-							itemValue="#{c}" itemLabel="#{c.centroCog} - #{c.centroSigla} - #{c.unidade.unidadeNome}" />
-						
+							itemValue="#{c}"
+							itemLabel="#{c.centroCog} - #{c.centroSigla} - #{c.unidade.unidadeNome}" />
+
 					</p:selectOneMenu>
 
-					
+
 
 
 					<p:outputLabel value="Nº SGPE: *" />
@@ -196,11 +199,15 @@ a:-webkit-any-link {
 				<br />
 
 				<h:panelGrid columns="2">
-					<p:commandButton value="Solicitar"
+					<p:commandButton styleClass="ui-confirmdialog-yes rounded-button"
+						icon="pi pi-check" value="Solicitar"
 						actionListener="#{materialSaidaBean.salvar()}"
 						update=":mensagem :formcadastro:cadastro :formlista:lista"
 						oncomplete="PF('dialogo').hide();" />
-					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+					<p:commandButton
+						styleClass="ui-confirmdialog-no rounded-button ui-button-danger"
+						icon="pi pi-times" value="Fechar"
+						oncomplete="PF('dialogo').hide();" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>

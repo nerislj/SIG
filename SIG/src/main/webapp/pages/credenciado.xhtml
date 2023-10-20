@@ -78,7 +78,7 @@
 									disabled="#{credenciadoBean.pessoa.rgEstadoEmissao != null}"
 									value="#{credenciadoBean.pessoa.rgEstadoEmissao}"
 									converter="omnifaces.SelectItemsConverter" required="true"
-									requiredMessage="O campo UF é obrigatório">
+									requiredMessage="O campo UF é obrigatório" filterMatchMode="contains">
 									<f:selectItem noSelectionOption="true"
 										itemLabel="Selecione uma UF" />
 									<f:selectItems value="#{credenciadoBean.estados}" var="estado"
@@ -164,7 +164,7 @@
 								<p:outputLabel for="estado" value="UF: * " />
 								<p:selectOneMenu id="estado" filter="true"
 									converter="omnifaces.SelectItemsConverter"
-									value="#{credenciadoBean.pessoa.estadoEndereco}">
+									value="#{credenciadoBean.pessoa.estadoEndereco}" filterMatchMode="contains">
 									<f:selectItem noSelectionOption="true"
 										itemLabel="Selecione um estado" />
 									<f:selectItems value="#{credenciadoBean.estados}" var="estado"
@@ -177,7 +177,7 @@
 								<p:selectOneMenu id="cidade" filter="true" required="true"
 									requiredMessage="O campo Municipio é obrigatório"
 									converter="omnifaces.SelectItemsConverter"
-									value="#{credenciadoBean.pessoa.municipioEndereco}">
+									value="#{credenciadoBean.pessoa.municipioEndereco}" filterMatchMode="contains">
 									<f:selectItem noSelectionOption="true"
 										itemLabel="Selecione uma cidade" />
 									<f:selectItems value="#{credenciadoBean.cidades}" var="cidade"

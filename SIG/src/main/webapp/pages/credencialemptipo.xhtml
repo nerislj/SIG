@@ -8,11 +8,12 @@
 	template="/templates/modelo.xhtml">
 
 	<ui:define name="conteudo">
-		<h:form id="formlista" rendered="#{autenticacaoBean.temPermissoes([1, 18])}">
+		<h:form id="formlista"
+			rendered="#{autenticacaoBean.temPermissoes([1, 18])}">
 			<p:panel header="Credencial Tipo - Listagem">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{credencialEmpTipoBean.listaTipos}"
-					var="tipo" rows="10" style="width: 40%; padding-left: 25%; ">
+					var="tipo" rows="10">
 					<f:facet name="header">
 						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
 							actionListener="#{credencialEmpTipoBean.novo()}"
@@ -23,16 +24,18 @@
 					</f:facet>
 
 					<p:column headerText="Nome" sortBy="#{tipo.tipocredencial}"
-						filterBy="#{tipo.tipocredencial}" style="width: 70px; text-align: center;">
+						filterBy="#{tipo.tipocredencial}"
+						style="width: 70px; text-align: center;">
 						<h:outputText value="#{tipo.tipocredencial}" />
 					</p:column>
 
-					<p:column headerText="Opções" style="width: 70px; text-align: center;">
+					<p:column headerText="Opções"
+						style="width: 70px; text-align: center;">
 						<p:commandButton icon="ui-icon-trash"
 							actionListener="#{credencialEmpTipoBean.excluir}"
 							update=":mensagem :formlista:lista">
-							<p:confirm header="Confirmação"
-								message="Deseja excluir o Tipo" icon="ui-icon-alert" />
+							<p:confirm header="Confirmação" message="Deseja excluir o Tipo"
+								icon="ui-icon-alert" />
 							<f:attribute name="credencialtipoSelecionado" value="#{tipo}" />
 						</p:commandButton>
 
@@ -62,9 +65,9 @@
 			<h:form id="formcadastro">
 				<h:panelGrid id="cadastro" columns="2">
 					<p:outputLabel value="Nome:" />
-					<p:inputText 
-						value="#{credencialEmpTipoBean.credencialEmpTipo.tipocredencial}" required="true"
-						requiredMessage="O campo Nome é obrigatório" />
+					<p:inputText
+						value="#{credencialEmpTipoBean.credencialEmpTipo.tipocredencial}"
+						required="true" requiredMessage="O campo Nome é obrigatório" />
 
 				</h:panelGrid>
 

@@ -37,7 +37,8 @@
 
 					<p:column headerText="Nome"
 						sortBy="#{condutor.pessoa.nomeCompleto}"
-						filterBy="#{condutor.pessoa.nomeCompleto}">
+						filterBy="#{condutor.pessoa.nomeCompleto}"
+						filterMatchMode="contains">
 						<h:outputText value="#{condutor.pessoa.nomeCompleto}" />
 					</p:column>
 
@@ -55,7 +56,8 @@
 							update=":mensagem :formlista:lista"
 							rendered="#{autenticacaoBean.temPermissoes([1, 2])}">
 							<p:confirm header="Confirmação"
-								message="Deseja excluir o Condutor?" icon="ui-icon-alert" />
+								message="Deseja excluir o Condutor?"
+								icon="pi pi-exclamation-triangle" />
 							<f:attribute name="CondutorSelecionado" value="#{condutor}" />
 						</p:commandButton>
 
@@ -74,9 +76,11 @@
 
 				<p:confirmDialog global="true">
 					<p:commandButton value="Sim" type="button"
-						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						styleClass="ui-confirmdialog-yes rounded-button"
+						icon="pi pi-check" />
 					<p:commandButton value="Não" type="button"
-						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						styleClass="ui-confirmdialog-no rounded-button ui-button-danger"
+						icon="pi pi-times" />
 				</p:confirmDialog>
 			</p:panel>
 		</h:form>
@@ -109,11 +113,15 @@
 				</h:panelGrid>
 
 				<h:panelGrid columns="2">
-					<p:commandButton value="Salvar"
+					<p:commandButton styleClass="ui-confirmdialog-yes rounded-button"
+						icon="pi pi-check" value="Salvar"
 						actionListener="#{frotaCondutorBean.salvar()}"
 						update=":mensagem :formcadastro:cadastro :formlista:lista"
 						oncomplete="PF('dialogo').hide();" />
-					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+					<p:commandButton
+						styleClass="ui-confirmdialog-no rounded-button ui-button-danger"
+						icon="pi pi-times" value="Fechar"
+						oncomplete="PF('dialogo').hide();" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>

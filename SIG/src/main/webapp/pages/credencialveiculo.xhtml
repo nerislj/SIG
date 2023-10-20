@@ -15,50 +15,55 @@
 					paginator="true" value="#{credencialVeiculoBean.veiculos}"
 					var="veiculo" rows="10">
 					<f:facet name="header">
-						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
+						<p:commandButton styleClass="rounded-button ui-button-success"
+							icon="pi pi-plus-circle" value="Novo"
+							oncomplete="PF('dialogo').show();"
 							actionListener="#{credencialVeiculoBean.novo()}"
-							update=":formcadastro:cadastro">
+							update=":formcadastro:cadastro" filterMatchMode="contains">
 							<f:actionListener
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 						</p:commandButton>
 					</f:facet>
 
 					<p:column headerText="Placa" sortBy="#{veiculo.placa}"
-						filterBy="#{veiculo.placa}">
+						filterBy="#{veiculo.placa}" filterMatchMode="contains">
 						<h:outputText value="#{veiculo.placa.toUpperCase()}" />
 					</p:column>
 
 					<p:column headerText="RENAVAM" sortBy="#{veiculo.renavam}"
-						filterBy="#{veiculo.renavam}">
+						filterBy="#{veiculo.renavam}" filterMatchMode="contains">
 						<h:outputText value="#{veiculo.renavam}" />
 					</p:column>
 
 					<p:column headerText="Marca/Modelo" sortBy="#{veiculo.marcaModelo}"
-						filterBy="#{veiculo.marcaModelo}">
+						filterBy="#{veiculo.marcaModelo}" filterMatchMode="contains">
 						<h:outputText value="#{veiculo.marcaModelo.toUpperCase()}" />
 					</p:column>
 
 					<p:column headerText="Categoria" sortBy="#{veiculo.categoria}"
-						filterBy="#{veiculo.categoria}">
+						filterBy="#{veiculo.categoria}" filterMatchMode="contains">
 						<h:outputText value="#{veiculo.categoria}" />
 					</p:column>
 
 					<p:column headerText="Adaptado" sortBy="#{veiculo.adaptado}"
-						filterBy="#{veiculo.adaptado}">
+						filterBy="#{veiculo.adaptado}" filterMatchMode="contains">
 						<h:outputText value="#{veiculo.adaptado}" />
 					</p:column>
 
 
 					<p:column headerText="Opções">
-						<p:commandButton icon="ui-icon-trash"
+						<p:commandButton icon="pi pi-times"
+							styleClass="rounded-button ui-button-danger"
 							actionListener="#{credencialVeiculoBean.excluir}"
 							update=":mensagem :formlista:lista">
 							<p:confirm header="Confirmação"
-								message="Deseja excluir o Veículo?" icon="ui-icon-alert" />
+								message="Deseja excluir o Veículo?"
+								icon="pi pi-exclamation-triangle" />
 							<f:attribute name="veiculoSelecionado" value="#{veiculo}" />
 						</p:commandButton>
 
-						<p:commandButton icon="ui-icon-pencil"
+						<p:commandButton icon="pi pi-pencil"
+							styleClass="rounded-button ui-button-secondary"
 							actionListener="#{credencialVeiculoBean.editar}"
 							update=":formcadastro:cadastro"
 							oncomplete="PF('dialogo').show();">
@@ -72,9 +77,11 @@
 
 				<p:confirmDialog global="true">
 					<p:commandButton value="Sim" type="button"
-						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						styleClass="ui-confirmdialog-yes rounded-button"
+						icon="pi pi-check" />
 					<p:commandButton value="Não" type="button"
-						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						styleClass="ui-confirmdialog-no rounded-button ui-button-danger"
+						icon="pi pi-times" />
 				</p:confirmDialog>
 			</p:panel>
 		</h:form>
@@ -125,11 +132,15 @@
 				</h:panelGrid>
 
 				<h:panelGrid columns="2">
-					<p:commandButton value="Salvar"
+					<p:commandButton styleClass="ui-confirmdialog-yes rounded-button"
+						icon="pi pi-check" value="Salvar"
 						actionListener="#{credencialVeiculoBean.salvar()}"
 						update=":mensagem :formcadastro:cadastro :formlista:lista"
 						oncomplete="PF('dialogo').hide();" />
-					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+					<p:commandButton
+						styleClass="ui-confirmdialog-no rounded-button ui-button-danger"
+						icon="pi pi-times" value="Fechar"
+						oncomplete="PF('dialogo').hide();" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>

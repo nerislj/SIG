@@ -8,11 +8,15 @@
 	template="/templates/modelo.xhtml">
 
 	<ui:define name="conteudo">
-		<h:form id="formlista" rendered="#{autenticacaoBean.temPermissoes([1, 25])}">
+		<h:form id="formlista"
+			rendered="#{autenticacaoBean.temPermissoes([1, 25])}">
 
 			<p:panel header="Materiais - Estoque">
 				<center>
-					<p>OBS: Para consultar o Total/Estoque digite o nome do <b>Tipo Material</b> ou <b>Material</b></p>
+					<p>
+						OBS: Para consultar o Total/Estoque digite o nome do <b>Tipo
+							Material</b> ou <b>Material</b>
+					</p>
 				</center>
 				<br />
 				<p:dataTable id="listaEstoque"
@@ -23,7 +27,7 @@
 					<p:column headerText="Tipo Material"
 						sortBy="#{material.material.materialTipo.tipomaterial}"
 						filterBy="#{material.material.materialTipo.tipomaterial}"
-						style="width: 15%; text-align: center;">
+						style="width: 15%; text-align: center;" filterMatchMode="contains">
 						<h:outputText
 							value="#{material.material.materialTipo.tipomaterial}" />
 					</p:column>
@@ -31,11 +35,12 @@
 					<p:column headerText="Material"
 						sortBy="#{material.material.material}"
 						filterBy="#{material.material.material}"
-						style="width: 15%; text-align: center;">
+						style="width: 15%; text-align: center;" filterMatchMode="contains">
 						<h:outputText value="#{material.material.material}" />
 					</p:column>
 
-					<p:column headerText="Total/Estoque" sortBy="#{material.quantidade}"
+					<p:column headerText="Total/Estoque"
+						sortBy="#{material.quantidade}"
 						style="width: 15%; text-align: center;">
 						<h:outputText value="#{material.quantidade}" />
 					</p:column>
@@ -49,24 +54,24 @@
 					value="#{materialSaidaBean.listaSaidaMateriaisPendentes}"
 					var="material" rows="10">
 					<f:facet name="header">
-						<p:commandButton value="Aprovar saída" styleClass="rounded-button ui-button-success"
-							actionListener="#{materialSaidaBean.finalizar}" icon="pi pi-check" style="margin: auto;"
+						<p:commandButton value="Aprovar saída"
+							styleClass="rounded-button ui-button-success"
+							actionListener="#{materialSaidaBean.finalizar}"
+							icon="pi pi-check" style="margin: auto;"
 							update=":mensagem :formularioFinalizar:painelFinalizar"
 							oncomplete="PF('dialogo').show();" />
 					</f:facet>
-					
-					<p:column headerText="Nº"
-						sortBy="#{material.codigo}"
+
+					<p:column headerText="Nº" sortBy="#{material.codigo}"
 						filterBy="#{material.codigo}"
 						style="width: 5%; text-align: center;">
-						<h:outputText
-							value="#{material.codigo}" />
+						<h:outputText value="#{material.codigo}" />
 					</p:column>
 
 					<p:column headerText="Tipo Material"
 						sortBy="#{material.material.materialTipo.tipomaterial}"
 						filterBy="#{material.material.materialTipo.tipomaterial}"
-						style="width: 15%; text-align: center;">
+						style="width: 15%; text-align: center;" filterMatchMode="contains">
 						<h:outputText
 							value="#{material.material.materialTipo.tipomaterial}" />
 					</p:column>
@@ -74,30 +79,30 @@
 					<p:column headerText="Material"
 						sortBy="#{material.material.material}"
 						filterBy="#{material.material.material}"
-						style="width: 15%; text-align: center;">
+						style="width: 15%; text-align: center;" filterMatchMode="contains">
 						<h:outputText value="#{material.material.material}" />
 					</p:column>
-					
-					
+
+
 
 					<p:column headerText="Qtd" sortBy="#{material.quantidade}"
 						filterBy="#{material.quantidade}"
-						style="width: 5%; text-align: center;">
+						style="width: 5%; text-align: center;" filterMatchMode="contains">
 						<h:outputText value="#{material.quantidade}" />
 					</p:column>
-					
+
 					<p:column headerText="Data" sortBy="#{material.dataCadastro}"
 						filterBy="#{material.dataCadastro}"
-						style="width: 15%; text-align: center;">
+						style="width: 15%; text-align: center;" filterMatchMode="contains">
 						<h:outputText value="#{material.dataCadastro}">
-						<f:convertDateTime pattern="dd/MM/yyyy" />
+							<f:convertDateTime pattern="dd/MM/yyyy" />
 						</h:outputText>
 					</p:column>
 
 					<p:column headerText="Pedido Por"
 						sortBy="#{material.usuarioCadastro.pessoa.nomeCompleto}"
 						filterBy="#{material.usuarioCadastro.pessoa.nomeCompleto}"
-						style="width: 15%; text-align: center;">
+						style="width: 15%; text-align: center;" filterMatchMode="contains">
 						<h:outputText
 							value="#{material.usuarioCadastro.pessoa.nomeCompleto}" />
 					</p:column>
@@ -107,27 +112,25 @@
 						style="width: 10% !important ; text-align: center;">
 						<p:commandButton value="Selecionar" icon="pi pi-check"
 							actionListener="#{materialSaidaBean.adicionar}"
-							update=":formlista:listaSelecionados" styleClass="rounded-button"
-							>
+							update=":formlista:listaSelecionados" styleClass="rounded-button">
 							<f:attribute name="materialSelecionado" value="#{material}" />
 						</p:commandButton>
-						
+
 						<p:commandButton icon="pi pi-pencil"
-												styleClass="rounded-button ui-button-danger"
+							styleClass="rounded-button ui-button-danger"
 							actionListener="#{materialSaidaBean.ressalva}"
 							update=":formlista:listaSelecionados :formlista:lista :formularioFinalizarRessalva:painelFinalizarRessalva"
-							
 							oncomplete="PF('dialogoRessalva').show();">
 							<f:attribute name="materialSelecionado" value="#{material}" />
 							<f:actionListener
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
-						</p:commandButton> 
+						</p:commandButton>
 
-					
+
 					</p:column>
-					
-					
-					
+
+
+
 
 
 				</p:dataTable>
@@ -137,20 +140,18 @@
 					emptyMessage="Adicione um Material" paginator="true"
 					value="#{materialSaidaBean.listaSaida}" var="saida" rows="10">
 
-					
-					
-					<p:column headerText="Nº"
-						sortBy="#{saida.materialSaida.codigo}"
+
+
+					<p:column headerText="Nº" sortBy="#{saida.materialSaida.codigo}"
 						filterBy="#{saida.materialSaida.codigo}"
-						style="width: 15%; text-align: center;">
-						<h:outputText
-							value="#{saida.materialSaida.codigo}" />
+						style="width: 15%; text-align: center;" filterMatchMode="contains">
+						<h:outputText value="#{saida.materialSaida.codigo}" />
 					</p:column>
-					
+
 					<p:column headerText="Tipo Material"
 						sortBy="#{saida.materialSaida.materialTipo.tipomaterial}"
 						filterBy="#{saida.materialSaida.materialTipo.tipomaterial}"
-						style="width: 15%; text-align: center;">
+						style="width: 15%; text-align: center;" filterMatchMode="contains">
 						<h:outputText
 							value="#{saida.materialSaida.materialTipo.tipomaterial}" />
 					</p:column>
@@ -158,18 +159,17 @@
 					<p:column headerText="Material"
 						sortBy="#{saida.materialSaida.material.material}"
 						filterBy="#{saida.materialSaida.material.material}"
-						style="width: 15%; text-align: center;">
+						style="width: 15%; text-align: center;" filterMatchMode="contains">
 						<h:outputText value="#{saida.materialSaida.material.material}" />
 					</p:column>
-					
-					
-					
-					<p:column headerText="Ações"
-						style="width: 6%; text-align: center;">
+
+
+
+					<p:column headerText="Ações" style="width: 6%; text-align: center;">
 						<p:commandButton value="Remover" icon="pi pi-minus"
 							actionListener="#{materialSaidaBean.remover}"
-							update=":formlista:listaSelecionados" styleClass="rounded-button ui-button-warning"
-							>
+							update=":formlista:listaSelecionados"
+							styleClass="rounded-button ui-button-warning">
 							<f:attribute name="materialSelecionado" value="#{saida}" />
 						</p:commandButton>
 					</p:column>
@@ -186,7 +186,8 @@
 					<p:outputLabel value="Aprovado por: " />
 					<p:selectOneMenu value="#{materialSaidaBean.usuarioLogado}"
 						converter="omnifaces.SelectItemsConverter" required="true"
-						requiredMessage="O campo Setor Abertura é obrigatório">
+						requiredMessage="O campo Setor Abertura é obrigatório"
+						filterMatchMode="contains">
 						<f:selectItem
 							itemLabel="#{autenticacaoBean.usuarioLogado.pessoa.nomeCompleto}"
 							itemValue="#{autenticacaoBean.usuarioLogado}" />
@@ -195,15 +196,20 @@
 
 
 				</h:panelGrid>
-<br/><br/>
+				<br />
+				<br />
 				<h:panelGrid columns="2">
-					<p:commandButton value="Aprovar todos selecionados"
+					<p:commandButton styleClass="ui-confirmdialog-yes rounded-button"
+						icon="pi pi-check" value="Aprovar todos selecionados"
 						actionListener="#{materialSaidaBean.salvarAprovado}"
 						update=":mensagem :formlista:listaSelecionados :formlista:lista :formularioFinalizar :formlista:listaEstoque"
 						oncomplete="PF('dialogo').hide();">
 					</p:commandButton>
 
-					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+					<p:commandButton
+						styleClass="ui-confirmdialog-no rounded-button ui-button-danger"
+						icon="pi pi-times" value="Fechar"
+						oncomplete="PF('dialogo').hide();" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>
@@ -216,7 +222,8 @@
 					<p:outputLabel value="Usuário Ressalva: " />
 					<p:selectOneMenu value="#{materialSaidaBean.usuarioLogado}"
 						converter="omnifaces.SelectItemsConverter" required="true"
-						requiredMessage="O campo Setor Abertura é obrigatório">
+						requiredMessage="O campo Setor Abertura é obrigatório"
+						filterMatchMode="contains">
 						<f:selectItem
 							itemLabel="#{autenticacaoBean.usuarioLogado.pessoa.nomeCompleto}"
 							itemValue="#{autenticacaoBean.usuarioLogado}" />
@@ -242,13 +249,16 @@
 				</h:panelGrid>
 
 				<h:panelGrid columns="2">
-					<p:commandButton value="Salvar"
+					<p:commandButton styleClass="ui-confirmdialog-yes rounded-button"
+						icon="pi pi-check" value="Salvar"
 						actionListener="#{materialSaidaBean.salvarRessalva}"
 						update=":mensagem :formlista:listaSelecionados :formlista:lista :formularioFinalizarRessalva"
 						oncomplete="PF('dialogoRessalva').hide();">
 					</p:commandButton>
 
-					<p:commandButton value="Fechar"
+					<p:commandButton
+						styleClass="ui-confirmdialog-no rounded-button ui-button-danger"
+						icon="pi pi-times" value="Fechar"
 						oncomplete="PF('dialogoRessalva').hide();" />
 				</h:panelGrid>
 			</h:form>

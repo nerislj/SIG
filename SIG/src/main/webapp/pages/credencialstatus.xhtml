@@ -8,13 +8,16 @@
 	template="/templates/modelo.xhtml">
 
 	<ui:define name="conteudo">
-		<h:form id="formlista" rendered="#{autenticacaoBean.temPermissoes([1, 18])}">
+		<h:form id="formlista"
+			rendered="#{autenticacaoBean.temPermissoes([1, 18])}">
 			<p:panel header="Credencial Status - Listagem">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{credencialStatusBean.listaStatus}"
-					var="status" rows="10" style="width: 40%; padding-left: 25%; ">
+					var="status" rows="10">
 					<f:facet name="header">
-						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
+						<p:commandButton styleClass="rounded-button ui-button-success"
+							icon="pi pi-plus-circle" value="Novo"
+							oncomplete="PF('dialogo').show();"
 							actionListener="#{credencialStatusBean.novo()}"
 							update=":formcadastro:cadastro">
 							<f:actionListener
@@ -23,20 +26,26 @@
 					</f:facet>
 
 					<p:column headerText="Nome" sortBy="#{status.tipoStatus}"
-						filterBy="#{status.tipoStatus}" style="width: 70px; text-align: center;">
+						filterBy="#{status.tipoStatus}"
+						style="width: 70px; text-align: center;"
+						filterMatchMode="contains">
 						<h:outputText value="#{status.tipoStatus}" />
 					</p:column>
 
-					<p:column headerText="Opções" style="width: 70px; text-align: center;">
-						<p:commandButton icon="ui-icon-trash"
+					<p:column headerText="Opções"
+						style="width: 70px; text-align: center;">
+						<p:commandButton icon="pi pi-times"
+							styleClass="rounded-button ui-button-danger"
 							actionListener="#{credencialStatusBean.excluir}"
 							update=":mensagem :formlista:lista">
 							<p:confirm header="Confirmação"
-								message="Deseja excluir o Status?" icon="ui-icon-alert" />
+								message="Deseja excluir o Status?"
+								icon="pi pi-exclamation-triangle" />
 							<f:attribute name="credencialstatusSelecionado" value="#{status}" />
 						</p:commandButton>
 
-						<p:commandButton icon="ui-icon-pencil"
+						<p:commandButton icon="pi pi-pencil"
+							styleClass="rounded-button ui-button-secondary"
 							actionListener="#{credencialStatusBean.editar}"
 							update=":formcadastro:cadastro"
 							oncomplete="PF('dialogo').show();">
@@ -50,9 +59,11 @@
 
 				<p:confirmDialog global="true">
 					<p:commandButton value="Sim" type="button"
-						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						styleClass="ui-confirmdialog-yes rounded-button"
+						icon="pi pi-check" />
 					<p:commandButton value="Não" type="button"
-						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						styleClass="ui-confirmdialog-no rounded-button ui-button-danger"
+						icon="pi pi-times" />
 				</p:confirmDialog>
 			</p:panel>
 		</h:form>
@@ -63,8 +74,8 @@
 				<h:panelGrid id="cadastro" columns="2">
 					<p:outputLabel value="Nome:" />
 					<p:inputText maxlength="10" size="12"
-						value="#{credencialStatusBean.credencialstatus.tipoStatus}" required="true"
-						requiredMessage="O campo Nome é obrigatório" />
+						value="#{credencialStatusBean.credencialstatus.tipoStatus}"
+						required="true" requiredMessage="O campo Nome é obrigatório" />
 
 				</h:panelGrid>
 

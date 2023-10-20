@@ -14,7 +14,9 @@
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{setorBean.setores}" var="setor" rows="10">
 					<f:facet name="header">
-						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
+						<p:commandButton styleClass="rounded-button ui-button-success"
+							icon="pi pi-plus-circle" value="Novo"
+							oncomplete="PF('dialogo').show();"
 							actionListener="#{setorBean.novo()}"
 							update=":formcadastro:cadastro">
 							<f:actionListener
@@ -22,31 +24,34 @@
 						</p:commandButton>
 					</f:facet>
 
-					<p:column headerText="Unidade" sortBy="#{setor.unidade.unidadeNome}"
-						filterBy="#{setor.unidade.unidadeNome}">
+					<p:column headerText="Unidade"
+						sortBy="#{setor.unidade.unidadeNome}"
+						filterBy="#{setor.unidade.unidadeNome}" filterMatchMode="contains">
 						<h:outputText value="#{setor.unidade.unidadeNome}" />
 					</p:column>
 
 					<p:column headerText="Nome" sortBy="#{setor.setorNome}"
-						filterBy="#{setor.setorNome}">
+						filterBy="#{setor.setorNome}" filterMatchMode="contains">
 						<h:outputText value="#{setor.setorNome}" />
 					</p:column>
 
 					<p:column headerText="Sigla" sortBy="#{setor.setor}"
-						filterBy="#{setor.setor}">
+						filterBy="#{setor.setor}" filterMatchMode="contains">
 						<h:outputText value="#{setor.setor}" />
 					</p:column>
 
 					<p:column headerText="Opções">
-						<p:commandButton icon="ui-icon-trash"
+						<p:commandButton icon="pi pi-times"
+							styleClass="rounded-button ui-button-danger"
 							actionListener="#{setorBean.excluir}"
 							update=":mensagem :formlista:lista">
 							<p:confirm header="Confirmação" message="Deseja excluir o Setor?"
-								icon="ui-icon-alert" />
+								icon="pi pi-exclamation-triangle" />
 							<f:attribute name="setorSelecionado" value="#{setor}" />
 						</p:commandButton>
 
-						<p:commandButton icon="ui-icon-pencil"
+						<p:commandButton icon="pi pi-pencil"
+							styleClass="rounded-button ui-button-secondary"
 							actionListener="#{setorBean.editar}"
 							update=":formcadastro:cadastro"
 							oncomplete="PF('dialogo').show();">
@@ -60,9 +65,11 @@
 
 				<p:confirmDialog global="true">
 					<p:commandButton value="Sim" type="button"
-						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						styleClass="ui-confirmdialog-yes rounded-button"
+						icon="pi pi-check" />
 					<p:commandButton value="Não" type="button"
-						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						styleClass="ui-confirmdialog-no rounded-button ui-button-danger"
+						icon="pi pi-times" />
 				</p:confirmDialog>
 			</p:panel>
 		</h:form>
@@ -76,11 +83,11 @@
 					<p:selectOneMenu id="unidade" filter="true"
 						requiredMessage="O campo Unidade é obrigatório"
 						converter="omnifaces.SelectItemsConverter"
-						value="#{setorBean.setor.unidade}">
+						value="#{setorBean.setor.unidade}" filterMatchMode="contains">
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione uma unidade" />
-						<f:selectItems value="#{setorBean.unidades}"
-							var="unidade" itemValue="#{unidade}" itemLabel="#{unidade.unidadeNome}" />
+						<f:selectItems value="#{setorBean.unidades}" var="unidade"
+							itemValue="#{unidade}" itemLabel="#{unidade.unidadeNome}" />
 					</p:selectOneMenu>
 
 					<p:outputLabel value="Sigla:" />
@@ -98,10 +105,14 @@
 				</h:panelGrid>
 
 				<h:panelGrid columns="2">
-					<p:commandButton value="Salvar"
+					<p:commandButton styleClass="ui-confirmdialog-yes rounded-button"
+						icon="pi pi-check" value="Salvar"
 						actionListener="#{setorBean.salvar()}"
 						update=":mensagem :formcadastro:cadastro :formlista:lista" />
-					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+					<p:commandButton
+						styleClass="ui-confirmdialog-no rounded-button ui-button-danger"
+						icon="pi pi-times" value="Fechar"
+						oncomplete="PF('dialogo').hide();" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>

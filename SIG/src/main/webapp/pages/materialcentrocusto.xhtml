@@ -16,7 +16,9 @@
 					paginator="true" value="#{materialCentroCustoBean.listaCusto}"
 					var="material" rows="10">
 					<f:facet name="header">
-						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
+						<p:commandButton styleClass="rounded-button ui-button-success"
+							icon="pi pi-plus-circle" value="Novo"
+							oncomplete="PF('dialogo').show();"
 							actionListener="#{materialCentroCustoBean.novo()}"
 							update=":formcadastro:cadastro">
 							<f:actionListener
@@ -26,20 +28,23 @@
 
 					<p:column headerText="Codigo" sortBy="#{material.centroCog}"
 						filterBy="#{material.centroCog}"
-						style="width: 200px; text-align: center;">
+						style="width: 200px; text-align: center;"
+						filterMatchMode="contains">
 						<h:outputText value="#{material.centroCog}" />
 					</p:column>
 
 					<p:column headerText="Sigla" sortBy="#{material.centroSigla}"
 						filterBy="#{material.centroSigla}"
-						style="width: 200px; text-align: center;">
+						style="width: 200px; text-align: center;"
+						filterMatchMode="contains">
 						<h:outputText value="#{material.centroSigla}" />
 					</p:column>
 
 					<p:column headerText="Unidade"
 						filterBy="#{material.unidade.unidadeNome}"
 						sortBy="#{material.unidade.unidadeNome}"
-						style="width: 200px; text-align: center;">
+						style="width: 200px; text-align: center;"
+						filterMatchMode="contains">
 						<h:outputText value="#{material.unidade.unidadeNome}" />
 
 					</p:column>
@@ -65,9 +70,11 @@
 
 				<p:confirmDialog global="true">
 					<p:commandButton value="Sim" type="button"
-						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						styleClass="ui-confirmdialog-yes rounded-button"
+						icon="pi pi-check" />
 					<p:commandButton value="Não" type="button"
-						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						styleClass="ui-confirmdialog-no rounded-button ui-button-danger"
+						icon="pi pi-times" />
 				</p:confirmDialog>
 			</p:panel>
 		</h:form>
@@ -105,11 +112,14 @@
 				</h:panelGrid>
 
 				<h:panelGrid columns="4">
-					<p:commandButton value="Salvar"
+					<p:commandButton styleClass="ui-confirmdialog-yes rounded-button"
+						icon="pi pi-check" value="Salvar"
 						actionListener="#{materialCentroCustoBean.salvar()}"
 						update=":mensagem :formcadastro:cadastro :formlista:lista"
 						oncomplete="PF('dialogo').hide();" />
-					<p:commandButton value="Fechar"
+					<p:commandButton
+						styleClass="ui-confirmdialog-no rounded-button ui-button-danger"
+						icon="pi pi-times" value="Fechar"
 						update=":formcadastro:cadastro :formlista:lista"
 						oncomplete="PF('dialogo').hide();" />
 				</h:panelGrid>

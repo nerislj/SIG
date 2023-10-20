@@ -89,10 +89,11 @@
 
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
-						actionListener="#{recursoMultaBean.salvar()}" styleClass="rounded-button ui-button-success"
+						actionListener="#{recursoMultaBean.salvar()}" styleClass="ui-confirmdialog-yes rounded-button"
+						icon="pi pi-check"
 						update=":mensagem :formcadastro:cadastro :tabView:formlista" 
 						oncomplete="PF('dialogo').hide();" />
-					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" styleClass="rounded-button" />
+					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" styleClass="ui-confirmdialog-no rounded-button ui-button-danger" icon="pi pi-times" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>

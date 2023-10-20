@@ -29,12 +29,12 @@
 					</f:facet>
 
 					<p:column headerText="Nome" sortBy="#{cidade.nome}"
-						filterBy="#{cidade.nome}">
+						filterBy="#{cidade.nome}" style="width: 100px; text-align: center;">
 						<h:outputText value="#{cidade.nome}" />
 					</p:column>
 
 					<p:column headerText="Estado" sortBy="#{cidade.estado}"
-						filterBy="#{cidade.estado}" style="width: 170px; text-align: center;">
+						filterBy="#{cidade.estado}" style="width: 60px; text-align: center;">
 						<h:outputText
 							value="#{cidade.estado.sigla} - #{cidade.estado.nome}" />
 					</p:column>

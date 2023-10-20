@@ -15,10 +15,11 @@
 					paginator="true" value="#{recursoMultaTramitaBean.recursosMulta}"
 					var="recurso" rows="10">
 					<f:facet name="header">
-						<p:commandButton value="Finalizar" styleClass="rounded-button ui-button-success"
+						<p:commandButton value="Finalizar"
+							styleClass="rounded-button ui-button-success"
 							actionListener="#{recursoMultaTramitaBean.finalizar}"
 							update=":mensagem :formularioFinalizar:painelFinalizar"
-							oncomplete="PF('dialogo').show();"  />
+							oncomplete="PF('dialogo').show();" />
 					</f:facet>
 
 					<p:column headerText="Opções"
@@ -33,27 +34,30 @@
 
 					<p:column headerText="Placa" sortBy="#{recurso.placa}"
 						filterBy="#{recurso.placa}"
-						style="width: 9%; text-align: center; text-transform:uppercase;">
+						style="width: 9%; text-align: center; text-transform:uppercase;"
+						filterMatchMode="contains">
 						<h:outputText value="#{recurso.placa}" />
 					</p:column>
 
 					<p:column headerText="Auto infração"
 						sortBy="#{recurso.autoInfracao}"
 						filterBy="#{recurso.autoInfracao}"
-						style="width: 12%; text-align: center; text-transform:uppercase;">
+						style="width: 12%; text-align: center; text-transform:uppercase;"
+						filterMatchMode="contains">
 						<h:outputText value="#{recurso.autoInfracao}" />
 					</p:column>
 
 					<p:column headerText="Tipo"
 						sortBy="#{recurso.tipoProcesso.tipoProcesso}"
-						filterBy="#{recurso.tipoProcesso.tipoProcesso}">
+						filterBy="#{recurso.tipoProcesso.tipoProcesso}"
+						filterMatchMode="contains">
 						<h:outputText value="#{recurso.tipoProcesso.tipoProcesso}" />
 					</p:column>
 
 					<p:column headerText="Data Recebimento"
 						sortBy="#{recurso.dataCadastro}"
 						filterBy="#{recurso.dataCadastro}"
-						style="width: 12%; text-align: center;">
+						style="width: 12%; text-align: center;" filterMatchMode="contains">
 						<h:outputText
 							value="#{recurso.dataCadastro.date}/#{recurso.dataCadastro.month+1}/#{recurso.dataCadastro.year+1900}" />
 					</p:column>
@@ -101,25 +105,28 @@
 
 					<p:column headerText="Placa" sortBy="#{saida.placa}"
 						filterBy="#{saida.placa}"
-						style="width: 9%; text-align: center; text-transform:uppercase;">
+						style="width: 9%; text-align: center; text-transform:uppercase;"
+						filterMatchMode="contains">
 						<h:outputText value="#{saida.placa}" />
 					</p:column>
 
 					<p:column headerText="Auto infração" sortBy="#{saida.autoInfracao}"
 						filterBy="#{saida.autoInfracao}"
-						style="width: 12%; text-align: center; text-transform:uppercase;">
+						style="width: 12%; text-align: center; text-transform:uppercase;"
+						filterMatchMode="contains">
 						<h:outputText value="#{saida.autoInfracao}" />
 					</p:column>
 
 					<p:column headerText="Tipo"
 						sortBy="#{saida.tipoProcesso.tipoProcesso}"
-						filterBy="#{saida.tipoProcesso.tipoProcesso}">
+						filterBy="#{saida.tipoProcesso.tipoProcesso}"
+						filterMatchMode="contains">
 						<h:outputText value="#{saida.tipoProcesso.tipoProcesso}" />
 					</p:column>
 
 					<p:column headerText="Data Recebimento"
 						sortBy="#{saida.dataCadastro}" filterBy="#{saida.dataCadastro}"
-						style="width: 12%; text-align: center;">
+						style="width: 12%; text-align: center;" filterMatchMode="contains">
 						<h:outputText
 							value="#{saida.dataCadastro.date}/#{saida.dataCadastro.month+1}/#{saida.dataCadastro.year+1900}" />
 					</p:column>
@@ -158,13 +165,15 @@
 					<p:commandButton value="Interno" icon="pi pi-copy"
 						update=":formularioInterno:painelInterno"
 						onclick="PF('tramitacaoInterna').show();"
-						style="width:100px;height:50px;" styleClass="rounded-button ui-button-info">
+						style="width:100px;height:50px;"
+						styleClass="rounded-button ui-button-info">
 					</p:commandButton>
 
 					<p:commandButton value="Externo" icon="pi pi-copy"
 						update=":formularioExterno:painelExterno"
 						onclick="PF('tramitacaoExterna').show();"
-						style="width:100px;height:50px;" styleClass="rounded-button ui-button-info">
+						style="width:100px;height:50px;"
+						styleClass="rounded-button ui-button-info">
 					</p:commandButton>
 
 
@@ -175,7 +184,9 @@
 
 				<h:panelGrid columns="1" style="display: block;margin-left:30%;">
 
-					<p:commandButton value="Fechar" styleClass="rounded-button ui-button-info" oncomplete="PF('dialogo').hide();" />
+					<p:commandButton value="Fechar"
+						styleClass="ui-confirmdialog-no rounded-button ui-button-danger" icon="pi pi-times"
+						oncomplete="PF('dialogo').hide();" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>
@@ -190,7 +201,8 @@
 					<p:selectOneMenu id="unidade" filter="true"
 						requiredMessage="O campo Unidade é obrigatório"
 						converter="omnifaces.SelectItemsConverter"
-						value="#{recursoMultaTramitaBean.unidade}">
+						value="#{recursoMultaTramitaBean.unidade}"
+						filterMatchMode="contains">
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione uma unidade" />
 						<f:selectItems value="#{recursoMultaTramitaBean.unidades}"
@@ -204,7 +216,8 @@
 					<p:selectOneMenu id="setor" filter="true"
 						value="#{recursoMultaTramitaBean.setor}"
 						converter="omnifaces.SelectItemsConverter" required="true"
-						requiredMessage="O campo Ofício é obrigatório">
+						requiredMessage="O campo Ofício é obrigatório"
+						filterMatchMode="contains">
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione o Setor" />
 						<f:selectItems value="#{recursoMultaTramitaBean.setores}"
@@ -216,13 +229,17 @@
 
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
-						actionListener="#{recursoMultaTramitaBean.salvarInterno}" styleClass="rounded-button ui-button-success"
+						actionListener="#{recursoMultaTramitaBean.salvarInterno}"
+						styleClass="ui-confirmdialog-yes rounded-button"
+						icon="pi pi-check"
 						update=":mensagem :formlista:listaSelecionados :formlista:lista :formularioInterno:painelInterno"
 						oncomplete="PF('tramitacaoInterna').hide(); PF('dialogo').hide();">
 					</p:commandButton>
 
 					<p:commandButton value="Fechar"
-						oncomplete="PF('tramitacaoInterna').hide();" styleClass="rounded-button ui-button-info" />
+						oncomplete="PF('tramitacaoInterna').hide();"
+						styleClass="ui-confirmdialog-no rounded-button ui-button-danger"
+						icon="pi pi-times" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>
@@ -243,13 +260,16 @@
 
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
-						actionListener="#{recursoMultaTramitaBean.salvarExterno}" styleClass="rounded-button ui-button-success"
+						actionListener="#{recursoMultaTramitaBean.salvarExterno}"
+						styleClass="ui-confirmdialog-yes rounded-button"
+						icon="pi pi-check"
 						update=":mensagem :formlista:listaSelecionados :formularioInterno:painelInterno :formlista:lista"
 						oncomplete="PF('tramitacaoExterna').hide(); PF('dialogo').hide();">
 					</p:commandButton>
 
-					<p:commandButton value="Fechar" styleClass="rounded-button ui-button-info"
-						oncomplete="PF('tramitacaoExterna').hide();" />
+					<p:commandButton value="Fechar"
+						styleClass="ui-confirmdialog-no rounded-button ui-button-danger"
+						icon="pi pi-times" oncomplete="PF('tramitacaoExterna').hide();" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>
