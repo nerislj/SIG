@@ -11,6 +11,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.SimpleExpression;
 
 import br.gov.sc.codet.dao.GenericDAO;
+import br.gov.sc.contrato.domain.ContratoRelacao;
 import br.gov.sc.contrato.domain.FuncionarioTerceirizado;
 import br.gov.sc.funcionariosuf.domain.Estagiarios;
 import br.gov.sc.sgi.domain.PessoaFisica;
@@ -44,6 +45,26 @@ public class TerceirizadosDAO extends GenericDAO<Estagiarios> {
 			sessao.close();
 		}
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	public List<ContratoRelacao> listarContratoRelacaoFuncionariosAtivos(Object processo) {
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+		try {
+			Criteria consulta = sessao.createCriteria(ContratoRelacao.class);
+			
+			consulta.createAlias("funcionarioTerceirizado", "f");
+			consulta.add(Restrictions.eq("f.unidade", processo));
+			
+			consulta.addOrder(Order.desc("codigo"));
+			List<ContratoRelacao> resultado = consulta.list();
+			return resultado;
+		} catch (RuntimeException erro) {
+			throw erro;
+		} finally {
+			sessao.close();
+		}
+	}
+	
+	
 
 }

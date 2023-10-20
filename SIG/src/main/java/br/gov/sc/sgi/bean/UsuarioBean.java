@@ -155,6 +155,7 @@ public class UsuarioBean implements Serializable {
 			SimpleHash hash = new SimpleHash("md5", usuario.getSenha());
 
 			usuario.setSenha(hash.toHex());
+			usuario.setPrimeiroAcesso("S");
 
 			usuarioDAO.merge(usuario);
 

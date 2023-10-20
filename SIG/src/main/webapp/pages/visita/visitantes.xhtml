@@ -25,33 +25,37 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 
 		<h:form id="formcadastro">
-			<p:panel header="Visitante - Cadastro" rendered="#{autenticacaoBean.temPermissoes([1,25,96])}">
+			<p:panel header="Visitante - Cadastro"
+				rendered="#{autenticacaoBean.temPermissoes([1,25,96])}">
 
 				<p:panelGrid id="cadastro" columns="4" layout="flex"
 					columnClasses="col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4, col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4"
 					contentStyleClass="ui-fluid">
 
-
-
-					<p:outputLabel value="Nome Completo: *" />
-					<p:inputText maxlength="50"
-						value="#{visitanteBean.visitante.nomeCompleto}" required="true"
-						requiredMessage="O campo Nome é obrigatório" style="text-transform:uppercase"/>
-
-
 					<p:outputLabel value="CPF: *" />
-					<p:inputText maxlength="11" size="10"
+					<p:inputText maxlength="11" 
 						value="#{visitanteBean.visitante.cpf}" required="true"
 						requiredMessage="O campo Nome é obrigatório" />
 
 
 
+					
 
 
-					<p:outputLabel value="RG: " />
-					<p:inputText maxlength="11" size="10"
-						value="#{visitanteBean.visitante.rg}"
-						requiredMessage="O campo Nome é obrigatório" />
+					<p:outputLabel value="Celular: " />
+					<p:inputMask id="phone" value="#{visitanteBean.visitante.celular}"
+						mask="(99)999999999" validateMask="true" />
+
+
+<p:outputLabel value="Nome Completo: *" />
+					<p:inputText maxlength="50"
+						value="#{visitanteBean.visitante.nomeCompleto}" required="true"
+						requiredMessage="O campo Nome é obrigatório"
+						style="text-transform:uppercase" />
+
+
+
+				
 
 
 
@@ -67,10 +71,14 @@ body .ui-panelgrid .ui-panelgrid-cell {
 						<p:ajax listener="#{visitanteBean.popular}"
 							update=":formcadastro:cidade" />
 					</p:selectOneMenu>
+					
+						<p:outputLabel value="RG: " />
+					<p:inputText maxlength="11"
+						value="#{visitanteBean.visitante.rg}"
+						requiredMessage="O campo Nome é obrigatório" />
 
 					<p:outputLabel for="cidade" value="Municipio:" />
-					<p:selectOneMenu id="cidade" filter="true" required="true"
-						requiredMessage="O campo Municipio é obrigatório"
+					<p:selectOneMenu id="cidade" filter="true" 
 						converter="omnifaces.SelectItemsConverter"
 						value="#{visitanteBean.visitante.municipio}">
 						<f:selectItem noSelectionOption="true"
@@ -109,24 +117,18 @@ body .ui-panelgrid .ui-panelgrid-cell {
 						<h:outputText value="#{visitante.nomeCompleto}" />
 					</p:column>
 
-					<p:column headerText="CPF"
-						sortBy="#{visitante.cpf}"
-						filterBy="#{visitante.cpf}"
-						style="text-align: center;">
+					<p:column headerText="CPF" sortBy="#{visitante.cpf}"
+						filterBy="#{visitante.cpf}" style="text-align: center;">
 						<h:outputText value="#{visitante.cpf}" />
 					</p:column>
-					
-					<p:column headerText="Estado"
-						sortBy="#{visitante.estado.nome}"
-						filterBy="#{visitante.estado.nome}"
-						style="text-align: center;">
+
+					<p:column headerText="Estado" sortBy="#{visitante.estado.nome}"
+						filterBy="#{visitante.estado.nome}" style="text-align: center;">
 						<h:outputText value="#{visitante.estado.nome}" />
 					</p:column>
-					
-					<p:column headerText="Cidade"
-						sortBy="#{visitante.municipio.nome}"
-						filterBy="#{visitante.municipio.nome}"
-						style="text-align: center;">
+
+					<p:column headerText="Cidade" sortBy="#{visitante.municipio.nome}"
+						filterBy="#{visitante.municipio.nome}" style="text-align: center;">
 						<h:outputText value="#{visitante.municipio.nome}" />
 					</p:column>
 
@@ -137,8 +139,7 @@ body .ui-panelgrid .ui-panelgrid-cell {
 							styleClass="rounded-button ui-button-secondary"
 							actionListener="#{visitanteBean.editar}"
 							update=":formcadastro:cadastro">
-							<f:attribute name="visitanteSelecionado"
-								value="#{visitante}" />
+							<f:attribute name="visitanteSelecionado" value="#{visitante}" />
 							<f:actionListener
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 						</p:commandButton>
@@ -150,8 +151,7 @@ body .ui-panelgrid .ui-panelgrid-cell {
 							<p:confirm header="Confirmação"
 								message="Deseja excluir o visitante?"
 								icon="pi pi-exclamation-triangle" />
-							<f:attribute name="visitanteSelecionado"
-								value="#{visitante}" />
+							<f:attribute name="visitanteSelecionado" value="#{visitante}" />
 						</p:commandButton>
 
 

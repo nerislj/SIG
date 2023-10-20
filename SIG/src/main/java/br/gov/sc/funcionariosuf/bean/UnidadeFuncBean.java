@@ -42,7 +42,11 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import org.omnifaces.util.Messages;
+import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.ToggleEvent;
+import org.primefaces.event.data.FilterEvent;
+import org.primefaces.model.FilterMeta;
 
 import com.google.gson.Gson;
 import com.mysql.jdbc.Connection;
@@ -51,9 +55,11 @@ import com.mysql.jdbc.Statement;
 
 import bd.Conexao;
 import br.gov.sc.contrato.dao.CargoTerceirizadoDAO;
+import br.gov.sc.contrato.dao.ContratoRelacaoDAO;
 import br.gov.sc.contrato.dao.FuncionarioTerceirizadoDAO;
 import br.gov.sc.contrato.domain.CargoTerceirizado;
 import br.gov.sc.contrato.domain.FuncionarioTerceirizado;
+import br.gov.sc.contrato.domain.ContratoRelacao;
 import br.gov.sc.funcionariosuf.dao.CargoServidoresDAO;
 import br.gov.sc.funcionariosuf.dao.EstagiariosDAO;
 import br.gov.sc.funcionariosuf.dao.ServidoresDAO;
@@ -82,11 +88,13 @@ import util.JSFUtil;
 @ViewScoped
 public class UnidadeFuncBean implements Serializable {
 
-	
 	private UnidadeFunc unidadeFunc;
 	private List<UnidadeFunc> listaUnidadeFunc;
 
 	private List<UnidadeFunc> listaTodosFunc;
+
+	private List<UnidadeFunc> filteredUnidades;
+	private List<FilterMeta> filterBy;
 
 	private Unidade unidade;
 	private List<Unidade> listaUnidade;
@@ -97,6 +105,7 @@ public class UnidadeFuncBean implements Serializable {
 	private List<Estagiarios> listaEstagiarios;
 
 	private List<FuncionarioTerceirizado> listaTerceirizados;
+	private List<ContratoRelacao> listaTerceirizadosAtivos;
 
 	private Setor setor;
 	private List<Setor> listasetores;
@@ -130,6 +139,10 @@ public class UnidadeFuncBean implements Serializable {
 		this.listaCargosServidores = listaCargosServidores;
 	}
 
+	public List<FilterMeta> getFilterBy() {
+		return filterBy;
+	}
+
 	public void novo() {
 		try {
 			unidadeFunc = new UnidadeFunc();
@@ -147,14 +160,52 @@ public class UnidadeFuncBean implements Serializable {
 		}
 	}
 
+	public void filterListener2() {
+		try {
+			if (filteredUnidades != null) {
+				// then filter is active, do something...
+				ArrayList<String> codigosUnidades = new ArrayList<String>();
+				for (int posicao = 0; posicao < filteredUnidades.size(); posicao++) {
+
+					codigosUnidades.add(filteredUnidades.get(posicao).getUnidade().getUnidadeNome());
+
+				}
+					
+					
+					FuncionarioTerceirizadoDAO terceirizadosDAO = new FuncionarioTerceirizadoDAO();
+					//listaTerceirizados = terceirizadosDAO.listarUnidades(codigosUnidades); 
+					
+					
+					listaTerceirizadosAtivos = terceirizadosDAO.listarContratoRelacaoFuncionariosAtivos(codigosUnidades);
+					
+					System.out.println();
+
+					ServidoresDAO servidoresDAO = new ServidoresDAO();
+					listaServidores = servidoresDAO.listarUnidades(codigosUnidades);
+
+					EstagiariosDAO estagiarioDAO = new EstagiariosDAO();
+					listaEstagiarios = estagiarioDAO.listarUnidades(codigosUnidades);
+
+			} 
+
+		} catch (Exception e) {
+			e.getMessage();
+		}
+	}
+
+	@SuppressWarnings("unchecked")
 	@PostConstruct
 	public void listar() {
 		try {
+			filterBy = new ArrayList<>();
+
 			EstadoDAO estadoDAO = new EstadoDAO();
 			this.Estados = estadoDAO.listar("sigla");
 
 			UnidadeFuncDAO unidadeFuncDAO = new UnidadeFuncDAO();
 			listaUnidadeFunc = unidadeFuncDAO.listar();
+			
+			filteredUnidades = listaUnidadeFunc;
 
 			listaTodosFunc = unidadeFuncDAO.listaTodosFuncionarios();
 
@@ -171,15 +222,23 @@ public class UnidadeFuncBean implements Serializable {
 			listaCargosServidores = cargoServidoresDAO.listar();
 
 			unidadeFunc = new UnidadeFunc();
+
 			
-			FuncionarioTerceirizadoDAO terceirizadosDAO = new FuncionarioTerceirizadoDAO();
-			listaTerceirizados = terceirizadosDAO.listar();
+				
+				
+			ContratoRelacaoDAO relacaoDAO = new ContratoRelacaoDAO();
+			listaTerceirizadosAtivos = relacaoDAO.listar();
+			
+				
 
-			ServidoresDAO servidoresDAO = new ServidoresDAO();
-			listaServidores = servidoresDAO.listar();
+				ServidoresDAO servidoresDAO = new ServidoresDAO();
+				listaServidores = servidoresDAO.listar();
 
-			EstagiariosDAO estagiarioDAO = new EstagiariosDAO();
-			listaEstagiarios = estagiarioDAO.listar();
+				EstagiariosDAO estagiarioDAO = new EstagiariosDAO();
+				listaEstagiarios = estagiarioDAO.listar();
+				
+		
+			
 
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar listar as Ciretran Citran.");
@@ -248,7 +307,8 @@ public class UnidadeFuncBean implements Serializable {
 		setores = setorDAO.buscarPorUnidade(this.unidadeFunc.getUnidade().getCodigo());
 
 		TerceirizadosDAO terceirizadosDAO = new TerceirizadosDAO();
-		listaTerceirizados = terceirizadosDAO.listarPorUnidade(unidadeFunc.getUnidade());
+		listaTerceirizadosAtivos = terceirizadosDAO.listarContratoRelacaoFuncionariosAtivos(unidadeFunc.getUnidade());
+		//listaTerceirizados = terceirizadosDAO.listarPorUnidade(unidadeFunc.getUnidade());
 
 		ServidoresDAO servidoresDAO = new ServidoresDAO();
 		listaServidores = servidoresDAO.listarPorUnidade(unidadeFunc.getUnidade());
@@ -312,7 +372,8 @@ public class UnidadeFuncBean implements Serializable {
 
 			TerceirizadosDAO terceirizadosDAO = new TerceirizadosDAO();
 
-			listaTerceirizados = terceirizadosDAO.listarPorUnidade(unidadeFunc.getUnidade());
+			listaTerceirizadosAtivos = terceirizadosDAO.listarContratoRelacaoFuncionariosAtivos(unidadeFunc.getUnidade());
+			//listaTerceirizados = terceirizadosDAO.listarPorUnidade(unidadeFunc.getUnidade());
 
 			Messages.addGlobalInfo("Funcionário cadastrado com Sucesso!", new Object[0]);
 		} catch (RuntimeException var4) {
@@ -355,16 +416,12 @@ public class UnidadeFuncBean implements Serializable {
 		}
 	}
 
-	
 	@SuppressWarnings("unlikely-arg-type")
 	public void salvar() {
 		try {
 
 			UnidadeFuncDAO unidadeFuncDAO = new UnidadeFuncDAO();
 
-			
-		
-			
 			unidadeFuncDAO.merge(unidadeFunc);
 
 			unidadeFunc = new UnidadeFunc();
@@ -396,7 +453,9 @@ public class UnidadeFuncBean implements Serializable {
 
 		listaServidores = servidoresDAO.listarPorUnidade(((UnidadeFunc) event.getData()).getUnidade());
 
+		//listaTerceirizadosAtivos = terceirizadosDAO.listarContratoRelacaoFuncionariosAtivos(unidadeFunc.getUnidade());
 		listaTerceirizados = terceirizadosDAO.listarPorUnidade(((UnidadeFunc) event.getData()).getUnidade());
+		listaTerceirizadosAtivos = terceirizadosDAO.listarContratoRelacaoFuncionariosAtivos(((UnidadeFunc) event.getData()).getUnidade());
 
 		listaEstagiarios = estagiariosDAO.listarPorUnidade(((UnidadeFunc) event.getData()).getUnidade());
 
@@ -543,16 +602,16 @@ public class UnidadeFuncBean implements Serializable {
 				.flatMap(x -> x.stream()).collect(Collectors.toList());
 
 	}
-	
+
 	public void imprimirRelatorio(ActionEvent evento) {
 
 		try {
 			unidadeFunc = (UnidadeFunc) evento.getComponent().getAttributes().get("unidadeSelecionado");
-			
-			System.out.println(unidadeFunc.getUnidade() + " VALOR P RELATORIO");
-			
 
-			JSFUtil.redirect("../ImprimirRelatorio?rlt_nome=relatoriounidade" + "&unidadeId=" + unidadeFunc.getUnidade().getCodigo());
+			System.out.println(unidadeFunc.getUnidade() + " VALOR P RELATORIO");
+
+			JSFUtil.redirect("../ImprimirRelatorio?rlt_nome=relatoriounidade" + "&unidadeId="
+					+ unidadeFunc.getUnidade().getCodigo());
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -561,18 +620,17 @@ public class UnidadeFuncBean implements Serializable {
 					"Erro ao imprimir o relatório. Valores das variáveis inválidos " + nulo.getMessage());
 		}
 
-	
 	}
-	
+
 	public void imprimirRelatorioExcel(ActionEvent evento) {
 
 		try {
 			unidadeFunc = (UnidadeFunc) evento.getComponent().getAttributes().get("unidadeSelecionado");
-			
-			System.out.println(unidadeFunc.getUnidade() + " VALOR P RELATORIO");
-			
 
-			JSFUtil.redirect("../ImprimirRelatorioExcel?rlt_nome=relatoriounidadeexcel" + "&unidadeId=" + unidadeFunc.getUnidade().getCodigo());
+			System.out.println(unidadeFunc.getUnidade() + " VALOR P RELATORIO");
+
+			JSFUtil.redirect("../ImprimirRelatorioIreportExcel?rlt_nome=relatoriounidadeexcel" + "&unidadeId="
+					+ unidadeFunc.getUnidade().getCodigo());
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -581,22 +639,22 @@ public class UnidadeFuncBean implements Serializable {
 					"Erro ao imprimir o relatório. Valores das variáveis inválidos " + nulo.getMessage());
 		}
 
-	
 	}
-	
-	public void testFunc() {
-		
-		
-			try {
-				JSFUtil.redirect("../ImprimirRelatorioExcelTest");
-				this.refresh();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		
+
+	public void testFunc(ActionEvent evento) {
+		unidadeFunc = (UnidadeFunc) evento.getComponent().getAttributes().get("unidadeSelecionado");
+
+		try {
+			JSFUtil.redirect("../ImprimirRelatorioUnidadesXFuncionariosExcel?" + "unidadeId="
+					+ unidadeFunc.getUnidade().getCodigo());
+			this.refresh();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
+
 	public void refresh() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		Application application = context.getApplication();
@@ -605,10 +663,6 @@ public class UnidadeFuncBean implements Serializable {
 		context.setViewRoot(viewRoot);
 		context.renderResponse();
 	}
-	
-
-	  
-	
 
 	public Unidade getUnidade() {
 		return unidade;
@@ -792,6 +846,22 @@ public class UnidadeFuncBean implements Serializable {
 
 	public void setCombinedList3(List<FuncionarioTerceirizado> combinedList3) {
 		this.combinedList3 = combinedList3;
+	}
+
+	public List<UnidadeFunc> getFilteredUnidades() {
+		return filteredUnidades;
+	}
+
+	public void setFilteredUnidades(List<UnidadeFunc> filteredUnidades) {
+		this.filteredUnidades = filteredUnidades;
+	}
+
+	public List<ContratoRelacao> getListaTerceirizadosAtivos() {
+		return listaTerceirizadosAtivos;
+	}
+
+	public void setListaTerceirizadosAtivos(List<ContratoRelacao> listaTerceirizadosAtivos) {
+		this.listaTerceirizadosAtivos = listaTerceirizadosAtivos;
 	}
 
 }

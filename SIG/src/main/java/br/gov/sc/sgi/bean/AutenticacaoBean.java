@@ -22,7 +22,6 @@ import br.gov.sc.sgi.domain.Usuario;
 public class AutenticacaoBean {
 	private Usuario usuario;
 	private Usuario usuarioLogado;
-	
 
 	public Usuario getUsuario() {
 		return usuario;
@@ -56,8 +55,6 @@ public class AutenticacaoBean {
 
 			usuarioLogado = usuarioDAO.autenticar(usuario.getPessoa().getCpf(), usuario.getSenha());
 
-			System.out.println(usuarioLogado.getPessoa().getNomeCompleto());
-
 			HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 			sessao.setAttribute("usuario", usuarioLogado);
 
@@ -72,8 +69,15 @@ public class AutenticacaoBean {
 				return;
 			}
 
-			Faces.redirect("./pages/dashboard.xhtml");
+			
+			
+			if (usuarioLogado.getPrimeiroAcesso().equals("S")) {
+				Faces.redirect("./pages/alterarsenha.xhtml");
+			} else {
 
+				Faces.redirect("./pages/dashboard.xhtml");
+			}
+			
 		} catch (IOException erro) {
 
 			erro.printStackTrace();
@@ -120,7 +124,7 @@ public class AutenticacaoBean {
 		return false;
 	}
 
-	public void alterarSenha() {
+	public void alterarSenha() throws IOException {
 		try {
 
 			UsuarioDAO usuarioDAO = new UsuarioDAO();
@@ -128,17 +132,22 @@ public class AutenticacaoBean {
 
 			SimpleHash hash = new SimpleHash("md5", usuarioLogado.getSenha());
 
+			usuario.setPrimeiroAcesso("N");
 			usuario.setSenha(hash.toHex());
 
 			usuarioDAO.merge(usuario);
+		
 
+			
+			
+			Faces.redirect("./pages/dashboard.xhtml");
+			
 			Messages.addGlobalInfo("Senha alterada com sucesso!");
+			
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar alterar a senha.");
 			erro.printStackTrace();
 		}
 	}
-
-	
 
 }

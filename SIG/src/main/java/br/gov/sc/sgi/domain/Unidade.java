@@ -2,6 +2,8 @@ package br.gov.sc.sgi.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @SuppressWarnings("serial")
 @Entity
@@ -12,6 +14,18 @@ public class Unidade extends GenericDomain {
 
 	@Column(length = 20, nullable = false)
 	private String unidade;
+	
+	@ManyToOne
+	@JoinColumn
+	private RegionalUnidade regional;
+	
+	public RegionalUnidade getRegional() {
+		return regional;
+	}
+
+	public void setRegional(RegionalUnidade regional) {
+		this.regional = regional;
+	}
 
 	public String getUnidadeNome() {
 		return unidadeNome;

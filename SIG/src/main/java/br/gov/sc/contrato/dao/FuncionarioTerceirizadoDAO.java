@@ -10,8 +10,11 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.SimpleExpression;
 
+import br.gov.sc.contrato.domain.ContratoRelacao;
 import br.gov.sc.contrato.domain.FuncionarioTerceirizado;
+import br.gov.sc.funcionariosuf.domain.UnidadeFunc;
 import br.gov.sc.sgi.domain.PessoaFisica;
+import br.gov.sc.sgi.domain.Unidade;
 import br.gov.sc.sgi.util.HibernateUtil;
 
 public class FuncionarioTerceirizadoDAO extends GenericDAO<FuncionarioTerceirizado> {
@@ -66,6 +69,50 @@ public class FuncionarioTerceirizadoDAO extends GenericDAO<FuncionarioTerceiriza
 			sessao.close();
 		}
 	}
+   
+   @SuppressWarnings("unchecked")
+  	public List<FuncionarioTerceirizado> listarUnidades(List<String> unidades) {
+
+  		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+  		try {
+
+  			Criteria consulta = sessao.createCriteria(FuncionarioTerceirizado.class);
+  			consulta.createAlias("unidade", "u");
+  			consulta.add(Restrictions.in("u.unidadeNome", unidades));
+  			
+
+  			List<FuncionarioTerceirizado> resultado = consulta.list();
+
+  			return resultado;
+
+  		} catch (RuntimeException erro) {
+  			throw erro;
+  		} finally {
+  			sessao.close();
+  		}
+  	}
+   
+   @SuppressWarnings("unchecked")
+ 	public List<ContratoRelacao> listarContratoRelacaoFuncionariosAtivos(List<String> unidades) {
+
+ 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+ 		try {
+
+ 			Criteria consulta = sessao.createCriteria(ContratoRelacao.class);
+ 			consulta.createAlias("funcionarioTerceirizado", "f");
+ 			consulta.add(Restrictions.in("f.unidade.unidadeNome", unidades));
+ 			
+
+ 			List<ContratoRelacao> resultado = consulta.list();
+
+ 			return resultado;
+
+ 		} catch (RuntimeException erro) {
+ 			throw erro;
+ 		} finally {
+ 			sessao.close();
+ 		}
+ 	}
 	   
   
    

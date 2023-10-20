@@ -44,6 +44,20 @@ public class Usuario extends GenericDomain {
 	@Temporal(TemporalType.DATE)
 	@Column(nullable = false)
 	private Date dataCadastro;
+	
+	
+	@Column(length = 1, nullable = false)
+	private String primeiroAcesso;
+	
+	
+
+	public String getPrimeiroAcesso() {
+		return primeiroAcesso;
+	}
+
+	public void setPrimeiroAcesso(String primeiroAcesso) {
+		this.primeiroAcesso = primeiroAcesso;
+	}
 
 	public PessoaFisica getPessoa() {
 		return pessoa;

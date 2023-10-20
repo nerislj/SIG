@@ -144,6 +144,7 @@ $(window).bind('beforeunload', function() {
 										<li><a href="/pages/pessoas.xhtml">Pessoas</a></li>
 										<li><a href="/pages/empresas.xhtml">Empresas</a></li>
 										<li><a href="/pages/usuarios.xhtml">Usuários</a></li>
+										<li><a href="/pages/regional.xhtml">Regionais</a></li>
 										<li><a href="/pages/unidade.xhtml">Unidade</a></li>
 										<li><a href="/pages/setor.xhtml">Setor</a></li>
 										<li><a href="/pages/usuarionivelacesso.xhtml">Usuário
@@ -152,6 +153,36 @@ $(window).bind('beforeunload', function() {
 												Status</a></li>
 										<li><a href="/pages/funcionariosuf/unidade.xhtml">Unidades
 												- Completo</a></li>
+												
+												<h:panelGroup
+											rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}">
+											<li><a href="/pages/contrato/empresaterceirizada.xhtml">Empresas - CONTRATO</a></li>
+										</h:panelGroup>
+										
+										<li><a href="/pages/materialcentrocusto.xhtml">Centro
+												de Custo - ALMOX</a></li>
+												
+												
+												<li><a href="/pages/codet/nomenclaturaprocesso.xhtml">Nomenclatura
+												Processo - CODET</a></li>
+										<li><a href="/pages/codet/situacaoprocesso.xhtml">Situação
+												Processo - CODET</a></li>
+												
+												<li><a href="/pages/cetran/situacao.xhtml">Situações - CETRAN</a></li>
+										<li><a href="/pages/cetran/representacao.xhtml">Representação - CETRAN</a></li>
+										
+										<h:panelGroup
+											rendered="#{autenticacaoBean.temPermissoes([1, 18])}">
+											<li><a href="/pages/credencialstatus.xhtml">Status - CREDENCIAMENTO</a></li>
+											<li><a href="/pages/credencialtipo.xhtml">
+													Tipo Credenciado - CREDENCIAMENTO</a></li>
+											<li><a href="/pages/credencialemptipo.xhtml">Tipo Empresa - CREDENCIAMENTO</a></li>
+										</h:panelGroup>
+										
+										<li><a href="/pages/visita/categoria.xhtml">
+												Categoria - VISITA</a></li>
+										<li><a href="/pages/visita/destino.xhtml">
+												Destino - VISITA</a></li>
 
 									</ul></li>
 							</h:panelGroup>
@@ -227,15 +258,7 @@ $(window).bind('beforeunload', function() {
 													- Andamento</a></li>
 										</h:panelGroup>
 
-										<h:panelGroup
-											rendered="#{autenticacaoBean.temPermissoes([1, 18])}">
-											<li><a href="/pages/credencialstatus.xhtml">Cadastro
-													- Status</a></li>
-											<li><a href="/pages/credencialtipo.xhtml">Cadastro -
-													Tipo Credenciado</a></li>
-											<li><a href="/pages/credencialemptipo.xhtml">Cadastro
-													- Tipo Empresa</a></li>
-										</h:panelGroup>
+										
 										<h:panelGroup
 											rendered="#{autenticacaoBean.temPermissoes([1, 17, 18])}">
 											<li><a href="/pages/credencialveiculo.xhtml">Veículo
@@ -295,8 +318,7 @@ $(window).bind('beforeunload', function() {
 								rendered="#{autenticacaoBean.temPermissoes([1, 19, 25, 29])}">
 								<li><a href="#"><i class="pi pi-fw pi-chart-pie"></i> <b>Almoxarifado</b></a>
 									<ul>
-										<li><a href="/pages/materialcentrocusto.xhtml">Centro
-												de Custo</a></li>
+										
 										<li><a href="/pages/materialtipo.xhtml">Material Tipo</a></li>
 										<li><a href="/pages/material.xhtml">Cadastro de
 												Materiais</a></li>
@@ -315,8 +337,7 @@ $(window).bind('beforeunload', function() {
 								rendered="#{autenticacaoBean.temPermissoes([1, 27])}">
 								<li><a href="#"><i class="pi pi-fw pi-book"></i> <b>Cetran</b></a>
 									<ul>
-										<li><a href="/pages/cetran/situacao.xhtml">Situações</a></li>
-										<li><a href="/pages/cetran/representacao.xhtml">Representação</a></li>
+										
 										<li><a href="/pages/cetran/conselheiro.xhtml">Conselheiros</a></li>
 										<li><a href="/pages/cetran/requerente.xhtml">Processos</a></li>
 										<li><a href="/pages/cetran/vincularprocesso.xhtml">Vincular
@@ -334,10 +355,7 @@ $(window).bind('beforeunload', function() {
 								<li><a href="#"><i class="pi pi-fw pi-sort-alt"></i> <b>Corregedoria</b></a>
 									<ul>
 
-										<li><a href="/pages/codet/nomenclaturaprocesso.xhtml">Nomenclatura
-												Processo</a></li>
-										<li><a href="/pages/codet/situacaoprocesso.xhtml">Situação
-												Processo</a></li>
+										
 										<li><a href="/pages/codet/setoratual.xhtml">Setor
 												Atual</a></li>
 										<li><a href="/pages/codet/penalidadeprocesso.xhtml">Penalidade
@@ -355,10 +373,7 @@ $(window).bind('beforeunload', function() {
 								<li><a href="#"><i class="pi pi-fw pi-users"></i> <b>Controle
 											Terceirizados</b></a>
 									<ul>
-										<h:panelGroup
-											rendered="#{contratoTerceirizadoBean.mostrarAcoes == true}">
-											<li><a href="/pages/contrato/empresaterceirizada.xhtml">Empresas</a></li>
-										</h:panelGroup>
+										
 										<li><a href="/pages/contrato/cargoterceirizado.xhtml">Cargo
 												Funcionários</a></li>
 										<li><a
@@ -451,10 +466,7 @@ $(window).bind('beforeunload', function() {
 
 										<li><a href="/pages/visita/visitantes.xhtml">Cadastro
 												Visitantes</a></li>
-										<li><a href="/pages/visita/categoria.xhtml">Cadastro
-												Categoria</a></li>
-										<li><a href="/pages/visita/destino.xhtml">Cadastro
-												Destino</a></li>
+										
 										<li><a href="/pages/visita/novaetiqueta.xhtml">Gerar
 												Nova Etiqueta</a></li>
 										<li><a href="/pages/visita/declaracao.xhtml">Gerar

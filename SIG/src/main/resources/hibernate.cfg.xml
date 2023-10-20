@@ -93,6 +93,7 @@
 		<mapping class="br.gov.sc.sgi.domain.RecursoMultaTramita" />
 		<mapping class="br.gov.sc.sgi.domain.Setor" />
 		<mapping class="br.gov.sc.sgi.domain.Unidade" />
+		<mapping class="br.gov.sc.sgi.domain.RegionalUnidade" />
 		<mapping class="br.gov.sc.sgi.domain.Usuario" />
 		<mapping class="br.gov.sc.sgi.domain.UsuarioNivelAcesso" />
 		<mapping class="br.gov.sc.sgi.domain.UsuarioStatus" />

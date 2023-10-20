@@ -10,7 +10,7 @@
 	<ui:define name="conteudo">
 		<h:form id="formlista"
 			rendered="#{autenticacaoBean.temPermissoes([1])}">
-			<p:panel header="Setor - Listagem">
+			<p:panel header="Unidade - Listagem">
 			
 			<p:panelGrid columns="1" layout="grid">
 			
@@ -44,9 +44,15 @@
 						filterBy="#{unidade.unidade}">
 						<h:outputText value="#{unidade.unidade}" />
 					</p:column>
+					
+					<p:column headerText="Regional" sortBy="#{unidade.regional.regional}"
+						filterBy="#{unidade.regional.regional}">
+						<h:outputText value="#{unidade.regional.regional}" />
+					</p:column>
 
 					<p:column headerText="Opções">
-						<p:commandButton icon="ui-icon-trash"
+						<p:commandButton icon="pi pi-times"
+												styleClass="rounded-button ui-button-danger"
 							actionListener="#{unidadeBean.excluir}"
 							update=":mensagem :formlista:lista">
 							<p:confirm header="Confirmação" message="Deseja excluir o Setor?"
@@ -54,7 +60,8 @@
 							<f:attribute name="unidadeSelecionado" value="#{unidade}" />
 						</p:commandButton>
 
-						<p:commandButton icon="ui-icon-pencil"
+						<p:commandButton icon="pi pi-pencil"
+										styleClass="rounded-button ui-button-secondary"
 							actionListener="#{unidadeBean.editar}"
 							update=":formcadastro:cadastro"
 							oncomplete="PF('dialogo').show();">
@@ -78,7 +85,7 @@
 			</p:panel>
 		</h:form>
 
-		<p:dialog header="Setor - Cadastro" widgetVar="dialogo"
+		<p:dialog header="Unidade - Cadastro" widgetVar="dialogo"
 			draggable="false" resizable="false" modal="true" closable="false">
 			<h:form id="formcadastro">
 				<h:panelGrid id="cadastro" columns="2">
@@ -92,6 +99,17 @@
 					<p:inputText maxlength="50" size="30"
 						value="#{unidadeBean.unidade.unidade}" required="true"
 						requiredMessage="O campo Sigla é obrigatório" />
+						
+						<p:outputLabel value="Regional: " />
+					<p:selectOneMenu filter="true"
+						value="#{unidadeBean.unidade.regional}"
+						converter="omnifaces.SelectItemsConverter" required="true"
+						requiredMessage="O campo Regional é obrigatório">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma Regional" />
+						<f:selectItems value="#{unidadeBean.regionais}" var="reg" 
+							itemValue="#{reg}" itemLabel="#{reg.regional}" />
+					</p:selectOneMenu>
 
 				</h:panelGrid>
 
