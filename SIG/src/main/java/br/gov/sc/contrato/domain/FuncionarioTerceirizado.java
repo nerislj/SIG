@@ -48,6 +48,11 @@ public class FuncionarioTerceirizado extends GenericDomainContrato {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "funcionarioTerceirizado")
 	@Fetch(FetchMode.SUBSELECT)
 	private List<ContratoRelacao> contratoRelacao;
+	@OneToOne
+	@JoinColumn
+	private NivelTerceirizado nivelTerceirizado;
+	
+	private String tipo = "Terceirizado";
 
 	public EventoTerceirizado getTipoEvento() {
 		return this.tipoEvento;
@@ -103,4 +108,28 @@ public class FuncionarioTerceirizado extends GenericDomainContrato {
 	public void setUsuarioCadastro(Usuario usuarioCadastro) {
 		this.usuarioCadastro = usuarioCadastro;
 	}
+
+	
+
+	public List<ContratoRelacao> getContratoRelacao() {
+		return contratoRelacao;
+	}
+
+	public void setContratoRelacao(List<ContratoRelacao> contratoRelacao) {
+		this.contratoRelacao = contratoRelacao;
+	}
+
+	public NivelTerceirizado getNivelTerceirizado() {
+		return nivelTerceirizado;
+	}
+
+	public void setNivelTerceirizado(NivelTerceirizado nivelTerceirizado) {
+		this.nivelTerceirizado = nivelTerceirizado;
+	}
+	
+	public String getTipo() {
+		return "Terceirizado";
+	}
+	
+	
 }

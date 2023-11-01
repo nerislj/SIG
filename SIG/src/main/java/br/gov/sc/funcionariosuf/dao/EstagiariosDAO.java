@@ -66,6 +66,48 @@ public class EstagiariosDAO extends GenericDAO<Estagiarios> {
   			sessao.close();
   		}
   	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Estagiarios> listarPorClaims(List<String> unidades) {
+
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+		try {
+
+			Criteria consulta = sessao.createCriteria(Estagiarios.class);
+			consulta.createAlias("unidade", "u");
+			consulta.add(Restrictions.in("u.unidadeNome", unidades));
+			
+			
+
+			List<Estagiarios> resultado = consulta.list();
+
+			return resultado;
+
+		} catch (RuntimeException erro) {
+			throw erro;
+		} finally {
+			sessao.close();
+		}
+	}
+	
+	 public static Estagiarios carregaFuncionario(String id) {
+			Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+
+			Estagiarios var4;
+			try {
+				Criteria consulta = sessao.createCriteria(Estagiarios.class);
+				consulta.createAlias("pessoa", "p");
+				consulta.add(Restrictions.eq("p.cpf", id));
+				var4 = (Estagiarios) consulta.setMaxResults(1).uniqueResult();
+			} catch (RuntimeException var7) {
+				throw var7;
+			} finally {
+				sessao.close();
+			}
+
+			return var4;
+		}
+
 
 
 }

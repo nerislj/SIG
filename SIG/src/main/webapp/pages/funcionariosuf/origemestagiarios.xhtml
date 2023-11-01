@@ -9,13 +9,13 @@
 
 	<ui:define name="conteudo">
 		<h:form id="formlista">
-			<p:panel header="Cargo - Listagem">
+			<p:panel header="Origem Estagiários - Listagem">
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
-					paginator="true" value="#{cargoServidoresBean.listaCargoServidores}"
+					paginator="true" value="#{origemEstagiariosBean.listaOrigemEstagiarios}"
 					var="cargo" rows="10" >
 					<f:facet name="header">
 						<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
-							actionListener="#{cargoServidoresBean.novo()}"
+							actionListener="#{origemEstagiariosBean.novo()}"
 							update=":formcadastro:cadastro">
 							<f:actionListener
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
@@ -31,19 +31,19 @@
 					<p:column headerText="Opções" style="width: 70px; text-align: center;">
 						<p:commandButton icon="pi pi-times"
 												styleClass="rounded-button ui-button-danger"
-							actionListener="#{cargoServidoresBean.excluir}"
+							actionListener="#{origemEstagiariosBean.excluir}"
 							update=":mensagem :formlista:lista">
 							<p:confirm header="Confirmação"
 								message="Deseja excluir a Situação?" icon="ui-icon-alert" />
-							<f:attribute name="cargoSelecionado" value="#{cargo}" />
+							<f:attribute name="origemSelecionado" value="#{cargo}" />
 						</p:commandButton>
 
 						<p:commandButton icon="pi pi-pencil"
 										styleClass="rounded-button ui-button-secondary"
-							actionListener="#{cargoServidoresBean.editar}"
+							actionListener="#{origemEstagiariosBean.editar}"
 							update=":formcadastro:cadastro"
 							oncomplete="PF('dialogo').show();">
-							<f:attribute name="cargoSelecionado" value="#{cargo}" />
+							<f:attribute name="origemSelecionado" value="#{cargo}" />
 							<f:actionListener
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 						</p:commandButton>
@@ -60,13 +60,13 @@
 			</p:panel>
 		</h:form>
 
-		<p:dialog header="Cargo - Cadastro" widgetVar="dialogo"
+		<p:dialog header="Origem Estagiários - Cadastro" widgetVar="dialogo"
 			draggable="false" resizable="false" modal="true" closable="false">
 			<h:form id="formcadastro">
 				<h:panelGrid id="cadastro" columns="2">
 					<p:outputLabel value="Nome:" />
 					<p:inputText maxlength="255" size="25"
-						value="#{cargoServidoresBean.cargoServidores.descricao}" required="true"
+						value="#{origemEstagiariosBean.origemEstagiarios.descricao}" required="true"
 						style="text-transform:uppercase;"
 						requiredMessage="O campo Nome é obrigatório" />
 
@@ -74,7 +74,7 @@
 
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
-						actionListener="#{cargoServidoresBean.salvar()}"
+						actionListener="#{origemEstagiariosBean.salvar()}"
 						update=":mensagem :formcadastro:cadastro :formlista:lista" oncomplete="PF('dialogo').hide();" />
 					<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
 				</h:panelGrid>

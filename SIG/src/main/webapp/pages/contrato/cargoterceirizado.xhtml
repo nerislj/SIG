@@ -22,7 +22,7 @@
 						</p:commandButton>
 					</f:facet>
 
-					<p:column headerText="Nome" sortBy="#{cargo.descricao}"
+					<p:column headerText="Nome" sortBy="#{cargo.descricao}" filterMatchMode="contains"
 						filterBy="#{cargo.descricao}" style="width: 70px; text-align: center;">
 						<h:outputText value="#{cargo.descricao}" />
 					</p:column>

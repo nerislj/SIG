@@ -150,6 +150,7 @@
 					<p:column headerText="Colaborador" id="colaborador"
 						rendered="#{contratoTerceirizadoBean.mostrarTabelaRelatorioEventos == true}"
 						sortBy="#{evento.colaborador.pessoa.nomeCompleto}"
+						filterMatchMode="contains"
 						filterBy="#{evento.colaborador.pessoa.nomeCompleto}"
 						style="width: 20%; text-align: center;">
 						<h:outputText for="colaborador"
@@ -159,6 +160,7 @@
 					<p:column headerText="Setor" id="setor"
 						rendered="#{contratoTerceirizadoBean.mostrarTabelaRelatorioEventos == true}"
 						sortBy="#{evento.contratoTerceirizado.unidade.unidadeNome}"
+						filterMatchMode="contains"
 						filterBy="#{evento.contratoTerceirizado.unidade.unidadeNome}"
 						style="width: 20%; text-align: center;">
 						<h:outputText for="setor"
@@ -177,6 +179,7 @@
 					<p:column headerText="Substituto"
 						rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == false and contratoTerceirizadoBean.mostrarTabelaRelatorioEventos == true}"
 						sortBy="#{evento.substituto.pessoa.nomeCompleto}"
+						filterMatchMode="contains"
 						filterBy="#{evento.substituto.pessoa.nomeCompleto}"
 						style="width: 20%; text-align: center;">
 						<h:outputText value="#{evento.substituto.pessoa.nomeCompleto}"
@@ -199,13 +202,13 @@
 
 					<p:column headerText="Dias" sortBy="#{evento.dias}"
 						rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == false and contratoTerceirizadoBean.mostrarTabelaRelatorioEventos == true}"
-						filterBy="#{evento.dias}" style="width: 20%; text-align: center;">
+						filterBy="#{evento.dias}" filterMatchMode="contains" style="width: 20%; text-align: center;">
 						<h:outputText value="#{evento.dias}" />
 					</p:column>
 
 					<p:column headerText="Horas" sortBy="#{evento.horas}"
 						rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == true or contratoTerceirizadoBean.mostrarDiaseHoras == true}"
-						filterBy="#{evento.horas}" style="width: 20%; text-align: center;">
+						filterBy="#{evento.horas}" filterMatchMode="contains" style="width: 20%; text-align: center;">
 						<h:outputText value="#{evento.horas}" />
 					</p:column>
 
@@ -213,7 +216,7 @@
 
 					<p:column headerText="Motivo" sortBy="#{evento.motivo}"
 						rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == true and contratoTerceirizadoBean.mostrarTabelaRelatorioEventos == true}"
-						filterBy="#{evento.motivo}"
+						filterBy="#{evento.motivo}" filterMatchMode="contains"
 						style="width: 20%; text-align: center;">
 						<h:outputText value="#{evento.motivo}" />
 					</p:column>

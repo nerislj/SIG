@@ -14,6 +14,7 @@ import org.hibernate.transform.Transformers;
 import br.gov.sc.contrato.bean.ContratoTerceirizadoBean;
 import br.gov.sc.contrato.domain.ContratoTerceirizado;
 import br.gov.sc.contrato.domain.FuncionarioTerceirizado;
+import br.gov.sc.funcionariosuf.domain.UnidadeFunc;
 import br.gov.sc.geapo.domain.Material;
 import br.gov.sc.sgi.domain.Unidade;
 import br.gov.sc.sgi.util.HibernateUtil;
@@ -45,6 +46,31 @@ public class ContratoTerceirizadoDAO extends GenericDAO<ContratoTerceirizado> {
 				sessao.close();
 			}
 		}
+	  
+	  @SuppressWarnings("unchecked")
+		public List<ContratoTerceirizado> listarPorUnidadeView(String unidades) {
+
+			Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+			try {
+
+				Criteria consulta = sessao.createCriteria(ContratoTerceirizado.class);
+				consulta.createAlias("unidade", "u");
+				consulta.add(Restrictions.eq("u.unidadeNome", unidades));
+				
+				
+
+				List<ContratoTerceirizado> resultado = consulta.list();
+
+				return resultado;
+
+			} catch (RuntimeException erro) {
+				throw erro;
+			} finally {
+				sessao.close();
+			}
+		}
+	  
+	  
 	  
 	  @SuppressWarnings("unchecked")
 		public List<ContratoTerceirizado> listarPorClaimsNomeEmpresa(List<String> unidades) {

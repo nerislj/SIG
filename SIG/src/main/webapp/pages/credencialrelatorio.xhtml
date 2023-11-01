@@ -8,16 +8,16 @@
 	template="/templates/modelo.xhtml">
 
 
-<ui:define name="metadata">
+	<ui:define name="metadata">
 
 		<f:metadata>
 
 			<f:event listener="#{credenciadoBean.listasRelatorio}"
 				type="preRenderView" />
-					
+
 		</f:metadata>
 	</ui:define>
-	
+
 	<ui:define name="conteudo">
 		<style type="text/css">
 .vencida {
@@ -66,7 +66,10 @@
 				<p:dataTable id="lista" emptyMessage="Nenhum registro encontrado."
 					paginator="true"
 					value="#{credenciadoBean.credenciadosValidadeDesc}"
-					var="credenciado" rows="10" style="width: 100%;" 
+					var="credenciado" stripedRows="true" rowExpandMode="single"
+					rows="10"
+					currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} linhas"
+					rowsPerPageTemplate="10,20,30,40,50,{ShowAll|'All'}"
 					rowStyleClass="#{(credenciado.vencimentoCredencial le credenciadoBean.convertTime(credenciadoBean.dataHoje)? 'vencida': (credenciado.vencimentoCredencial le credenciadoBean.convert10Dias(credenciadoBean.data10Dias) ? 'dezdias':'ok'))}">
 
 					<p:column headerText="Nº Credencial"
@@ -79,33 +82,38 @@
 					<p:column headerText="Nome Completo"
 						sortBy="#{credenciado.pessoa.nomeCompleto}"
 						filterBy="#{credenciado.pessoa.nomeCompleto}"
-						style="width: 170px; text-align: center;">
+						style="width: 170px; text-align: center;"
+						filterMatchMode="contains">
 						<h:outputText value="#{credenciado.pessoa.nomeCompleto}" />
 					</p:column>
 
 					<p:column headerText="CPF" sortBy="#{credenciado.pessoa.cpf}"
 						filterBy="#{credenciado.pessoa.cpf}"
-						style="width: 70px; text-align: center;">
+						style="width: 70px; text-align: center;"
+						filterMatchMode="contains">
 						<h:outputText value="#{credenciado.pessoa.cpf}" />
 					</p:column>
 
 					<p:column headerText="Tipo Credencial"
 						sortBy="#{credenciado.credencialTipo.tipocredencial}"
 						filterBy="#{credenciado.credencialTipo.tipocredencial}"
-						style="width: 70px; text-align: center;">
+						style="width: 70px; text-align: center;"
+						filterMatchMode="contains">
 						<h:outputText value="#{credenciado.credencialTipo.tipocredencial}" />
 					</p:column>
 
 					<p:column headerText="Data Cadastro"
 						sortBy="#{credenciado.dataCadastro}"
-						style="width: 70px; text-align: center;">
+						style="width: 70px; text-align: center;"
+						filterMatchMode="contains">
 						<h:outputText
 							value="#{credenciado.dataCadastro.date}/#{credenciado.dataCadastro.month+1}/#{credenciado.dataCadastro.year+1900}" />
 					</p:column>
 
 					<p:column headerText="Data Vencimento"
 						sortBy="#{credenciado.vencimentoCredencial}"
-						style="width: 70px; text-align: center;">
+						style="width: 70px; text-align: center;"
+						filterMatchMode="contains">
 						<h:outputText
 							rendered="#{credenciado.vencimentoCredencial != null}"
 							value="#{credenciado.vencimentoCredencial.date}/#{credenciado.vencimentoCredencial.month+1}/#{credenciado.vencimentoCredencial.year+1900}" />
@@ -117,7 +125,8 @@
 					<p:column headerText="Status"
 						sortBy="#{credenciado.credencialStatus.tipoStatus}"
 						filterBy="#{credenciado.credencialStatus.tipoStatus}"
-						style="width: 70px; text-align: center;">
+						style="width: 70px; text-align: center;"
+						filterMatchMode="contains">
 						<h:outputText value="#{credenciado.credencialStatus.tipoStatus}" />
 					</p:column>
 
@@ -129,5 +138,3 @@
 
 	</ui:define>
 </ui:composition>
-
-

@@ -52,7 +52,7 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 		<h:form id="formlista">
 			<p:panel header="Funcionários - Listagem"
-				rendered="#{autenticacaoBean.temPermissoes([1])}">
+				rendered="#{unidadeFuncBean.mostrarModuloParaGerentes == true}">
 
 
 
@@ -75,6 +75,7 @@ body .ui-panelgrid .ui-panelgrid-cell {
 
 
 					<p:column headerText="Nome" sortBy="#{func.pessoa.funcionarioTerceirizado.nomeCompleto}"
+					
 						filterBy="#{func.pessoa.nomeCompleto}" filterMatchMode="contains">
 						<h:outputText value="#{func.pessoa.nomeCompleto}" />
 					</p:column>
@@ -95,6 +96,11 @@ body .ui-panelgrid .ui-panelgrid-cell {
 						<h:outputText value="#{func.pessoa.cel}" />
 					</p:column>
 
+
+	<p:column headerText="Tipo" sortBy="#{func.tipo}"
+						filterBy="#{func.tipo}" filterMatchMode="contains">
+						<h:outputText value="#{func.tipo}" />
+					</p:column>
 
 
 

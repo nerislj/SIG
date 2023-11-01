@@ -41,7 +41,7 @@ body .ui-state-disabled {
 
 
 		<p:tabView id="tabView"
-			rendered="#{autenticacaoBean.temPermissoes([1, 13, 17, 18])}">
+			rendered="#{unidadeFuncBean.mostrarModuloParaGerentes == true}">
 			<p:tab title="Unidades">
 				<h:form id="formularioEmpresas">
 
@@ -281,7 +281,7 @@ body .ui-state-disabled {
 							requiredMessage="O campo CEP é obrigatório">
 							<f:ajax event="blur" execute="@this"
 								render="estado cidade endResi"
-								listener="#{unidadeFuncBean.pesquisaCep}"></f:ajax>
+								listener="#{unidadeFuncBean.pesquisaCepUnidade}"></f:ajax>
 						</p:inputMask>
 
 						<p:outputLabel value="Endereço: " />

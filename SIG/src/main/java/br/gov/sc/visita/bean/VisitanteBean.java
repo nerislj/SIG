@@ -74,12 +74,15 @@ public class VisitanteBean implements Serializable {
 			String celularFormatado2 = "";
 			String result = "";
 			
+			if(visitante.getCelular()!=null) {
 			celularFormatado = visitante.getCelular().replace(")9", "");
 			celularFormatado2 = celularFormatado;
 			result = celularFormatado2.replace("(", "");
+			visitante.setCelular("55" + result);
+			}
 			
 			visitante.setDataHoraCadastro(getHj());
-			visitante.setCelular("55" + result);
+			
 			
 			visitanteDAO.merge(visitante);
 

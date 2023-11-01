@@ -14,6 +14,7 @@ import br.gov.sc.cetran.domain.Conselheiro;
 import br.gov.sc.codet.dao.GenericDAO;
 import br.gov.sc.contrato.dao.FuncionarioTerceirizadoDAO;
 import br.gov.sc.contrato.domain.ContratoRelacao;
+import br.gov.sc.contrato.domain.ContratoTerceirizado;
 import br.gov.sc.contrato.domain.FuncionarioTerceirizado;
 import br.gov.sc.funcionariosuf.domain.Servidores;
 import br.gov.sc.funcionariosuf.domain.UnidadeFunc;
@@ -59,14 +60,6 @@ public class UnidadeFuncDAO extends GenericDAO<UnidadeFunc> {
 		}
 	}
 
-	public UnidadeFunc loadNome(String nome) throws Exception {
-		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
-		Criteria criteria = sessao.createCriteria(UnidadeFunc.class);
-		criteria.addOrder(Order.desc("codigo"));
-		criteria.add(Restrictions.eq("unidadeNome", nome));
-
-		return (UnidadeFunc) criteria.setMaxResults(1).uniqueResult();
-	}
 
 	public UnidadeFunc loadNomeString(String nome) throws Exception {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
@@ -132,6 +125,29 @@ public class UnidadeFuncDAO extends GenericDAO<UnidadeFunc> {
 	public void setListaServidores(List<Servidores> listaServidores) {
 		this.listaServidores = listaServidores;
 	}
+	
+	 @SuppressWarnings("unchecked")
+		public List<UnidadeFunc> listarPorClaims(List<String> unidades) {
+
+			Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+			try {
+
+				Criteria consulta = sessao.createCriteria(UnidadeFunc.class);
+				consulta.createAlias("unidade", "u");
+				consulta.add(Restrictions.in("u.unidadeNome", unidades));
+				
+				
+
+				List<UnidadeFunc> resultado = consulta.list();
+
+				return resultado;
+
+			} catch (RuntimeException erro) {
+				throw erro;
+			} finally {
+				sessao.close();
+			}
+		}
 	
 	
 

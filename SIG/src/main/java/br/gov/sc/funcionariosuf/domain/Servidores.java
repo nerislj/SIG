@@ -48,6 +48,12 @@ public class Servidores extends GenericDomain {
 	@OneToOne
 	@JoinColumn(nullable = false)
 	private Usuario usuarioCadastro;
+	
+	@ManyToOne
+	@JoinColumn(nullable = true)
+	private FuncaoServidores funcao;
+	
+	private String tipo = "Servidor";
 
 
 	  @OneToOne
@@ -120,6 +126,20 @@ public class Servidores extends GenericDomain {
 	public void setCargo(CargoServidores cargo) {
 		this.cargo = cargo;
 	}
+
+	public String getTipo() {
+		return "Servidor";
+	}
+
+	public FuncaoServidores getFuncao() {
+		return funcao;
+	}
+
+	public void setFuncao(FuncaoServidores funcao) {
+		this.funcao = funcao;
+	}
+
+
 
 	
 

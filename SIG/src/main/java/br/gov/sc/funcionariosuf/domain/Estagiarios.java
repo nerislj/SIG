@@ -33,6 +33,10 @@ public class Estagiarios extends GenericDomain {
 	@ManyToOne
 	@JoinColumn(nullable = true)
 	private Setor setor;
+	
+	@ManyToOne
+	@JoinColumn(nullable = true)
+	private OrigemEstagiarios origem;
 
 	@Temporal(TemporalType.DATE)
 	@Column(nullable = false)
@@ -47,6 +51,8 @@ public class Estagiarios extends GenericDomain {
 	      nullable = false
 	   )
 	  private UnidadeFunc unidadeFunc;
+	  
+	  private String tipo = "Estagiário";
 
 	public PessoaFisica getPessoa() {
 		return pessoa;
@@ -96,6 +102,19 @@ public class Estagiarios extends GenericDomain {
 		this.unidade = unidade;
 	}
 
+	public String getTipo() {
+		return "Estagiário";
+	}
+
+	public OrigemEstagiarios getOrigem() {
+		return origem;
+	}
+
+	public void setOrigem(OrigemEstagiarios origem) {
+		this.origem = origem;
+	}
+
+	
 	
 	
 	

@@ -311,6 +311,7 @@
 
 					<p:column headerText="Nome"
 						sortBy="#{funcionario.pessoa.nomeCompleto}"
+						filterMatchMode="contains"
 						filterBy="#{funcionario.pessoa.nomeCompleto}"
 						style="width: 70px; text-align: center;">
 						<h:outputText
@@ -318,6 +319,7 @@
 					</p:column>
 					<p:column headerText="Unidade"
 						sortBy="#{funcionario.unidade.unidadeNome}"
+						filterMatchMode="contains"
 						filterBy="#{funcionario.unidade.unidadeNome}"
 						style="width: 70px; text-align: center;">
 						<h:outputText value="#{funcionario.unidade.unidadeNome}" />
@@ -325,6 +327,7 @@
 
 					<p:column headerText="Setor"
 						sortBy="#{funcionario.setor.setorNome}"
+						filterMatchMode="contains"
 						filterBy="#{funcionario.setor.setorNome}"
 						style="width: 70px; text-align: center;">
 						<h:outputText value="#{funcionario.setor.setorNome}" />
@@ -332,6 +335,7 @@
 
 					<p:column headerText="Cargo"
 						sortBy="#{funcionario.cargoTerceirizado.descricao}"
+						filterMatchMode="contains"
 						filterBy="#{funcionario.cargoTerceirizado.descricao}"
 						style="width: 70px; text-align: center;">
 						<h:outputText value="#{funcionario.cargoTerceirizado.descricao}" />

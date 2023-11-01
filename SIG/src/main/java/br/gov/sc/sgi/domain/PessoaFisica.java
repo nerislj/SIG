@@ -20,11 +20,14 @@ public class PessoaFisica extends GenericDomain {
 
 	@Column(length = 50, nullable = false)
 	private String nomeCompleto;
+	
+	@Column(length = 50)
+	private String nomeSocial;
 
-	@Column(length = 50, nullable = false)
+	@Column(length = 50)
 	private String nomeMae;
 
-	@Column(length = 50, nullable = false)
+	@Column(length = 50)
 	private String nomePai;
 
 	@Temporal(TemporalType.DATE)
@@ -34,32 +37,32 @@ public class PessoaFisica extends GenericDomain {
 	@Column(length = 9, nullable = false)
 	private String sexo;
 
-	@Column(length = 11, nullable = false)
+	@Column(length = 11)
 	private String rg;
 
-	@Column(length = 10, nullable = false)
+	@Column(length = 10)
 	private String rgOrgaoEmissor;
 
 	@ManyToOne
-	@JoinColumn(nullable = false)
+	@JoinColumn()
 	private Estado rgEstadoEmissao;
 
-	@Column(length = 10, nullable = true)
+	@Column(length = 10)
 	private String cep;
 
 	@SerializedName("logradouro")
-	@Column(length = 255, nullable = false)
+	@Column(length = 255)
 	private String endereco;
 
 	@Column(length = 50)
 	private String complemento;
 
 	@ManyToOne
-	@JoinColumn(nullable = false)
+	@JoinColumn
 	private Cidade municipioEndereco;
 
 	@ManyToOne
-	@JoinColumn(nullable = false)
+	@JoinColumn
 	private Estado estadoEndereco;
 
 	@Column(length = 15)
@@ -257,6 +260,14 @@ public class PessoaFisica extends GenericDomain {
 
 	public void setUf(String uf) {
 		this.uf = uf;
+	}
+
+	public String getNomeSocial() {
+		return nomeSocial;
+	}
+
+	public void setNomeSocial(String nomeSocial) {
+		this.nomeSocial = nomeSocial;
 	}
 	
 

@@ -172,13 +172,16 @@
 
 								</p:column>
 								<p:column headerText="Contrato" sortBy="#{contrato.nContrato}"
-									filterBy="#{contrato.nContrato}"
+								
+									filterBy="#{contrato.nContrato}" 
+									filterMatchMode="contains" 
 									style="width: 4%; text-align: center;">
 									<h:outputText value="#{contrato.nContrato}" />
 								</p:column>
 
 								<p:column headerText="Empresa"
-									sortBy="#{contrato.empresaTerceirizada.pessoaJuridica.nomeFantasia}"
+									sortBy="#{contrato.empresaTerceirizada.pessoaJuridica.nomeFantasia}" 
+									filterMatchMode="contains"
 									filterBy="#{contrato.empresaTerceirizada.pessoaJuridica.nomeFantasia}"
 									style="width: 4%; text-align: center;">
 									<h:outputText
@@ -187,13 +190,15 @@
 
 
 								<p:column headerText="Número SGPE" sortBy="#{contrato.nSGPE}"
-									filterBy="#{contrato.nSGPE}"
+									filterBy="#{contrato.nSGPE}" 
+									filterMatchMode="contains"
 									style="width: 4%; text-align: center;">
 									<h:outputText value="#{contrato.nSGPE}" />
 								</p:column>
 
 								<p:column headerText="Unidade"
-									sortBy="#{contrato.unidade.unidadeNome}"
+									sortBy="#{contrato.unidade.unidadeNome}" 
+									filterMatchMode="contains" 
 									filterBy="#{contrato.unidade.unidadeNome}"
 									style="width: 6%; text-align: center;">
 									<h:outputText value="#{contrato.unidade.unidadeNome}" />
@@ -202,6 +207,7 @@
 
 								<p:column headerText="Município"
 									sortBy="#{contrato.municipio.nome}"
+									filterMatchMode="contains"
 									filterBy="#{contrato.municipio.nome}"
 									style="width: 4%; text-align: center;">
 									<h:outputText value="#{contrato.municipio.nome}" />
@@ -211,6 +217,7 @@
 
 								<p:column headerText="Quantidade"
 									sortBy="#{contrato.qtdFuncionarios}"
+									filterMatchMode="contains"
 									filterBy="#{contrato.qtdFuncionarios}"
 									style="width: 3%; text-align: center;">
 									<h:outputText value="#{contrato.qtdFuncionarios}" />
@@ -218,18 +225,21 @@
 
 								<p:column headerText="Atividade"
 									sortBy="#{contrato.cargoTerceirizado.descricao}"
+									filterMatchMode="contains"
 									filterBy="#{contrato.cargoTerceirizado.descricao}"
 									style="width: 5%; text-align: center;">
 									<h:outputText value="#{contrato.cargoTerceirizado.descricao}" />
 								</p:column>
 
 								<p:column headerText="H/Dia" sortBy="#{contrato.hrContrato}"
+								filterMatchMode="contains"
 									filterBy="#{contrato.hrContrato}"
 									style="width: 3%; text-align: center;">
 									<h:outputText value="#{contrato.hrContrato}" />
 								</p:column>
 
 								<p:column headerText="Valor NF" sortBy="#{contrato.valorNF}"
+								filterMatchMode="contains"
 									filterBy="#{contrato.valorNF}"
 									style="width: 5%; text-align: center;">
 									<h:outputText value="#{contrato.valorNF}">
@@ -293,6 +303,7 @@
 
 										<p:column headerText="Funcionário"
 											sortBy="#{relacao.funcionarioTerceirizado.pessoa.nomeCompleto}"
+											filterMatchMode="contains"
 											filterBy="#{relacao.funcionarioTerceirizado.pessoa.nomeCompleto}"
 											style="width: 7%; text-align: center;">
 											<h:outputText
@@ -330,7 +341,9 @@
 										</p:column>
 
 										<p:column headerText="Status" style="width: 3%;">
-											<h:outputText value="#{relacao.status}" />
+											<h:outputText value="#{relacao.status}" rendered="#{relacao.status != 'Inconsistência'}" />
+											
+											<h:outputText value="Ativo" rendered="#{relacao.status == 'Inconsistência'}" />
 										</p:column>
 
 										<p:column headerText="Ações"
@@ -1024,6 +1037,7 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista, feriasAfastamen
 
 						<p:column headerText="Colaborador"
 							sortBy="#{evento.colaborador.pessoa.nomeCompleto}"
+							filterMatchMode="contains"
 							filterBy="#{evento.colaborador.pessoa.nomeCompleto}"
 							style="width: 20%; text-align: center;">
 							<h:outputText
@@ -1043,6 +1057,7 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista, feriasAfastamen
 						<p:column headerText="Substituto"
 							rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == false}"
 							sortBy="#{evento.substituto.pessoa.nomeCompleto}"
+							filterMatchMode="contains"
 							filterBy="#{evento.substituto.pessoa.nomeCompleto}"
 							style="width: 20%; text-align: center;">
 							<h:outputText
@@ -1067,20 +1082,20 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista, feriasAfastamen
 
 						<p:column headerText="Dias" sortBy="#{evento.dias}"
 							rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == false}"
-							filterBy="#{evento.dias}" style="width: 20%; text-align: center;">
+							filterBy="#{evento.dias}" filterMatchMode="contains" style="width: 20%; text-align: center;">
 							<h:outputText value="#{evento.dias}" />
 						</p:column>
 
 						<p:column headerText="Horas" sortBy="#{evento.horas}"
 							rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == true or contratoTerceirizadoBean.mostrarDiaseHoras == true}"
-							filterBy="#{evento.horas}"
+							filterBy="#{evento.horas}" filterMatchMode="contains" 
 							style="width: 20%; text-align: center;">
 							<h:outputText value="#{evento.horas}" />
 						</p:column>
 
 						<p:column headerText="Motivo" sortBy="#{evento.motivo}"
 							rendered="#{contratoTerceirizadoBean.mostrarCamposInconsistencia == true}"
-							filterBy="#{evento.motivo}"
+							filterBy="#{evento.motivo}" filterMatchMode="contains" 
 							style="width: 20%; text-align: center;">
 							<h:outputText value="#{evento.motivo}" />
 						</p:column>
@@ -1089,6 +1104,7 @@ feriasAfastamentoInconsistencias:dadosFormSubs, formlista:lista, feriasAfastamen
 
 						<p:column headerText="Cadastrado Por"
 							sortBy="#{evento.usuarioCadastro.pessoa.nomeCompleto}"
+							filterMatchMode="contains"
 							filterBy="#{evento.usuarioCadastro.pessoa.nomeCompleto}"
 							style="width: 20%; text-align: center;">
 							<h:outputText

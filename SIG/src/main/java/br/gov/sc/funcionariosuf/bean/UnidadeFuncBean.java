@@ -7,8 +7,6 @@ import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.net.URL;
 import java.net.URLConnection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,51 +20,45 @@ import javax.faces.application.ViewHandler;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIViewRoot;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import java.io.*;
-import java.sql.*;
-
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.*;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-
 import org.omnifaces.util.Messages;
-import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.datatable.DataTable;
+import org.primefaces.PrimeFaces;
 import org.primefaces.event.ToggleEvent;
-import org.primefaces.event.data.FilterEvent;
 import org.primefaces.model.FilterMeta;
 
 import com.google.gson.Gson;
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.PreparedStatement;
-import com.mysql.jdbc.Statement;
 
-import bd.Conexao;
 import br.gov.sc.contrato.dao.CargoTerceirizadoDAO;
 import br.gov.sc.contrato.dao.ContratoRelacaoDAO;
+import br.gov.sc.contrato.dao.ContratoTerceirizadoDAO;
 import br.gov.sc.contrato.dao.FuncionarioTerceirizadoDAO;
+import br.gov.sc.contrato.dao.NivelTerceirizadoDAO;
+import br.gov.sc.contrato.dao.UserClaimsContratoDAO;
 import br.gov.sc.contrato.domain.CargoTerceirizado;
-import br.gov.sc.contrato.domain.FuncionarioTerceirizado;
+import br.gov.sc.contrato.domain.ContratoHistFuncionario;
 import br.gov.sc.contrato.domain.ContratoRelacao;
+import br.gov.sc.contrato.domain.ContratoTerceirizado;
+import br.gov.sc.contrato.domain.EventoTerceirizado;
+import br.gov.sc.contrato.domain.FuncionarioTerceirizado;
+import br.gov.sc.contrato.domain.NivelTerceirizado;
+import br.gov.sc.contrato.domain.UserClaimsContrato;
 import br.gov.sc.funcionariosuf.dao.CargoServidoresDAO;
 import br.gov.sc.funcionariosuf.dao.EstagiariosDAO;
+import br.gov.sc.funcionariosuf.dao.FuncaoServidoresDAO;
+import br.gov.sc.funcionariosuf.dao.OrigemEstagiariosDAO;
 import br.gov.sc.funcionariosuf.dao.ServidoresDAO;
 import br.gov.sc.funcionariosuf.dao.TerceirizadosDAO;
 import br.gov.sc.funcionariosuf.dao.UnidadeFuncDAO;
 import br.gov.sc.funcionariosuf.domain.CargoServidores;
 import br.gov.sc.funcionariosuf.domain.Estagiarios;
+import br.gov.sc.funcionariosuf.domain.FuncaoServidores;
+import br.gov.sc.funcionariosuf.domain.OrigemEstagiarios;
 import br.gov.sc.funcionariosuf.domain.Servidores;
 import br.gov.sc.funcionariosuf.domain.UnidadeFunc;
 import br.gov.sc.sgi.dao.CidadeDAO;
@@ -115,13 +107,19 @@ public class UnidadeFuncBean implements Serializable {
 	private List<Cidade> Cidades;
 
 	private List<CargoTerceirizado> cargos;
+	private List<NivelTerceirizado> niveis;
+
+	private List<OrigemEstagiarios> origensEstagiarios;
 
 	private List<Unidade> listaUnidadeSelecionada;
 	private List<Setor> setores;
 
+	private List<FuncaoServidores> funcoesServidores;
+
 	private Usuario usuarioLogado;
 	private PessoaFisica pessoa;
 	private FuncionarioTerceirizado funcionarioTerceirizado;
+	private FuncionarioTerceirizado funcionarioSelecionado;
 
 	private Servidores servidores;
 
@@ -130,25 +128,38 @@ public class UnidadeFuncBean implements Serializable {
 	private List<String> combinedList;
 
 	private List<String> combinedList3;
-	
 
-	
+	private ContratoHistFuncionario contratoHistFuncionario;
+	private ContratoRelacao contratoRelacao;
+	private ContratoTerceirizado contratoTerceirizado;
+	private List<ContratoTerceirizado> listaContratosTerceirizados;
+	private List<FuncionarioTerceirizado> listaFuncionarios;
 
-	
-	
-	
+	private List<UserClaimsContrato> listaUserClaims;
+	private UserClaimsContrato userClaim;
+	private boolean mostrarModuloParaGerentes;
+	private boolean acaoRelatorioExcelTodasUnidades;
 
+	public void mostrarNovoServidor() {
+		servidores = new Servidores();
+		pessoa = new PessoaFisica();
 
-	public List<CargoServidores> getListaCargosServidores() {
-		return listaCargosServidores;
+		PrimeFaces current = PrimeFaces.current();
+		current.executeScript("PF('newServidor').show();");
 	}
 
-	public void setListaCargosServidores(List<CargoServidores> listaCargosServidores) {
-		this.listaCargosServidores = listaCargosServidores;
+	public void mostrarNovoTerceirizado() {
+		funcionarioTerceirizado = new FuncionarioTerceirizado();
+		pessoa = new PessoaFisica();
+		PrimeFaces current = PrimeFaces.current();
+		current.executeScript("PF('newTerceirizadoUnidade').show();");
 	}
 
-	public List<FilterMeta> getFilterBy() {
-		return filterBy;
+	public void mostrarNovoEstagiario() {
+		estagiario = new Estagiarios();
+		pessoa = new PessoaFisica();
+		PrimeFaces current = PrimeFaces.current();
+		current.executeScript("PF('newEstagiario').show();");
 	}
 
 	public void novo() {
@@ -178,23 +189,21 @@ public class UnidadeFuncBean implements Serializable {
 					codigosUnidades.add(filteredUnidades.get(posicao).getUnidade().getUnidadeNome());
 
 				}
-					
-					
-					FuncionarioTerceirizadoDAO terceirizadosDAO = new FuncionarioTerceirizadoDAO();
-					//listaTerceirizados = terceirizadosDAO.listarUnidades(codigosUnidades); 
-					
-					
-					listaTerceirizadosAtivos = terceirizadosDAO.listarContratoRelacaoFuncionariosAtivos(codigosUnidades);
-					
-					System.out.println();
 
-					ServidoresDAO servidoresDAO = new ServidoresDAO();
-					listaServidores = servidoresDAO.listarUnidades(codigosUnidades);
+				FuncionarioTerceirizadoDAO terceirizadosDAO = new FuncionarioTerceirizadoDAO();
+				// listaTerceirizados = terceirizadosDAO.listarUnidades(codigosUnidades);
 
-					EstagiariosDAO estagiarioDAO = new EstagiariosDAO();
-					listaEstagiarios = estagiarioDAO.listarUnidades(codigosUnidades);
+				listaTerceirizadosAtivos = terceirizadosDAO.listarContratoRelacaoFuncionariosAtivos(codigosUnidades);
 
-			} 
+				System.out.println();
+
+				ServidoresDAO servidoresDAO = new ServidoresDAO();
+				listaServidores = servidoresDAO.listarUnidades(codigosUnidades);
+
+				EstagiariosDAO estagiarioDAO = new EstagiariosDAO();
+				listaEstagiarios = estagiarioDAO.listarUnidades(codigosUnidades);
+
+			}
 
 		} catch (Exception e) {
 			e.getMessage();
@@ -205,51 +214,144 @@ public class UnidadeFuncBean implements Serializable {
 	@PostConstruct
 	public void listar() {
 		try {
+
+			HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+			usuarioLogado = (Usuario) sessao.getAttribute("usuario");
+
 			filterBy = new ArrayList<>();
 
 			EstadoDAO estadoDAO = new EstadoDAO();
 			this.Estados = estadoDAO.listar("sigla");
 
-			UnidadeFuncDAO unidadeFuncDAO = new UnidadeFuncDAO();
-			listaUnidadeFunc = unidadeFuncDAO.listar();
-			
-			filteredUnidades = listaUnidadeFunc;
+			ContratoTerceirizadoDAO contratoDAO = new ContratoTerceirizadoDAO();
+			listaContratosTerceirizados = contratoDAO.listarPorOrdemASC();
 
-			//listaTodosFunc = unidadeFuncDAO.listaTodosFuncionarios();
-
-			SetorDAO setorDAO = new SetorDAO();
-			listasetores = setorDAO.listar("setorNome");
+			// listaTodosFunc = unidadeFuncDAO.listaTodosFuncionarios();
 
 			UnidadeDAO unidadeDAO = new UnidadeDAO();
 			listaUnidade = unidadeDAO.listar("unidadeNome");
-
-			CargoTerceirizadoDAO cargoDAO = new CargoTerceirizadoDAO();
-			setCargos(cargoDAO.listar());
-
 			CargoServidoresDAO cargoServidoresDAO = new CargoServidoresDAO();
-			listaCargosServidores = cargoServidoresDAO.listar();
+			listaCargosServidores = cargoServidoresDAO.listar("descricao");
+			CargoTerceirizadoDAO cargoDAO = new CargoTerceirizadoDAO();
+			cargos = cargoDAO.listar("descricao");
 
-			unidadeFunc = new UnidadeFunc();
+			NivelTerceirizadoDAO nivelDAO = new NivelTerceirizadoDAO();
+			niveis = nivelDAO.listar("descricao");
 
-			
-				
-				
-			ContratoRelacaoDAO relacaoDAO = new ContratoRelacaoDAO();
-			listaTerceirizadosAtivos = relacaoDAO.listar();
-			
-				
+			OrigemEstagiariosDAO origemDAO = new OrigemEstagiariosDAO();
+			origensEstagiarios = origemDAO.listar("descricao");
+
+			FuncaoServidoresDAO funDAO = new FuncaoServidoresDAO();
+			funcoesServidores = funDAO.listar("descricao");
+
+			contratoRelacao = new ContratoRelacao();
+			contratoHistFuncionario = new ContratoHistFuncionario();
+			pessoa = new PessoaFisica();
+
+			mostrarModuloParaGerentes = false;
+
+			// CLAIMS
+			UnidadeFuncDAO unidadeFuncDAO = new UnidadeFuncDAO();
+			UserClaimsContratoDAO userClaimDAO = new UserClaimsContratoDAO();
+
+			FuncionarioTerceirizadoDAO funcionarioDAO = new FuncionarioTerceirizadoDAO();
+
+			if (usuarioLogado.getNivelAcesso().getCodigo() == 1) {
+
+				mostrarModuloParaGerentes = true;
+				acaoRelatorioExcelTodasUnidades = true;
+
+				listaUnidadeFunc = unidadeFuncDAO.listar();
+
+				filteredUnidades = listaUnidadeFunc;
+
+				ContratoRelacaoDAO relacaoDAO = new ContratoRelacaoDAO();
+				listaTerceirizadosAtivos = relacaoDAO.listar();
 
 				ServidoresDAO servidoresDAO = new ServidoresDAO();
 				listaServidores = servidoresDAO.listar();
 
 				EstagiariosDAO estagiarioDAO = new EstagiariosDAO();
 				listaEstagiarios = estagiarioDAO.listar();
-				
-		
-			
+
+				listaFuncionarios = funcionarioDAO.listarPorTodos();
+
+				SetorDAO setorDAO = new SetorDAO();
+				listasetores = setorDAO.listar("setorNome");
+
+			}
+
+			if (usuarioLogado.getUnidade().getUnidadeNome().contains("CIRETRAN")
+					|| usuarioLogado.getUnidade().getUnidadeNome().contains("CITRAN")
+					|| usuarioLogado.getUnidade().getUnidadeNome().contains("Departamento Estadual de Trânsito")) {
+				if (usuarioLogado.getNivelAcesso().getNivel().contains("GERÊNCIA")) {
+
+					mostrarModuloParaGerentes = true;
+					acaoRelatorioExcelTodasUnidades = false;
+
+					listaUserClaims = userClaimDAO.listarPorUsuarioLogado(usuarioLogado);
+					setUserClaim(new UserClaimsContrato());
+
+					ArrayList<String> codigosUnidades = new ArrayList<String>();
+					for (int posicao = 0; posicao < listaUserClaims.size(); posicao++) {
+
+						codigosUnidades.add(listaUserClaims.get(posicao).getUnidade().getUnidadeNome());
+
+					}
+
+					listaUnidadeFunc = unidadeFuncDAO.listarPorClaims(codigosUnidades);
+
+					filteredUnidades = listaUnidadeFunc;
+
+					ContratoRelacaoDAO relacaoDAO = new ContratoRelacaoDAO();
+					listaTerceirizadosAtivos = relacaoDAO.listarPorClaims(codigosUnidades);
+
+					ServidoresDAO servidoresDAO = new ServidoresDAO();
+					listaServidores = servidoresDAO.listarPorClaims(codigosUnidades);
+
+					EstagiariosDAO estagiarioDAO = new EstagiariosDAO();
+					listaEstagiarios = estagiarioDAO.listarPorClaims(codigosUnidades);
+
+					listaFuncionarios = funcionarioDAO.listarPorClaims(codigosUnidades);
+
+					SetorDAO setorDAO = new SetorDAO();
+					listasetores = setorDAO.listar("setorNome");
+
+					// listaContratosTerceirizadosPorContratoEmpresa =
+					// contratoDAO.listarPorContratoEmpresa();
+
+				}
+
+			}
+
+			if (usuarioLogado.getSetor().getSetorNome().contains("Gabinete da Presidência") || usuarioLogado.getSetor()
+					.getSetorNome().contains("Coordenadoria Geral das CIRETRANs e CITRANs")) {
+
+				mostrarModuloParaGerentes = true;
+				acaoRelatorioExcelTodasUnidades = true;
+
+				listaUnidadeFunc = unidadeFuncDAO.listar();
+
+				filteredUnidades = listaUnidadeFunc;
+
+				ContratoRelacaoDAO relacaoDAO = new ContratoRelacaoDAO();
+				listaTerceirizadosAtivos = relacaoDAO.listar();
+
+				ServidoresDAO servidoresDAO = new ServidoresDAO();
+				listaServidores = servidoresDAO.listar();
+
+				EstagiariosDAO estagiarioDAO = new EstagiariosDAO();
+				listaEstagiarios = estagiarioDAO.listar();
+
+				listaFuncionarios = funcionarioDAO.listarPorTodos();
+
+				SetorDAO setorDAO = new SetorDAO();
+				listasetores = setorDAO.listar("setorNome");
+
+			}
 
 		} catch (RuntimeException erro) {
-			Messages.addGlobalError("Ocorreu um erro ao tentar listar as Ciretran Citran.");
+			Messages.addGlobalError("Ocorreu um erro ao tentar listar as Unidades x Funcinários.");
 			erro.printStackTrace();
 		}
 	}
@@ -304,7 +406,18 @@ public class UnidadeFuncBean implements Serializable {
 
 	public void viewUnidade(ActionEvent evento) {
 
+		servidores = new Servidores();
+		funcionarioTerceirizado = new FuncionarioTerceirizado();
+		estagiario = new Estagiarios();
+		pessoa = new PessoaFisica();
+		funcionarioSelecionado = new FuncionarioTerceirizado();
+		contratoTerceirizado = new ContratoTerceirizado();
+
+		ContratoTerceirizadoDAO contratoDAO = new ContratoTerceirizadoDAO();
+
 		unidadeFunc = (UnidadeFunc) evento.getComponent().getAttributes().get("unidadeSelecionado");
+
+		listaContratosTerceirizados = contratoDAO.listarPorUnidadeView(unidadeFunc.getUnidade().getUnidadeNome());
 
 		CidadeDAO municipioDAO = new CidadeDAO();
 
@@ -316,7 +429,8 @@ public class UnidadeFuncBean implements Serializable {
 
 		TerceirizadosDAO terceirizadosDAO = new TerceirizadosDAO();
 		listaTerceirizadosAtivos = terceirizadosDAO.listarContratoRelacaoFuncionariosAtivos(unidadeFunc.getUnidade());
-		//listaTerceirizados = terceirizadosDAO.listarPorUnidade(unidadeFunc.getUnidade());
+		// listaTerceirizados =
+		// terceirizadosDAO.listarPorUnidade(unidadeFunc.getUnidade());
 
 		ServidoresDAO servidoresDAO = new ServidoresDAO();
 		listaServidores = servidoresDAO.listarPorUnidade(unidadeFunc.getUnidade());
@@ -329,6 +443,9 @@ public class UnidadeFuncBean implements Serializable {
 			Cidades = municipioDAO.buscarPorEstado(this.unidadeFunc.getEstadoEndereco().getCodigo());
 
 		}
+
+		CargoTerceirizadoDAO cargoDAO = new CargoTerceirizadoDAO();
+		cargos = cargoDAO.listar();
 
 	}
 
@@ -357,7 +474,9 @@ public class UnidadeFuncBean implements Serializable {
 			Messages.addGlobalInfo("Estagiário cadastrado com Sucesso!");
 
 		} catch (RuntimeException erro) {
-			Messages.addGlobalError("Ocorreu um erro ao tentar salvar o Estagiário.");
+			EstagiariosDAO estaDAO = new EstagiariosDAO();
+			Estagiarios est = estaDAO.carregaFuncionario(pessoa.getCpf());
+			Messages.addGlobalError("Estagiário já vínculado a Unidade " + est.getUnidade().getUnidadeNome() + "!");
 			erro.printStackTrace();
 		}
 	}
@@ -376,14 +495,89 @@ public class UnidadeFuncBean implements Serializable {
 			this.funcionarioTerceirizado.setUsuarioCadastro(this.usuarioLogado);
 			funcionarioTerceirizado.setUnidade(unidadeFunc.getUnidade());
 			funcionarioDAO.merge(this.funcionarioTerceirizado);
+
 			this.funcionarioTerceirizado = new FuncionarioTerceirizado();
 
 			TerceirizadosDAO terceirizadosDAO = new TerceirizadosDAO();
 
-			listaTerceirizadosAtivos = terceirizadosDAO.listarContratoRelacaoFuncionariosAtivos(unidadeFunc.getUnidade());
-			//listaTerceirizados = terceirizadosDAO.listarPorUnidade(unidadeFunc.getUnidade());
+			listaTerceirizadosAtivos = terceirizadosDAO
+					.listarContratoRelacaoFuncionariosAtivos(unidadeFunc.getUnidade());
+			// listaTerceirizados =
+			// terceirizadosDAO.listarPorUnidade(unidadeFunc.getUnidade());
 
 			Messages.addGlobalInfo("Funcionário cadastrado com Sucesso!", new Object[0]);
+		} catch (RuntimeException var4) {
+			FuncionarioTerceirizadoDAO estaDAO = new FuncionarioTerceirizadoDAO();
+			ContratoRelacao est = estaDAO.carregaFuncionario(pessoa.getCpf());
+			Messages.addGlobalError("Terceirizado já vínculado a Unidade "
+					+ est.getFuncionarioTerceirizado().getUnidade().getUnidadeNome() + "!");
+			var4.printStackTrace();
+		}
+
+	}
+
+	public void salvarTerceirizadoUnidade() {
+		try {
+			HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+			usuarioLogado = (Usuario) sessao.getAttribute("usuario");
+
+			FuncionarioTerceirizadoDAO funcionarioDAO = new FuncionarioTerceirizadoDAO();
+
+			System.out.println("valor " + funcionarioTerceirizado);
+
+			ContratoRelacaoDAO relacaoDAO = new ContratoRelacaoDAO();
+			int totalFuncionarios = relacaoDAO.listarPorContratoTerceirizadoObject(contratoTerceirizado).size();
+
+			if (ContratoRelacaoDAO.carregaFuncionario(funcionarioSelecionado) == null) {
+
+				if (funcionarioSelecionado.getCargoTerceirizado().equals(contratoTerceirizado.getCargoTerceirizado())) {
+					if (totalFuncionarios < contratoTerceirizado.getQtdFuncionarios()) {
+						contratoRelacao.setDataCadastro(new Date());
+						contratoRelacao.setUsuarioCadastro(usuarioLogado);
+						contratoRelacao.setContratoTerceirizado(contratoTerceirizado);
+						contratoRelacao.setFuncionarioTerceirizado(funcionarioSelecionado);
+						contratoRelacao.setStatus("Ativo");
+						relacaoDAO.merge(contratoRelacao);
+
+						funcionarioSelecionado.setTipoEvento((EventoTerceirizado) null);
+						funcionarioDAO.merge(funcionarioSelecionado);
+						contratoHistFuncionario.setStatus(contratoRelacao.getStatus());
+						contratoHistFuncionario.setObservacao(null);
+						relacaoDAO.salvarFuncionarioHist(contratoRelacao, contratoHistFuncionario);
+
+						Messages.addGlobalInfo("Funcionário cadastrado com Sucesso!", new Object[0]);
+					} else {
+						Messages.addGlobalError("Quantidade máxima de Funcionários atingida para esse contrato.",
+								new Object[0]);
+					}
+				} else {
+					Messages.addGlobalError("Cargo do Funcionário não compatível com a Atividade do Contrato.",
+							new Object[0]);
+				}
+			} else {
+
+				contratoRelacao = relacaoDAO.carregaFuncionario(funcionarioSelecionado);
+
+				Messages.addGlobalError("Funcionário já vínculado ao contrato nº "
+						+ contratoRelacao.getContratoTerceirizado().getnContrato() + " - Unidade "
+						+ contratoRelacao.getContratoTerceirizado().getUnidade().getUnidadeNome() + " - Município "
+						+ contratoRelacao.getContratoTerceirizado().getMunicipio().getNome());
+
+			}
+
+			this.funcionarioTerceirizado = new FuncionarioTerceirizado();
+
+			TerceirizadosDAO terceirizadosDAO = new TerceirizadosDAO();
+
+			listaTerceirizadosAtivos = terceirizadosDAO
+					.listarContratoRelacaoFuncionariosAtivos(unidadeFunc.getUnidade());
+			// listaTerceirizados =
+			// terceirizadosDAO.listarPorUnidade(unidadeFunc.getUnidade());
+
+			// Messages.addGlobalInfo("Funcionário cadastrado com Sucesso!", new Object[0]);
+
+			// funcionarioSelecionado = new FuncionarioTerceirizado();
+			// contratoTerceirizado = new ContratoTerceirizado();
 		} catch (RuntimeException var4) {
 			Messages.addGlobalError("Funcionário já pertence a outra Unidade.", new Object[0]);
 			var4.printStackTrace();
@@ -391,7 +585,7 @@ public class UnidadeFuncBean implements Serializable {
 
 	}
 
-	public void salvarServidor() {
+	public void salvarServidor() throws IOException {
 		try {
 			HttpSession sessao = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 			this.setUsuarioLogado((Usuario) sessao.getAttribute("usuario"));
@@ -414,14 +608,23 @@ public class UnidadeFuncBean implements Serializable {
 
 			servidoresDAO.merge(servidores);
 
-			servidores = new Servidores();
+			// servidores = new Servidores();
 
-			Messages.addGlobalInfo("Servidores cadastrado com Sucesso!");
+			Messages.addGlobalInfo("Servidor cadastrado com Sucesso!");
 
 		} catch (RuntimeException erro) {
-			Messages.addGlobalError("Ocorreu um erro ao tentar salvar a Servidores.");
+			ServidoresDAO servidoresDAO = new ServidoresDAO();
+			Servidores serv = servidoresDAO.carregaFuncionario(pessoa.getCpf());
+			System.out.println("VENHO MAIS NÃO MOSTROU");
+			Messages.addGlobalError("Servidor já vínculado a Unidade " + serv.getUnidade().getUnidadeNome() + "!");
+
 			erro.printStackTrace();
 		}
+	}
+
+	public void reload() throws IOException {
+		ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+		ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
 	}
 
 	@SuppressWarnings("unlikely-arg-type")
@@ -461,11 +664,15 @@ public class UnidadeFuncBean implements Serializable {
 
 		listaServidores = servidoresDAO.listarPorUnidade(((UnidadeFunc) event.getData()).getUnidade());
 
-		//listaTerceirizadosAtivos = terceirizadosDAO.listarContratoRelacaoFuncionariosAtivos(unidadeFunc.getUnidade());
+		// listaTerceirizadosAtivos =
+		// terceirizadosDAO.listarContratoRelacaoFuncionariosAtivos(unidadeFunc.getUnidade());
 		listaTerceirizados = terceirizadosDAO.listarPorUnidade(((UnidadeFunc) event.getData()).getUnidade());
-		listaTerceirizadosAtivos = terceirizadosDAO.listarContratoRelacaoFuncionariosAtivos(((UnidadeFunc) event.getData()).getUnidade());
+		listaTerceirizadosAtivos = terceirizadosDAO
+				.listarContratoRelacaoFuncionariosAtivos(((UnidadeFunc) event.getData()).getUnidade());
 
 		listaEstagiarios = estagiariosDAO.listarPorUnidade(((UnidadeFunc) event.getData()).getUnidade());
+
+		unidadeFunc = (UnidadeFunc) event.getData();
 
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
@@ -483,6 +690,40 @@ public class UnidadeFuncBean implements Serializable {
 			Messages.addGlobalInfo("Ciretran/Citran removida com sucesso.");
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar excluir a Ciretran/Citran.");
+			erro.printStackTrace();
+		}
+	}
+
+	public void excluirEstagiario(ActionEvent evento) {
+
+		try {
+			estagiario = (Estagiarios) evento.getComponent().getAttributes().get("estagiarioSelecionado");
+
+			EstagiariosDAO estaFuncDAO = new EstagiariosDAO();
+			estaFuncDAO.excluir(estagiario);
+
+			listaEstagiarios = estaFuncDAO.listarPorUnidade(unidadeFunc.getUnidade());
+
+			Messages.addGlobalInfo("Estagiário excluído com sucesso.");
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("Ocorreu um erro ao tentar excluir o Estagiário.");
+			erro.printStackTrace();
+		}
+	}
+
+	public void excluirServidor(ActionEvent evento) {
+
+		try {
+			servidores = (Servidores) evento.getComponent().getAttributes().get("servidoresSelecionado");
+
+			ServidoresDAO servDAO = new ServidoresDAO();
+			servDAO.excluir(servidores);
+
+			listaServidores = servDAO.listarPorUnidade(unidadeFunc.getUnidade());
+
+			Messages.addGlobalInfo("Servidor excluído com sucesso.");
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("Ocorreu um erro ao tentar excluir o Estagiário.");
 			erro.printStackTrace();
 		}
 	}
@@ -508,8 +749,93 @@ public class UnidadeFuncBean implements Serializable {
 		}
 	}
 
+	@SuppressWarnings("static-access")
+	public void editarServidor(ActionEvent evento) {
+		try {
+			this.novoServidor();
+
+			servidores = (Servidores) evento.getComponent().getAttributes().get("servidoresSelecionado");
+
+			System.out.println("unidadeFunc EDITAR " + servidores);
+
+			ServidoresDAO servidoresDAO = new ServidoresDAO();
+
+			pessoa = servidoresDAO.carregarCpf(servidores.getPessoa().getCpf());
+
+			unidadeFunc = servidores.getUnidadeFunc();
+
+			SetorDAO setorDAO = new SetorDAO();
+			setores = setorDAO.buscarPorUnidade(servidores.getUnidade().getCodigo());
+
+			EstadoDAO estadoDAO = new EstadoDAO();
+			CidadeDAO municipioDAO = new CidadeDAO();
+
+			this.Estados = estadoDAO.listar("sigla");
+			if (unidadeFunc.getEstadoEndereco() != null) {
+				this.Cidades = municipioDAO.buscarPorEstado(this.unidadeFunc.getEstadoEndereco().getCodigo());
+			}
+			UnidadeFuncDAO ciretranDAO = new UnidadeFuncDAO();
+			listaUnidadeFunc = ciretranDAO.listar();
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("Ocorreu um erro ao tentar buscar uma Ciretran.");
+			erro.printStackTrace();
+		}
+	}
+
 	public void pesquisaCep(AjaxBehaviorEvent event) {
 		try {
+			// pessoa = new PessoaFisica();
+
+			String newcep = pessoa.getCep().replace(".", "");
+			newcep = newcep.replace("-", "");
+
+			URL url = new URL("http://viacep.com.br/ws/" + newcep + "/json");
+			URLConnection urlConnection = url.openConnection();
+			InputStream is = urlConnection.getInputStream();
+			BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+
+			StringBuilder jsonCep = new StringBuilder();
+
+			String cep = "";
+
+			while ((cep = br.readLine()) != null) {
+
+				jsonCep.append(cep);
+
+			}
+
+			System.out.println(jsonCep);
+
+			PessoaJuridica cepEmpresa = new Gson().fromJson(jsonCep.toString(), PessoaJuridica.class);
+
+			System.out.println(cepEmpresa.getCep());
+			System.out.println(cepEmpresa.getEndereco());
+
+			pessoa.setCep(cepEmpresa.getCep());
+
+			pessoa.setEndereco(cepEmpresa.getEndereco() + ", " + cepEmpresa.getBairro());
+
+			CidadeDAO municipioDAO = new CidadeDAO();
+			EstadoDAO estadoDAO = new EstadoDAO();
+
+			System.out.println(estadoDAO.loadSigla(cepEmpresa.getUf())
+					+ "estadoDAO.loadSigla(cepEmpresa.getUf())estadoDAO.loadSigla(cepEmpresa.getUf())estadoDAO.loadSigla(cepEmpresa.getUf())");
+			pessoa.setEstadoEndereco(estadoDAO.loadSigla(cepEmpresa.getUf()));
+
+			Cidades = municipioDAO.buscarPorEstado(pessoa.getEstadoEndereco().getCodigo());
+
+			pessoa.setMunicipioEndereco(municipioDAO.loadNome(cepEmpresa.getLocalidade()));
+
+			System.out.println(municipioDAO.loadNome(cepEmpresa.getLocalidade()));
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void pesquisaCepUnidade(AjaxBehaviorEvent event) {
+		try {
+			// pessoa = new PessoaFisica();
 
 			String newcep = unidadeFunc.getCep().replace(".", "");
 			newcep = newcep.replace("-", "");
@@ -547,7 +873,7 @@ public class UnidadeFuncBean implements Serializable {
 					+ "estadoDAO.loadSigla(cepEmpresa.getUf())estadoDAO.loadSigla(cepEmpresa.getUf())estadoDAO.loadSigla(cepEmpresa.getUf())");
 			unidadeFunc.setEstadoEndereco(estadoDAO.loadSigla(cepEmpresa.getUf()));
 
-			Cidades = municipioDAO.buscarPorEstado(unidadeFunc.getEstadoEndereco().getCodigo());
+			Cidades = municipioDAO.buscarPorEstado(pessoa.getEstadoEndereco().getCodigo());
 
 			unidadeFunc.setMunicipioEndereco(municipioDAO.loadNome(cepEmpresa.getLocalidade()));
 
@@ -594,29 +920,24 @@ public class UnidadeFuncBean implements Serializable {
 	@SuppressWarnings({ "unchecked", "unlikely-arg-type" })
 	public void popularTodosFuncionarios() {
 
-		FuncionarioTerceirizadoDAO terceirizadosDAO = new FuncionarioTerceirizadoDAO();
-		listaTerceirizados = terceirizadosDAO.listar();
-
 		ServidoresDAO servidoresDAO = new ServidoresDAO();
 		listaServidores = servidoresDAO.listar();
 
 		EstagiariosDAO estagiarioDAO = new EstagiariosDAO();
 		listaEstagiarios = estagiarioDAO.listar();
-		
+
 		ContratoRelacaoDAO contratoDAO = new ContratoRelacaoDAO();
-		
-		
-		
+
+		// PEGA FUNCIONARIOS TERCEIRIZADOS ATIVOS
 		List<FuncionarioTerceirizado> expected = contratoDAO.listarPorTodos();
-		
-		  System.out.println(expected.size());
 
-		  
-		combinedList = (List<String>) Stream.of(expected, listaServidores)
-				.flatMap(x -> x.stream()).collect(Collectors.toList());
+		System.out.println(expected.size());
 
-		combinedList3 = (List<String>) Stream.of(combinedList, listaEstagiarios)
-				.flatMap(x -> x.stream()).collect(Collectors.toList());
+		combinedList = (List<String>) Stream.of(expected, listaServidores).flatMap(x -> x.stream())
+				.collect(Collectors.toList());
+
+		combinedList3 = (List<String>) Stream.of(combinedList, listaEstagiarios).flatMap(x -> x.stream())
+				.collect(Collectors.toList());
 
 	}
 
@@ -635,6 +956,17 @@ public class UnidadeFuncBean implements Serializable {
 		} catch (NullPointerException nulo) {
 			throw new NullPointerException(
 					"Erro ao imprimir o relatório. Valores das variáveis inválidos " + nulo.getMessage());
+		}
+
+	}
+
+	public void novoTerceirizadoModulo() {
+
+		try {
+			JSFUtil.redirect("/pages/contrato/controlecontrato.xhtml");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 	}
@@ -671,8 +1003,8 @@ public class UnidadeFuncBean implements Serializable {
 		}
 
 	}
+
 	public void relatorioExcelGeral(ActionEvent evento) {
-		
 
 		try {
 			JSFUtil.redirect("../ImprimirRelatorioUnidadesXFuncionariosTodosExcel");
@@ -893,14 +1225,123 @@ public class UnidadeFuncBean implements Serializable {
 		this.listaTerceirizadosAtivos = listaTerceirizadosAtivos;
 	}
 
-	
-
 	public void setFilterBy(List<FilterMeta> filterBy) {
 		this.filterBy = filterBy;
 	}
 
-	
+	public UserClaimsContrato getUserClaim() {
+		return userClaim;
+	}
 
-	
+	public void setUserClaim(UserClaimsContrato userClaim) {
+		this.userClaim = userClaim;
+	}
 
+	public boolean isMostrarModuloParaGerentes() {
+		return mostrarModuloParaGerentes;
+	}
+
+	public void setMostrarModuloParaGerentes(boolean mostrarModuloParaGerentes) {
+		this.mostrarModuloParaGerentes = mostrarModuloParaGerentes;
+	}
+
+	public boolean isAcaoRelatorioExcelTodasUnidades() {
+		return acaoRelatorioExcelTodasUnidades;
+	}
+
+	public void setAcaoRelatorioExcelTodasUnidades(boolean acaoRelatorioExcelTodasUnidades) {
+		this.acaoRelatorioExcelTodasUnidades = acaoRelatorioExcelTodasUnidades;
+	}
+
+	public ContratoTerceirizado getContratoTerceirizado() {
+		return contratoTerceirizado;
+	}
+
+	public void setContratoTerceirizado(ContratoTerceirizado contratoTerceirizado) {
+		this.contratoTerceirizado = contratoTerceirizado;
+	}
+
+	public List<ContratoTerceirizado> getListaContratosTerceirizados() {
+		return listaContratosTerceirizados;
+	}
+
+	public void setListaContratosTerceirizados(List<ContratoTerceirizado> listaContratosTerceirizados) {
+		this.listaContratosTerceirizados = listaContratosTerceirizados;
+	}
+
+	public ContratoRelacao getContratoRelacao() {
+		return contratoRelacao;
+	}
+
+	public void setContratoRelacao(ContratoRelacao contratoRelacao) {
+		this.contratoRelacao = contratoRelacao;
+	}
+
+	public ContratoHistFuncionario getContratoHistFuncionario() {
+		return contratoHistFuncionario;
+	}
+
+	public void setContratoHistFuncionario(ContratoHistFuncionario contratoHistFuncionario) {
+		this.contratoHistFuncionario = contratoHistFuncionario;
+	}
+
+	public List<FuncionarioTerceirizado> getListaFuncionarios() {
+		return listaFuncionarios;
+	}
+
+	public void setListaFuncionarios(List<FuncionarioTerceirizado> listaFuncionarios) {
+		this.listaFuncionarios = listaFuncionarios;
+	}
+
+	public FuncionarioTerceirizado getFuncionarioSelecionado() {
+		return funcionarioSelecionado;
+	}
+
+	public void setFuncionarioSelecionado(FuncionarioTerceirizado funcionarioSelecionado) {
+		this.funcionarioSelecionado = funcionarioSelecionado;
+	}
+
+	public List<UserClaimsContrato> getListaUserClaims() {
+		return listaUserClaims;
+	}
+
+	public void setListaUserClaims(List<UserClaimsContrato> listaUserClaims) {
+		this.listaUserClaims = listaUserClaims;
+	}
+
+	public List<CargoServidores> getListaCargosServidores() {
+		return listaCargosServidores;
+	}
+
+	public void setListaCargosServidores(List<CargoServidores> listaCargosServidores) {
+		this.listaCargosServidores = listaCargosServidores;
+	}
+
+	public List<FilterMeta> getFilterBy() {
+		return filterBy;
+	}
+
+	public List<NivelTerceirizado> getNiveis() {
+		return niveis;
+	}
+
+	public void setNiveis(List<NivelTerceirizado> niveis) {
+		this.niveis = niveis;
+	}
+
+	public List<OrigemEstagiarios> getOrigensEstagiarios() {
+		return origensEstagiarios;
+	}
+
+	public void setOrigensEstagiarios(List<OrigemEstagiarios> origensEstagiarios) {
+		this.origensEstagiarios = origensEstagiarios;
+	}
+
+	public List<FuncaoServidores> getFuncoesServidores() {
+		return funcoesServidores;
+	}
+
+	public void setFuncoesServidores(List<FuncaoServidores> funcoesServidores) {
+		this.funcoesServidores = funcoesServidores;
+	}
 }

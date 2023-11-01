@@ -12,6 +12,7 @@ import org.hibernate.criterion.SimpleExpression;
 
 import br.gov.sc.contrato.domain.ContratoRelacao;
 import br.gov.sc.contrato.domain.FuncionarioTerceirizado;
+import br.gov.sc.funcionariosuf.domain.Estagiarios;
 import br.gov.sc.funcionariosuf.domain.UnidadeFunc;
 import br.gov.sc.sgi.domain.PessoaFisica;
 import br.gov.sc.sgi.domain.Unidade;
@@ -70,6 +71,15 @@ public class FuncionarioTerceirizadoDAO extends GenericDAO<FuncionarioTerceiriza
 		}
 	}
    
+   public UnidadeFunc unidadeNome(String nome) throws Exception {
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+		Criteria criteria = sessao.createCriteria(UnidadeFunc.class);
+		criteria.addOrder(Order.desc("codigo"));
+		criteria.add(Restrictions.eq("unidadeNome", nome));
+
+		return (UnidadeFunc) criteria.setMaxResults(1).uniqueResult();
+	}
+   
    @SuppressWarnings("unchecked")
   	public List<FuncionarioTerceirizado> listarUnidades(List<String> unidades) {
 
@@ -113,6 +123,26 @@ public class FuncionarioTerceirizadoDAO extends GenericDAO<FuncionarioTerceiriza
  			sessao.close();
  		}
  	}
+   
+   public static ContratoRelacao carregaFuncionario(String cpf) {
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+
+		ContratoRelacao var4;
+		try {
+			Criteria consulta = sessao.createCriteria(ContratoRelacao.class);
+			consulta.createAlias("funcionarioTerceirizado", "f");
+			consulta.createAlias("f.pessoa", "p");
+			consulta.add(Restrictions.eq("p.cpf", cpf));
+			var4 = (ContratoRelacao) consulta.setMaxResults(1).uniqueResult();
+		} catch (RuntimeException var7) {
+			throw var7;
+		} finally {
+			sessao.close();
+		}
+
+		return var4;
+	}
+
 	   
   
    

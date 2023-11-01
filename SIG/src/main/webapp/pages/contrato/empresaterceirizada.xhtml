@@ -206,6 +206,7 @@
 					
 					<p:column headerText="CNPJ"
 						sortBy="#{empresa.pessoaJuridica.cnpj}"
+						filterMatchMode="contains"
 						filterBy="#{empresa.pessoaJuridica.cnpj}"
 						style="width: 70px; text-align: center;">
 						<h:outputText value="#{empresa.pessoaJuridica.cnpj}" />
@@ -213,6 +214,7 @@
 					
 					<p:column headerText="Razão Social"
 						sortBy="#{empresa.pessoaJuridica.razaoSocial}"
+						filterMatchMode="contains"
 						filterBy="#{empresa.pessoaJuridica.razaoSocial}"
 						style="width: 70px; text-align: center;">
 						<h:outputText value="#{empresa.pessoaJuridica.razaoSocial}" />
@@ -222,6 +224,7 @@
 
 					<p:column headerText="Nome Fantasia"
 						sortBy="#{empresa.pessoaJuridica.nomeFantasia}"
+						filterMatchMode="contains"
 						filterBy="#{empresa.pessoaJuridica.nomeFantasia}"
 						style="width: 70px; text-align: center;">
 						<h:outputText value="#{empresa.pessoaJuridica.nomeFantasia.toUpperCase()}" />

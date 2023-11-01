@@ -313,7 +313,9 @@ body .ui-state-disabled {
 										newEstagiario:newEstagiario
 										unidadeJustView:unidadeJustView
 										unidadeJustView
-										">
+										unidadeView:tabViewProcesso:listaServidores 
+										unidadeView:tabViewProcesso:listaTerceirizados
+										unidadeView:tabViewProcesso:listaEstagiarios">
 										<f:attribute name="unidadeSelecionado" value="#{unidade}" />
 										<f:actionListener
 											type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
@@ -841,31 +843,10 @@ body .ui-state-disabled {
 
 
 
-					<p:toolbar>
-
-						<p:toolbarGroup>
-							<p:menuButton value="Novo" styleClass="ui-button-success">
-								<p:menuitem value="Servidor"
-									action="#{unidadeFuncBean.mostrarNovoServidor}"
-									update="unidadeView:unidadeView" icon="pi pi-user-plus" />
-								<p:menuitem value="Terceirizado"
-									action="#{unidadeFuncBean.mostrarNovoTerceirizado}"
-									update="unidadeView:unidadeView" icon="pi pi-user-plus" />
-								<p:menuitem value="Estagiário"
-									action="#{unidadeFuncBean.mostrarNovoEstagiario}"
-									update="unidadeView:unidadeView" icon="pi pi-user-plus" />
-
-							</p:menuButton>
-						</p:toolbarGroup>
-					</p:toolbar>
 
 
 
-					<br />
-					<br />
-					<br />
-
-					<!-- <p:tabView id="tabViewProcesso">
+					<p:tabView id="tabViewProcesso">
 
 
 						<p:tab title="Servidores">
@@ -885,6 +866,18 @@ body .ui-state-disabled {
 									var="servidores" editable="true">
 
 
+									<f:facet name="header">
+
+
+										<p:commandButton value="Novo Servidor" icon="pi pi-plus"
+											styleClass="rounded-button ui-button-success"
+											oncomplete="PF('newServidor').show();"
+											actionListener="#{unidadeFuncBean.novoServidor()}"
+											update=":mensagem tabView:formularioEmpresas:painelDados" />
+
+
+
+									</f:facet>
 
 									<p:column headerText="Nome"
 										style="width: 5%; text-align: center;text-transform:uppercase;">
@@ -931,6 +924,13 @@ body .ui-state-disabled {
 									rows="5" value="#{unidadeFuncBean.listaTerceirizadosAtivos}"
 									var="terceirizado" editable="true">
 
+									<f:facet name="header">
+										<p:commandButton value="Novo Terceirizado" icon="pi pi-plus"
+											styleClass="rounded-button ui-button-success"
+											oncomplete="PF('newTerceirizadoUnidade').show();"
+											actionListener="#{unidadeFuncBean.novoTerceirizado()}"
+											update=":mensagem tabView:formularioEmpresas:painelDados newTerceirizadoUnidade:newTerceirizadoUnidade newTerceirizado:newTerceirizado" />
+									</f:facet>
 
 									<p:column headerText="Nome"
 										style="width: 5%; text-align: center;text-transform:uppercase;">
@@ -984,7 +984,18 @@ body .ui-state-disabled {
 									rows="5" value="#{unidadeFuncBean.listaEstagiarios}"
 									var="estagiario" editable="true">
 
-									
+									<f:facet name="header">
+
+
+										<p:commandButton value="Novo Estagiário" icon="pi pi-plus"
+											styleClass="rounded-button ui-button-success"
+											oncomplete="PF('newEstagiario').show();"
+											actionListener="#{unidadeFuncBean.novoEstagiario()}"
+											update=":mensagem tabView:formularioEmpresas:painelDados" />
+
+
+
+									</f:facet>
 
 									<p:column headerText="Nome"
 										style="width: 5%; text-align: center;text-transform:uppercase;">
@@ -1024,7 +1035,7 @@ body .ui-state-disabled {
 
 
 					</p:tabView>
- -->
+
 
 
 				</p:panel>
@@ -1075,16 +1086,35 @@ body .ui-state-disabled {
 							placeholder="Digite o CPF" value="#{unidadeFuncBean.pessoa.cpf}"
 							required="true" requiredMessage="O campo CPF é obrigatório">
 							<p:ajax event="blur" listener="#{unidadeFuncBean.buscarCPF}"
-								update="newTerceirizado:nomeCompleto,newTerceirizado:nomeSocial,newTerceirizado:dtNascimento,newTerceirizado:email,newTerceirizado:cel
-								" />
+								update="newTerceirizado:rg,newTerceirizado:orgao,newTerceirizado:ufrg,newTerceirizado:nomeCompleto,newTerceirizado:nomeMae,newTerceirizado:nomePai,newTerceirizado:dtNascimento,newTerceirizado:sexo,newTerceirizado:email,newTerceirizado:telres,newTerceirizado:cel,
+								newTerceirizado:cepEnd,newTerceirizado:endResi,newTerceirizado:complemento,newTerceirizado:estado,newTerceirizado:cidade" />
 							<f:validator validatorId="CpfValidator" />
 						</p:inputText>
 
 
+						<p:outputLabel value="RG: *" />
+						<p:inputText maxlength="11" size="50" id="rg"
+							value="#{unidadeFuncBean.pessoa.rg}" required="true"
+							requiredMessage="O campo RG é obrigatório" />
+
+						<p:outputLabel value="Órgão Emissor: *" />
+						<p:inputText maxlength="10" size="50" id="orgao"
+							value="#{unidadeFuncBean.pessoa.rgOrgaoEmissor}" required="true"
+							requiredMessage="O campo Órgão Emissor é obrigatório"
+							style="text-transform:uppercase;" />
 
 
 
-
+						<p:outputLabel value="UF RG: *" />
+						<p:selectOneMenu filter="true" style="width:380px"
+							value="#{unidadeFuncBean.pessoa.rgEstadoEmissao}" id="ufrg"
+							converter="omnifaces.SelectItemsConverter" required="true"
+							requiredMessage="O campo UF é obrigatório">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione uma UF" />
+							<f:selectItems value="#{unidadeFuncBean.estados}" var="estado"
+								itemValue="#{estado}" itemLabel="#{estado.sigla}" />
+						</p:selectOneMenu>
 
 						<p:outputLabel value="Nome Completo: *" />
 						<p:inputText maxlength="50" size="50" id="nomeCompleto"
@@ -1092,12 +1122,17 @@ body .ui-state-disabled {
 							requiredMessage="O campo Nome Completo é obrigatório"
 							style="text-transform:uppercase;" />
 
-						<p:outputLabel value="Nome Social: " />
-						<p:inputText maxlength="50" size="50" id="nomeSocial"
-							value="#{unidadeFuncBean.pessoa.nomeCompleto}"
+						<p:outputLabel value="Nome da Mãe: *" />
+						<p:inputText maxlength="50" size="50" id="nomeMae"
+							value="#{unidadeFuncBean.pessoa.nomeMae}" required="true"
+							requiredMessage="O campo Nome da Mãe é obrigatório"
 							style="text-transform:uppercase;" />
 
-
+						<p:outputLabel value="Nome do Pai: *" />
+						<p:inputText maxlength="50" size="50" id="nomePai"
+							value="#{unidadeFuncBean.pessoa.nomePai}" required="true"
+							requiredMessage="O campo Nome do Pai é obrigatório"
+							style="text-transform:uppercase;" />
 
 
 						<p:outputLabel value="Data Nascimento: *" />
@@ -1122,7 +1157,10 @@ body .ui-state-disabled {
 							requiredMessage="O campo E-mail é obrigatório"
 							style="text-transform:lowercase;" />
 
-
+						<p:outputLabel value="Telefone Res.:" />
+						<p:inputMask id="telres" mask="(99) 99999-9999" size="50"
+							value="#{unidadeFuncBean.pessoa.telRes}">
+						</p:inputMask>
 
 						<p:outputLabel value="Celular:" />
 						<p:inputMask id="cel" mask="(99) 99999-9999" size="50"
@@ -1131,7 +1169,57 @@ body .ui-state-disabled {
 
 
 
-						
+						<p:row styleClass="my-heading-row">
+							<i class="pi pi-globe"></i>
+							<b style="color: #518e2e; margin: 0 auto;">ENDEREÇO</b>
+						</p:row>
+
+
+						<p:outputLabel value="CEP:" />
+						<p:inputMask id="cepEnd" mask="99.999-999" maxlength="11"
+							size="50" value="#{unidadeFuncBean.pessoa.cep}" required="true"
+							requiredMessage="O campo CEP é obrigatório">
+							<f:ajax event="blur" execute="@this"
+								render="estado cidade endResi"
+								listener="#{unidadeFuncBean.pesquisaCep}"></f:ajax>
+						</p:inputMask>
+
+						<p:outputLabel value="Endereço Residência: " />
+						<p:inputText maxlength="255" size="50" id="endResi"
+							value="#{unidadeFuncBean.pessoa.endereco}" required="true"
+							requiredMessage="O campo Endereço Residência é obrigatório"
+							style="text-transform:uppercase;" />
+
+						<p:outputLabel value="Complemento:" />
+						<p:inputText maxlength="50" size="50" id="complemento"
+							value="#{unidadeFuncBean.pessoa.complemento}"
+							style="text-transform:uppercase;" />
+
+						<p:outputLabel for="estado" value="UF: " />
+						<p:selectOneMenu id="estado" filter="true" style="width:380px"
+							converter="omnifaces.SelectItemsConverter"
+							value="#{unidadeFuncBean.pessoa.estadoEndereco}">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione um estado" />
+							<f:selectItems value="#{unidadeFuncBean.estados}" var="estado"
+								itemValue="#{estado}" itemLabel="#{estado.sigla}" />
+							<p:ajax listener="#{unidadeFuncBean.popular}"
+								update=":newTerceirizado:cidade" />
+						</p:selectOneMenu>
+
+						<p:outputLabel for="cidade" value="Municipio" />
+						<p:selectOneMenu id="cidade" filter="true" required="true"
+							style="width:380px"
+							requiredMessage="O campo Municipio é obrigatório"
+							converter="omnifaces.SelectItemsConverter"
+							value="#{unidadeFuncBean.pessoa.municipioEndereco}">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione uma cidade" />
+							<f:selectItems value="#{unidadeFuncBean.cidades}" var="cidade"
+								itemValue="#{cidade}" itemLabel="#{cidade.nome}" />
+						</p:selectOneMenu>
+
+
 
 						<p:row styleClass="my-heading-row">
 							<i class="pi pi-briefcase"></i>
@@ -1177,18 +1265,16 @@ body .ui-state-disabled {
 							<f:selectItems value="#{unidadeFuncBean.cargos}" var="cargo"
 								itemValue="#{cargo}" itemLabel="#{cargo.descricao}" />
 						</p:selectOneMenu>
-
+						
 						<p:outputLabel value="Nível: " />
-						<p:selectOneMenu id="nivel" filter="true" style="width:380px"
-							required="true" requiredMessage="O campo Cargo é obrigatório"
-							converter="omnifaces.SelectItemsConverter"
-							value="#{unidadeFuncBean.funcionarioTerceirizado.nivelTerceirizado}">
-							<f:selectItem noSelectionOption="true"
-								itemLabel="Selecione um nível" />
-							<f:selectItems value="#{unidadeFuncBean.niveis}" var="cargo"
-								itemValue="#{cargo}" itemLabel="#{cargo.descricao}" />
-						</p:selectOneMenu>
+						<p:selectOneMenu value="#{unidadeFuncBean.funcionarioTerceirizado.tipo}"
+						>
+						<f:selectItem itemLabel="Selecione o nível" itemValue="" />
+						<f:selectItem itemLabel="Terceirizado Nível 1" itemValue="Terceirizado Nível 1" />
+						<f:selectItem itemLabel="Terceirizado Nível 2" itemValue="Terceirizado Nível 2" />
 
+					</p:selectOneMenu>
+						
 
 
 
@@ -1207,9 +1293,9 @@ body .ui-state-disabled {
 						<p:commandButton value="Salvar"
 							styleClass="rounded-button ui-button-success" icon="pi pi-save"
 							actionListener="#{unidadeFuncBean.salvarTerceirizado()}"
-							oncomplete="PF('dialogoView').hide();"
-							onsuccess="PF('dialogoView').hide();"
-							update=":mensagem tabView:formularioEmpresas:listaUnidades newTerceirizado:newTerceirizado newTerceirizadoUnidade:newTerceirizadoUnidade" />
+							oncomplete="PF('newTerceirizado').hide();"
+							onsuccess="PF('newTerceirizado').hide();"
+							update=":mensagem tabView:formularioEmpresas:listaUnidades unidadeView:tabViewProcesso:listaTerceirizados newTerceirizado:newTerceirizado newTerceirizadoUnidade:newTerceirizadoUnidade" />
 
 
 
@@ -1276,17 +1362,16 @@ body .ui-state-disabled {
 
 
 						<p:outputLabel value="Contrato: " />
-						<p:selectOneMenu id="contrato" filter="true"
-							filterMatchMode="contains" style="width:380px" required="true"
-							requiredMessage="O campo Contrato é obrigatório"
+						<p:selectOneMenu id="contrato" filter="true" filterMatchMode="contains" style="width:380px"
+							required="true" requiredMessage="O campo Contrato é obrigatório"
 							converter="omnifaces.SelectItemsConverter"
 							value="#{unidadeFuncBean.contratoTerceirizado}">
 							<f:selectItem noSelectionOption="true"
 								itemLabel="Selecione um Contrato" />
-							<f:selectItems
+							<f:selectItems 
 								value="#{unidadeFuncBean.listaContratosTerceirizados}"
 								var="contrato" itemValue="#{contrato}"
-								itemLabel="#{contrato.nContrato} - #{contrato.unidade.unidadeNome} - #{contrato.cargoTerceirizado.descricao}" />
+								itemLabel="#{contrato.nContrato} - #{contrato.unidade.unidadeNome} - #{contrato.cargoTerceirizado.descricao}" /> 
 						</p:selectOneMenu>
 
 
@@ -1302,9 +1387,9 @@ body .ui-state-disabled {
 						<p:commandButton value="Salvar"
 							styleClass="rounded-button ui-button-success" icon="pi pi-save"
 							actionListener="#{unidadeFuncBean.salvarTerceirizadoUnidade()}"
-							oncomplete="PF('newTerceirizadoUnidade').hide();PF('dialogoView').hide();"
+							oncomplete="PF('newTerceirizadoUnidade').hide();"
 							onsuccess="PF('newTerceirizadoUnidade').hide();"
-							update=":mensagem tabView:formularioEmpresas:listaUnidades newTerceirizadoUnidade:newTerceirizadoUnidade newTerceirizado:newTerceirizado" />
+							update=":mensagem tabView:formularioEmpresas:listaUnidades unidadeView:tabViewProcesso:listaTerceirizados newTerceirizadoUnidade:newTerceirizadoUnidade newTerceirizado:newTerceirizado" />
 
 
 
@@ -1362,14 +1447,38 @@ body .ui-state-disabled {
 							requiredMessage="O campo CPF é obrigatório">
 							<p:ajax event="blur"
 								listener="#{unidadeFuncBean.buscarCPFServidor}"
-								update="newServidor:nomeCompleto,newServidor:nomeSocial,newServidor:dtNascimento,newServidor:sexo,newServidor:email,
-								newServidor:cel
-								" />
+								update="newServidor:rg,newServidor:orgao,newServidor:ufrg,newServidor:nomeCompleto,newServidor:nomeMae,
+								newServidor:nomePai,newServidor:dtNascimento,newServidor:sexo,newServidor:email,
+								newServidor:telres,newServidor:cel,
+								newServidor:cepEnd,newServidor:endResi,newServidor:complemento,newServidor:estado,
+								newServidor:cidade" />
 							<f:validator validatorId="CpfValidator" />
 						</p:inputText>
 
 
+						<p:outputLabel value="RG: *" />
+						<p:inputText maxlength="11" id="rg"
+							value="#{unidadeFuncBean.pessoa.rg}" required="true"
+							requiredMessage="O campo RG é obrigatório" />
 
+						<p:outputLabel value="Órgão Emissor: *" />
+						<p:inputText maxlength="10" id="orgao"
+							value="#{unidadeFuncBean.pessoa.rgOrgaoEmissor}" required="true"
+							requiredMessage="O campo Órgão Emissor é obrigatório"
+							style="text-transform:uppercase;" />
+
+
+
+						<p:outputLabel value="UF RG: *" />
+						<p:selectOneMenu filter="true"
+							value="#{unidadeFuncBean.pessoa.rgEstadoEmissao}" id="ufrg"
+							converter="omnifaces.SelectItemsConverter" required="true"
+							requiredMessage="O campo UF é obrigatório">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione uma UF" />
+							<f:selectItems value="#{unidadeFuncBean.estados}" var="estado"
+								itemValue="#{estado}" itemLabel="#{estado.sigla}" />
+						</p:selectOneMenu>
 
 						<p:outputLabel value="Nome Completo: *" />
 						<p:inputText maxlength="50" id="nomeCompleto"
@@ -1377,11 +1486,17 @@ body .ui-state-disabled {
 							requiredMessage="O campo Nome Completo é obrigatório"
 							style="text-transform:uppercase;" />
 
-						<p:outputLabel value="Nome Social:" />
-						<p:inputText maxlength="50" id="nomeSocial"
-							value="#{unidadeFuncBean.pessoa.nomeSocial}"
+						<p:outputLabel value="Nome da Mãe: *" />
+						<p:inputText maxlength="50" id="nomeMae"
+							value="#{unidadeFuncBean.pessoa.nomeMae}" required="true"
+							requiredMessage="O campo Nome da Mãe é obrigatório"
 							style="text-transform:uppercase;" />
 
+						<p:outputLabel value="Nome do Pai: *" />
+						<p:inputText maxlength="50" id="nomePai"
+							value="#{unidadeFuncBean.pessoa.nomePai}" required="true"
+							requiredMessage="O campo Nome do Pai é obrigatório"
+							style="text-transform:uppercase;" />
 
 
 						<p:outputLabel value="Data Nascimento: *" />
@@ -1406,13 +1521,66 @@ body .ui-state-disabled {
 							requiredMessage="O campo E-mail é obrigatório"
 							style="text-transform:lowercase;" />
 
-
+						<p:outputLabel value="Telefone Res.:" />
+						<p:inputMask id="telres" mask="(99) 99999-9999"
+							value="#{unidadeFuncBean.pessoa.telRes}">
+						</p:inputMask>
 
 						<p:outputLabel value="Celular:" />
 						<p:inputMask id="cel" mask="(99) 99999-9999"
 							value="#{unidadeFuncBean.pessoa.cel}">
 						</p:inputMask>
 
+						<p:row id="enderecoicon" styleClass="my-heading-row"
+							style="font-weight: bold">
+							<i class="pi pi-globe"></i>
+							<b style="color: #518e2e; margin: 0 auto;">ENDEREÇO</b>
+						</p:row>
+
+
+
+						<p:outputLabel value="CEP:" />
+						<p:inputMask id="cepEnd" mask="99.999-999" maxlength="11"
+							value="#{unidadeFuncBean.pessoa.cep}" required="true"
+							requiredMessage="O campo CEP é obrigatório">
+							<f:ajax event="blur" execute="@this"
+								render="estado cidade endResi"
+								listener="#{unidadeFuncBean.pesquisaCep}"></f:ajax>
+						</p:inputMask>
+
+						<p:outputLabel value="Endereço Residência: " />
+						<p:inputText maxlength="255" id="endResi"
+							value="#{unidadeFuncBean.pessoa.endereco}" required="true"
+							requiredMessage="O campo Endereço Residência é obrigatório"
+							style="text-transform:uppercase;" />
+
+						<p:outputLabel value="Complemento:" />
+						<p:inputText maxlength="50" id="complemento"
+							value="#{unidadeFuncBean.pessoa.complemento}"
+							style="text-transform:uppercase;" />
+
+						<p:outputLabel for="estado" value="UF: " />
+						<p:selectOneMenu id="estado" filter="true"
+							converter="omnifaces.SelectItemsConverter"
+							value="#{unidadeFuncBean.pessoa.estadoEndereco}">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione um estado" />
+							<f:selectItems value="#{unidadeFuncBean.estados}" var="estado"
+								itemValue="#{estado}" itemLabel="#{estado.sigla}" />
+							<p:ajax listener="#{unidadeFuncBean.popular}"
+								update=":newServidor:cidade" />
+						</p:selectOneMenu>
+
+						<p:outputLabel for="cidade" value="Municipio" />
+						<p:selectOneMenu id="cidade" filter="true" required="true"
+							requiredMessage="O campo Municipio é obrigatório"
+							converter="omnifaces.SelectItemsConverter"
+							value="#{unidadeFuncBean.pessoa.municipioEndereco}">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione uma cidade" />
+							<f:selectItems value="#{unidadeFuncBean.cidades}" var="cidade"
+								itemValue="#{cidade}" itemLabel="#{cidade.nome}" />
+						</p:selectOneMenu>
 
 						<p:row id="locacaoicon" styleClass="my-heading-row"
 							style="font-weight: bold">
@@ -1464,17 +1632,6 @@ body .ui-state-disabled {
 							<f:selectItems value="#{unidadeFuncBean.setores}" var="setor"
 								itemValue="#{setor}" itemLabel="#{setor.setorNome}" />
 						</p:selectOneMenu>
-						
-						<p:outputLabel for="funcao" value="Função: " />
-						<p:selectOneMenu id="funcao" filter="true" required="true"
-							requiredMessage="O campo Função é obrigatório"
-							converter="omnifaces.SelectItemsConverter"
-							value="#{unidadeFuncBean.servidores.funcao}">
-							<f:selectItem noSelectionOption="true"
-								itemLabel="Selecione um função" />
-							<f:selectItems value="#{unidadeFuncBean.funcoesServidores}" var="fun" 
-								itemValue="#{fun}" itemLabel="#{fun.descricao}" />
-						</p:selectOneMenu>
 
 
 
@@ -1494,7 +1651,7 @@ body .ui-state-disabled {
 							oncomplete="PF('dialogoView').hide();"
 							onsuccess="PF('newServidor').hide();"
 							actionListener="#{unidadeFuncBean.salvarServidor()}"
-							update=":mensagem tabView:formularioEmpresas:listaUnidades newServidor:newServidor unidadeView:unidadeView" />
+							update=":mensagem tabView:formularioEmpresas:painelDados unidadeView:tabViewProcesso:listaServidores" />
 
 
 
@@ -1549,21 +1706,39 @@ body .ui-state-disabled {
 							requiredMessage="O campo CPF é obrigatório">
 							<p:ajax event="blur"
 								listener="#{unidadeFuncBean.buscarCPFServidor}"
-								update="
-								newEstagiario:nomeCompleto,newEstagiario:nomeSocial,
+								update="newEstagiario:rg,newEstagiario:orgao,newEstagiario:ufrg,
+								newEstagiario:nomeCompleto,newEstagiario:nomeMae,newEstagiario:nomePai,
 								newEstagiario:dtNascimento,newEstagiario:sexo,newEstagiario:email,
-								newEstagiario:cel,
-								
-								" />
+								newEstagiario:telres,newEstagiario:cel,
+								newEstagiario:cepEnd,newEstagiario:endResi,newEstagiario:complemento,
+								newEstagiario:estado,newEstagiario:cidade" />
 							<f:validator validatorId="CpfValidator" />
 						</p:inputText>
 
 
+						<p:outputLabel value="RG: *" />
+						<p:inputText maxlength="11" id="rg"
+							value="#{unidadeFuncBean.pessoa.rg}" required="true"
+							requiredMessage="O campo RG é obrigatório" />
+
+						<p:outputLabel value="Órgão Emissor: *" />
+						<p:inputText maxlength="10" id="orgao"
+							value="#{unidadeFuncBean.pessoa.rgOrgaoEmissor}" required="true"
+							requiredMessage="O campo Órgão Emissor é obrigatório"
+							style="text-transform:uppercase;" />
 
 
 
-
-
+						<p:outputLabel value="UF RG: *" />
+						<p:selectOneMenu filter="true"
+							value="#{unidadeFuncBean.pessoa.rgEstadoEmissao}" id="ufrg"
+							converter="omnifaces.SelectItemsConverter" required="true"
+							requiredMessage="O campo UF é obrigatório">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione uma UF" />
+							<f:selectItems value="#{unidadeFuncBean.estados}" var="estado"
+								itemValue="#{estado}" itemLabel="#{estado.sigla}" />
+						</p:selectOneMenu>
 
 						<p:outputLabel value="Nome Completo: *" />
 						<p:inputText maxlength="50" id="nomeCompleto"
@@ -1571,12 +1746,18 @@ body .ui-state-disabled {
 							requiredMessage="O campo Nome Completo é obrigatório"
 							style="text-transform:uppercase;" />
 
-						<p:outputLabel value="Nome Social:" />
-						<p:inputText maxlength="50" id="nomeSocial"
-							value="#{unidadeFuncBean.pessoa.nomeSocial}"
+						<p:outputLabel value="Nome da Mãe: *" />
+						<p:inputText maxlength="50" id="nomeMae"
+							value="#{unidadeFuncBean.pessoa.nomeMae}" required="true"
+							requiredMessage="O campo Nome da Mãe é obrigatório"
 							style="text-transform:uppercase;" />
 
-						
+						<p:outputLabel value="Nome do Pai: *" />
+						<p:inputText maxlength="50" id="nomePai"
+							value="#{unidadeFuncBean.pessoa.nomePai}" required="true"
+							requiredMessage="O campo Nome do Pai é obrigatório"
+							style="text-transform:uppercase;" />
+
 
 						<p:outputLabel value="Data Nascimento: *" />
 						<p:calendar id="dtNascimento" pattern="dd/MM/yyyy" mask="true"
@@ -1600,14 +1781,66 @@ body .ui-state-disabled {
 							requiredMessage="O campo E-mail é obrigatório"
 							style="text-transform:lowercase;" />
 
-					
+						<p:outputLabel value="Telefone Res.:" />
+						<p:inputMask id="telres" mask="(99) 99999-9999"
+							value="#{unidadeFuncBean.pessoa.telRes}">
+						</p:inputMask>
 
 						<p:outputLabel value="Celular:" />
 						<p:inputMask id="cel" mask="(99) 99999-9999"
 							value="#{unidadeFuncBean.pessoa.cel}">
 						</p:inputMask>
 
-						
+						<p:row id="enderecoicon" styleClass="my-heading-row"
+							style="font-weight: bold">
+							<i class="pi pi-globe"></i>
+							<b style="color: #518e2e; margin: 0 auto;">ENDEREÇO</b>
+						</p:row>
+
+
+
+						<p:outputLabel value="CEP:" />
+						<p:inputMask id="cepEnd" mask="99.999-999" maxlength="11"
+							value="#{unidadeFuncBean.pessoa.cep}" required="true"
+							requiredMessage="O campo CEP é obrigatório">
+							<f:ajax event="blur" execute="@this"
+								render="estado cidade endResi"
+								listener="#{unidadeFuncBean.pesquisaCep}"></f:ajax>
+						</p:inputMask>
+
+						<p:outputLabel value="Endereço Residência: " />
+						<p:inputText maxlength="255" id="endResi"
+							value="#{unidadeFuncBean.pessoa.endereco}" required="true"
+							requiredMessage="O campo Endereço Residência é obrigatório"
+							style="text-transform:uppercase;" />
+
+						<p:outputLabel value="Complemento:" />
+						<p:inputText maxlength="50" id="complemento"
+							value="#{unidadeFuncBean.pessoa.complemento}"
+							style="text-transform:uppercase;" />
+
+						<p:outputLabel for="estado" value="UF: " />
+						<p:selectOneMenu id="estado" filter="true"
+							converter="omnifaces.SelectItemsConverter"
+							value="#{unidadeFuncBean.pessoa.estadoEndereco}">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione um estado" />
+							<f:selectItems value="#{unidadeFuncBean.estados}" var="estado"
+								itemValue="#{estado}" itemLabel="#{estado.sigla}" />
+							<p:ajax listener="#{unidadeFuncBean.popular}"
+								update=":newEstagiario:cidade" />
+						</p:selectOneMenu>
+
+						<p:outputLabel for="cidade" value="Municipio" />
+						<p:selectOneMenu id="cidade" filter="true" required="true"
+							requiredMessage="O campo Municipio é obrigatório"
+							converter="omnifaces.SelectItemsConverter"
+							value="#{unidadeFuncBean.pessoa.municipioEndereco}">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="Selecione uma cidade" />
+							<f:selectItems value="#{unidadeFuncBean.cidades}" var="cidade"
+								itemValue="#{cidade}" itemLabel="#{cidade.nome}" />
+						</p:selectOneMenu>
 
 
 
@@ -1643,17 +1876,6 @@ body .ui-state-disabled {
 							<f:selectItems value="#{unidadeFuncBean.setores}" var="setor"
 								itemValue="#{setor}" itemLabel="#{setor.setorNome}" />
 						</p:selectOneMenu>
-						
-						<p:outputLabel value="Origem: " />
-						<p:selectOneMenu id="origem" filter="true" style="width:380px"
-							required="true" requiredMessage="O campo Origem é obrigatório"
-							converter="omnifaces.SelectItemsConverter"
-							value="#{unidadeFuncBean.estagiario.origem}">
-							<f:selectItem noSelectionOption="true"
-								itemLabel="Selecione uma origem" />
-							<f:selectItems value="#{unidadeFuncBean.origensEstagiarios}" var="origem"
-								itemValue="#{origem}" itemLabel="#{origem.descricao}" />
-						</p:selectOneMenu>
 
 
 					</p:panelGrid>
@@ -1670,7 +1892,7 @@ body .ui-state-disabled {
 							oncomplete="PF('dialogoView').hide();"
 							onsuccess="PF('newEstagiario').hide();"
 							actionListener="#{unidadeFuncBean.salvarEstagiario()}"
-							update=":mensagem tabView:formularioEmpresas:listaUnidades newEstagiario:newEstagiario" />
+							update=":mensagem tabView:formularioEmpresas:listaUnidades unidadeView:tabViewProcesso:listaEstagiarios" />
 
 
 

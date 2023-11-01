@@ -5,6 +5,7 @@ import br.gov.sc.contrato.domain.ContratoHistFuncionario;
 import br.gov.sc.contrato.domain.ContratoRelacao;
 import br.gov.sc.contrato.domain.ContratoTerceirizado;
 import br.gov.sc.contrato.domain.FuncionarioTerceirizado;
+import br.gov.sc.funcionariosuf.domain.UnidadeFunc;
 import br.gov.sc.sgi.util.HibernateUtil;
 import java.util.Date;
 import java.util.List;
@@ -197,4 +198,28 @@ public class ContratoRelacaoDAO extends GenericDAO<ContratoRelacao> {
 
 		return var9;
 	}
+	
+	 @SuppressWarnings("unchecked")
+		public List<ContratoRelacao> listarPorClaims(List<String> unidades) {
+
+			Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+			try {
+
+				Criteria consulta = sessao.createCriteria(ContratoRelacao.class);
+				consulta.createAlias("funcionarioTerceirizado", "f");
+				consulta.createAlias("f.unidade", "u");
+				consulta.add(Restrictions.in("u.unidadeNome", unidades));
+				
+				
+
+				List<ContratoRelacao> resultado = consulta.list();
+
+				return resultado;
+
+			} catch (RuntimeException erro) {
+				throw erro;
+			} finally {
+				sessao.close();
+			}
+		}
 }

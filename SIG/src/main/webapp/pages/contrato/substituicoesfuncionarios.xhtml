@@ -33,25 +33,29 @@
 
 					<p:column headerText="Contrato"
 						sortBy="#{sub.contratoTerceirizado.nContrato}"
+						filterMatchMode="contains"
 						filterBy="#{sub.contratoTerceirizado.nContrato}">
 						<h:outputText
 							value="#{sub.contratoTerceirizado.nContrato} - #{sub.contratoTerceirizado.empresaTerceirizada.pessoaJuridica.nomeFantasia} - #{sub.contratoTerceirizado.unidade.unidadeNome}" />
 					</p:column>
 
 					<p:column headerText="Volante"
-						sortBy="#{sub.funcionarioTerceirizado.pessoa.nomeCompleto.toUpperCase()}"
-						filterBy="#{sub.funcionarioTerceirizado.pessoa.nomeCompleto.toUpperCase()}">
+						sortBy="#{sub.funcionarioTerceirizado.pessoa.nomeCompleto}"
+						filterMatchMode="contains"
+						filterBy="#{sub.funcionarioTerceirizado.pessoa.nomeCompleto}">
 						<h:outputText
 							value="#{sub.funcionarioTerceirizado.pessoa.nomeCompleto.toUpperCase()}" />
 					</p:column>
 
 					<p:column headerText="Motivo" sortBy="#{sub.observacao}"
+					filterMatchMode="contains"
 						filterBy="#{sub.observacao}">
 						<h:outputText value="#{sub.observacao}" />
 					</p:column>
 
 					<p:column headerText="Por"
 						sortBy="#{sub.usuarioCadastro.pessoa.nomeCompleto}"
+						filterMatchMode="contains"
 						filterBy="#{sub.usuarioCadastro.pessoa.nomeCompleto}">
 						<h:outputText value="#{sub.usuarioCadastro.pessoa.nomeCompleto}" />
 					</p:column>

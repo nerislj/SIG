@@ -92,6 +92,7 @@
 
 					<p:column headerText="Unidade"
 						sortBy="#{relacao.funcionarioTerceirizado.unidade.unidadeNome}"
+						filterMatchMode="contains"
 						filterBy="#{relacao.funcionarioTerceirizado.unidade.unidadeNome}"
 						style="width: 20%; text-align: center;">
 						<h:outputText
@@ -100,6 +101,7 @@
 
 					<p:column headerText="Empresa"
 						sortBy="#{relacao.contratoTerceirizado.empresaTerceirizada.pessoaJuridica.nomeFantasia}"
+						filterMatchMode="contains"
 						filterBy="#{relacao.contratoTerceirizado.empresaTerceirizada.pessoaJuridica.nomeFantasia}"
 						style="width: 20%; text-align: center;">
 						<h:outputText
@@ -108,6 +110,7 @@
 
 					<p:column headerText="Nº Contrato"
 						sortBy="#{relacao.contratoTerceirizado.nContrato}"
+						filterMatchMode="contains"
 						filterBy="#{relacao.contratoTerceirizado.nContrato}"
 						style="width: 20%; text-align: center;">
 						<h:outputText value="#{relacao.contratoTerceirizado.nContrato}" />
@@ -116,6 +119,7 @@
 
 					<p:column headerText="Funcionário"
 						sortBy="#{relacao.funcionarioTerceirizado.pessoa.nomeCompleto}"
+						filterMatchMode="contains"
 						filterBy="#{relacao.funcionarioTerceirizado.pessoa.nomeCompleto}"
 						style="width: 20%; text-align: center;">
 						<h:outputText
@@ -124,6 +128,7 @@
 
 					<p:column headerText="CPF"
 						sortBy="#{relacao.funcionarioTerceirizado.pessoa.cpf}"
+						filterMatchMode="contains"
 						filterBy="#{relacao.funcionarioTerceirizado.pessoa.cpf}"
 						style="width: 20%; text-align: center;">
 						<h:outputText
@@ -132,6 +137,7 @@
 
 					<p:column headerText="Setor"
 						sortBy="#{relacao.funcionarioTerceirizado.setor.setorNome}"
+						filterMatchMode="contains"
 						filterBy="#{relacao.funcionarioTerceirizado.setor.setorNome}"
 						style="width: 20%; text-align: center;">
 						<h:outputText
@@ -140,6 +146,7 @@
 
 					<p:column headerText="Cargo"
 						sortBy="#{relacao.funcionarioTerceirizado.cargoTerceirizado.descricao}"
+						filterMatchMode="contains"
 						filterBy="#{relacao.funcionarioTerceirizado.cargoTerceirizado.descricao}"
 						style="width: 20%; text-align: center;">
 						<h:outputText
@@ -147,6 +154,7 @@
 					</p:column>
 
 					<p:column headerText="Movimentação" sortBy="#{relacao.status}"
+					filterMatchMode="contains"
 						filterBy="#{relacao.status}"
 						style="width: 20%; text-align: center;">
 						<h:outputText value="#{relacao.status}" />
@@ -154,6 +162,7 @@
 
 					<p:column headerText="Data Cadastro"
 						sortBy="#{relacao.dataCadastro}"
+						filterMatchMode="contains"
 						filterBy="#{relacao.dataCadastro}"
 						style="width: 20%; text-align: center;">
 						<h:outputText value="#{relacao.dataCadastro}">
@@ -163,6 +172,7 @@
 
 					<p:column headerText="Cadastrado Por"
 						sortBy="#{relacao.usuarioCadastro.pessoa.nomeCompleto}"
+						filterMatchMode="contains"
 						filterBy="#{relacao.usuarioCadastro.pessoa.nomeCompleto}"
 						style="width: 20%; text-align: center;">
 						<h:outputText

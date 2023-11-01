@@ -26,11 +26,14 @@
 
 					<p:column headerText="Unidade"
 						sortBy="#{setor.unidade.unidadeNome}"
+						filterMatchMode="contains"
+	
 						filterBy="#{setor.unidade.unidadeNome}">
 						<h:outputText value="#{setor.unidade.unidadeNome}" />
 					</p:column>
 
 					<p:column headerText="Nome" sortBy="#{setor.setorNome}"
+					filterMatchMode="contains"
 						filterBy="#{setor.setorNome}">
 						<h:outputText value="#{setor.setorNome}" />
 					</p:column>

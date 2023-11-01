@@ -93,6 +93,7 @@
 
 					<p:column headerText="Empresa"
 						sortBy="#{hist.contratoTerceirizado.empresaTerceirizada.pessoaJuridica.nomeFantasia}"
+						filterMatchMode="contains"
 						filterBy="#{hist.contratoTerceirizado.empresaTerceirizada.pessoaJuridica.nomeFantasia}"
 						style="width: 20%; text-align: center;">
 						<h:outputText
@@ -101,6 +102,7 @@
 
 					<p:column headerText="Nº Contrato"
 						sortBy="#{hist.contratoTerceirizado.nContrato}"
+						filterMatchMode="contains"
 						filterBy="#{hist.contratoTerceirizado.nContrato}"
 						style="width: 20%; text-align: center;">
 						<h:outputText value="#{hist.contratoTerceirizado.nContrato}" />
@@ -109,6 +111,7 @@
 
 					<p:column headerText="Funcionário"
 						sortBy="#{hist.funcionarioTerceirizado.pessoa.nomeCompleto}"
+						filterMatchMode="contains"
 						filterBy="#{hist.funcionarioTerceirizado.pessoa.nomeCompleto}"
 						style="width: 20%; text-align: center;">
 						<h:outputText
@@ -116,11 +119,13 @@
 					</p:column>
 
 					<p:column headerText="Movimentação" sortBy="#{hist.status}"
+					filterMatchMode="contains"
 						filterBy="#{hist.status}" style="width: 20%; text-align: center;">
 						<h:outputText value="#{hist.status}" />
 					</p:column>
 
 					<p:column headerText="Data Cadastro" sortBy="#{hist.dataCadastro}"
+					filterMatchMode="contains"
 						filterBy="#{hist.dataCadastro}"
 						style="width: 20%; text-align: center;">
 						<h:outputText value="#{hist.dataCadastro}">
@@ -130,6 +135,7 @@
 
 					<p:column headerText="Cadastrado Por"
 						sortBy="#{hist.usuarioCadastro.pessoa.nomeCompleto}"
+						filterMatchMode="contains"
 						filterBy="#{hist.usuarioCadastro.pessoa.nomeCompleto}"
 						style="width: 20%; text-align: center;">
 						<h:outputText value="#{hist.usuarioCadastro.pessoa.nomeCompleto}" />

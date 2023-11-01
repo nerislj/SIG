@@ -129,6 +129,7 @@
 
 		<mapping class="br.gov.sc.contrato.domain.EmpresaTerceirizada" />
 		<mapping class="br.gov.sc.contrato.domain.CargoTerceirizado" />
+		<mapping class="br.gov.sc.contrato.domain.NivelTerceirizado" />
 		<mapping
 			class="br.gov.sc.contrato.domain.FuncionarioTerceirizado" />
 		<mapping class="br.gov.sc.contrato.domain.EventoTerceirizado" />
@@ -161,6 +162,8 @@
 		<mapping class="br.gov.sc.funcionariosuf.domain.Servidores" />
 		<mapping class="br.gov.sc.funcionariosuf.domain.UnidadeFunc" />
 		<mapping class="br.gov.sc.funcionariosuf.domain.CargoServidores" />
+		<mapping class="br.gov.sc.funcionariosuf.domain.FuncaoServidores" />
+		<mapping class="br.gov.sc.funcionariosuf.domain.OrigemEstagiarios" />
 		
 		<mapping class="br.gov.sc.sgi.domain.ListaTelefonica" />
 		
